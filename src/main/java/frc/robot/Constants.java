@@ -36,6 +36,7 @@ public final class Constants {
 
     public static final int SIDEWINDER_PCM_CHANNEL = 0;
     public static final int SIDEWINDER_MOTOR_CAN_ID = 7;
+
     /** Sidewinder engages at this left stick x deflection */
     public static final double SIDEWINDER_ENABLE_THRESHOLD = 0.3;
     /** Sidewinder disengages at this left stick x deflection */
@@ -86,4 +87,11 @@ public final class Constants {
     public static final double INDEXER_RECEIVE_VELOCITY = 0.5;
     public static final double MANUAL_INDEXER_DEADBAND = 0.1;
     public static final long INDEXER_AT_SENSOR_TIME_ADJUSTMENT_MS = 0;
+
+    //Climber constants
+    public static final int LEFT_CLIMB_CAN = 100;
+    public static final int RIGHT_CLIMB_CAN = 101;
+
+    public static final int LEFT_CLIMB_PCM = 100;
+    public static final int RIGHT_CLIMB_PCM = 101;
 }
