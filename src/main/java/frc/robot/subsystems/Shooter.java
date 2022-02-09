@@ -29,8 +29,8 @@ public class Shooter extends SubsystemBase{
     public void cargoShot (final int distance) {
 
         // TODO shooting ring ratios
-        double velocity;
-        boolean hood;
+        double velocity = 0.0;
+        boolean hood = isHoodUp();
 
         if (distance == 1) {
 
