@@ -10,14 +10,14 @@ import frc.robot.Constants;
 
 public class Shooter extends SubsystemBase{
 
-    // Shooter elements
+    // Shooter elements.
     private final Solenoid shooterSolenoid;
     private final WPI_TalonFX shooterFlywheel;
 
-    // Creates a new shooter
+    // Creates a new shooter.
     public Shooter () {
 
-        // Create and configure shooter elements
+        // Create and configure shooter elements.
         shooterSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Constants.SHOOTER_PCM_CHANNEL);
         shooterFlywheel = new WPI_TalonFX(Constants.SHOOTER_FLYWHEEL_CAN_ID);
         shooterFlywheel.configFactoryDefault();
@@ -50,18 +50,12 @@ public class Shooter extends SubsystemBase{
         shooterFlywheel.set(ControlMode.PercentOutput, velocity);
     }
 
-    public void stop () {
+    public void stop () { cargoShot(0); }
 
-        cargoShot(0);
-    }
+    public void setHood (final boolean hood) { shooterSolenoid.set(hood); }
 
-    public void setHood (final boolean hood) {
-
-        shooterSolenoid.set(hood);
-    }
-
-    public boolean isHoodUp () {
-
-        return shooterSolenoid.get();
-    }
+    /**
+     * @return true if hood is up false otherwise
+     */
+    public boolean isHoodUp () { return shooterSolenoid.get(); }
 }
