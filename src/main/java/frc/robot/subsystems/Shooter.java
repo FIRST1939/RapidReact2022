@@ -47,7 +47,7 @@ public class Shooter extends SubsystemBase{
         }
 
         setHood(hood);
-        shooterFlywheel.set(ControlMode.PercentOutput, velocity);
+        shooterFlywheel.set(ControlMode.Velocity, velocity);
     }
 
     public void stop () { cargoShot(0); }
