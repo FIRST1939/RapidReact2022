@@ -27,27 +27,18 @@ public class ShootWithInput extends CommandBase {
         this.shooter = shooter;
         this.distanceSupplier = distanceSupplier;
 
-        // use addRequirements() here to declare subsystem dependencies
+        // Use addRequirements() here to declare subsystem dependencies
         addRequirements(this.shooter);
     }
 
     @Override
-    public void execute () {
+    public void execute () { this.shooter.cargoShot(this.distanceSupplier.getAsInt()); }
 
-        this.shooter.cargoShot(this.distanceSupplier.getAsInt());
-    }
-
-    // driving with driver input never ends unless interrupted
+    // Driving with driver input never ends unless interrupted
     @Override
-    public boolean isFinished () {
+    public boolean isFinished () { return false; }
 
-        return false;
-    }
-
-    // called once the command ends or is interrupted
+    // Called once the command ends or is interrupted
     @Override
-    public void end (boolean interrupted) {
-
-        this.shooter.stop();
-    }
+    public void end (boolean interrupted) { this.shooter.stop(); }
 }
