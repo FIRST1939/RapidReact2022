@@ -21,6 +21,7 @@ public class Shooter extends SubsystemBase{
         shooterSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Constants.SHOOTER_PCM_CHANNEL);
         shooterFlywheel = new WPI_TalonFX(Constants.SHOOTER_FLYWHEEL_CAN_ID);
         shooterFlywheel.configFactoryDefault();
+
     }
 
     /**
@@ -50,12 +51,18 @@ public class Shooter extends SubsystemBase{
         shooterFlywheel.set(ControlMode.Velocity, velocity);
     }
 
-    public void stop () { cargoShot(0); }
+    public void stop () { 
+        cargoShot(0); 
+    }
 
-    public void setHood (final boolean hood) { shooterSolenoid.set(hood); }
+    public void setHood (final boolean hood) { 
+        shooterSolenoid.set(hood); 
+    }
 
     /**
      * @return true if hood is up false otherwise
      */
-    public boolean isHoodUp () { return shooterSolenoid.get(); }
+    public boolean isHoodUp (){ 
+        return shooterSolenoid.get(); 
+    }
 }
