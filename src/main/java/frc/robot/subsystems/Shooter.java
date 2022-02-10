@@ -40,7 +40,7 @@ public class Shooter extends SubsystemBase{
 
             velocity = 0.8;
             hood = false;
-        } else {
+        } else if (distance == 3) {
 
             velocity = 1.0;
             hood = true;
