@@ -28,22 +28,21 @@ public class Shooter extends SubsystemBase{
      */
     public void cargoShot (final int distance) {
 
-        // TODO shooting ring ratios
-        double velocity = 0.0;
-        boolean hood = isHoodUp();
+        int velocity = Constants.SHOOTER_DEFAULT_VELOCITY;
+        boolean hood = Constants.SHOOTER_DEFAULT_HOOD;
 
         if (distance == 1) {
 
-            velocity = 0.5;
-            hood = false;
+            velocity = Constants.SHOOTER_ONE_VELOCITY;
+            hood = Constants.SHOOTER_ONE_HOOD;
         } else if (distance == 2) {
 
-            velocity = 0.8;
-            hood = false;
+            velocity = Constants.SHOOTER_TWO_VELOCITY;
+            hood = Constants.SHOOTER_TWO_HOOD;
         } else if (distance == 3) {
 
-            velocity = 1.0;
-            hood = true;
+            velocity = Constants.SHOOTER_THREE_VELOCITY;
+            hood = Constants.SHOOTER_THREE_HOOD;
         }
 
         setHood(hood);
