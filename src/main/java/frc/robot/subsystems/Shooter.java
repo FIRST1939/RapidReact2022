@@ -14,7 +14,7 @@ public class Shooter extends SubsystemBase{
     private final Solenoid shooterSolenoid;
     private final WPI_TalonFX shooterFlywheel;
 
-    // Creates a new shooter.
+    // Creates a new shooter
     public Shooter () {
 
         // Create and configure shooter elements.
