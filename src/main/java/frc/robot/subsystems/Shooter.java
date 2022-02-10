@@ -10,7 +10,7 @@ import frc.robot.Constants;
 
 public class Shooter extends SubsystemBase{
 
-    // Shooter elements.
+    // Shooter elements
     private final Solenoid shooterSolenoid;
     private final WPI_TalonFX shooterFlywheel;
 
