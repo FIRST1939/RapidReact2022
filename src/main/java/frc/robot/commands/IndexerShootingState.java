@@ -85,6 +85,6 @@ public class IndexerShootingState extends CommandBase {
   public void end(boolean interrupted) {
     this.indexer.stop();
     RobotCargoCount.getInstance().decrement();
-    // TODO schedule indexer empty state.
+    IndexerEmptyState.getInstance(this.indexer).schedule();
   }
 }
