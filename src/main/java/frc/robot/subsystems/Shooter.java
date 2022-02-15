@@ -28,7 +28,7 @@ public class Shooter extends SubsystemBase {
     /**
      * @return the current instance of the shooter subsystem
      */
-    public static Shooter getInstance () {
+    public static final synchronized Shooter getInstance () {
 
         if (shooterInstance == null) { shooterInstance = new Shooter(); }
         return shooterInstance;
