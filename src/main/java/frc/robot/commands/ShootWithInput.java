@@ -17,13 +17,14 @@ public class ShootWithInput extends CommandBase {
     private final IntSupplier distanceSupplier;
 
     /**
+     * @param shooter          the shooter subsystem used by this command
      * @param distanceSupplier a supplier for changing shooting rings.
      *                         often derived from joystick input but does not
      *                         have to be.
      */
-    public ShootWithInput (final IntSupplier distanceSupplier) {
+    public ShootWithInput (final Shooter shooter, final IntSupplier distanceSupplier) {
 
-        this.shooter = Shooter.getInstance();
+        this.shooter = shooter;
         this.distanceSupplier = distanceSupplier;
 
         // Use addRequirements() here to declare subsystem dependencies.
