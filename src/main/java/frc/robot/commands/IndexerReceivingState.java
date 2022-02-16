@@ -72,6 +72,7 @@ public class IndexerReceivingState extends CommandBase {
   @Override
   public boolean isFinished() {
     return this.indexer.isCargoAtSensor();
+    //TODO need beam break at bottom of tower, isCargoAtSensor returns value of beam break at top of tower.
   }
 
 
