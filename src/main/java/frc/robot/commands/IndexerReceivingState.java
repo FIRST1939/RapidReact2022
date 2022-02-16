@@ -88,5 +88,6 @@ public class IndexerReceivingState extends CommandBase {
     this.indexer.stop();
     RobotCargoCount.getInstance().increment();
     IndexerReadyToShootState.getInstance(this.indexer).schedule();
+    //TODO Schedule at sensor command instead (?)
   }
 }
