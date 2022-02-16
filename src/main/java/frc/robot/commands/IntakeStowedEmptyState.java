@@ -31,8 +31,8 @@ public class IntakeStowedEmptyState extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    this.intake.stopRoller();
     this.intake.stowIntake();
+    //TODO maybe do something with belt (?)
   }
 
   // Returns true when the command should end.
