@@ -48,4 +48,8 @@ public final class Constants {
 
     public static final int SHOOTER_THREE_VELOCITY = 0;
     public static final boolean SHOOTER_THREE_HOOD = false;
+
+    //Intake constants
+    public static final int INTAKE_PCM_CHANNEL = 917;
+    public static final int INTAKE_BEAM_BREAK_RECEIVER_DIO = 1;
 }
