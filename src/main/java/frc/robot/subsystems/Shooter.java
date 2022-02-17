@@ -8,19 +8,30 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class Shooter extends SubsystemBase{
+public class Shooter extends SubsystemBase {
+
+    private static Shooter shooterInstance = null;
 
     // Shooter elements.
     private final Solenoid shooterSolenoid;
     private final WPI_TalonFX shooterFlywheel;
 
     // Creates a new shooter.
-    public Shooter () {
+    private Shooter () {
 
         // Create and configure shooter elements.
         shooterSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Constants.SHOOTER_PCM_CHANNEL);
         shooterFlywheel = new WPI_TalonFX(Constants.SHOOTER_FLYWHEEL_CAN_ID);
         shooterFlywheel.configFactoryDefault();
+    }
+
+    /**
+     * @return the current instance of the shooter subsystem
+     */
+    public static final synchronized Shooter getInstance () {
+
+        if (shooterInstance == null) { shooterInstance = new Shooter(); }
+        return shooterInstance;
     }
 
     /**
