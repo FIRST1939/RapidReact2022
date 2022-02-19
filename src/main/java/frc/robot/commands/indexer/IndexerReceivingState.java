@@ -85,7 +85,6 @@ public class IndexerReceivingState extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     this.indexer.stop();
-    IndexerReadyToShootState.getInstance(this.indexer).schedule();
-    //TODO Schedule at sensor command instead (?)
+    IndexerAtSensorState.getInstance(this.indexer).schedule();
   }
 }
