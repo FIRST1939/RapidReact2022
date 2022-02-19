@@ -46,7 +46,7 @@ public class Intake extends SubsystemBase{
 
     public void setRollerSpeed(double value) {
         rollerMotor.set(ControlMode.PercentOutput, value);
-        //TODO Scale rotation speed based on robot velocity
+        //TODO Scale rotation speed based on robot velocity and rewrite function
     }
 
     public void stopRoller() {
