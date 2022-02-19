@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
@@ -32,13 +32,19 @@ public class ShootWithInput extends CommandBase {
     }
 
     @Override
-    public void execute () { this.shooter.cargoShot(this.distanceSupplier.getAsInt()); }
+    public void execute () { 
+        this.shooter.cargoShot(this.distanceSupplier.getAsInt()); 
+    }
 
     // Driving with driver input never ends unless interrupted.
     @Override
-    public boolean isFinished () { return false; }
+    public boolean isFinished () { 
+        return false; 
+    }
 
     // Called once the command ends or is interrupted.
     @Override
-    public void end (boolean interrupted) { this.shooter.stop(); }
+    public void end (boolean interrupted) { 
+        this.shooter.stop(); 
+    }
 }
