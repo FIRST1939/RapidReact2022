@@ -68,12 +68,14 @@ public class Shooter extends SubsystemBase {
         shooterSolenoid.set(hood); 
     }
 
-    /*
+    
     public boolean isShooterReady () {
-
-        shooterFlywheel.
+        return Math.abs(shooterFlywheel.getClosedLoopError()) < Constants.SHOOTER_VELOCITY_ERROR;
     }
-    */
+    
+    public void setVelocity (double speed) {
+        shooterFlywheel.set(ControlMode.Velocity, speed);
+    }
 
     /**
      * @return true if hood is up false otherwise
