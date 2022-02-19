@@ -33,6 +33,26 @@ public final class Constants {
     public static final int SIDEWINDER_MOTOR_CAN_ID = 7;
 
     // Shooter constants.
+    // TODO shooting ring ratios
     public static final int SHOOTER_PCM_CHANNEL = 1;
     public static final int SHOOTER_FLYWHEEL_CAN_ID = 8;
+
+    public static final int SHOOTER_DEFAULT_VELOCITY = 0;
+    public static final boolean SHOOTER_DEFAULT_HOOD = false; 
+
+    public static final int SHOOTER_ONE_VELOCITY = 0;
+    public static final boolean SHOOTER_ONE_HOOD = false; 
+
+    public static final int SHOOTER_TWO_VELOCITY = 0;
+    public static final boolean SHOOTER_TWO_HOOD = false; 
+
+    public static final int SHOOTER_THREE_VELOCITY = 0;
+    public static final boolean SHOOTER_THREE_HOOD = false;
+
+    // Indexer constants
+    public static final int INDEXER_MOTOR_CAN_ID = 9;
+    public static final int INDEXER_BEAM_BREAK_EMITTER_DIO = 0;
+    public static final int INDEXER_BEAM_BREAK_RECEIVER_DIO = 1;
+    public static final double INDEXER_SHOOTER_FEED_VELOCITY = 0.5;
+    public static final double INDEXER_RECEIVE_VELOCITY = 0.5;
 }
