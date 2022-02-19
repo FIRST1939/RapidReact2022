@@ -89,9 +89,15 @@ public final class Constants {
     public static final long INDEXER_AT_SENSOR_TIME_ADJUSTMENT_MS = 0;
 
     //Climber constants
-    public static final int LEFT_CLIMB_CAN = 100;
-    public static final int RIGHT_CLIMB_CAN = 101;
+    public static final int climberFalconRight = 0;
+    public static final int climberFalconLeft = 0;
 
-    public static final int LEFT_CLIMB_PCM = 100;
-    public static final int RIGHT_CLIMB_PCM = 101;
+    public static final int climberPistonForward = 0;
+    public static final int climberPistonReverse = 0;
+
+    public static final int climberHallEffect = 0;
+     {
+        
+    }
 }
+
