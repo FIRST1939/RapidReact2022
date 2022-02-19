@@ -35,7 +35,7 @@ public class Indexer extends SubsystemBase {
   public Indexer(final BooleanSupplier priorStageSendingSupplier) {
     this.motor = new WPI_TalonSRX(Constants.INDEXER_MOTOR_CAN_ID);
     this.motor.configFactoryDefault();
-    // TODO configure kP for velocity control.
+    // TODO configure kP and kF for velocity control.
     // Include configuration of attached encoder.
     this.beamBreak = new DigitalInput(Constants.INDEXER_BEAM_BREAK_RECEIVER_DIO);
     this.priorStageSendingSupplier = priorStageSendingSupplier;
