@@ -35,52 +35,41 @@ public class Shooter extends SubsystemBase {
     }
 
     /**
-     * @param distance the current shooting ring
+     * @param shot the shot type that we are preparing.
      */
-    public void cargoShot (final int distance) {
+    public void cargoShot (final Constants.SHOTS shot) {
 
-        int velocity = Constants.SHOOTER_DEFAULT_VELOCITY;
-        boolean hood = Constants.SHOOTER_DEFAULT_HOOD;
-
-        if (distance == 1) {
-
-            velocity = Constants.SHOOTER_ONE_VELOCITY;
-            hood = Constants.SHOOTER_ONE_HOOD;
-        } else if (distance == 2) {
-
-            velocity = Constants.SHOOTER_TWO_VELOCITY;
-            hood = Constants.SHOOTER_TWO_HOOD;
-        } else if (distance == 3) {
-
-            velocity = Constants.SHOOTER_THREE_VELOCITY;
-            hood = Constants.SHOOTER_THREE_HOOD;
-        }
-
-        setHood(hood);
-        shooterFlywheel.set(ControlMode.Velocity, velocity);
+        setHood(shot.hood);
+        setVelocity(shot.velocity);
     }
 
+    // TODO find right time to call
     public void stop () { 
-        cargoShot(0); 
+
+        cargoShot(Constants.SHOTS.idle);
     }
 
     public void setHood (final boolean hood) { 
+
         shooterSolenoid.set(hood); 
     }
 
     
     public boolean isShooterReady () {
+
         return Math.abs(shooterFlywheel.getClosedLoopError()) < Constants.SHOOTER_VELOCITY_ERROR;
     }
     
-    public void setVelocity (double speed) {
-        shooterFlywheel.set(ControlMode.Velocity, speed);
+    public void setVelocity (int velocity) {
+
+        shooterFlywheel.set(ControlMode.Velocity, velocity);
     }
 
     /**
      * @return true if hood is up false otherwise
      */
     public boolean isHoodUp (){ 
+
         return shooterSolenoid.get();
     }
 }

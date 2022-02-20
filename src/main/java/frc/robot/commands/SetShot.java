@@ -1,9 +1,8 @@
-package frc.robot.commands.shooter;
+package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.Shooter;
-
-import java.util.function.IntSupplier;
 
 /**
  * This command is designed to be the default command for the
@@ -11,40 +10,41 @@ import java.util.function.IntSupplier;
  * with driver input of shooting rings.
  */
 // TODO indexer element, dependency, and incorporation
-public class ShootWithInput extends CommandBase {
+public class SetShot extends CommandBase {
 
     private final Shooter shooter;
-    private final IntSupplier distanceSupplier;
+    private final Constants.SHOTS shot;
 
     /**
-     * @param shooter          the shooter subsystem used by this command
-     * @param distanceSupplier a supplier for changing shooting rings.
-     *                         often derived from joystick input but does not
-     *                         have to be.
+     * @param shooter the shooter subsystem used by this command
+     * @param shot    the shot type that we are preparing.
      */
-    public ShootWithInput (final Shooter shooter, final IntSupplier distanceSupplier) {
+    public SetShot (final Shooter shooter, final Constants.SHOTS shot) {
 
         this.shooter = shooter;
-        this.distanceSupplier = distanceSupplier;
+        this.shot = shot;
 
         // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(this.shooter);
     }
 
     @Override
-    public void execute () { 
-        this.shooter.cargoShot(this.distanceSupplier.getAsInt()); 
+    public void initialize () { 
+
+        this.shooter.cargoShot(this.shot); 
     }
 
     // Driving with driver input never ends unless interrupted.
     @Override
     public boolean isFinished () { 
-        return false; 
+
+        return true; 
     }
 
     // Called once the command ends or is interrupted.
     @Override
     public void end (boolean interrupted) { 
+        
         this.shooter.stop(); 
     }
 }

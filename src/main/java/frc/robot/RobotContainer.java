@@ -4,17 +4,16 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.DriveWithInput;
 import frc.robot.commands.indexer.IndexerShootingState;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Shooter;
 import frc.robot.triggers.ShootTrigger;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -27,13 +26,14 @@ public class RobotContainer {
   // Create the joystick objects.
   private final Joystick leftStick = new Joystick(Constants.LEFT_STICK_PORT);
   private final Joystick rightStick = new Joystick(Constants.RIGHT_STICK_PORT);
-  private final XboxController driver2 = new XboxController(Constants.DRIVER2_CONTROLLER_PORT);
-  private final XboxController manual = new XboxController(Constants.MANUAL_CONTROLLER_PORT);
+  private final XboxController driverTwo = new XboxController(Constants.DRIVER2_CONTROLLER_PORT);
+  private final XboxController manualOverride = new XboxController(Constants.MANUAL_CONTROLLER_PORT);
 
   // The robot's subsystems and commands are defined here...
   private final DriveTrain driveTrain = new DriveTrain();
-  private final Indexer indexer = new Indexer(() -> true); //TODO Replace with indexer boolean supplier
   private final Shooter shooter = Shooter.getInstance();
+  private final Indexer indexer = new Indexer(() -> true); //TODO indexer boolean supplier
+  
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -63,7 +63,7 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    JoystickButton buttonA = new JoystickButton(driver2, XboxController.Button.kA.value);
+    JoystickButton buttonA = new JoystickButton(driverTwo, XboxController.Button.kA.value);
     ShootTrigger shootTrigger = new ShootTrigger(this.indexer, this.shooter, buttonA);
     shootTrigger.whileActiveContinuous(IndexerShootingState.getInstance(this.indexer));
   }
