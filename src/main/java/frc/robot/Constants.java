@@ -55,4 +55,10 @@ public final class Constants {
     public static final int INTAKE_BELT_CAN_ID = 1003;
 
     public static final int INTAKE_BEAM_BREAK_RECEIVER_DIO = 1001;
+    // Indexer constants
+    public static final int INDEXER_MOTOR_CAN_ID = 9;
+    public static final int INDEXER_BEAM_BREAK_EMITTER_DIO = 0;
+    public static final int INDEXER_BEAM_BREAK_RECEIVER_DIO = 1;
+    public static final double INDEXER_SHOOTER_FEED_VELOCITY = 0.5;
+    public static final double INDEXER_RECEIVE_VELOCITY = 0.5;
 }
