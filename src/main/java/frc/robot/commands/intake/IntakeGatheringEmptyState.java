@@ -7,6 +7,7 @@ package frc.robot.commands.intake;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.RobotCargoCount;
 
 
 public class IntakeGatheringEmptyState extends CommandBase {
@@ -46,7 +47,7 @@ public class IntakeGatheringEmptyState extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     if (!interrupted){
-      //TODO increment cargo count
+      RobotCargoCount.getInstance().increment();
     }
     //TODO schedule AtSensor state
   }
