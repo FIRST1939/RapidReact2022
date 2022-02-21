@@ -46,7 +46,8 @@ public class Intake extends SubsystemBase{
 
     public void setRollerSpeed(double value) {
         rollerMotor.set(ControlMode.PercentOutput, value);
-        //TODO Scale rotation speed based on robot velocity and rewrite function
+        //TODO Scale rotation speed based on robot velocity
+        //TODO Double check if intake and belt are on same motor
     }
 
     public void stopRoller() {
@@ -59,6 +60,7 @@ public class Intake extends SubsystemBase{
     public void deployIntake(double rollerSpeed) {
         extendIntake();
         setRollerSpeed(rollerSpeed);
+        //TODO Possibly remove parameter? Base roller/belt speed on drivetrain speed?
     }
 
     public void stowIntake() {
@@ -68,6 +70,7 @@ public class Intake extends SubsystemBase{
 
     public void setToSendVelocity(double beltVelocity) {
         beltMotor.set(ControlMode.PercentOutput, beltVelocity);
+        //TODO Possibly remove parameter
     }
 
     public void stopIntakeBelt() {
