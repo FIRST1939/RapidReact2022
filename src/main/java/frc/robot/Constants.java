@@ -56,5 +56,5 @@ public final class Constants {
     public static final double INDEXER_SHOOTER_FEED_VELOCITY = 0.5;
     public static final double INDEXER_RECEIVE_VELOCITY = 0.5;
 
-    public static final long INDEXER_AT_SENSOR_TIME_ADJUSTMENT_MS = 300;
+    public static final long INDEXER_AT_SENSOR_TIME_ADJUSTMENT_MS = 0;
 }
