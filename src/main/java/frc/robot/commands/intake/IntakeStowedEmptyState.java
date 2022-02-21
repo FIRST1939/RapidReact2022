@@ -37,7 +37,7 @@ public class IntakeStowedEmptyState extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return !this.intake.getIntakeDeployment();
+    return this.intake.getIntakeDeployment();
   }
 
 
