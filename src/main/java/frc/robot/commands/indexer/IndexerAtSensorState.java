@@ -4,10 +4,13 @@
 
 package frc.robot.commands.indexer;
 
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.Indexer;
 
 public class IndexerAtSensorState extends CommandBase {
+
   /**
    * Commands in a WPILib robot implementation are often singletons but not
    * always. In the case here where we are implementing a state machine, it is a
@@ -18,6 +21,8 @@ public class IndexerAtSensorState extends CommandBase {
 
   /** This command's required indexer subsystem. */
   private final Indexer indexer;
+
+  private long startTime;
 
   /**
    * Must be used to access the singleton instance of this command.
@@ -41,13 +46,15 @@ public class IndexerAtSensorState extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    //TODO Add something here if needed
+    this.indexer.setToReceiveVelocity();
+
+    startTime = System.currentTimeMillis();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return this.indexer.isPriorStageSending();
+    return System.currentTimeMillis()-startTime >= Constants.INDEXER_AT_SENSOR_TIME_ADJUSTMENT_MS;
   }
 
   // Called once the command ends or is interrupted.
