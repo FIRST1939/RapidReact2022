@@ -19,15 +19,14 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 public class Intake extends SubsystemBase{
     private final Solenoid intakeSolenoid;
     private final DigitalInput beamBreak;
-    private final TalonSRX rollerMotor; 
-    private final TalonSRX beltMotor;
+    private final TalonSRX intakeMotor; 
     //TODO Intake motor(s)
 
     public Intake() {
         this.intakeSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Constants.INTAKE_PCM_CHANNEL);
         this.beamBreak = new DigitalInput(Constants.INTAKE_BEAM_BREAK_RECEIVER_DIO);
-        this.rollerMotor = new TalonSRX(Constants.INTAKE_ROLLER_CAN_ID);
-        this.beltMotor = new TalonSRX(Constants.INTAKE_BELT_CAN_ID);
+        this.intakeMotor = new TalonSRX(Constants.INTAKE_ROLLER_CAN_ID);
+       
         //TODO Intake motor(s)
     }
 
@@ -44,43 +43,38 @@ public class Intake extends SubsystemBase{
         intakeSolenoid.set(false);
     }
 
-    public void setRollerSpeed(double value) {
-        rollerMotor.set(ControlMode.PercentOutput, value);
+    public void setIntakeSpeed(double value) {
+        intakeMotor.set(ControlMode.PercentOutput, value);
         //TODO Scale rotation speed based on robot velocity
         //TODO Double check if intake and belt are on same motor
     }
 
-    public void stopRoller() {
-        setRollerSpeed(0);
+    public void stopIntakeMotor() {
+        setIntakeSpeed(0);
     }
 
     /**
      * @return Deploy and stow includes both roller and frame
      */
-    public void deployIntake(double rollerSpeed) {
+    public void deployIntake(double intakeSpeed) {
         extendIntake();
-        setRollerSpeed(rollerSpeed);
+        setIntakeSpeed(intakeSpeed);
         //TODO Possibly remove parameter? Base roller/belt speed on drivetrain speed?
     }
 
     public void stowIntake() {
         retractIntake();
-        stopRoller();
+        stopIntakeMotor();
     }
 
     public void setToSendVelocity(double beltVelocity) {
-        beltMotor.set(ControlMode.PercentOutput, beltVelocity);
+        intakeMotor.set(ControlMode.PercentOutput, beltVelocity);
         //TODO Possibly remove parameter
-    }
-
-    public void stopIntakeBelt() {
-        setToSendVelocity(0);
     }
 
     public boolean getIntakeDeployment() {
         return intakeSolenoid.get(); //TODO Check possible inversion needed
     }
-
 
     /**
      * @return true if there is a cargo at the ready to shoot sensor.
