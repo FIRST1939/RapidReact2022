@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
@@ -39,12 +39,5 @@ public class SetShot extends CommandBase {
     public boolean isFinished () { 
 
         return true; 
-    }
-
-    // Called once the command ends or is interrupted.
-    @Override
-    public void end (boolean interrupted) { 
-        
-        this.shooter.stop(); 
     }
 }

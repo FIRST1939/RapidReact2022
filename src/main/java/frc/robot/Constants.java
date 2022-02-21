@@ -24,6 +24,8 @@ public final class Constants {
     public static final int DRIVER2_CONTROLLER_PORT = 2;
     public static final int MANUAL_CONTROLLER_PORT = 3;
 
+    public static final double TRIGGER_THRESHOLD = .3;
+
     // Drive train constants.
     public static final int LEFT_DRIVE_1_CAN_ID = 1;
     public static final int LEFT_DRIVE_2_CAN_ID = 2;

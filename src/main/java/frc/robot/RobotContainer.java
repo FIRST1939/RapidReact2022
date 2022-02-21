@@ -4,12 +4,17 @@
 
 package frc.robot;
 
+import java.util.function.BooleanSupplier;
+
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.DriveWithInput;
 import frc.robot.commands.indexer.IndexerShootingState;
+import frc.robot.commands.shooter.SetShot;
+import frc.robot.commands.shooter.ToggleHood;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Shooter;
@@ -62,10 +67,23 @@ public class RobotContainer {
    * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureButtonBindings() {
-    JoystickButton buttonA = new JoystickButton(driverTwo, XboxController.Button.kA.value);
-    ShootTrigger shootTrigger = new ShootTrigger(this.indexer, this.shooter, buttonA);
+  private void configureButtonBindings () {
+
+    JoystickButton fenderLowButton = new JoystickButton(driverTwo, XboxController.Button.kY.value);
+    fenderLowButton.whenPressed(new SetShot(Shooter.getInstance(), Constants.SHOTS.fenderLow));
+
+    JoystickButton fenderHighButton = new JoystickButton(driverTwo, XboxController.Button.kB.value);
+    fenderHighButton.whenPressed(new SetShot(Shooter.getInstance(), Constants.SHOTS.fenderHigh));
+
+    BooleanSupplier shootTriggerSupplier = () -> (driverTwo.getRawAxis(XboxController.Axis.kRightTrigger.value) > Constants.TRIGGER_THRESHOLD);
+    ShootTrigger shootTrigger = new ShootTrigger(this.indexer, this.shooter, shootTriggerSupplier);
     shootTrigger.whileActiveContinuous(IndexerShootingState.getInstance(this.indexer));
+
+    JoystickButton manualIdleButton = new JoystickButton(manualOverride, XboxController.Button.kY.value);
+    manualIdleButton.whenPressed(new SetShot(Shooter.getInstance(), Constants.SHOTS.idle));
+
+    JoystickButton manualHoodButton = new JoystickButton(manualOverride, XboxController.Button.kRightBumper.value);
+    manualHoodButton.whenPressed(new ToggleHood(Shooter.getInstance()));
   }
 
   /**
