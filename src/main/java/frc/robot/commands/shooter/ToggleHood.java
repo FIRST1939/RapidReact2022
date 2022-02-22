@@ -18,9 +18,6 @@ public class ToggleHood extends CommandBase {
     public ToggleHood (final Shooter shooter) {
         
         this.shooter = shooter; 
-
-        // Use addRequirements() here to declare subsystem dependencies.
-        addRequirements(this.shooter);
     }
     
     @Override 

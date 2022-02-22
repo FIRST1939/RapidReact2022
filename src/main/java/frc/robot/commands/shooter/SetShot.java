@@ -23,9 +23,6 @@ public class SetShot extends CommandBase {
 
         this.shooter = shooter;
         this.shot = shot;
-
-        // Use addRequirements() here to declare subsystem dependencies.
-        addRequirements(this.shooter);
     }
 
     @Override
