@@ -21,6 +21,11 @@ public final class Constants {
     public static final double SPEED_DEAD_BAND = 0.1;
     public static final double ROTATE_DEAD_BAND = 0.1;
 
+    public static final int DRIVER2_CONTROLLER_PORT = 2;
+    public static final int MANUAL_CONTROLLER_PORT = 3;
+
+    public static final double TRIGGER_THRESHOLD = .3;
+
     // Drive train constants.
     public static final int LEFT_DRIVE_1_CAN_ID = 1;
     public static final int LEFT_DRIVE_2_CAN_ID = 2;
@@ -33,21 +38,29 @@ public final class Constants {
     public static final int SIDEWINDER_MOTOR_CAN_ID = 7;
 
     // Shooter constants.
-    // TODO shooting ring ratios
     public static final int SHOOTER_PCM_CHANNEL = 1;
     public static final int SHOOTER_FLYWHEEL_CAN_ID = 8;
 
     public static final int SHOOTER_DEFAULT_VELOCITY = 0;
     public static final boolean SHOOTER_DEFAULT_HOOD = false; 
 
-    public static final int SHOOTER_ONE_VELOCITY = 0;
-    public static final boolean SHOOTER_ONE_HOOD = false; 
+    // TODO shooting values
+    public enum SHOTS {
+        idle(0, false),
+        fenderLow(2000, true),
+        fenderHigh(4000, false);
 
-    public static final int SHOOTER_TWO_VELOCITY = 0;
-    public static final boolean SHOOTER_TWO_HOOD = false; 
+        public final int velocity;
+        public final boolean hood;
 
-    public static final int SHOOTER_THREE_VELOCITY = 0;
-    public static final boolean SHOOTER_THREE_HOOD = false;
+        private SHOTS (int velocity, boolean hood) {
+
+            this.velocity = velocity;
+            this.hood = hood;
+        }
+    }
+
+    public static final int SHOOTER_VELOCITY_ERROR = 10;
 
     // Indexer constants
     public static final int INDEXER_MOTOR_CAN_ID = 9;
