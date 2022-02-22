@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.DriveWithInput;
 import frc.robot.commands.indexer.IndexerShootingState;
 import frc.robot.commands.shooter.SetShot;
-import frc.robot.commands.shooter.ToggleHood;
+import frc.robot.commands.shooter.SetHood;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Shooter;
@@ -82,8 +82,11 @@ public class RobotContainer {
     JoystickButton manualIdleButton = new JoystickButton(manualOverride, XboxController.Button.kY.value);
     manualIdleButton.whenPressed(new SetShot(Shooter.getInstance(), Constants.SHOTS.idle));
 
-    JoystickButton manualHoodButton = new JoystickButton(manualOverride, XboxController.Button.kRightBumper.value);
-    manualHoodButton.whenPressed(new ToggleHood(Shooter.getInstance()));
+    JoystickButton manualHoodDownButton = new JoystickButton(manualOverride, XboxController.Button.kLeftBumper.value);
+    manualHoodDownButton.whenPressed(new SetHood(Shooter.getInstance(), false));
+
+    JoystickButton manualHoodUpButton = new JoystickButton(manualOverride, XboxController.Button.kRightBumper.value);
+    manualHoodUpButton.whenPressed(new SetHood(Shooter.getInstance(), true));
 
     BooleanSupplier manualShootTrigger = () -> (manualOverride.getRawAxis(XboxController.Axis.kRightTrigger.value) > Constants.TRIGGER_THRESHOLD);
     while (manualShootTrigger.getAsBoolean()) { IndexerShootingState.getInstance(this.indexer); }
