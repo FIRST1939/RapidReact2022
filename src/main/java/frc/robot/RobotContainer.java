@@ -84,6 +84,9 @@ public class RobotContainer {
 
     JoystickButton manualHoodButton = new JoystickButton(manualOverride, XboxController.Button.kRightBumper.value);
     manualHoodButton.whenPressed(new ToggleHood(Shooter.getInstance()));
+
+    BooleanSupplier manualShootTrigger = () -> (manualOverride.getRawAxis(XboxController.Axis.kRightTrigger.value) > Constants.TRIGGER_THRESHOLD);
+    while (manualShootTrigger.getAsBoolean()) { IndexerShootingState.getInstance(this.indexer); }
   }
 
   /**
