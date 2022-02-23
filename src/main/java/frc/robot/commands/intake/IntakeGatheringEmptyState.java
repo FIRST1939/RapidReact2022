@@ -53,8 +53,10 @@ public class IntakeGatheringEmptyState extends CommandBase {
   public void end(boolean interrupted) {
     if (!interrupted){
       RobotCargoCount.getInstance().increment();
-      //TODO Maybe schedule IntakeStowedEmptyState?
+      //TODO schedule AtSensor state
     }
-    //TODO schedule AtSensor state
+    else{
+    //TODO Schedule IntakeStowedEmptyState
+    }
   }
 }
