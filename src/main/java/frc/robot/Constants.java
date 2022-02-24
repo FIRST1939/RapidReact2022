@@ -89,15 +89,10 @@ public final class Constants {
     public static final long INDEXER_AT_SENSOR_TIME_ADJUSTMENT_MS = 0;
 
     //Climber constants
-    public static final int climberFalconRight = 0;
-    public static final int climberFalconLeft = 0;
-
+    public static final int climberFalcon = 0;
     public static final int climberPistonForward = 0;
     public static final int climberPistonReverse = 0;
-
     public static final int climberHallEffect = 0;
-     {
-        
-    }
+    public static final int climberEncoderExtendClicks = 100;
 }
 
