@@ -83,4 +83,13 @@ public class Indexer extends SubsystemBase {
   public boolean isPriorStageSending() {
     return this.priorStageSendingSupplier.getAsBoolean();
   }
+
+  /**
+   * To be used by manual commands when sensors are compromised.
+   * 
+   * @param speed the percent output (-1.0 to 1.0) to apply.
+   */
+  public void setManualSpeed(final double speed) {
+    this.motor.set(ControlMode.PercentOutput, speed);
+  }
 }

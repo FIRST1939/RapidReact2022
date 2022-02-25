@@ -13,8 +13,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.DriveWithInput;
 import frc.robot.commands.indexer.IndexerShootingState;
+import frc.robot.commands.indexer.ManualIndexer;
 import frc.robot.commands.shooter.SetShot;
-import frc.robot.commands.shooter.SetHood;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Shooter;
@@ -32,13 +32,12 @@ public class RobotContainer {
   private final Joystick leftStick = new Joystick(Constants.LEFT_STICK_PORT);
   private final Joystick rightStick = new Joystick(Constants.RIGHT_STICK_PORT);
   private final XboxController driverTwo = new XboxController(Constants.DRIVER2_CONTROLLER_PORT);
-  private final XboxController manualOverride = new XboxController(Constants.MANUAL_CONTROLLER_PORT);
 
   // The robot's subsystems and commands are defined here...
   private final DriveTrain driveTrain = new DriveTrain();
   private final Shooter shooter = Shooter.getInstance();
-  private final Indexer indexer = new Indexer(() -> true); //TODO indexer boolean supplier
-  
+  private final Indexer indexer = new Indexer(() -> true); // TODO indexer boolean supplier
+
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -67,7 +66,7 @@ public class RobotContainer {
    * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureButtonBindings () {
+  private void configureButtonBindings() {
 
     JoystickButton fenderLowButton = new JoystickButton(driverTwo, XboxController.Button.kY.value);
     fenderLowButton.whenPressed(new SetShot(Shooter.getInstance(), Constants.SHOTS.fenderLow));
@@ -75,21 +74,15 @@ public class RobotContainer {
     JoystickButton fenderHighButton = new JoystickButton(driverTwo, XboxController.Button.kB.value);
     fenderHighButton.whenPressed(new SetShot(Shooter.getInstance(), Constants.SHOTS.fenderHigh));
 
-    BooleanSupplier shootTriggerSupplier = () -> (driverTwo.getRawAxis(XboxController.Axis.kRightTrigger.value) > Constants.TRIGGER_THRESHOLD);
+    BooleanSupplier shootTriggerSupplier = () -> (driverTwo
+        .getRawAxis(XboxController.Axis.kRightTrigger.value) > Constants.TRIGGER_THRESHOLD);
     ShootTrigger shootTrigger = new ShootTrigger(this.indexer, this.shooter, shootTriggerSupplier);
     shootTrigger.whileActiveContinuous(IndexerShootingState.getInstance(this.indexer));
 
-    JoystickButton manualIdleButton = new JoystickButton(manualOverride, XboxController.Button.kY.value);
-    manualIdleButton.whenPressed(new SetShot(Shooter.getInstance(), Constants.SHOTS.idle));
-
-    JoystickButton manualHoodDownButton = new JoystickButton(manualOverride, XboxController.Button.kLeftBumper.value);
-    manualHoodDownButton.whenPressed(new SetHood(Shooter.getInstance(), false));
-
-    JoystickButton manualHoodUpButton = new JoystickButton(manualOverride, XboxController.Button.kRightBumper.value);
-    manualHoodUpButton.whenPressed(new SetHood(Shooter.getInstance(), true));
-
-    BooleanSupplier manualShootTrigger = () -> (manualOverride.getRawAxis(XboxController.Axis.kRightTrigger.value) > Constants.TRIGGER_THRESHOLD);
-    while (manualShootTrigger.getAsBoolean()) { IndexerShootingState.getInstance(this.indexer); }
+    JoystickButton toggleManualIntakeIndexer = new JoystickButton(driverTwo, XboxController.Button.kStart.value);
+    toggleManualIntakeIndexer.toggleWhenActive(new ManualIndexer(this.indexer,
+        () -> enforceDeadband(-driverTwo.getRightY(), Constants.MANUAL_INDEXER_DEADBAND)));
+    // TODO toggleManualIntakeIndexer.toggleWhenActive(command);
   }
 
   /**
