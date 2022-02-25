@@ -2,13 +2,10 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.Constants;
-
-import javax.net.ssl.X509ExtendedKeyManager;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -25,7 +22,7 @@ public class Intake extends SubsystemBase{
     public Intake() {
         this.intakeSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Constants.INTAKE_PCM_CHANNEL);
         this.beamBreak = new DigitalInput(Constants.INTAKE_BEAM_BREAK_RECEIVER_DIO);
-        this.intakeMotor = new TalonSRX(Constants.INTAKE_ROLLER_CAN_ID);
+        this.intakeMotor = new TalonSRX(Constants.INTAKE_MOTOR_CAN_ID);
        
         //TODO Intake motor(s)
     }
