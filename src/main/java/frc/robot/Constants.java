@@ -81,6 +81,9 @@ public final class Constants {
     // Indexer constants
     public static final int INDEXER_LEADER_CAN_ID = 9;
     public static final int INDEXER_FOLLOWER_CAN_ID = 10;
+
+    // Indexer constants
+    public static final int INDEXER_MOTOR_CAN_ID = 9;
     public static final int INDEXER_BEAM_BREAK_EMITTER_DIO = 0;
     public static final int INDEXER_BEAM_BREAK_RECEIVER_DIO = 1;
     public static final double INDEXER_SHOOTER_FEED_VELOCITY = 0.5;
@@ -88,11 +91,10 @@ public final class Constants {
     public static final double MANUAL_INDEXER_DEADBAND = 0.1;
     public static final long INDEXER_AT_SENSOR_TIME_ADJUSTMENT_MS = 0;
 
-    //Climber constants
-    public static final int climberFalcon = 0;
-    public static final int climberPistonForward = 0;
-    public static final int climberPistonReverse = 0;
-    public static final int climberHallEffect = 0;
-    public static final int climberEncoderExtendClicks = 100;
+    // Climber constants.
+    public static final int CLIMBER_MOTOR_CAN_ID = 8;
+    public static final int CLIMBER_PISTON_FORWARD = 0;
+    public static final int CLIMBER_PISTON_REVERSE = 1;
+    public static final int CLIMBER_EXTENSION_VELOCITY = 0; // TODO extension velocity
+    public static final int CLIMBER_ENCODER_EXTEND_CLICKS = 100; // TODO encoder extend clicks
 }
-

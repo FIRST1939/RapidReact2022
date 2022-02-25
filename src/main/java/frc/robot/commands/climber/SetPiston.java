@@ -1,0 +1,28 @@
+package frc.robot.commands.climber;
+
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Climber;
+
+public class SetPiston extends CommandBase {
+    
+    private final Climber climber;
+    private final boolean piston;
+
+    public SetPiston (final Climber climber, final boolean piston) {
+
+        this.climber = climber;
+        this.piston = piston;
+    }
+
+    @Override
+    public void initialize () {
+
+        this.climber.setPiston(this.piston);
+    }
+
+    @Override
+    public boolean isFinished () {
+
+        return true;
+    }
+}
