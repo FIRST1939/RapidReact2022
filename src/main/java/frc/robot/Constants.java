@@ -36,6 +36,12 @@ public final class Constants {
 
     public static final int SIDEWINDER_PCM_CHANNEL = 0;
     public static final int SIDEWINDER_MOTOR_CAN_ID = 7;
+    /** Sidewinder engages at this left stick x deflection */
+    public static final double SIDEWINDER_ENABLE_THRESHOLD = 0.3;
+    /** Sidewinder disengages at this left stick x deflection */
+    public static final double SIDEWINDER_DISABLE_THRESHOLD = 0.2;
+    /** Sidewinder output adjusted toward 0 by this amount while engaged */
+    public static final double SIDEWINDER_OUTPUT_OFFSET = 0.1;
 
     // Shooter constants.
     public static final int SHOOTER_PCM_CHANNEL = 1;
