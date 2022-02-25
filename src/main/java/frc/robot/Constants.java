@@ -62,6 +62,13 @@ public final class Constants {
 
     public static final int SHOOTER_VELOCITY_ERROR = 10;
 
+    //Intake constants
+    public static final int INTAKE_PCM_CHANNEL = 1001;
+    public static final int INTAKE_MOTOR_CAN_ID = 1002;
+
+    public static final int INTAKE_BEAM_BREAK_RECEIVER_DIO = 1003;
+
+    public static final double INTAKE_GATHERING_EMPTY_VELOCITY = 1004;
     // Indexer constants
     public static final int INDEXER_MOTOR_CAN_ID = 9;
     public static final int INDEXER_BEAM_BREAK_EMITTER_DIO = 0;
