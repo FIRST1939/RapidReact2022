@@ -1,16 +1,16 @@
-package frc.triggers;
+package frc.robot.triggers;
 
 import java.util.function.BooleanSupplier;
 
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.Climber;
 
-public class ClimbMotorTrigger extends Trigger {
+public class ClimbPistonTrigger extends Trigger {
     
     private final Climber climber;
     private final BooleanSupplier joystickSupplier;
 
-    public ClimbMotorTrigger (Climber climber, BooleanSupplier joystickSupplier) {
+    public ClimbPistonTrigger (Climber climber, BooleanSupplier joystickSupplier) {
 
         this.climber = climber;
         this.joystickSupplier = joystickSupplier;
@@ -19,6 +19,6 @@ public class ClimbMotorTrigger extends Trigger {
     @Override
     public boolean get () {
 
-        return climber.isPistonExtended() && joystickSupplier.getAsBoolean();
+        return climber.isMotorFullyRetracted() && joystickSupplier.getAsBoolean();
     }
 }
