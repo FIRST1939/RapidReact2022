@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -91,7 +92,9 @@ public class DriveTrain extends SubsystemBase {
     }
 
     if (this.sidewinderSolenoid.get()) {
-      sidewinderMotor.set(sidewind - (Math.signum(sidewind) * Constants.SIDEWINDER_OUTPUT_OFFSET));
+      sidewinderMotor.set(
+          ControlMode.PercentOutput,
+          sidewind - (Math.signum(sidewind) * Constants.SIDEWINDER_OUTPUT_OFFSET));
     }
   }
 
