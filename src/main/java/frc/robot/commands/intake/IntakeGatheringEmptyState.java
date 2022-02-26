@@ -9,9 +9,8 @@ import frc.robot.Constants;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.RobotCargoCount;
 
-
 public class IntakeGatheringEmptyState extends CommandBase {
- 
+
   private static IntakeGatheringEmptyState INSTANCE;
 
   /** This command's required intake subsystem. */
@@ -23,7 +22,8 @@ public class IntakeGatheringEmptyState extends CommandBase {
     }
     return INSTANCE;
   }
- /** Creates a new IntakeGatheringEmptyState. */
+
+  /** Creates a new IntakeGatheringEmptyState. */
   public IntakeGatheringEmptyState(final Intake intake) {
     this.intake = intake;
     addRequirements(this.intake);
@@ -37,9 +37,9 @@ public class IntakeGatheringEmptyState extends CommandBase {
 
   // Called when the command executes.
   @Override
-  public void execute(){
+  public void execute() {
     this.intake.setIntakeSpeed(Constants.INTAKE_GATHERING_EMPTY_VELOCITY);
-    //TODO Make intake speed based on drivetrain
+    // TODO Make intake speed based on drivetrain
   }
 
   // Returns true when the command should end.
@@ -51,12 +51,11 @@ public class IntakeGatheringEmptyState extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    if (!interrupted){
+    if (!interrupted) {
       RobotCargoCount.getInstance().increment();
-      //TODO schedule AtSensor state
-    }
-    else{
-    //TODO Schedule IntakeStowedEmptyState
+      // TODO schedule AtSensor state
+    } else {
+      IntakeStowedEmptyState.getInstance(this.intake).schedule();
     }
   }
 }
