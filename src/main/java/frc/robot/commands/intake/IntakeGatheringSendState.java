@@ -36,7 +36,7 @@ public class IntakeGatheringSendState extends CommandBase {
   }
 
   public void execute() {
-    this.intake.setToSendVelocity(Constants.INTAKE_SEND_VELOCITY);
+    this.intake.setToSendVelocity(Constants.INTAKE_SENDING_VELOCITY);
   }
 
   @Override
