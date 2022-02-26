@@ -73,7 +73,7 @@ public final class Constants {
     public static final int INTAKE_MOTOR_CAN_ID = 1002;
 
     public static final int INTAKE_BEAM_BREAK_RECEIVER_DIO = 1003;
-
+    public static final long INTAKE_AT_SENSOR_TIME_ADJUSTMENT_MS = 0;
     public static final double INTAKE_GATHERING_EMPTY_VELOCITY = 1004;
     // Indexer constants
     public static final int INDEXER_MOTOR_CAN_ID = 9;
