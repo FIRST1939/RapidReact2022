@@ -23,7 +23,6 @@ public class IntakeGatheringEmptyState extends CommandBase {
     }
     return INSTANCE;
   }
-  
  /** Creates a new IntakeGatheringEmptyState. */
   public IntakeGatheringEmptyState(final Intake intake) {
     this.intake = intake;
