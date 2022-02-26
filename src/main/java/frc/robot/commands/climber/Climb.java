@@ -20,9 +20,9 @@ public class Climb extends CommandBase {
     public void execute () {
 
         // TODO number of loops to run
-        new RetractMotor(this.climber);
-        new SetPiston(this.climber, false);
-        new ExtendMotor(this.climber);
+        new RetractMotor(this.climber).schedule();
+        new SetPiston(this.climber, false).schedule();
+        new ExtendMotor(this.climber).schedule();
 
         this.finished = true;
     }
