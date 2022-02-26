@@ -6,9 +6,9 @@ import frc.robot.subsystems.Climber;
 public class SetPiston extends CommandBase {
     
     private final Climber climber;
-    private final boolean piston;
+    private final Boolean piston;
 
-    public SetPiston (final Climber climber, final boolean piston) {
+    public SetPiston (final Climber climber, final Boolean piston) {
 
         this.climber = climber;
         this.piston = piston;

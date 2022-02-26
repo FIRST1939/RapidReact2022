@@ -47,10 +47,12 @@ public class Climber extends SubsystemBase {
         climberMotor.set(ControlMode.Velocity, velocity);
     }
 
-    public void setPiston (boolean piston) {
+    public void setPiston (Boolean piston) {
 
         DoubleSolenoid.Value pistonValue;
-        if (piston) { pistonValue = DoubleSolenoid.Value.kForward; } else { pistonValue = DoubleSolenoid.Value.kReverse; }
+        if (piston.equals(true)) { pistonValue = DoubleSolenoid.Value.kForward; }
+        else if (piston.equals(false)) { pistonValue = DoubleSolenoid.Value.kReverse; }
+        else { pistonValue = DoubleSolenoid.Value.kOff; }
 
         climberPiston.set(pistonValue);
     }

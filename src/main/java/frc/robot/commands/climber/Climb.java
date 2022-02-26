@@ -11,10 +11,14 @@ public class Climb extends SequentialCommandGroup {
 
         this.climber = climber;
 
+        // TODO climbing process
         addCommands(
             new RetractMotor(this.climber),
-            new SetPiston(this.climber, false),
-            new ExtendMotor(this.climber)
+            new SetPiston(this.climber, (Boolean) false),
+            new ExtendMotor(this.climber),
+            
+            // Holds the double solenoid in the final position on the last bar.
+            new SetPiston(this.climber, (Boolean) null)
         );
 
         addRequirements(this.climber);

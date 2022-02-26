@@ -124,11 +124,11 @@ public class RobotContainer {
 
     BooleanSupplier climberPistonExtend = () -> (driverTwo.getRawAxis(XboxController.Axis.kRightX.value) < -Constants.AXIS_THRESHOLD);
     ClimbPistonTrigger climbPistonExtendTrigger = new ClimbPistonTrigger(this.climber, climberPistonExtend);
-    climbPistonExtendTrigger.whileActiveContinuous(new SetPiston(this.climber, true));
+    climbPistonExtendTrigger.whileActiveContinuous(new SetPiston(this.climber, (Boolean) true));
 
     BooleanSupplier climberPistonRetract = () -> (driverTwo.getRawAxis(XboxController.Axis.kRightX.value) > Constants.AXIS_THRESHOLD);
     ClimbPistonTrigger climbPistonRetractTrigger = new ClimbPistonTrigger(this.climber, climberPistonRetract);
-    climbPistonRetractTrigger.whileActiveContinuous(new SetPiston(this.climber, false));
+    climbPistonRetractTrigger.whileActiveContinuous(new SetPiston(this.climber, (Boolean) false));
 
     JoystickButton climbButton = new JoystickButton(driverTwo, XboxController.Button.kRightStick.value);
     ClimbTrigger climbTrigger = new ClimbTrigger(this.climber, climbButton);
