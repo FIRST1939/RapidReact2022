@@ -14,9 +14,13 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.DriveWithInput;
 import frc.robot.commands.indexer.IndexerShootingState;
 import frc.robot.commands.indexer.ManualIndexer;
+import frc.robot.commands.intake.IntakeExtendCommandSelector;
+import frc.robot.commands.intake.IntakeRetractCommandSelector;
+import frc.robot.commands.intake.ManualIntakeRollerBelts;
 import frc.robot.commands.shooter.SetShot;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Indexer;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.triggers.ShootTrigger;
 
@@ -37,6 +41,7 @@ public class RobotContainer {
   private final DriveTrain driveTrain = new DriveTrain();
   private final Shooter shooter = Shooter.getInstance();
   private final Indexer indexer = new Indexer(() -> true); // TODO indexer boolean supplier
+  private final Intake intake = new Intake();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -82,6 +87,13 @@ public class RobotContainer {
     JoystickButton toggleManualIntakeIndexer = new JoystickButton(driverTwo, XboxController.Button.kStart.value);
     toggleManualIntakeIndexer.toggleWhenActive(new ManualIndexer(this.indexer,
         () -> enforceDeadband(-driverTwo.getRightY(), Constants.MANUAL_INDEXER_DEADBAND)));
+    toggleManualIntakeIndexer.toggleWhenActive(new ManualIntakeRollerBelts(this.intake,
+        () -> enforceDeadband(-driverTwo.getLeftX(), Constants.MANUAL_INTAKE_DEADBAND)));
+
+    JoystickButton intakeGatherButton = new JoystickButton(driverTwo, XboxController.Button.kRightBumper.value);
+    intakeGatherButton.whileHeld(new IntakeExtendCommandSelector(this.intake));
+    JoystickButton intakeStopGatherButton = new JoystickButton(driverTwo, XboxController.Button.kLeftBumper.value);
+    intakeStopGatherButton.whenPressed(new IntakeRetractCommandSelector(this.intake));
   }
 
   /**
