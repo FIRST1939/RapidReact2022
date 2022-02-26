@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -83,8 +84,17 @@ public class DriveTrain extends SubsystemBase {
   public void arcadeDrive(final double speed, final double rotation, final double sidewind) {
     diffDrive.arcadeDrive(speed, rotation, true);
 
-    if (isSidewinding()) {
-      sidewinderMotor.set(sidewind);
+    // Sidewind above threshold, disengage below, leave as is in gap.
+    if (Math.abs(sidewind) > Constants.SIDEWINDER_ENABLE_THRESHOLD) {
+      this.sidewinderSolenoid.set(true);
+    } else if (Math.abs(sidewind) < Constants.SIDEWINDER_DISABLE_THRESHOLD) {
+      this.sidewinderSolenoid.set(false);
+    }
+
+    if (this.sidewinderSolenoid.get()) {
+      sidewinderMotor.set(
+          ControlMode.PercentOutput,
+          sidewind - (Math.signum(sidewind) * Constants.SIDEWINDER_OUTPUT_OFFSET));
     }
   }
 
@@ -93,20 +103,6 @@ public class DriveTrain extends SubsystemBase {
    */
   public void stop() {
     arcadeDrive(0.0, 0.0, 0.0);
-  }
-
-  /**
-   * @param sidewind true to start sidewinding and false to stop.
-   */
-  public void enableSidewinder(final boolean sidewind) {
-    this.sidewinderSolenoid.set(sidewind);
-  }
-
-  /**
-   * @return true if sidewinding is enabled and false otherwise.
-   */
-  public boolean isSidewinding() {
-    return this.sidewinderSolenoid.get();
   }
 
   /**
