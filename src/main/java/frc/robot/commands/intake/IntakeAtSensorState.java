@@ -5,6 +5,7 @@
 package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.RobotCargoCount;
 
@@ -14,6 +15,8 @@ public class IntakeAtSensorState extends CommandBase {
 
   /** This command's required intake subsystem. */
   private final Intake intake;
+
+  private long startTime;
 
   public static final synchronized IntakeAtSensorState getInstance(final Intake intake) {
     if (INSTANCE == null) {
@@ -28,10 +31,18 @@ public class IntakeAtSensorState extends CommandBase {
     addRequirements(intake);
   }
 
+  public void initialize() {
+    startTime = System.currentTimeMillis();
+  }
+
+  public void execute(){
+    this.intake.setIntakeSpeed(Constants.INTAKE_SENDING_VELOCITY);
+  }
+
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return System.currentTimeMillis()-startTime >= Constants.INTAKE_AT_SENSOR_TIME_ADJUSTMENT_MS;
   }
 
 // Called once the command ends or is interrupted.
