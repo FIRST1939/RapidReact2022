@@ -26,7 +26,7 @@ public class IntakeAtSensorState extends CommandBase {
   }
 
   /** Creates a new IntakeAtSensorState. */
-  public IntakeAtSensorState(final Intake intake) {
+  private IntakeAtSensorState(final Intake intake) {
     this.intake = intake;
     addRequirements(intake);
   }
