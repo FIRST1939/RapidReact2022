@@ -20,7 +20,8 @@ import frc.robot.Constants;
  * directly into the Talon SRX motor controller for velocity control.
  */
 public class Indexer extends SubsystemBase {
-  private final WPI_TalonSRX motor;
+  private final WPI_TalonSRX leader;
+  private final WPI_TalonSRX follower;
   private final DigitalInput beamBreak;
   private final BooleanSupplier priorStageSendingSupplier;
 
@@ -33,10 +34,16 @@ public class Indexer extends SubsystemBase {
    *                                  handling stage is sending a cargo our way.
    */
   public Indexer(final BooleanSupplier priorStageSendingSupplier) {
-    this.motor = new WPI_TalonSRX(Constants.INDEXER_MOTOR_CAN_ID);
-    this.motor.configFactoryDefault();
+    this.leader = new WPI_TalonSRX(Constants.INDEXER_LEADER_CAN_ID);
+    this.leader.configFactoryDefault();
     // TODO configure kP and kF for velocity control.
     // Include configuration of attached encoder.
+
+    this.follower = new WPI_TalonSRX(Constants.INDEXER_FOLLOWER_CAN_ID);
+    this.follower.configFactoryDefault();
+    this.follower.setInverted(true); // TODO verify
+    this.follower.follow(this.leader);
+
     this.beamBreak = new DigitalInput(Constants.INDEXER_BEAM_BREAK_RECEIVER_DIO);
     this.priorStageSendingSupplier = priorStageSendingSupplier;
   }
@@ -51,7 +58,7 @@ public class Indexer extends SubsystemBase {
    * cargo to the shooter.
    */
   public void setToShooterFeedVelocity() {
-    this.motor.set(ControlMode.Velocity, Constants.INDEXER_SHOOTER_FEED_VELOCITY);
+    this.leader.set(ControlMode.Velocity, Constants.INDEXER_SHOOTER_FEED_VELOCITY);
   }
 
   /**
@@ -59,14 +66,14 @@ public class Indexer extends SubsystemBase {
    * cargo from the intake.
    */
   public void setToReceiveVelocity() {
-    this.motor.set(ControlMode.Velocity, Constants.INDEXER_RECEIVE_VELOCITY);
+    this.leader.set(ControlMode.Velocity, Constants.INDEXER_RECEIVE_VELOCITY);
   }
 
   /**
    * Stops the indexer motor and the movement of cargo in the indexer.
    */
   public void stop() {
-    this.motor.set(ControlMode.Velocity, 0.0);
+    this.leader.set(ControlMode.Velocity, 0.0);
   }
 
   /**
@@ -91,6 +98,6 @@ public class Indexer extends SubsystemBase {
    */
   public void setManualSpeed(final double speed) {
     // TODO once we have some experience, consider limiting this power.
-    this.motor.set(ControlMode.PercentOutput, speed);
+    this.leader.set(ControlMode.PercentOutput, speed);
   }
 }
