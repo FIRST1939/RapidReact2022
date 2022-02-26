@@ -9,7 +9,6 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 
 
 public class Climber extends SubsystemBase {
@@ -29,16 +28,8 @@ public class Climber extends SubsystemBase {
 
         climberMotor.configFactoryDefault();
         climberMotor.setNeutralMode(NeutralMode.Brake);
-        
-        setPiston(true);
 
-        if (!(isMotorFullyRetracted())) {
-
-            setMotor(-Constants.CLIMBER_EXTENSION_VELOCITY);
-            new WaitUntilCommand(() -> isMotorFullyRetracted());
-            setMotor(0);
-        }
-
+        // The climber must be winched before starting the robot.
         setHome();
     }
 

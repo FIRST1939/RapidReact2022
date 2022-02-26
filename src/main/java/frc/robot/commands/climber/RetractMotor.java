@@ -1,7 +1,6 @@
 package frc.robot.commands.climber;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.Constants;
 import frc.robot.subsystems.Climber;
 
@@ -20,8 +19,6 @@ public class RetractMotor extends CommandBase {
     public void execute () {
 
         this.climber.setMotor(-Constants.CLIMBER_EXTENSION_VELOCITY);
-        new WaitUntilCommand(() -> this.climber.isMotorFullyRetracted());
-        this.climber.setMotor(0);
     }
 
     @Override
