@@ -82,7 +82,6 @@ public class RobotContainer {
     JoystickButton toggleManualIntakeIndexer = new JoystickButton(driverTwo, XboxController.Button.kStart.value);
     toggleManualIntakeIndexer.toggleWhenActive(new ManualIndexer(this.indexer,
         () -> enforceDeadband(-driverTwo.getRightY(), Constants.MANUAL_INDEXER_DEADBAND)));
-    // TODO toggleManualIntakeIndexer.toggleWhenActive(command);
   }
 
   /**
