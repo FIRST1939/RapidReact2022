@@ -90,6 +90,7 @@ public class Indexer extends SubsystemBase {
    * @param speed the percent output (-1.0 to 1.0) to apply.
    */
   public void setManualSpeed(final double speed) {
+    // TODO once we have some experience, consider limiting this power.
     this.motor.set(ControlMode.PercentOutput, speed);
   }
 }
