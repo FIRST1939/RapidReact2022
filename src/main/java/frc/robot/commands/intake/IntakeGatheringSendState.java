@@ -6,6 +6,7 @@ package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
+import frc.robot.Constants;
 
 public class IntakeGatheringSendState extends CommandBase {
 
@@ -22,7 +23,7 @@ public class IntakeGatheringSendState extends CommandBase {
   }
   
   /** Creates a new IntakeGatheringSendState. */
-  public IntakeGatheringSendState(final Intake intake) {
+  private IntakeGatheringSendState(final Intake intake) {
     this.intake = intake;
     addRequirements(this.intake);
   }
@@ -30,7 +31,12 @@ public class IntakeGatheringSendState extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    this.intake.extendIntake();
     //TODO Maybe set speed to be able to move cargo to tower
+  }
+
+  public void execute() {
+    this.intake.setToSendVelocity(Constants.INTAKE_SEND_VELOCITY);
   }
 
   @Override
