@@ -22,7 +22,7 @@ public class IntakeStowedSendState extends CommandBase {
     return INSTANCE;
   }
   /** Creates a new IntakeStowedSend. */
-  public IntakeStowedSendState(final Intake intake) {
+  private IntakeStowedSendState(final Intake intake) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.intake = intake;
     addRequirements(this.intake);
