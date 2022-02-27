@@ -29,13 +29,10 @@ import frc.robot.commands.climber.ExtendMotor;
 import frc.robot.commands.climber.RetractMotor;
 import frc.robot.commands.climber.SetPiston;
 import frc.robot.subsystems.Climber;
-import frc.robot.subsystems.DriveTrain;
 import frc.robot.triggers.ClimbMotorTrigger;
 import frc.robot.triggers.ClimbPistonTrigger;
 import frc.robot.triggers.ClimbTrigger;
 import frc.robot.triggers.ClimbWinchTrigger;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
