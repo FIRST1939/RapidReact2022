@@ -83,8 +83,6 @@ public final class Constants {
     public static final int INDEXER_LEADER_CAN_ID = 9;
     public static final int INDEXER_FOLLOWER_CAN_ID = 10;
 
-    // Indexer constants
-    public static final int INDEXER_MOTOR_CAN_ID = 9;
     public static final int INDEXER_BEAM_BREAK_EMITTER_DIO = 0;
     public static final int INDEXER_BEAM_BREAK_RECEIVER_DIO = 1;
     public static final double INDEXER_SHOOTER_FEED_VELOCITY = 0.5;
