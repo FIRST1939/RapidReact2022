@@ -20,7 +20,5 @@ public class Climb extends SequentialCommandGroup {
             // Holds the double solenoid in the final position on the last bar.
             new SetPiston(this.climber, (Boolean) null)
         );
-
-        addRequirements(this.climber);
     }
 }
