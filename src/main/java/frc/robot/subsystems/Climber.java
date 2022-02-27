@@ -50,9 +50,10 @@ public class Climber extends SubsystemBase {
     public void setPiston (Boolean piston) {
 
         DoubleSolenoid.Value pistonValue;
-        if (piston.equals(true)) { pistonValue = DoubleSolenoid.Value.kForward; }
-        else if (piston.equals(false)) { pistonValue = DoubleSolenoid.Value.kReverse; }
-        else { pistonValue = DoubleSolenoid.Value.kOff; }
+        if (piston != null) {
+            if (piston.equals(true)) { pistonValue = DoubleSolenoid.Value.kForward; }
+            else { pistonValue = DoubleSolenoid.Value.kReverse; }
+        } else { pistonValue = DoubleSolenoid.Value.kOff; }
 
         climberPiston.set(pistonValue);
     }
