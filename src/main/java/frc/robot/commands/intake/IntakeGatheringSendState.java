@@ -21,7 +21,7 @@ public class IntakeGatheringSendState extends CommandBase {
     }
     return INSTANCE;
   }
-  
+
   /** Creates a new IntakeGatheringSendState. */
   private IntakeGatheringSendState(final Intake intake) {
     this.intake = intake;
@@ -32,7 +32,6 @@ public class IntakeGatheringSendState extends CommandBase {
   @Override
   public void initialize() {
     this.intake.extendIntake();
-    //TODO Maybe set speed to be able to move cargo to tower
   }
 
   public void execute() {
@@ -41,11 +40,12 @@ public class IntakeGatheringSendState extends CommandBase {
 
   @Override
   public void end(boolean interrupted) {
-    if (interrupted) {
-      //TODO Schedule stowed send
-    }
-    else {
-      IntakeGatheringEmptyState.getInstance(this.intake).schedule();
+    if (!this.intake.isManualMode()) {
+      if (interrupted) {
+        IntakeStowedSendState.getInstance(this.intake).schedule();
+      } else {
+        IntakeGatheringEmptyState.getInstance(this.intake).schedule();
+      }
     }
   }
 

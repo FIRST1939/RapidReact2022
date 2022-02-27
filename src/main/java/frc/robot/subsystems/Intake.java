@@ -22,8 +22,9 @@ public class Intake extends SubsystemBase {
         this.intakeSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Constants.INTAKE_PCM_CHANNEL);
         this.beamBreak = new DigitalInput(Constants.INTAKE_BEAM_BREAK_RECEIVER_DIO);
         this.intakeMotor = new TalonSRX(Constants.INTAKE_MOTOR_CAN_ID);
-
-        // TODO Intake motor configuration
+        this.intakeMotor.configFactoryDefault();
+        // TODO configure kP and kF for velocity control.
+        // Include configuration of attached encoder.
     }
 
     @Override
@@ -39,10 +40,13 @@ public class Intake extends SubsystemBase {
         intakeSolenoid.set(false);
     }
 
+    public boolean isRetracted() {
+        return this.intakeSolenoid.get();
+    }
+
     public void setIntakeSpeed(double value) {
         intakeMotor.set(ControlMode.PercentOutput, value);
         // TODO Scale rotation speed based on robot velocity
-        // TODO Double check if intake and belt are on same motor
     }
 
     public void stopIntakeMotor() {

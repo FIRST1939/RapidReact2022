@@ -51,11 +51,13 @@ public class IntakeGatheringEmptyState extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    if (!interrupted) {
-      RobotCargoCount.getInstance().increment();
-      // TODO schedule AtSensor state
-    } else {
-      IntakeStowedEmptyState.getInstance(this.intake).schedule();
+    if (!this.intake.isManualMode()) {
+      if (!interrupted) {
+        RobotCargoCount.getInstance().increment();
+        IntakeAtSensorState.getInstance(this.intake).schedule();
+      } else {
+        IntakeStowedEmptyState.getInstance(this.intake).schedule();
+      }
     }
   }
 }
