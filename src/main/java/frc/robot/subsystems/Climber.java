@@ -70,12 +70,12 @@ public class Climber extends SubsystemBase {
 
     public boolean isMotorFullyRetracted () {
 
-        return getMotorPosition() == 0;
+        return getMotorPosition() <= 0;
     }
 
     public boolean isMotorFullyExtended () {
 
-        return getMotorPosition() == Constants.CLIMBER_ENCODER_EXTEND_CLICKS;
+        return getMotorPosition() >= Constants.CLIMBER_ENCODER_EXTEND_CLICKS;
     }
 
     public boolean isPistonExtended () {
