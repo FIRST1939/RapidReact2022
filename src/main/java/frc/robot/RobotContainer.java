@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.DriveWithInput;
 
 import frc.robot.commands.indexer.IndexerShootingState;
@@ -29,8 +30,6 @@ import frc.robot.commands.climber.ExtendMotor;
 import frc.robot.commands.climber.RetractMotor;
 import frc.robot.commands.climber.SetPiston;
 import frc.robot.subsystems.Climber;
-import frc.robot.triggers.ClimbMotorTrigger;
-import frc.robot.triggers.ClimbPistonTrigger;
 import frc.robot.triggers.ClimbTrigger;
 
 /**
@@ -106,19 +105,19 @@ public class RobotContainer {
     intakeStopGatherButton.whenPressed(new IntakeRetractCommandSelector(this.intake));
 
     BooleanSupplier climberMotorRetract = () -> (driverTwo.getRawAxis(XboxController.Axis.kRightY.value) < -Constants.AXIS_THRESHOLD);
-    ClimbMotorTrigger climbMotorRetractTrigger = new ClimbMotorTrigger(this.climber, climberMotorRetract);
+    Trigger climbMotorRetractTrigger = new Trigger(climberMotorRetract);
     climbMotorRetractTrigger.whileActiveContinuous(new RetractMotor(this.climber));
 
     BooleanSupplier climberMotorExtend = () -> (driverTwo.getRawAxis(XboxController.Axis.kRightY.value) > Constants.AXIS_THRESHOLD);
-    ClimbMotorTrigger climbMotorExtendTrigger = new ClimbMotorTrigger(this.climber, climberMotorExtend);
+    Trigger climbMotorExtendTrigger = new Trigger(climberMotorExtend);
     climbMotorExtendTrigger.whileActiveContinuous(new ExtendMotor(this.climber));
 
     BooleanSupplier climberPistonExtend = () -> (driverTwo.getRawAxis(XboxController.Axis.kRightX.value) < -Constants.AXIS_THRESHOLD);
-    ClimbPistonTrigger climbPistonExtendTrigger = new ClimbPistonTrigger(this.climber, climberPistonExtend);
+    Trigger climbPistonExtendTrigger = new Trigger(climberPistonExtend);
     climbPistonExtendTrigger.whileActiveContinuous(new SetPiston(this.climber, (Boolean) true));
 
     BooleanSupplier climberPistonRetract = () -> (driverTwo.getRawAxis(XboxController.Axis.kRightX.value) > Constants.AXIS_THRESHOLD);
-    ClimbPistonTrigger climbPistonRetractTrigger = new ClimbPistonTrigger(this.climber, climberPistonRetract);
+    Trigger climbPistonRetractTrigger = new Trigger(climberPistonRetract);
     climbPistonRetractTrigger.whileActiveContinuous(new SetPiston(this.climber, (Boolean) false));
 
     JoystickButton climbButton = new JoystickButton(driverTwo, XboxController.Button.kRightStick.value);
