@@ -32,7 +32,6 @@ import frc.robot.subsystems.Climber;
 import frc.robot.triggers.ClimbMotorTrigger;
 import frc.robot.triggers.ClimbPistonTrigger;
 import frc.robot.triggers.ClimbTrigger;
-import frc.robot.triggers.ClimbWinchTrigger;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -105,11 +104,6 @@ public class RobotContainer {
     intakeGatherButton.whileHeld(new IntakeExtendCommandSelector(this.intake));
     JoystickButton intakeStopGatherButton = new JoystickButton(driverTwo, XboxController.Button.kLeftBumper.value);
     intakeStopGatherButton.whenPressed(new IntakeRetractCommandSelector(this.intake));
-
-    JoystickButton climberWinchButtonOne = new JoystickButton(driverTwo, XboxController.Button.kLeftStick.value);
-    JoystickButton climberWinchButtonTwo = new JoystickButton(driverTwo, XboxController.Button.kRightStick.value);
-    ClimbWinchTrigger climbWinchTrigger = new ClimbWinchTrigger(this.climber, climberWinchButtonOne, climberWinchButtonTwo);
-    climbWinchTrigger.whileActiveContinuous(new RetractMotor(this.climber));
 
     BooleanSupplier climberMotorRetract = () -> (driverTwo.getRawAxis(XboxController.Axis.kRightY.value) < -Constants.AXIS_THRESHOLD);
     ClimbMotorTrigger climbMotorRetractTrigger = new ClimbMotorTrigger(this.climber, climberMotorRetract);
