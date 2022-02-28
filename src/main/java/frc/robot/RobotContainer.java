@@ -35,6 +35,7 @@ import frc.robot.commands.climber.RetractMotor;
 import frc.robot.commands.climber.SetPiston;
 import frc.robot.subsystems.Climber;
 import frc.robot.triggers.ClimbTrigger;
+import frc.robot.triggers.ManualShootTrigger;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -94,7 +95,6 @@ public class RobotContainer {
     JoystickButton fenderHighButton = new JoystickButton(driverTwo, XboxController.Button.kB.value);
     fenderHighButton.whenPressed(new SetShot(Shooter.getInstance(), Constants.SHOTS.fenderHigh));
 
-    // TODO make shooting trigger work in manual mode
     BooleanSupplier shootTriggerSupplier = () -> (driverTwo
         .getRawAxis(XboxController.Axis.kRightTrigger.value) > Constants.TRIGGER_THRESHOLD);
     ShootTrigger shootTrigger = new ShootTrigger(this.indexer, this.shooter, shootTriggerSupplier);
@@ -107,7 +107,8 @@ public class RobotContainer {
             new ManualIntakeRollerBelts(this.intake,
                 () -> enforceDeadband(-driverTwo.getLeftX(), Constants.MANUAL_INTAKE_DEADBAND)),
             new ManualIndexer(this.indexer,
-                () -> enforceDeadband(-driverTwo.getRightY(), Constants.MANUAL_INDEXER_DEADBAND))));
+                () -> enforceDeadband(-driverTwo.getRightY(), Constants.MANUAL_INDEXER_DEADBAND),
+                new ManualShootTrigger(indexer, shooter, shootTriggerSupplier))));
 
     JoystickButton intakeGatherButton = new JoystickButton(driverTwo, XboxController.Button.kRightBumper.value);
     intakeGatherButton.whileHeld(new IntakeExtendCommandSelector(this.intake));
