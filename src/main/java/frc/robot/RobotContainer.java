@@ -104,6 +104,7 @@ public class RobotContainer {
     JoystickButton intakeStopGatherButton = new JoystickButton(driverTwo, XboxController.Button.kLeftBumper.value);
     intakeStopGatherButton.whenPressed(new IntakeRetractCommandSelector(this.intake));
 
+    // TODO Climber bidings
     BooleanSupplier climberMotorRetract = () -> (driverTwo.getRawAxis(XboxController.Axis.kRightY.value) < -Constants.AXIS_THRESHOLD);
     Trigger climbMotorRetractTrigger = new Trigger(climberMotorRetract);
     climbMotorRetractTrigger.whileActiveContinuous(new RetractMotor(this.climber));
