@@ -8,20 +8,18 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.Constants;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-
-//TODO Import correct motor(s) and adjust as needed, waiting on mechanical
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 public class Intake extends SubsystemBase {
     private final Solenoid intakeSolenoid;
     private final DigitalInput beamBreak;
-    private final TalonSRX intakeMotor;
+    private final WPI_TalonSRX intakeMotor;
     private boolean manualMode = false;
 
     public Intake() {
         this.intakeSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Constants.INTAKE_PCM_CHANNEL);
         this.beamBreak = new DigitalInput(Constants.INTAKE_BEAM_BREAK_RECEIVER_DIO);
-        this.intakeMotor = new TalonSRX(Constants.INTAKE_MOTOR_CAN_ID);
+        this.intakeMotor = new WPI_TalonSRX(Constants.INTAKE_MOTOR_CAN_ID);
         this.intakeMotor.configFactoryDefault();
         // TODO configure kP and kF for velocity control.
         // Include configuration of attached encoder.
