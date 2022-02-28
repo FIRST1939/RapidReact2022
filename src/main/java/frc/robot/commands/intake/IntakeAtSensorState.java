@@ -35,27 +35,27 @@ public class IntakeAtSensorState extends CommandBase {
     startTime = System.currentTimeMillis();
   }
 
-  public void execute(){
+  public void execute() {
     this.intake.setIntakeSpeed(Constants.INTAKE_SENDING_VELOCITY);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return System.currentTimeMillis()-startTime >= Constants.INTAKE_AT_SENSOR_TIME_ADJUSTMENT_MS;
+    return System.currentTimeMillis() - startTime >= Constants.INTAKE_AT_SENSOR_TIME_ADJUSTMENT_MS;
   }
 
-// Called once the command ends or is interrupted.
+  // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    if (interrupted){
-      //TODO schedule StowedSend state
-    }
-    else if (RobotCargoCount.getInstance().get() == 1){
-      //TODO schedule GatheringSend state
-    }
-    else if (RobotCargoCount.getInstance().get() == 2){
-      //TODO schedule StowedHold state
+    if (!this.intake.isManualMode()) {
+      if (RobotCargoCount.getInstance().isFull()) {
+        IntakeStowedHoldState.getInstance(this.intake).schedule();
+      } else if (interrupted) {
+        IntakeStowedSendState.getInstance(this.intake).schedule();
+      } else {
+        IntakeGatheringSendState.getInstance(this.intake);
+      }
     }
   }
 }

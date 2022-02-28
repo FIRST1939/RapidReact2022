@@ -13,8 +13,9 @@ import frc.robot.subsystems.Intake;
  * gathering) is pressed. It will handle three cases.
  * <ol>
  * <li>If in manual mode, just retract.
- * <li>If automated and command running, cancel it.
- * <li>If automated and no command running, schedule based on sensor coverage.
+ * <li>If automated and retracted, ignore.
+ * <li>If automated and not retracted, cancel active intake state and let it
+ * pick next state.
  * </ol>
  */
 public class IntakeRetractCommandSelector extends CommandBase {
@@ -33,14 +34,10 @@ public class IntakeRetractCommandSelector extends CommandBase {
     if (this.intake.isManualMode()) {
       this.manualRetract.schedule();
     } else {
-      final Command currentState = this.intake.getCurrentCommand();
-      if (currentState != null) {
-        currentState.cancel();
-      } else {
-        if (!this.intake.isCargoAtSensor()) {
-          IntakeGatheringEmptyState.getInstance(this.intake).schedule();
-        } else {
-          // TODO schedule stowed hold command state
+      if (!this.intake.isRetracted()) {
+        final Command currentState = this.intake.getCurrentCommand();
+        if (currentState != null) {
+          currentState.cancel();
         }
       }
     }

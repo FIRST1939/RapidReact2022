@@ -14,10 +14,14 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.DriveWithInput;
 
+import frc.robot.commands.ToggleIntakeIndexerManualMode;
+
 import frc.robot.commands.indexer.IndexerShootingState;
 import frc.robot.commands.indexer.ManualIndexer;
 import frc.robot.commands.intake.IntakeExtendCommandSelector;
+import frc.robot.commands.intake.IntakeGatheringSendState;
 import frc.robot.commands.intake.IntakeRetractCommandSelector;
+import frc.robot.commands.intake.IntakeStowedSendState;
 import frc.robot.commands.intake.ManualIntakeRollerBelts;
 import frc.robot.commands.shooter.SetShot;
 import frc.robot.subsystems.DriveTrain;
@@ -48,9 +52,11 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DriveTrain driveTrain = new DriveTrain();
   private final Shooter shooter = Shooter.getInstance();
-  private final Indexer indexer = new Indexer(() -> true); // TODO indexer boolean supplier
   private final Intake intake = new Intake();
+  
+  private final Indexer indexer = new Indexer(() -> isIntakeSendingCargo(), () -> isIntakeInManualMode());
   private final Climber climber = Climber.getInstance();
+
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -88,16 +94,20 @@ public class RobotContainer {
     JoystickButton fenderHighButton = new JoystickButton(driverTwo, XboxController.Button.kB.value);
     fenderHighButton.whenPressed(new SetShot(Shooter.getInstance(), Constants.SHOTS.fenderHigh));
 
+    // TODO make shooting trigger work in manual mode
     BooleanSupplier shootTriggerSupplier = () -> (driverTwo
         .getRawAxis(XboxController.Axis.kRightTrigger.value) > Constants.TRIGGER_THRESHOLD);
     ShootTrigger shootTrigger = new ShootTrigger(this.indexer, this.shooter, shootTriggerSupplier);
     shootTrigger.whileActiveContinuous(IndexerShootingState.getInstance(this.indexer));
 
     JoystickButton toggleManualIntakeIndexer = new JoystickButton(driverTwo, XboxController.Button.kStart.value);
-    toggleManualIntakeIndexer.toggleWhenActive(new ManualIndexer(this.indexer,
-        () -> enforceDeadband(-driverTwo.getRightY(), Constants.MANUAL_INDEXER_DEADBAND)));
-    toggleManualIntakeIndexer.toggleWhenActive(new ManualIntakeRollerBelts(this.intake,
-        () -> enforceDeadband(-driverTwo.getLeftX(), Constants.MANUAL_INTAKE_DEADBAND)));
+    toggleManualIntakeIndexer.whenPressed(
+        new ToggleIntakeIndexerManualMode(
+            this.intake,
+            new ManualIntakeRollerBelts(this.intake,
+                () -> enforceDeadband(-driverTwo.getLeftX(), Constants.MANUAL_INTAKE_DEADBAND)),
+            new ManualIndexer(this.indexer,
+                () -> enforceDeadband(-driverTwo.getRightY(), Constants.MANUAL_INDEXER_DEADBAND))));
 
     JoystickButton intakeGatherButton = new JoystickButton(driverTwo, XboxController.Button.kRightBumper.value);
     intakeGatherButton.whileHeld(new IntakeExtendCommandSelector(this.intake));
@@ -143,5 +153,15 @@ public class RobotContainer {
    */
   private double enforceDeadband(double rawSpeed, double deadband) {
     return Math.abs(rawSpeed) < deadband ? 0.0 : rawSpeed;
+  }
+
+  private boolean isIntakeSendingCargo() {
+    final Command currentIntakeCommand = this.intake.getCurrentCommand();
+    return (currentIntakeCommand instanceof IntakeGatheringSendState)
+        || (currentIntakeCommand instanceof IntakeStowedSendState);
+  }
+
+  private boolean isIntakeInManualMode() {
+    return this.intake.isManualMode();
   }
 }

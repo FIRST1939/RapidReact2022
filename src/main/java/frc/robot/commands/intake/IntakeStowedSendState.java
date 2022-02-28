@@ -21,6 +21,7 @@ public class IntakeStowedSendState extends CommandBase {
     }
     return INSTANCE;
   }
+
   /** Creates a new IntakeStowedSend. */
   private IntakeStowedSendState(final Intake intake) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -44,7 +45,9 @@ public class IntakeStowedSendState extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     this.intake.stopIntakeMotor();
-    IntakeStowedEmptyState.getInstance(this.intake).schedule();
+    if (!this.intake.isManualMode()) {
+      IntakeStowedEmptyState.getInstance(this.intake).schedule();
+    }
   }
 
   // Returns true when the command should end.

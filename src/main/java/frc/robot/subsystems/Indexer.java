@@ -24,6 +24,7 @@ public class Indexer extends SubsystemBase {
   private final WPI_TalonSRX follower;
   private final DigitalInput beamBreak;
   private final BooleanSupplier priorStageSendingSupplier;
+  private final BooleanSupplier manualModeSupplier;
 
   /**
    * Creates the indexer subsystem. The supplier must indicate if the prior cargo
@@ -32,8 +33,10 @@ public class Indexer extends SubsystemBase {
    * 
    * @param priorStageSendingSupplier the supplier indicating if the prior cargo
    *                                  handling stage is sending a cargo our way.
+   * @param manualModeSupplier        the supplier indicating if the indexer
+   *                                  should consider itself in manual mode.
    */
-  public Indexer(final BooleanSupplier priorStageSendingSupplier) {
+  public Indexer(final BooleanSupplier priorStageSendingSupplier, final BooleanSupplier manualModeSupplier) {
     this.leader = new WPI_TalonSRX(Constants.INDEXER_LEADER_CAN_ID);
     this.leader.configFactoryDefault();
     // TODO configure kP and kF for velocity control.
@@ -46,6 +49,7 @@ public class Indexer extends SubsystemBase {
 
     this.beamBreak = new DigitalInput(Constants.INDEXER_BEAM_BREAK_RECEIVER_DIO);
     this.priorStageSendingSupplier = priorStageSendingSupplier;
+    this.manualModeSupplier = manualModeSupplier;
   }
 
   @Override
@@ -99,5 +103,12 @@ public class Indexer extends SubsystemBase {
   public void setManualSpeed(final double speed) {
     // TODO once we have some experience, consider limiting this power.
     this.leader.set(ControlMode.PercentOutput, speed);
+  }
+
+  /**
+   * @return true if manual mode commands (vs state machine) are running.
+   */
+  public boolean isManualMode() {
+    return this.manualModeSupplier.getAsBoolean();
   }
 }
