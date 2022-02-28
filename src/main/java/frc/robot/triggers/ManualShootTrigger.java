@@ -7,9 +7,9 @@ import frc.robot.subsystems.Shooter;
 
 /**
  * An instance of this class is used to make sure we shoot only when the shooter
- * has spun up to speed and a cargo is available for shooting.
+ * has spun up to speed.
  */
-public class ShootTrigger extends AbstractShootTrigger {
+public class ManualShootTrigger extends AbstractShootTrigger {
   private final Indexer indexer;
 
   /**
@@ -18,7 +18,7 @@ public class ShootTrigger extends AbstractShootTrigger {
    * @param triggerSupplier a boolean supplier that returns true when the driver
    *                        is ready to shoot.
    */
-  public ShootTrigger(Indexer indexer, Shooter shooter, BooleanSupplier triggerSupplier) {
+  public ManualShootTrigger(Indexer indexer, Shooter shooter, BooleanSupplier triggerSupplier) {
     super(shooter, triggerSupplier);
     this.indexer = indexer;
   }
@@ -29,6 +29,6 @@ public class ShootTrigger extends AbstractShootTrigger {
    */
   @Override
   public boolean get() {
-    return !indexer.isManualMode() && indexer.isCargoAtSensor() && super.get();
+    return indexer.isManualMode() && super.get();
   }
 }

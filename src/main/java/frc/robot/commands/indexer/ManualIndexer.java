@@ -7,24 +7,41 @@ package frc.robot.commands.indexer;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.RobotCargoCount;
+import frc.robot.triggers.ManualShootTrigger;
 
 public class ManualIndexer extends CommandBase {
   private final Indexer indexer;
   private final DoubleSupplier speedSupplier;
+  private final ManualShootTrigger shootTrigger;
 
-  /** Creates a new ManualIndexer. */
-  public ManualIndexer(final Indexer indexer, final DoubleSupplier speedSupplier) {
+  /**
+   * If the manual shoot trigger returns true, the speed supplier is ignored. A
+   * fixed shooter speed is used instead.
+   * 
+   * @param indexer       the {@link Indexer} subsystem being controlled.
+   * @param speedSupplier a provider of driver input for indexer speed.
+   * @param shootTrigger  a manual shoot trigger.
+   */
+  public ManualIndexer(
+      final Indexer indexer,
+      final DoubleSupplier speedSupplier,
+      final ManualShootTrigger shootTrigger) {
     this.indexer = indexer;
     this.speedSupplier = speedSupplier;
+    this.shootTrigger = shootTrigger;
     addRequirements(this.indexer);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    this.indexer.setManualSpeed(this.speedSupplier.getAsDouble());
+    this.indexer.setManualSpeed(
+        this.shootTrigger.get()
+            ? Constants.MANUAL_INDEXER_FEED_OUTPUT
+            : this.speedSupplier.getAsDouble());
   }
 
   // Called once the command ends or is interrupted.
