@@ -11,8 +11,11 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.DriveWithInput;
+
 import frc.robot.commands.ToggleIntakeIndexerManualMode;
+
 import frc.robot.commands.indexer.IndexerShootingState;
 import frc.robot.commands.indexer.ManualIndexer;
 import frc.robot.commands.intake.IntakeExtendCommandSelector;
@@ -26,6 +29,12 @@ import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.triggers.ShootTrigger;
+import frc.robot.commands.climber.Climb;
+import frc.robot.commands.climber.ExtendMotor;
+import frc.robot.commands.climber.RetractMotor;
+import frc.robot.commands.climber.SetPiston;
+import frc.robot.subsystems.Climber;
+import frc.robot.triggers.ClimbTrigger;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -44,7 +53,10 @@ public class RobotContainer {
   private final DriveTrain driveTrain = new DriveTrain();
   private final Shooter shooter = Shooter.getInstance();
   private final Intake intake = new Intake();
+  
   private final Indexer indexer = new Indexer(() -> isIntakeSendingCargo(), () -> isIntakeInManualMode());
+  private final Climber climber = Climber.getInstance();
+
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -101,6 +113,27 @@ public class RobotContainer {
     intakeGatherButton.whileHeld(new IntakeExtendCommandSelector(this.intake));
     JoystickButton intakeStopGatherButton = new JoystickButton(driverTwo, XboxController.Button.kLeftBumper.value);
     intakeStopGatherButton.whenPressed(new IntakeRetractCommandSelector(this.intake));
+
+    // TODO Climber bidings
+    BooleanSupplier climberMotorRetract = () -> (driverTwo.getRawAxis(XboxController.Axis.kRightY.value) < -Constants.AXIS_THRESHOLD);
+    Trigger climbMotorRetractTrigger = new Trigger(climberMotorRetract);
+    climbMotorRetractTrigger.whileActiveContinuous(new RetractMotor(this.climber));
+
+    BooleanSupplier climberMotorExtend = () -> (driverTwo.getRawAxis(XboxController.Axis.kRightY.value) > Constants.AXIS_THRESHOLD);
+    Trigger climbMotorExtendTrigger = new Trigger(climberMotorExtend);
+    climbMotorExtendTrigger.whileActiveContinuous(new ExtendMotor(this.climber));
+
+    BooleanSupplier climberPistonExtend = () -> (driverTwo.getRawAxis(XboxController.Axis.kRightX.value) < -Constants.AXIS_THRESHOLD);
+    Trigger climbPistonExtendTrigger = new Trigger(climberPistonExtend);
+    climbPistonExtendTrigger.whileActiveContinuous(new SetPiston(this.climber, (Boolean) true));
+
+    BooleanSupplier climberPistonRetract = () -> (driverTwo.getRawAxis(XboxController.Axis.kRightX.value) > Constants.AXIS_THRESHOLD);
+    Trigger climbPistonRetractTrigger = new Trigger(climberPistonRetract);
+    climbPistonRetractTrigger.whileActiveContinuous(new SetPiston(this.climber, (Boolean) false));
+
+    JoystickButton climbButton = new JoystickButton(driverTwo, XboxController.Button.kRightStick.value);
+    ClimbTrigger climbTrigger = new ClimbTrigger(this.climber, climbButton);
+    climbTrigger.whenActive(new Climb(this.climber));
   }
 
   /**
