@@ -25,6 +25,7 @@ public final class Constants {
     public static final int MANUAL_CONTROLLER_PORT = 3;
 
     public static final double TRIGGER_THRESHOLD = .3;
+    public static final double AXIS_THRESHOLD = .1;
 
     // Drive train constants.
     public static final int LEFT_DRIVE_1_CAN_ID = 1;
@@ -36,6 +37,7 @@ public final class Constants {
 
     public static final int SIDEWINDER_PCM_CHANNEL = 0;
     public static final int SIDEWINDER_MOTOR_CAN_ID = 7;
+
     /** Sidewinder engages at this left stick x deflection */
     public static final double SIDEWINDER_ENABLE_THRESHOLD = 0.3;
     /** Sidewinder disengages at this left stick x deflection */
@@ -80,10 +82,18 @@ public final class Constants {
     // Indexer constants
     public static final int INDEXER_LEADER_CAN_ID = 9;
     public static final int INDEXER_FOLLOWER_CAN_ID = 10;
+
     public static final int INDEXER_BEAM_BREAK_EMITTER_DIO = 0;
     public static final int INDEXER_BEAM_BREAK_RECEIVER_DIO = 1;
     public static final double INDEXER_SHOOTER_FEED_VELOCITY = 0.5;
     public static final double INDEXER_RECEIVE_VELOCITY = 0.5;
     public static final double MANUAL_INDEXER_DEADBAND = 0.1;
     public static final long INDEXER_AT_SENSOR_TIME_ADJUSTMENT_MS = 0;
+
+    // Climber constants.
+    public static final int CLIMBER_MOTOR_CAN_ID = 8;
+    public static final int CLIMBER_PISTON_FORWARD = 0;
+    public static final int CLIMBER_PISTON_REVERSE = 1;
+    public static final int CLIMBER_EXTENSION_VELOCITY = 0; // TODO extension velocity
+    public static final int CLIMBER_ENCODER_EXTEND_CLICKS = 100; // TODO encoder extend clicks
 }
