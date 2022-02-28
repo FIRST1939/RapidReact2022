@@ -6,8 +6,11 @@ package frc.robot.subsystems;
 
 import java.util.function.BooleanSupplier;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMax.ControlType;
+import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -20,8 +23,9 @@ import frc.robot.Constants;
  * directly into the Talon SRX motor controller for velocity control.
  */
 public class Indexer extends SubsystemBase {
-  private final WPI_TalonSRX leader;
-  private final WPI_TalonSRX follower;
+  private final CANSparkMax leader;
+  private final SparkMaxPIDController pidController;
+  private final CANSparkMax follower;
   private final DigitalInput beamBreak;
   private final BooleanSupplier priorStageSendingSupplier;
   private final BooleanSupplier manualModeSupplier;
@@ -37,15 +41,18 @@ public class Indexer extends SubsystemBase {
    *                                  should consider itself in manual mode.
    */
   public Indexer(final BooleanSupplier priorStageSendingSupplier, final BooleanSupplier manualModeSupplier) {
-    this.leader = new WPI_TalonSRX(Constants.INDEXER_LEADER_CAN_ID);
-    this.leader.configFactoryDefault();
+    this.leader = new CANSparkMax(Constants.INDEXER_LEADER_CAN_ID, MotorType.kBrushless);
+    this.leader.restoreFactoryDefaults();
+    this.leader.setIdleMode(IdleMode.kBrake);
+    this.pidController = this.leader.getPIDController();
     // TODO configure kP and kF for velocity control.
-    // Include configuration of attached encoder.
+    this.pidController.setFF(0.1);
+    this.pidController.setP(0.1);
 
-    this.follower = new WPI_TalonSRX(Constants.INDEXER_FOLLOWER_CAN_ID);
-    this.follower.configFactoryDefault();
-    this.follower.setInverted(true); // TODO verify
-    this.follower.follow(this.leader);
+    this.follower = new CANSparkMax(Constants.INDEXER_FOLLOWER_CAN_ID, MotorType.kBrushless);
+    this.follower.restoreFactoryDefaults();
+    this.follower.setIdleMode(IdleMode.kBrake);
+    this.follower.follow(this.leader, true);
 
     this.beamBreak = new DigitalInput(Constants.INDEXER_BEAM_BREAK_RECEIVER_DIO);
     this.priorStageSendingSupplier = priorStageSendingSupplier;
@@ -62,7 +69,7 @@ public class Indexer extends SubsystemBase {
    * cargo to the shooter.
    */
   public void setToShooterFeedVelocity() {
-    this.leader.set(ControlMode.Velocity, Constants.INDEXER_SHOOTER_FEED_VELOCITY);
+    this.pidController.setReference(Constants.INDEXER_SHOOTER_FEED_VELOCITY, ControlType.kVelocity);
   }
 
   /**
@@ -70,14 +77,14 @@ public class Indexer extends SubsystemBase {
    * cargo from the intake.
    */
   public void setToReceiveVelocity() {
-    this.leader.set(ControlMode.Velocity, Constants.INDEXER_RECEIVE_VELOCITY);
+    this.pidController.setReference(Constants.INDEXER_RECEIVE_VELOCITY, ControlType.kVelocity);
   }
 
   /**
    * Stops the indexer motor and the movement of cargo in the indexer.
    */
   public void stop() {
-    this.leader.set(ControlMode.Velocity, 0.0);
+    this.pidController.setReference(0.0, ControlType.kVelocity);
   }
 
   /**
@@ -102,7 +109,7 @@ public class Indexer extends SubsystemBase {
    */
   public void setManualSpeed(final double speed) {
     // TODO once we have some experience, consider limiting this power.
-    this.leader.set(ControlMode.PercentOutput, speed);
+    this.leader.set(speed);
   }
 
   /**
