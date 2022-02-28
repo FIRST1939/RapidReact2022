@@ -4,7 +4,6 @@
 
 package frc.robot.commands.indexer;
 
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Indexer;
@@ -54,12 +53,14 @@ public class IndexerAtSensorState extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return System.currentTimeMillis()-startTime >= Constants.INDEXER_AT_SENSOR_TIME_ADJUSTMENT_MS;
+    return System.currentTimeMillis() - startTime >= Constants.INDEXER_AT_SENSOR_TIME_ADJUSTMENT_MS;
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    IndexerReadyToShootState.getInstance(this.indexer).schedule();
+    if (!this.indexer.isManualMode()) {
+      IndexerReadyToShootState.getInstance(this.indexer).schedule();
+    }
   }
 }

@@ -49,7 +49,7 @@ public class IndexerReceivingState extends CommandBase {
     addRequirements(indexer);
   }
 
- /**
+  /**
    * {@inheritDoc}
    * 
    * <p>
@@ -73,8 +73,7 @@ public class IndexerReceivingState extends CommandBase {
     return this.indexer.isCargoAtSensor();
   }
 
-
- /**
+  /**
    * {@inheritDoc}
    * 
    * <p>
@@ -85,6 +84,8 @@ public class IndexerReceivingState extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     this.indexer.stop();
-    IndexerAtSensorState.getInstance(this.indexer).schedule();
+    if (!this.indexer.isManualMode()) {
+      IndexerAtSensorState.getInstance(this.indexer).schedule();
+    }
   }
 }
