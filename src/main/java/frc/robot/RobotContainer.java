@@ -126,10 +126,10 @@ public class RobotContainer {
     climberMotorExtend.whileHeld(new ExtendMotor(this.climber));
 
     JoystickButton climberPistonRetract = new JoystickButton(rightStick, 4);
-    climberPistonRetract.whileHeld(new SetPiston(this.climber, (Boolean) true));
+    climberPistonRetract.whenPressed(new SetPiston(this.climber, (Boolean) true));
 
     JoystickButton climberPistonExtend = new JoystickButton(rightStick, 5);
-    climberPistonExtend.whileHeld(new SetPiston(this.climber, (Boolean) true));
+    climberPistonExtend.whenPressed(new SetPiston(this.climber, (Boolean) true));
   }
 
   /**
