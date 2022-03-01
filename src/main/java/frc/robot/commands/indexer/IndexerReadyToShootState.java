@@ -73,6 +73,8 @@ public class IndexerReadyToShootState extends CommandBase {
    */
   @Override
   public void end(boolean interrupted) {
-    IndexerShootingState.getInstance(this.indexer).schedule();
+    if (!this.indexer.isManualMode()) {
+      IndexerShootingState.getInstance(this.indexer).schedule();
+    }
   }
 }

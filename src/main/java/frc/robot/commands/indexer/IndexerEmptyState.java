@@ -53,6 +53,8 @@ public class IndexerEmptyState extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    IndexerReceivingState.getInstance(this.indexer).schedule();
+    if (!this.indexer.isManualMode()) {
+      IndexerReceivingState.getInstance(this.indexer).schedule();
+    }
   }
 }
