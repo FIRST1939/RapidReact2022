@@ -115,26 +115,21 @@ public class RobotContainer {
     JoystickButton intakeStopGatherButton = new JoystickButton(driverTwo, XboxController.Button.kLeftBumper.value);
     intakeStopGatherButton.whenPressed(new IntakeRetractCommandSelector(this.intake));
 
-    // TODO Climber bidings
-    BooleanSupplier climberMotorRetract = () -> (driverTwo.getRawAxis(XboxController.Axis.kRightY.value) < -Constants.AXIS_THRESHOLD);
-    Trigger climbMotorRetractTrigger = new Trigger(climberMotorRetract);
-    climbMotorRetractTrigger.whileActiveContinuous(new RetractMotor(this.climber));
-
-    BooleanSupplier climberMotorExtend = () -> (driverTwo.getRawAxis(XboxController.Axis.kRightY.value) > Constants.AXIS_THRESHOLD);
-    Trigger climbMotorExtendTrigger = new Trigger(climberMotorExtend);
-    climbMotorExtendTrigger.whileActiveContinuous(new ExtendMotor(this.climber));
-
-    BooleanSupplier climberPistonExtend = () -> (driverTwo.getRawAxis(XboxController.Axis.kRightX.value) < -Constants.AXIS_THRESHOLD);
-    Trigger climbPistonExtendTrigger = new Trigger(climberPistonExtend);
-    climbPistonExtendTrigger.whileActiveContinuous(new SetPiston(this.climber, (Boolean) true));
-
-    BooleanSupplier climberPistonRetract = () -> (driverTwo.getRawAxis(XboxController.Axis.kRightX.value) > Constants.AXIS_THRESHOLD);
-    Trigger climbPistonRetractTrigger = new Trigger(climberPistonRetract);
-    climbPistonRetractTrigger.whileActiveContinuous(new SetPiston(this.climber, (Boolean) false));
-
-    JoystickButton climbButton = new JoystickButton(driverTwo, XboxController.Button.kRightStick.value);
+    JoystickButton climbButton = new JoystickButton(leftStick, 3);
     ClimbTrigger climbTrigger = new ClimbTrigger(this.climber, climbButton);
     climbTrigger.whenActive(new Climb(this.climber));
+
+    JoystickButton climberMotorRetract = new JoystickButton(rightStick, 2);
+    climberMotorRetract.whileHeld(new RetractMotor(this.climber));
+
+    JoystickButton climberMotorExtend = new JoystickButton(rightStick, 3);
+    climberMotorExtend.whileHeld(new ExtendMotor(this.climber));
+
+    JoystickButton climberPistonRetract = new JoystickButton(rightStick, 4);
+    climberPistonRetract.whileHeld(new SetPiston(this.climber, (Boolean) true));
+
+    JoystickButton climberPistonExtend = new JoystickButton(rightStick, 5);
+    climberPistonExtend.whileHeld(new SetPiston(this.climber, (Boolean) true));
   }
 
   /**
