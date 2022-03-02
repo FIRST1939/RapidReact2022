@@ -14,12 +14,13 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.DriveWithInput;
 
 import frc.robot.commands.ToggleIntakeIndexerManualMode;
-
+import frc.robot.commands.indexer.IndexerReadyToShootState;
 import frc.robot.commands.indexer.IndexerShootingState;
 import frc.robot.commands.indexer.ManualIndexer;
 import frc.robot.commands.intake.IntakeExtendCommandSelector;
 import frc.robot.commands.intake.IntakeGatheringSendState;
 import frc.robot.commands.intake.IntakeRetractCommandSelector;
+import frc.robot.commands.intake.IntakeStowedEmptyState;
 import frc.robot.commands.intake.IntakeStowedSendState;
 import frc.robot.commands.intake.ManualIntakeRollerBelts;
 import frc.robot.commands.shooter.SetShot;
@@ -53,10 +54,9 @@ public class RobotContainer {
   private final DriveTrain driveTrain = new DriveTrain();
   private final Shooter shooter = Shooter.getInstance();
   private final Intake intake = new Intake();
-  
+
   private final Indexer indexer = new Indexer(() -> isIntakeSendingCargo(), () -> isIntakeInManualMode());
   private final Climber climber = Climber.getInstance();
-
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -66,6 +66,8 @@ public class RobotContainer {
     configureDefaultCommands();
     // Configure the button bindings
     configureButtonBindings();
+    // Schedule the initial states of the state machines
+    scheduleInitialStates();
   }
 
   /**
@@ -129,6 +131,14 @@ public class RobotContainer {
 
     JoystickButton climberPistonExtend = new JoystickButton(rightStick, 5);
     climberPistonExtend.whenPressed(new SetPiston(this.climber, (Boolean) true));
+  }
+
+  /**
+   * Schedules the initial state commands for the subsystem state machines.
+   */
+  private void scheduleInitialStates() {
+    IntakeStowedEmptyState.getInstance(this.intake).schedule();
+    IndexerReadyToShootState.getInstance(this.indexer).schedule();
   }
 
   /**
