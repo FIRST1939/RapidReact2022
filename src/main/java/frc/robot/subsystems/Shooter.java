@@ -38,8 +38,8 @@ public class Shooter extends SubsystemBase {
 
     public void cargoShot () {
 
-        setHood(shot.hood);
-        setVelocity(shot.velocity);
+        setHood(getShot().hood);
+        setVelocity(getShot().velocity);
     }
 
     /**
@@ -58,26 +58,22 @@ public class Shooter extends SubsystemBase {
 
     public void idle () { 
 
-        Constants.SHOTS shot = getShot();
-        cargoShot(Constants.SHOTS.idle);
-
-        this.shot = shot;
+        setVelocity(Constants.SHOTS.idle.velocity);
     }
 
-    public void setHood (final boolean hood) { 
+    private void setHood (final boolean hood) { 
 
         shooterSolenoid.set(hood); 
     }
+    
+    private void setVelocity (int velocity) {
 
+        shooterFlywheel.set(ControlMode.Velocity, velocity);
+    }
     
     public boolean isShooterReady () {
 
         return Math.abs(shooterFlywheel.getClosedLoopError()) < Constants.SHOOTER_VELOCITY_ERROR;
-    }
-    
-    public void setVelocity (int velocity) {
-
-        shooterFlywheel.set(ControlMode.Velocity, velocity);
     }
 
     /**
