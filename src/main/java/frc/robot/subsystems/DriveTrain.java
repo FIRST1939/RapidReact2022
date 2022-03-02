@@ -10,8 +10,10 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -35,6 +37,10 @@ public class DriveTrain extends SubsystemBase {
   private final MotorControllerGroup leftGroup;
   private final MotorControllerGroup rightGroup;
   private final DifferentialDrive diffDrive;
+
+  // Drive train encoders.
+  private final Encoder leftEncoder;
+  private final Encoder rightEncoder;
 
   // Side winder related objects.
   private final Solenoid sidewinderSolenoid;
@@ -63,6 +69,21 @@ public class DriveTrain extends SubsystemBase {
     rightGroup = new MotorControllerGroup(right1, right2, right3);
     rightGroup.setInverted(true);
     diffDrive = new DifferentialDrive(leftGroup, rightGroup);
+
+    leftEncoder = new Encoder(
+        Constants.LEFT_DRIVE_A_CHANNEL,
+        Constants.LEFT_DRIVE_B_CHANNEL,
+        false,
+        EncodingType.k4X);
+    leftEncoder.setDistancePerPulse(Constants.DRIVE_INCHES_PER_PULSE);
+    leftEncoder.setSamplesToAverage(5);
+    rightEncoder = new Encoder(
+        Constants.RIGHT_DRIVE_A_CHANNEL,
+        Constants.RIGHT_DRIVE_B_CHANNEL,
+        true, // TODO verify this.
+        EncodingType.k4X);
+    rightEncoder.setDistancePerPulse(Constants.DRIVE_INCHES_PER_PULSE);
+    rightEncoder.setSamplesToAverage(5);
 
     // Create and configure sidewinder elements.
     sidewinderSolenoid = new Solenoid(PneumaticsModuleType.REVPH, Constants.SIDEWINDER_PCM_CHANNEL);
@@ -103,6 +124,35 @@ public class DriveTrain extends SubsystemBase {
    */
   public void stop() {
     arcadeDrive(0.0, 0.0, 0.0);
+  }
+
+  /**
+   * Resets the distance sensors (aka encoders) of the drive train.
+   */
+  public void resetDistance() {
+    this.leftEncoder.reset();
+    this.rightEncoder.reset();
+  }
+
+  /**
+   * Note that the returned inches are the average of the left and right side
+   * sensors.
+   * 
+   * @return the distance traveled in inches since the last
+   *         {@link #resetDistance()} call.
+   */
+  public double getDistance() {
+    return (this.leftEncoder.getDistance() + this.rightEncoder.getDistance()) / 2.0;
+  }
+
+  /**
+   * Note that the returned inches per second are the average of the left and
+   * right side sensors.
+   * 
+   * @return the rate of travel in inches per second.
+   */
+  public double getRate() {
+    return (this.leftEncoder.getRate() + this.rightEncoder.getRate()) / 2.0;
   }
 
   /**
