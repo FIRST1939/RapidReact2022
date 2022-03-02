@@ -4,6 +4,7 @@ import frc.robot.Constants;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -19,6 +20,8 @@ public class Climber extends SubsystemBase {
     private final WPI_TalonFX climberMotor;
     private final DoubleSolenoid climberPiston;
 
+    private boolean isPistonExtended = false;
+
     // Creates a new climber.
     private Climber () {
 
@@ -28,6 +31,14 @@ public class Climber extends SubsystemBase {
 
         climberMotor.configFactoryDefault();
         climberMotor.setNeutralMode(NeutralMode.Brake);
+        climberMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 30);
+        climberMotor.configNominalOutputForward(0,30);
+        climberMotor.configNominalOutputReverse(0,30);
+        climberMotor.configPeakOutputForward(1,30);
+        climberMotor.configPeakOutputReverse(-1,30);
+
+        climberMotor.config_kF(0, .10792, 30);
+        climberMotor.config_kP(0, .0164, 30);
 
         // The climber must be winched before starting the robot.
         setHome();
@@ -51,8 +62,14 @@ public class Climber extends SubsystemBase {
 
         DoubleSolenoid.Value pistonValue;
         if (piston != null) {
-            if (piston.equals(true)) { pistonValue = DoubleSolenoid.Value.kForward; }
-            else { pistonValue = DoubleSolenoid.Value.kReverse; }
+            if (piston.equals(true)) { 
+                pistonValue = DoubleSolenoid.Value.kForward; 
+                isPistonExtended = true;
+            }
+            else { 
+                pistonValue = DoubleSolenoid.Value.kReverse; 
+                isPistonExtended = false;
+            }
         } else { pistonValue = DoubleSolenoid.Value.kOff; }
 
         climberPiston.set(pistonValue);
@@ -80,6 +97,6 @@ public class Climber extends SubsystemBase {
 
     public boolean isPistonExtended () {
 
-        return climberPiston.get() == DoubleSolenoid.Value.kForward;
+        return this.isPistonExtended;
     }
 }
