@@ -28,15 +28,15 @@ public final class Constants {
     public static final double AXIS_THRESHOLD = .1;
 
     // Drive train constants.
-    public static final int LEFT_DRIVE_1_CAN_ID = 1;
-    public static final int LEFT_DRIVE_2_CAN_ID = 2;
-    public static final int LEFT_DRIVE_3_CAN_ID = 3;
-    public static final int RIGHT_DRIVE_1_CAN_ID = 4;
-    public static final int RIGHT_DRIVE_2_CAN_ID = 5;
-    public static final int RIGHT_DRIVE_3_CAN_ID = 6;
+    public static final int LEFT_DRIVE_1_CAN_ID = 11;
+    public static final int LEFT_DRIVE_2_CAN_ID = 12;
+    public static final int LEFT_DRIVE_3_CAN_ID = 13;
+    public static final int RIGHT_DRIVE_1_CAN_ID = 14;
+    public static final int RIGHT_DRIVE_2_CAN_ID = 15;
+    public static final int RIGHT_DRIVE_3_CAN_ID = 16;
 
     public static final int SIDEWINDER_PCM_CHANNEL = 0;
-    public static final int SIDEWINDER_MOTOR_CAN_ID = 7;
+    public static final int SIDEWINDER_MOTOR_CAN_ID = 30;
 
     /** Sidewinder engages at this left stick x deflection */
     public static final double SIDEWINDER_ENABLE_THRESHOLD = 0.3;
@@ -47,7 +47,7 @@ public final class Constants {
 
     // Shooter constants.
     public static final int SHOOTER_PCM_CHANNEL = 1;
-    public static final int SHOOTER_FLYWHEEL_CAN_ID = 8;
+    public static final int SHOOTER_FLYWHEEL_CAN_ID = 32;
 
     public static final int SHOOTER_DEFAULT_VELOCITY = 0;
     public static final boolean SHOOTER_DEFAULT_HOOD = false; 
@@ -72,7 +72,7 @@ public final class Constants {
 
     //Intake constants
     public static final int INTAKE_PCM_CHANNEL = 1001;
-    public static final int INTAKE_MOTOR_CAN_ID = 1002;
+    public static final int INTAKE_MOTOR_CAN_ID = 24;
     public static final int INTAKE_BEAM_BREAK_RECEIVER_DIO = 1003;
     public static final long INTAKE_AT_SENSOR_TIME_ADJUSTMENT_MS = 0;
     public static final double INTAKE_GATHERING_EMPTY_VELOCITY = 1005;
@@ -80,8 +80,8 @@ public final class Constants {
     public static final double MANUAL_INTAKE_DEADBAND = 0.1;
 
     // Indexer constants
-    public static final int INDEXER_LEADER_CAN_ID = 9;
-    public static final int INDEXER_FOLLOWER_CAN_ID = 10;
+    public static final int INDEXER_LEADER_CAN_ID = 10;
+    public static final int INDEXER_FOLLOWER_CAN_ID = 17;
 
     public static final int INDEXER_BEAM_BREAK_EMITTER_DIO = 0;
     public static final int INDEXER_BEAM_BREAK_RECEIVER_DIO = 1;
@@ -92,7 +92,7 @@ public final class Constants {
     public static final long INDEXER_AT_SENSOR_TIME_ADJUSTMENT_MS = 0;
 
     // Climber constants.
-    public static final int CLIMBER_MOTOR_CAN_ID = 8;
+    public static final int CLIMBER_MOTOR_CAN_ID = 31;
     public static final int CLIMBER_PISTON_FORWARD = 0;
     public static final int CLIMBER_PISTON_REVERSE = 1;
     public static final int CLIMBER_EXTENSION_VELOCITY = 0; // TODO extension velocity
