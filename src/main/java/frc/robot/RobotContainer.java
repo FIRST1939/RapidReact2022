@@ -27,8 +27,11 @@ import frc.robot.commands.shooter.SetShot;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.RobotCargoCount;
 import frc.robot.subsystems.Shooter;
 import frc.robot.triggers.ShootTrigger;
+import frc.robot.triggers.ShooterActivateTrigger;
+import frc.robot.triggers.ShooterIdleTrigger;
 import frc.robot.commands.climber.Climb;
 import frc.robot.commands.climber.ExtendMotor;
 import frc.robot.commands.climber.RetractMotor;
@@ -52,12 +55,11 @@ public class RobotContainer {
 
   // The robot's subsystems and commands are defined here...
   private final DriveTrain driveTrain = new DriveTrain();
-  private final Shooter shooter = Shooter.getInstance();
+  private final RobotCargoCount robotCargoCount = RobotCargoCount.getInstance();
   private final Intake intake = new Intake();
-  
   private final Indexer indexer = new Indexer(() -> isIntakeSendingCargo(), () -> isIntakeInManualMode());
+  private final Shooter shooter = Shooter.getInstance();
   private final Climber climber = Climber.getInstance();
-
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -90,10 +92,16 @@ public class RobotContainer {
   private void configureButtonBindings() {
 
     JoystickButton fenderLowButton = new JoystickButton(driverTwo, XboxController.Button.kY.value);
-    fenderLowButton.whenPressed(new SetShot(Shooter.getInstance(), Constants.SHOTS.fenderLow));
+    fenderLowButton.whenPressed(new SetShot(this.shooter, Constants.SHOTS.fenderLow));
 
     JoystickButton fenderHighButton = new JoystickButton(driverTwo, XboxController.Button.kB.value);
-    fenderHighButton.whenPressed(new SetShot(Shooter.getInstance(), Constants.SHOTS.fenderHigh));
+    fenderHighButton.whenPressed(new SetShot(this.shooter, Constants.SHOTS.fenderHigh));
+
+    ShooterIdleTrigger shooterIdleTrigger = new ShooterIdleTrigger(this.robotCargoCount);
+    shooterIdleTrigger.whenActive(new SetShot(this.shooter, Constants.SHOTS.idle));
+
+    ShooterActivateTrigger shooterActivateTrigger = new ShooterActivateTrigger(this.indexer);
+    shooterActivateTrigger.whenActive(new SetShot(this.shooter, this.shooter.getShot()));
 
     BooleanSupplier shootTriggerSupplier = () -> (driverTwo
         .getRawAxis(XboxController.Axis.kRightTrigger.value) > Constants.TRIGGER_THRESHOLD);
