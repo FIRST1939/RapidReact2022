@@ -17,6 +17,8 @@ public class Shooter extends SubsystemBase {
     private final Solenoid shooterSolenoid;
     private final WPI_TalonFX shooterFlywheel;
 
+    private Constants.SHOTS shot;
+
     // Creates a new shooter.
     private Shooter () {
 
@@ -46,35 +48,44 @@ public class Shooter extends SubsystemBase {
         return shooterInstance;
     }
 
+    public void cargoShot () {
+
+        setHood(getShot().hood);
+        setVelocity(getShot().velocity);
+    }
+
     /**
      * @param shot the shot type that we are preparing.
      */
     public void cargoShot (final Constants.SHOTS shot) {
 
-        setHood(shot.hood);
-        setVelocity(shot.velocity);
+        this.shot = shot;
+        cargoShot();
     }
 
-    // TODO find right time to call
-    public void stop () { 
+    public Constants.SHOTS getShot () {
 
-        cargoShot(Constants.SHOTS.idle);
+        return shot;
     }
 
-    public void setHood (final boolean hood) { 
+    public void idle () { 
+
+        setVelocity(Constants.SHOTS.idle.velocity);
+    }
+
+    private void setHood (final boolean hood) { 
 
         shooterSolenoid.set(hood); 
     }
+    
+    private void setVelocity (int velocity) {
 
+        shooterFlywheel.set(ControlMode.Velocity, velocity);
+    }
     
     public boolean isShooterReady () {
 
         return Math.abs(shooterFlywheel.getClosedLoopError()) < Constants.SHOOTER_VELOCITY_ERROR;
-    }
-    
-    public void setVelocity (int velocity) {
-
-        shooterFlywheel.set(ControlMode.Velocity, velocity);
     }
 
     /**
