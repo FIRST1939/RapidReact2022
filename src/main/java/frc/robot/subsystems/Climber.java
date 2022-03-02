@@ -27,7 +27,7 @@ public class Climber extends SubsystemBase {
 
         // Create and configure climber elements.
         climberMotor = new WPI_TalonFX(Constants.CLIMBER_MOTOR_CAN_ID);
-        climberPiston = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.CLIMBER_PISTON_FORWARD, Constants.CLIMBER_PISTON_REVERSE);
+        climberPiston = new DoubleSolenoid(PneumaticsModuleType.REVPH, Constants.CLIMBER_PISTON_FORWARD, Constants.CLIMBER_PISTON_REVERSE);
 
         climberMotor.configFactoryDefault();
         climberMotor.setNeutralMode(NeutralMode.Brake);
