@@ -71,9 +71,9 @@ public final class Constants {
     public static final int SHOOTER_VELOCITY_ERROR = 10;
 
     //Intake constants
-    public static final int INTAKE_PCM_CHANNEL = 1001;
+    public static final int INTAKE_PCM_CHANNEL = 2;
     public static final int INTAKE_MOTOR_CAN_ID = 24;
-    public static final int INTAKE_BEAM_BREAK_RECEIVER_DIO = 1003;
+    public static final int INTAKE_BEAM_BREAK_RECEIVER_DIO = 0;
     public static final long INTAKE_AT_SENSOR_TIME_ADJUSTMENT_MS = 0;
     public static final double INTAKE_GATHERING_EMPTY_VELOCITY = 1005;
     public static final double INTAKE_SENDING_VELOCITY = 1004;
@@ -83,8 +83,8 @@ public final class Constants {
     public static final int INDEXER_LEADER_CAN_ID = 10;
     public static final int INDEXER_FOLLOWER_CAN_ID = 17;
 
-    public static final int INDEXER_BEAM_BREAK_EMITTER_DIO = 0;
-    public static final int INDEXER_BEAM_BREAK_RECEIVER_DIO = 1;
+    public static final int INDEXER_BEAM_BREAK_EMITTER_DIO = 1;
+    public static final int INDEXER_BEAM_BREAK_RECEIVER_DIO = 2;
     public static final double INDEXER_SHOOTER_FEED_VELOCITY = 100;
     public static final double INDEXER_RECEIVE_VELOCITY = 100;
     public static final double MANUAL_INDEXER_DEADBAND = 0.1;
@@ -93,8 +93,8 @@ public final class Constants {
 
     // Climber constants.
     public static final int CLIMBER_MOTOR_CAN_ID = 31;
-    public static final int CLIMBER_PISTON_FORWARD = 0;
-    public static final int CLIMBER_PISTON_REVERSE = 1;
+    public static final int CLIMBER_PISTON_FORWARD = 3;
+    public static final int CLIMBER_PISTON_REVERSE = 4;
     public static final int CLIMBER_EXTENSION_VELOCITY = 0; // TODO extension velocity
     public static final int CLIMBER_ENCODER_EXTEND_CLICKS = 100; // TODO encoder extend clicks
 }
