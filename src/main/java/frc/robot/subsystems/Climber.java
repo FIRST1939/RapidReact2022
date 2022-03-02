@@ -4,6 +4,7 @@ import frc.robot.Constants;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -18,6 +19,8 @@ public class Climber extends SubsystemBase {
     // Climber elements.
     private final WPI_TalonFX climberMotor;
     private final DoubleSolenoid climberPiston;
+
+    private boolean isPistonExtended = false;
 
     // Creates a new climber.
     private Climber () {
@@ -51,8 +54,14 @@ public class Climber extends SubsystemBase {
 
         DoubleSolenoid.Value pistonValue;
         if (piston != null) {
-            if (piston.equals(true)) { pistonValue = DoubleSolenoid.Value.kForward; }
-            else { pistonValue = DoubleSolenoid.Value.kReverse; }
+            if (piston.equals(true)) { 
+                pistonValue = DoubleSolenoid.Value.kForward; 
+                isPistonExtended = true;
+            }
+            else { 
+                pistonValue = DoubleSolenoid.Value.kReverse; 
+                isPistonExtended = false;
+            }
         } else { pistonValue = DoubleSolenoid.Value.kOff; }
 
         climberPiston.set(pistonValue);
@@ -80,6 +89,6 @@ public class Climber extends SubsystemBase {
 
     public boolean isPistonExtended () {
 
-        return climberPiston.get() == DoubleSolenoid.Value.kForward;
+        return this.isPistonExtended;
     }
 }
