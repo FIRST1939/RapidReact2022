@@ -65,7 +65,7 @@ public class DriveTrain extends SubsystemBase {
     diffDrive = new DifferentialDrive(leftGroup, rightGroup);
 
     // Create and configure sidewinder elements.
-    sidewinderSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Constants.SIDEWINDER_PCM_CHANNEL);
+    sidewinderSolenoid = new Solenoid(PneumaticsModuleType.REVPH, Constants.SIDEWINDER_PCM_CHANNEL);
     sidewinderMotor = new WPI_TalonFX(Constants.SIDEWINDER_MOTOR_CAN_ID);
     sidewinderMotor.configFactoryDefault();
     // TODO other sidewinder motor config?

@@ -20,7 +20,7 @@ public class Shooter extends SubsystemBase {
     private Shooter () {
 
         // Create and configure shooter elements.
-        shooterSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Constants.SHOOTER_PCM_CHANNEL);
+        shooterSolenoid = new Solenoid(PneumaticsModuleType.REVPH, Constants.SHOOTER_PCM_CHANNEL);
         shooterFlywheel = new WPI_TalonFX(Constants.SHOOTER_FLYWHEEL_CAN_ID);
         shooterFlywheel.configFactoryDefault();
     }

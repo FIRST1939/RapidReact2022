@@ -17,7 +17,7 @@ public class Intake extends SubsystemBase {
     private boolean manualMode = false;
 
     public Intake() {
-        this.intakeSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Constants.INTAKE_PCM_CHANNEL);
+        this.intakeSolenoid = new Solenoid(PneumaticsModuleType.REVPH, Constants.INTAKE_PCM_CHANNEL);
         this.beamBreak = new DigitalInput(Constants.INTAKE_BEAM_BREAK_RECEIVER_DIO);
         this.intakeMotor = new WPI_TalonSRX(Constants.INTAKE_MOTOR_CAN_ID);
         this.intakeMotor.configFactoryDefault();
