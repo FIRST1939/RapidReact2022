@@ -31,6 +31,14 @@ public class Climber extends SubsystemBase {
 
         climberMotor.configFactoryDefault();
         climberMotor.setNeutralMode(NeutralMode.Brake);
+        climberMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 30);
+        climberMotor.configNominalOutputForward(0,30);
+        climberMotor.configNominalOutputReverse(0,30);
+        climberMotor.configPeakOutputForward(1,30);
+        climberMotor.configPeakOutputReverse(-1,30);
+
+        climberMotor.config_kF(0, .10792, 30);
+        climberMotor.config_kP(0, .0164, 30);
 
         // The climber must be winched before starting the robot.
         setHome();
