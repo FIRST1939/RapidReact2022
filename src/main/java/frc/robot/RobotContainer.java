@@ -6,8 +6,10 @@ package frc.robot;
 
 import java.util.function.BooleanSupplier;
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -61,6 +63,8 @@ public class RobotContainer {
   private final Shooter shooter = Shooter.getInstance();
   private final Climber climber = Climber.getInstance();
 
+  private final Compressor compressor = new Compressor(Constants.PNEUMATICS_HUB_CAN_ID, PneumaticsModuleType.REVPH);
+
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -71,6 +75,7 @@ public class RobotContainer {
     configureButtonBindings();
     // Schedule the initial states of the state machines
     scheduleInitialStates();
+    pressureInit();
   }
 
   /**
@@ -99,6 +104,9 @@ public class RobotContainer {
     JoystickButton fenderHighButton = new JoystickButton(driverTwo, XboxController.Button.kB.value);
     fenderHighButton.whenPressed(new SetShot(this.shooter, Constants.SHOTS.fenderHigh));
 
+    JoystickButton shooterManualIdleTrigger = new JoystickButton(driverTwo, XboxController.Button.kA.value);
+    shooterManualIdleTrigger.whenActive(new SetShot(this.shooter, Constants.SHOTS.idle));
+    
     ShooterIdleTrigger shooterIdleTrigger = new ShooterIdleTrigger(this.robotCargoCount);
     shooterIdleTrigger.whenActive(new SetShot(this.shooter, Constants.SHOTS.idle));
 
@@ -115,9 +123,9 @@ public class RobotContainer {
         new ToggleIntakeIndexerManualMode(
             this.intake,
             new ManualIntakeRollerBelts(this.intake,
-                () -> enforceDeadband(-driverTwo.getLeftX(), Constants.MANUAL_INTAKE_DEADBAND)),
+                () -> enforceDeadband(driverTwo.getLeftX(), Constants.MANUAL_INTAKE_DEADBAND)),
             new ManualIndexer(this.indexer,
-                () -> enforceDeadband(-driverTwo.getRightY(), Constants.MANUAL_INDEXER_DEADBAND),
+                () -> enforceDeadband(driverTwo.getRightY(), Constants.MANUAL_INDEXER_DEADBAND),
                 new ManualShootTrigger(indexer, shooter, shootTriggerSupplier))));
 
     JoystickButton intakeGatherButton = new JoystickButton(driverTwo, XboxController.Button.kRightBumper.value);
@@ -136,7 +144,7 @@ public class RobotContainer {
     climberMotorExtend.whileHeld(new ExtendMotor(this.climber));
 
     JoystickButton climberPistonRetract = new JoystickButton(rightStick, 4);
-    climberPistonRetract.whenPressed(new SetPiston(this.climber, (Boolean) true));
+    climberPistonRetract.whenPressed(new SetPiston(this.climber, (Boolean) false));
 
     JoystickButton climberPistonExtend = new JoystickButton(rightStick, 5);
     climberPistonExtend.whenPressed(new SetPiston(this.climber, (Boolean) true));
@@ -148,6 +156,11 @@ public class RobotContainer {
   private void scheduleInitialStates() {
     IntakeStowedEmptyState.getInstance(this.intake).schedule();
     IndexerReadyToShootState.getInstance(this.indexer).schedule();
+  }
+
+  private void pressureInit () {
+
+    compressor.enableAnalog(Constants.PNEUMATICS_HUB_MIN_PRESSURE, Constants.PNEUMATICS_HUB_MAX_PRESSURE);
   }
 
   /**

@@ -35,7 +35,7 @@ public final class Constants {
     public static final int RIGHT_DRIVE_2_CAN_ID = 15;
     public static final int RIGHT_DRIVE_3_CAN_ID = 16;
 
-    public static final int SIDEWINDER_PCM_CHANNEL = 0;
+    public static final int SIDEWINDER_PCM_CHANNEL = 7;
     public static final int SIDEWINDER_MOTOR_CAN_ID = 30;
 
     /** Sidewinder engages at this left stick x deflection */
@@ -46,7 +46,7 @@ public final class Constants {
     public static final double SIDEWINDER_OUTPUT_OFFSET = 0.1;
 
     // Shooter constants.
-    public static final int SHOOTER_PCM_CHANNEL = 1;
+    public static final int SHOOTER_PCM_CHANNEL = 0;
     public static final int SHOOTER_FLYWHEEL_CAN_ID = 32;
 
     public static final int SHOOTER_DEFAULT_VELOCITY = 0;
@@ -71,7 +71,7 @@ public final class Constants {
     public static final int SHOOTER_VELOCITY_ERROR = 10;
 
     //Intake constants
-    public static final int INTAKE_PCM_CHANNEL = 2;
+    public static final int INTAKE_PCM_CHANNEL = 8;
     public static final int INTAKE_MOTOR_CAN_ID = 24;
     public static final int INTAKE_BEAM_BREAK_RECEIVER_DIO = 0;
     public static final long INTAKE_AT_SENSOR_TIME_ADJUSTMENT_MS = 0;
@@ -93,8 +93,13 @@ public final class Constants {
 
     // Climber constants.
     public static final int CLIMBER_MOTOR_CAN_ID = 31;
-    public static final int CLIMBER_PISTON_FORWARD = 3;
-    public static final int CLIMBER_PISTON_REVERSE = 4;
-    public static final int CLIMBER_EXTENSION_VELOCITY = 0; // TODO extension velocity
-    public static final int CLIMBER_ENCODER_EXTEND_CLICKS = 100; // TODO encoder extend clicks
+    public static final int CLIMBER_PISTON_FORWARD = 6;
+    public static final int CLIMBER_PISTON_REVERSE = 9;
+    public static final int CLIMBER_EXTENSION_VELOCITY = 1500; // TODO extension velocity
+    public static final int CLIMBER_ENCODER_EXTEND_CLICKS = 500000; // TODO encoder extend clicks
+
+    // Compressor constants.
+    public static final int PNEUMATICS_HUB_CAN_ID = 1;
+    public static final int PNEUMATICS_HUB_MIN_PRESSURE = 60;
+    public static final int PNEUMATICS_HUB_MAX_PRESSURE = 120;
 }
