@@ -94,7 +94,7 @@ public class DriveTrain extends SubsystemBase {
     if (this.sidewinderSolenoid.get()) {
       sidewinderMotor.set(
           ControlMode.PercentOutput,
-          sidewind - (Math.signum(sidewind) * Constants.SIDEWINDER_OUTPUT_OFFSET));
+          -(sidewind - (Math.signum(sidewind) * Constants.SIDEWINDER_OUTPUT_OFFSET)));
     }
   }
 
