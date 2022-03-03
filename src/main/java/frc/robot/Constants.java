@@ -46,10 +46,10 @@ public final class Constants {
     public static final double SIDEWINDER_OUTPUT_OFFSET = 0.1;
 
     // Drive train encoder DIO ports
-    public static final int LEFT_DRIVE_A_CHANNEL = 5;
-    public static final int LEFT_DRIVE_B_CHANNEL = 6;
-    public static final int RIGHT_DRIVE_A_CHANNEL = 7;
-    public static final int RIGHT_DRIVE_B_CHANNEL = 8;
+    public static final int LEFT_DRIVE_A_CHANNEL = 6;
+    public static final int LEFT_DRIVE_B_CHANNEL = 7;
+    public static final int RIGHT_DRIVE_A_CHANNEL = 8;
+    public static final int RIGHT_DRIVE_B_CHANNEL = 9;
     /** Circumfrence divided by Grayhill pulses per revolution. */
     public static final double DRIVE_INCHES_PER_PULSE = 18.85 /256.0;
 
