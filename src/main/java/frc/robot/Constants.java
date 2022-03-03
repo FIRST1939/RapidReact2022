@@ -81,6 +81,7 @@ public final class Constants {
     //Intake constants
     public static final int INTAKE_PCM_CHANNEL = 2;
     public static final int INTAKE_MOTOR_CAN_ID = 24;
+    // TODO validate the min and max velocities.
     /** The minimum intake velocity in Talon SRX native units. */
     public static final int INTAKE_MIN_CLICKS_PER_100MS = 1000;
     /** The maximum intake velocity in Talon SRX native units. */
