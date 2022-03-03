@@ -31,11 +31,11 @@ public class Intake extends SubsystemBase {
     }
 
     public void extendIntake() {
-        intakeSolenoid.set(true);
+        intakeSolenoid.set(false);
     }
 
     public void retractIntake() {
-        intakeSolenoid.set(false);
+        intakeSolenoid.set(true);
     }
 
     public boolean isRetracted() {
