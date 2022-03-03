@@ -56,7 +56,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DriveTrain driveTrain = new DriveTrain();
   private final RobotCargoCount robotCargoCount = RobotCargoCount.getInstance();
-  private final Intake intake = new Intake();
+  private final Intake intake = new Intake(() -> this.driveTrain.getRate());
   private final Indexer indexer = new Indexer(() -> isIntakeSendingCargo(), () -> isIntakeInManualMode());
   private final Shooter shooter = Shooter.getInstance();
   private final Climber climber = Climber.getInstance();
