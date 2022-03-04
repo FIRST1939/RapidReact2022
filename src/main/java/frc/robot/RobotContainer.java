@@ -40,6 +40,7 @@ import frc.robot.commands.climber.RetractMotor;
 import frc.robot.commands.climber.SetPiston;
 import frc.robot.subsystems.Climber;
 import frc.robot.triggers.ClimbTrigger;
+import frc.robot.triggers.ClimberFullExtensionTrigger;
 import frc.robot.triggers.ManualShootTrigger;
 
 /**
@@ -140,8 +141,13 @@ public class RobotContainer {
     JoystickButton climberMotorRetract = new JoystickButton(rightStick, 2);
     climberMotorRetract.whileHeld(new RetractMotor(this.climber));
 
-    JoystickButton climberMotorExtend = new JoystickButton(rightStick, 3);
-    climberMotorExtend.whileHeld(new ExtendMotor(this.climber));
+    JoystickButton climberMotorPartiallyExtend = new JoystickButton(rightStick, 3);
+    climberMotorPartiallyExtend.whileHeld(new ExtendMotor(this.climber, Constants.CLIMBER_EXTENSIONS.partialExtend));
+
+    JoystickButton climberMotorFullyExtendButton = new JoystickButton(rightStick, 3);
+    JoystickButton climberMotorFullyExtendTrigger = new JoystickButton(rightStick, 1);
+    ClimberFullExtensionTrigger climberFullExtensionTrigger = new ClimberFullExtensionTrigger(climberMotorFullyExtendButton, climberMotorFullyExtendTrigger);
+    climberFullExtensionTrigger.whileActiveContinuous(new ExtendMotor(this.climber, Constants.CLIMBER_EXTENSIONS.fullExtend));
 
     JoystickButton climberPistonRetract = new JoystickButton(rightStick, 4);
     climberPistonRetract.whenPressed(new SetPiston(this.climber, (Boolean) false));

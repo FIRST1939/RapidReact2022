@@ -18,7 +18,7 @@ public class RetractMotor extends CommandBase {
     @Override
     public void execute () {
 
-        this.climber.setMotor(-Constants.CLIMBER_EXTENSION_VELOCITY);
+        this.climber.setMotor(-Constants.CLIMBER_RETRACTION_VELOCITY);
     }
 
     @Override
@@ -30,6 +30,6 @@ public class RetractMotor extends CommandBase {
     @Override
     public boolean isFinished () {
 
-        return this.climber.isMotorFullyRetracted();
+        return this.climber.getMotorPosition() <= 0;
     }
 }

@@ -2,6 +2,7 @@ package frc.robot.triggers;
 
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants;
 import frc.robot.subsystems.Climber;
 
 /**
@@ -23,6 +24,6 @@ public class ClimbTrigger extends Trigger {
     @Override
     public boolean get () {
 
-        return this.climber.isPistonExtended() && this.climber.isMotorFullyExtended() && this.joystickButton.getAsBoolean();
+        return this.climber.isPistonExtended() && this.climber.getMotorPosition() >= Constants.CLIMBER_EXTENSIONS.fullExtend.distance && this.joystickButton.getAsBoolean();
     }
 }
