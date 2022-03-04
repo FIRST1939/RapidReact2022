@@ -5,7 +5,6 @@
 package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
 import frc.robot.subsystems.Intake;
 
 public class IntakeStowedSendState extends CommandBase {
@@ -38,7 +37,7 @@ public class IntakeStowedSendState extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    this.intake.setIntakeSpeed(Constants.INTAKE_SENDING_VELOCITY);
+    this.intake.setIntakeSpeed();
   }
 
   // Called once the command ends or is interrupted.

@@ -31,7 +31,8 @@ public class IntakeStowedEmptyState extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    this.intake.stowIntake();
+    this.intake.retractIntake();
+    this.intake.stopIntakeMotor();
   }
 
   // Returns true when the command should end.

@@ -6,7 +6,6 @@ package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
-import frc.robot.Constants;
 
 public class IntakeGatheringSendState extends CommandBase {
 
@@ -35,7 +34,7 @@ public class IntakeGatheringSendState extends CommandBase {
   }
 
   public void execute() {
-    this.intake.setToSendVelocity(Constants.INTAKE_SENDING_VELOCITY);
+    this.intake.setIntakeSpeed();
   }
 
   @Override

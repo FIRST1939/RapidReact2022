@@ -5,7 +5,6 @@
 package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.RobotCargoCount;
 
@@ -38,8 +37,7 @@ public class IntakeGatheringEmptyState extends CommandBase {
   // Called when the command executes.
   @Override
   public void execute() {
-    this.intake.setIntakeSpeed(Constants.INTAKE_GATHERING_EMPTY_VELOCITY);
-    // TODO Make intake speed based on drivetrain
+    this.intake.setIntakeSpeed();
   }
 
   // Returns true when the command should end.

@@ -3,24 +3,35 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.Constants;
 
+import java.util.function.DoubleSupplier;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 public class Intake extends SubsystemBase {
+    private final DoubleSupplier robotSpeedSupplier;
     private final Solenoid intakeSolenoid;
     private final DigitalInput beamBreak;
     private final WPI_TalonSRX intakeMotor;
     private boolean manualMode = false;
 
-    public Intake() {
+    /**
+     * @param robotSpeedSupplier a supplier of the current robot speed (inches per
+     *                           second) that can be used to optimize the intake
+     *                           speed.
+     */
+    public Intake(final DoubleSupplier robotSpeedSupplier) {
+        this.robotSpeedSupplier = robotSpeedSupplier;
         this.intakeSolenoid = new Solenoid(PneumaticsModuleType.REVPH, Constants.INTAKE_PCM_CHANNEL);
         this.beamBreak = new DigitalInput(Constants.INTAKE_BEAM_BREAK_RECEIVER_DIO);
         this.intakeMotor = new WPI_TalonSRX(Constants.INTAKE_MOTOR_CAN_ID);
         this.intakeMotor.configFactoryDefault();
+        this.intakeMotor.setNeutralMode(NeutralMode.Brake);
         // TODO configure kP and kF for velocity control.
         // Include configuration of attached encoder.
     }
@@ -42,36 +53,24 @@ public class Intake extends SubsystemBase {
         return this.intakeSolenoid.get();
     }
 
-    public void setIntakeSpeed(double value) {
-        intakeMotor.set(ControlMode.PercentOutput, value);
-        // TODO Scale rotation speed based on robot velocity
+    /**
+     * Set the intake speed to a value proportional to the speed at which the robot
+     * is moving with enforcement of minimum and maximum speeds.
+     */
+    public void setIntakeSpeed() {
+        double targetIntakeSpeed = this.robotSpeedSupplier.getAsDouble() * Constants.INTAKE_SPEED_TO_DRIVE_SPEED_RATIO;
+        double targetPulsePerSecond = targetIntakeSpeed / Constants.INTAKE_INCHES_PER_PULSE;
+        double targetPulsePer100ms = targetPulsePerSecond / 10.0;
+        int targetIntakeClicksPer100ms = (int) targetPulsePer100ms;
+        targetIntakeClicksPer100ms = MathUtil.clamp(
+            targetIntakeClicksPer100ms,
+            Constants.INTAKE_MIN_CLICKS_PER_100MS,
+            Constants.INTAKE_MAX_CLICKS_PER_100MS);
+        intakeMotor.set(ControlMode.Velocity, targetIntakeClicksPer100ms);
     }
 
     public void stopIntakeMotor() {
-        setIntakeSpeed(0);
-    }
-
-    /**
-     * @return Deploy and stow includes both roller and frame
-     */
-    public void deployIntake(double intakeSpeed) {
-        extendIntake();
-        setIntakeSpeed(intakeSpeed);
-        // TODO Possibly remove parameter? Base roller/belt speed on drivetrain speed?
-    }
-
-    public void stowIntake() {
-        retractIntake();
-        stopIntakeMotor();
-    }
-
-    public void setToSendVelocity(double beltVelocity) {
-        intakeMotor.set(ControlMode.PercentOutput, beltVelocity);
-        // TODO Possibly remove parameter
-    }
-
-    public boolean getIntakeDeployment() {
-        return intakeSolenoid.get(); // TODO Check possible inversion needed
+        intakeMotor.set(ControlMode.Velocity, 0.0);
     }
 
     /**

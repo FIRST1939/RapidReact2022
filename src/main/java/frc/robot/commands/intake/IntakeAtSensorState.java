@@ -36,7 +36,7 @@ public class IntakeAtSensorState extends CommandBase {
   }
 
   public void execute() {
-    this.intake.setIntakeSpeed(Constants.INTAKE_SENDING_VELOCITY);
+    this.intake.setIntakeSpeed();
   }
 
   // Returns true when the command should end.

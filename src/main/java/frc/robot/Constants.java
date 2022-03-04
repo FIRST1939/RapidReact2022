@@ -81,10 +81,17 @@ public final class Constants {
     //Intake constants
     public static final int INTAKE_PCM_CHANNEL = 8;
     public static final int INTAKE_MOTOR_CAN_ID = 24;
+    // TODO validate the min and max velocities.
+    /** The minimum intake velocity in Talon SRX native units. */
+    public static final int INTAKE_MIN_CLICKS_PER_100MS = 4000;
+    /** The maximum intake velocity in Talon SRX native units. */
+    public static final int INTAKE_MAX_CLICKS_PER_100MS = 16000;
+    /** Circumfrence divided by encoder pulses per revolution. */
+    public static final double INTAKE_INCHES_PER_PULSE = 6.28 / 2048.0; // TODO verify encoder info
+    /** The ratio of the intake speed to drive speed is this value:1 */
+    public static final double INTAKE_SPEED_TO_DRIVE_SPEED_RATIO = 2.0;
     public static final int INTAKE_BEAM_BREAK_RECEIVER_DIO = 0;
     public static final long INTAKE_AT_SENSOR_TIME_ADJUSTMENT_MS = 0;
-    public static final double INTAKE_GATHERING_EMPTY_VELOCITY = 1005;
-    public static final double INTAKE_SENDING_VELOCITY = 1004;
     public static final double MANUAL_INTAKE_DEADBAND = 0.1;
 
     // Indexer constants
