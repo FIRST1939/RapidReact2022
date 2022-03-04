@@ -1,7 +1,5 @@
 package frc.robot.triggers;
 
-import java.util.function.BooleanSupplier;
-
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
