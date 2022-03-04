@@ -58,7 +58,7 @@ public class Intake extends SubsystemBase {
      * is moving with enforcement of minimum and maximum speeds.
      */
     public void setIntakeSpeed() {
-        double targetIntakeSpeed = this.robotSpeedSupplier.getAsDouble() * 2.0;
+        double targetIntakeSpeed = this.robotSpeedSupplier.getAsDouble() * Constants.INTAKE_SPEED_TO_DRIVE_SPEED_RATIO;
         double targetPulsePerSecond = targetIntakeSpeed / Constants.INTAKE_INCHES_PER_PULSE;
         double targetPulsePer100ms = targetPulsePerSecond / 10.0;
         int targetIntakeClicksPer100ms = (int) targetPulsePer100ms;
