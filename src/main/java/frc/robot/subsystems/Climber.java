@@ -82,19 +82,9 @@ public class Climber extends SubsystemBase {
         climberMotor.setSelectedSensorPosition(0);
     }
 
-    private double getMotorPosition () {
+    public double getMotorPosition () {
 
         return climberMotor.getSelectedSensorPosition();
-    }
-
-    public boolean isMotorFullyRetracted () {
-
-        return getMotorPosition() <= 0;
-    }
-
-    public boolean isMotorFullyExtended () {
-
-        return getMotorPosition() >= Constants.CLIMBER_ENCODER_EXTEND_CLICKS;
     }
 
     public boolean isPistonExtended () {
