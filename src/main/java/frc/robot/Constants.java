@@ -117,4 +117,7 @@ public final class Constants {
     public static final int PNEUMATICS_HUB_CAN_ID = 1;
     public static final int PNEUMATICS_HUB_MIN_PRESSURE = 60;
     public static final int PNEUMATICS_HUB_MAX_PRESSURE = 120;
+
+    //Lights constants.
+    public static final int LIGHTS_PWM = 0;
 }
