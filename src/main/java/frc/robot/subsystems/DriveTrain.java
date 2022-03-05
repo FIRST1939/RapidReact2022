@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import java.util.function.BooleanSupplier;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kauailabs.navx.frc.AHRS;
@@ -11,6 +13,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.SPI;
@@ -68,10 +71,13 @@ public class DriveTrain extends SubsystemBase {
 
   private final AHRS navx;
 
+  private final BooleanSupplier sidewinderOverride;
+  private PIDController strafeHorizonatal;
+
   /**
    * Creates a new drive train.
    */
-  public DriveTrain() {
+  public DriveTrain(BooleanSupplier sidewinderOverride) {
     // Create and configure individual motors.
     left1 = new CANSparkMax(Constants.LEFT_DRIVE_1_CAN_ID, MotorType.kBrushless);
     motorConfig(left1);
@@ -111,9 +117,13 @@ public class DriveTrain extends SubsystemBase {
     sidewinderSolenoid = new Solenoid(PneumaticsModuleType.REVPH, Constants.SIDEWINDER_PCM_CHANNEL);
     sidewinderMotor = new WPI_TalonFX(Constants.SIDEWINDER_MOTOR_CAN_ID);
     sidewinderMotor.configFactoryDefault();
+    sidewinderMotor.configOpenloopRamp(0.5);
     // TODO other sidewinder motor config?
+    this.sidewinderOverride = sidewinderOverride;
 
     this.navx = new AHRS(SPI.Port.kMXP);
+		this.strafeHorizonatal = new PIDController(Constants.SIDEWINDER_kP, 0, 0);
+
   }
 
   @Override
@@ -127,20 +137,26 @@ public class DriveTrain extends SubsystemBase {
    * @param sidewind the sidewinder input. Only used if sidewinder is engaged.
    */
   public void arcadeDrive(final double speed, final double rotation, final double sidewind) {
-    diffDrive.arcadeDrive(speed, rotation, true);
 
     // Sidewind above threshold, disengage below, leave as is in gap.
-    if (Math.abs(sidewind) > Constants.SIDEWINDER_ENABLE_THRESHOLD) {
+    if ((Math.abs(sidewind) > Constants.SIDEWINDER_ENABLE_THRESHOLD) || this.sidewinderOverride.getAsBoolean()) {
       this.sidewinderSolenoid.set(true);
+      resetYaw();
     } else if (Math.abs(sidewind) < Constants.SIDEWINDER_DISABLE_THRESHOLD) {
       this.sidewinderSolenoid.set(false);
     }
-
+    double arcadeRoation = rotation;
     if (this.sidewinderSolenoid.get()) {
       sidewinderMotor.set(
           ControlMode.PercentOutput,
           -(sidewind - (Math.signum(sidewind) * Constants.SIDEWINDER_OUTPUT_OFFSET)));
+      if(arcadeRoation == 0.0){
+        arcadeRoation = strafeHorizonatal.calculate(getYaw(), 0.0);
+      }
     }
+
+    
+    diffDrive.arcadeDrive(speed, arcadeRoation, true);
   }
 
   /**

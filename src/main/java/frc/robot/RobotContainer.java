@@ -56,7 +56,8 @@ public class RobotContainer {
   private final XboxController driverTwo = new XboxController(Constants.DRIVER2_CONTROLLER_PORT);
 
   // The robot's subsystems and commands are defined here...
-  private final DriveTrain driveTrain = new DriveTrain();
+  private final JoystickButton sidewinderManualDeploy = new JoystickButton(leftStick, 1);
+  private final DriveTrain driveTrain = new DriveTrain(() -> sidewinderManualDeploy.get());
   private final RobotCargoCount robotCargoCount = RobotCargoCount.getInstance();
   private final Intake intake = new Intake(() -> this.driveTrain.getRate());
   private final Indexer indexer = new Indexer(() -> isIntakeSendingCargo(), () -> isIntakeInManualMode());
