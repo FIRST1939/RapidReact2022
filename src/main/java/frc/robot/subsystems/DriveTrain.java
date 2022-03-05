@@ -6,12 +6,14 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -23,6 +25,24 @@ import frc.robot.Constants;
  * The drive train consists of three Neos on each side. Encoders are used for
  * path following in autonomous, as is a NavX gyro. Two line sensors are used to
  * stop at selected positions on the field.
+ * 
+ * <p>
+ * Some notes on automating actions of the drive train. First, automation that
+ * does not use WPILIB trajectory following, use of the {@link #resetDistance()}
+ * and {@link #resetYaw()} methods before starting a position or rotational
+ * movement respectively is generally a good idea. Given the odd angles at which
+ * the robot will start most matches, robot relative movements and rotations
+ * (not field relative) will be the easiest to manage. This can be useful for
+ * autonomous and for aiming a shot based off vision feedback.
+ * </p>
+ * 
+ * <p>
+ * Second, for automation that does use WPILIB trajectory following (more
+ * advanced autonomous mode routines), resetting at the start of a sequence
+ * (there could be different API, this is TBD) is probably desired. Do NOT reset
+ * inbetween a sequence of trajectory commands that are chained together in a
+ * command group.
+ * </p>
  */
 public class DriveTrain extends SubsystemBase {
   // Motors, 3 on a side.
@@ -45,6 +65,8 @@ public class DriveTrain extends SubsystemBase {
   // Side winder related objects.
   private final Solenoid sidewinderSolenoid;
   private final WPI_TalonFX sidewinderMotor;
+
+  private final AHRS navx;
 
   /**
    * Creates a new drive train.
@@ -90,6 +112,8 @@ public class DriveTrain extends SubsystemBase {
     sidewinderMotor = new WPI_TalonFX(Constants.SIDEWINDER_MOTOR_CAN_ID);
     sidewinderMotor.configFactoryDefault();
     // TODO other sidewinder motor config?
+
+    this.navx = new AHRS(SPI.Port.kMXP);
   }
 
   @Override
@@ -153,6 +177,20 @@ public class DriveTrain extends SubsystemBase {
    */
   public double getRate() {
     return (this.leftEncoder.getRate() + this.rightEncoder.getRate()) / 2.0;
+  }
+
+  /**
+   * Resets the robot's yaw to 0.
+   */
+  public void resetYaw() {
+    this.navx.reset();
+  }
+
+  /**
+   * @return the current yaw value in degrees (-180 to 180).
+   */
+  public float getYaw() {
+    return this.navx.getYaw();
   }
 
   /**
