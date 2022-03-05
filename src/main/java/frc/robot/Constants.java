@@ -53,6 +53,13 @@ public final class Constants {
     public static final int RIGHT_DRIVE_B_CHANNEL = 9;
     /** Circumfrence divided by Grayhill pulses per revolution. */
     public static final double DRIVE_INCHES_PER_PULSE = 18.85 / 256.0;
+    /** A PID p value for gyro based correction for driving straight. */
+    public static final double DRIVE_AUTO_GYRO_STRAIGHT_KP = 0.005;
+    public static final double DRIVE_AUTO_STRAIGHT_POWER = 0.7;
+    /** The in place turn to angle PID p value. i and d are 0. */
+    public static final double DRIVE_AUTO_TURN_TO_ANGLE_KP = 1.0;
+    public static final double DRIVE_AUTO_TURN_TO_ANGLE_TOL_DEG = 5.0;
+    public static final double DRIVE_AUTO_TURN_TO_ANGLE_TURN_RATE_TOL_DEG_PER_SEC = 10.0;
 
     // Shooter constants.
     public static final int SHOOTER_PCM_CHANNEL = 0;
