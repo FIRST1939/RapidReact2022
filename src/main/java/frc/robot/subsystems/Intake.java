@@ -9,15 +9,19 @@ import frc.robot.Constants;
 
 import java.util.function.DoubleSupplier;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.SparkMaxRelativeEncoder;
+import com.revrobotics.CANSparkMax.ControlType;
+import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class Intake extends SubsystemBase {
     private final DoubleSupplier robotSpeedSupplier;
     private final Solenoid intakeSolenoid;
     private final DigitalInput beamBreak;
-    private final WPI_TalonSRX intakeMotor;
+    private final CANSparkMax intakeMotor;
+    private final SparkMaxPIDController pidController;
     private boolean manualMode = false;
 
     /**
@@ -29,11 +33,16 @@ public class Intake extends SubsystemBase {
         this.robotSpeedSupplier = robotSpeedSupplier;
         this.intakeSolenoid = new Solenoid(PneumaticsModuleType.REVPH, Constants.INTAKE_PCM_CHANNEL);
         this.beamBreak = new DigitalInput(Constants.INTAKE_BEAM_BREAK_RECEIVER_DIO);
-        this.intakeMotor = new WPI_TalonSRX(Constants.INTAKE_MOTOR_CAN_ID);
-        this.intakeMotor.configFactoryDefault();
-        this.intakeMotor.setNeutralMode(NeutralMode.Brake);
+        this.intakeMotor = new CANSparkMax(Constants.INTAKE_MOTOR_CAN_ID, MotorType.kBrushed);
+        this.intakeMotor.restoreFactoryDefaults();
+        this.intakeMotor.setIdleMode(IdleMode.kBrake);
+        this.intakeMotor.getEncoder(
+                SparkMaxRelativeEncoder.Type.kQuadrature,
+                Constants.INTAKE_ENCODER_CYCLES_PER_ROTATION);
+        this.pidController = this.intakeMotor.getPIDController();
         // TODO configure kP and kF for velocity control.
-        // Include configuration of attached encoder.
+        this.pidController.setFF(0.1);
+        this.pidController.setP(0.1);
     }
 
     @Override
@@ -58,19 +67,18 @@ public class Intake extends SubsystemBase {
      * is moving with enforcement of minimum and maximum speeds.
      */
     public void setIntakeSpeed() {
-        double targetIntakeSpeed = this.robotSpeedSupplier.getAsDouble() * Constants.INTAKE_SPEED_TO_DRIVE_SPEED_RATIO;
-        double targetPulsePerSecond = targetIntakeSpeed / Constants.INTAKE_INCHES_PER_PULSE;
-        double targetPulsePer100ms = targetPulsePerSecond / 10.0;
-        int targetIntakeClicksPer100ms = (int) targetPulsePer100ms;
-        targetIntakeClicksPer100ms = MathUtil.clamp(
-            targetIntakeClicksPer100ms,
-            Constants.INTAKE_MIN_CLICKS_PER_100MS,
-            Constants.INTAKE_MAX_CLICKS_PER_100MS);
-        intakeMotor.set(ControlMode.Velocity, targetIntakeClicksPer100ms);
+        final double targetIntakeSpeed = this.robotSpeedSupplier.getAsDouble()
+                * Constants.INTAKE_SPEED_TO_DRIVE_SPEED_RATIO;
+        final double targetRevPerSec = targetIntakeSpeed / Constants.INTAKE_INCHES_PER_REVOLUTION;
+        final double targetRPM = MathUtil.clamp(
+                targetRevPerSec * 60.0,
+                Constants.INTAKE_MIN_RPM,
+                Constants.INTAKE_MAX_RPM);
+        this.pidController.setReference(targetRPM, ControlType.kVelocity);
     }
 
     public void stopIntakeMotor() {
-        intakeMotor.set(ControlMode.Velocity, 0.0);
+        this.pidController.setReference(0.0, ControlType.kVelocity);
     }
 
     /**
@@ -86,7 +94,7 @@ public class Intake extends SubsystemBase {
      * @param speed the percent output (-1.0 to 1.0) to apply.
      */
     public void setManualSpeed(final double speed) {
-        this.intakeMotor.set(ControlMode.PercentOutput, speed);
+        this.intakeMotor.set(speed);
     }
 
     /**

@@ -51,14 +51,14 @@ public final class Constants {
     public static final int RIGHT_DRIVE_A_CHANNEL = 8;
     public static final int RIGHT_DRIVE_B_CHANNEL = 9;
     /** Circumfrence divided by Grayhill pulses per revolution. */
-    public static final double DRIVE_INCHES_PER_PULSE = 18.85 /256.0;
+    public static final double DRIVE_INCHES_PER_PULSE = 18.85 / 256.0;
 
     // Shooter constants.
     public static final int SHOOTER_PCM_CHANNEL = 0;
     public static final int SHOOTER_FLYWHEEL_CAN_ID = 32;
 
     public static final int SHOOTER_DEFAULT_VELOCITY = 0;
-    public static final boolean SHOOTER_DEFAULT_HOOD = false; 
+    public static final boolean SHOOTER_DEFAULT_HOOD = false;
 
     // TODO shooting values
     public enum SHOTS {
@@ -69,7 +69,7 @@ public final class Constants {
         public final int velocity;
         public final boolean hood;
 
-        private SHOTS (int velocity, boolean hood) {
+        private SHOTS(int velocity, boolean hood) {
 
             this.velocity = velocity;
             this.hood = hood;
@@ -78,18 +78,18 @@ public final class Constants {
 
     public static final int SHOOTER_VELOCITY_ERROR = 10;
 
-    //Intake constants
+    // Intake constants
     public static final int INTAKE_PCM_CHANNEL = 8;
-    public static final int INTAKE_MOTOR_CAN_ID = 24;
+    public static final int INTAKE_MOTOR_CAN_ID = 7;
     // TODO validate the min and max velocities.
-    /** The minimum intake velocity in Talon SRX native units. */
-    public static final int INTAKE_MIN_CLICKS_PER_100MS = 4000;
-    /** The maximum intake velocity in Talon SRX native units. */
-    public static final int INTAKE_MAX_CLICKS_PER_100MS = 16000;
-    /** Circumfrence divided by encoder pulses per revolution. */
-    public static final double INTAKE_INCHES_PER_PULSE = 6.28 / 2048.0; // TODO verify encoder info
+    /** The minimum intake velocity in RPM. */
+    public static final int INTAKE_MIN_RPM = 600;
+    /** The maximum intake velocity in RPM. */
+    public static final int INTAKE_MAX_RPM = 2200;
+    public static final int INTAKE_ENCODER_CYCLES_PER_ROTATION = 2048; // TODO verify encoder info
     /** The ratio of the intake speed to drive speed is this value:1 */
     public static final double INTAKE_SPEED_TO_DRIVE_SPEED_RATIO = 2.0;
+    public static final double INTAKE_INCHES_PER_REVOLUTION = 6.28;
     public static final int INTAKE_BEAM_BREAK_RECEIVER_DIO = 0;
     public static final long INTAKE_AT_SENSOR_TIME_ADJUSTMENT_MS = 0;
     public static final double MANUAL_INTAKE_DEADBAND = 0.1;
