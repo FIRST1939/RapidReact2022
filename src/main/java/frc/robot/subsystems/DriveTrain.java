@@ -117,7 +117,7 @@ public class DriveTrain extends SubsystemBase {
     sidewinderSolenoid = new Solenoid(PneumaticsModuleType.REVPH, Constants.SIDEWINDER_PCM_CHANNEL);
     sidewinderMotor = new WPI_TalonFX(Constants.SIDEWINDER_MOTOR_CAN_ID);
     sidewinderMotor.configFactoryDefault();
-    sidewinderMotor.configOpenloopRamp(1.5);
+    sidewinderMotor.configOpenloopRamp(0.5);
     // TODO other sidewinder motor config?
     this.sidewinderOverride = sidewinderOverride;
 
