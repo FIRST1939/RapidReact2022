@@ -37,6 +37,7 @@ public final class Constants {
 
     public static final int SIDEWINDER_PCM_CHANNEL = 7;
     public static final int SIDEWINDER_MOTOR_CAN_ID = 30;
+    public static final double SIDEWINDER_kP = 0.05;
 
     /** Sidewinder engages at this left stick x deflection */
     public static final double SIDEWINDER_ENABLE_THRESHOLD = 0.3;

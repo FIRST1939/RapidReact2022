@@ -122,7 +122,7 @@ public class DriveTrain extends SubsystemBase {
     this.sidewinderOverride = sidewinderOverride;
 
     this.navx = new AHRS(SPI.Port.kMXP);
-		this.strafeHorizonatal = new PIDController(0, 0, 0);
+		this.strafeHorizonatal = new PIDController(Constants.SIDEWINDER_kP, 0, 0);
 
   }
 
