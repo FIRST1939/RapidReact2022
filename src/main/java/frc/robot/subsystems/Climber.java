@@ -40,6 +40,8 @@ public class Climber extends SubsystemBase {
         climberMotor.config_kF(0, .10792, 30);
         climberMotor.config_kP(0, .0164, 30);
 
+        
+
         // The climber must be winched before starting the robot.
         setHome();
     }

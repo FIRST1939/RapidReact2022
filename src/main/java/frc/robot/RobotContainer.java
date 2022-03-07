@@ -105,7 +105,10 @@ public class RobotContainer {
     JoystickButton fenderHighButton = new JoystickButton(driverTwo, XboxController.Button.kB.value);
     fenderHighButton.whenPressed(new SetShot(this.shooter, Constants.SHOTS.fenderHigh));
 
-    JoystickButton shooterManualIdleTrigger = new JoystickButton(driverTwo, XboxController.Button.kA.value);
+    JoystickButton cargoRing = new JoystickButton(driverTwo, XboxController.Button.kA.value);
+    cargoRing.whenPressed(new SetShot(this.shooter, Constants.SHOTS.cargoRing));
+
+    JoystickButton shooterManualIdleTrigger = new JoystickButton(driverTwo, XboxController.Button.kX.value);
     shooterManualIdleTrigger.whenActive(new SetShot(this.shooter, Constants.SHOTS.idle));
     
     ShooterIdleTrigger shooterIdleTrigger = new ShooterIdleTrigger(this.robotCargoCount);

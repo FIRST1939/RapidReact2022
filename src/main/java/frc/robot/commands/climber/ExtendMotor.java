@@ -30,6 +30,7 @@ public class ExtendMotor extends CommandBase {
     @Override
     public boolean isFinished () {
 
-        return this.climber.isMotorFullyExtended();
+        //return this.climber.isMotorFullyExtended();
+        return false;
     }
 }

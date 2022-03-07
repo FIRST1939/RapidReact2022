@@ -64,8 +64,9 @@ public final class Constants {
     // TODO shooting values
     public enum SHOTS {
         idle(0, false),
-        fenderLow(2000, true),
-        fenderHigh(4000, false);
+        fenderLow(3000, true),
+        fenderHigh(6000, false),
+        cargoRing(8500, true);
 
         public final int velocity;
         public final boolean hood;
@@ -111,12 +112,12 @@ public final class Constants {
     public static final int CLIMBER_MOTOR_CAN_ID = 31;
     public static final int CLIMBER_PISTON_FORWARD = 6;
     public static final int CLIMBER_PISTON_REVERSE = 9;
-    public static final int CLIMBER_EXTENSION_VELOCITY = 1500; // TODO extension velocity
+    public static final int CLIMBER_EXTENSION_VELOCITY = 4500; // TODO extension velocity
     public static final int CLIMBER_ENCODER_EXTEND_CLICKS = 500000; // TODO encoder extend clicks
 
     // Compressor constants.
     public static final int PNEUMATICS_HUB_CAN_ID = 1;
-    public static final int PNEUMATICS_HUB_MIN_PRESSURE = 60;
+    public static final int PNEUMATICS_HUB_MIN_PRESSURE = 110;
     public static final int PNEUMATICS_HUB_MAX_PRESSURE = 120;
 
     //Lights constants.

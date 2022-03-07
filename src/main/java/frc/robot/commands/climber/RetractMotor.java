@@ -30,6 +30,7 @@ public class RetractMotor extends CommandBase {
     @Override
     public boolean isFinished () {
 
-        return this.climber.isMotorFullyRetracted();
+        //return this.climber.isMotorFullyRetracted();
+        return false;
     }
 }

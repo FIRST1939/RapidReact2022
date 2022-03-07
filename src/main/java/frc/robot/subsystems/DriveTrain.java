@@ -129,6 +129,7 @@ public class DriveTrain extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    //System.out.println(getYaw());
   }
 
   /**
@@ -140,23 +141,29 @@ public class DriveTrain extends SubsystemBase {
 
     // Sidewind above threshold, disengage below, leave as is in gap.
     if ((Math.abs(sidewind) > Constants.SIDEWINDER_ENABLE_THRESHOLD) || this.sidewinderOverride.getAsBoolean()) {
+      if(!this.sidewinderSolenoid.get()){
+        resetYaw();
+      }
       this.sidewinderSolenoid.set(true);
-      resetYaw();
     } else if (Math.abs(sidewind) < Constants.SIDEWINDER_DISABLE_THRESHOLD) {
       this.sidewinderSolenoid.set(false);
     }
-    double arcadeRoation = rotation;
+    double arcadeRotation = 0.85 * rotation;
     if (this.sidewinderSolenoid.get()) {
       sidewinderMotor.set(
           ControlMode.PercentOutput,
           -(sidewind - (Math.signum(sidewind) * Constants.SIDEWINDER_OUTPUT_OFFSET)));
-      if(arcadeRoation == 0.0){
-        arcadeRoation = strafeHorizonatal.calculate(getYaw(), 0.0);
+      
+      /*
+      if(arcadeRotation == 0.0){
+        arcadeRotation = strafeHorizonatal.calculate(getYaw(), 0.0);
       }
+      */
+      
+      
     }
 
-    
-    diffDrive.arcadeDrive(speed, arcadeRoation, true);
+    diffDrive.arcadeDrive(speed, arcadeRotation, true);
   }
 
   /**
