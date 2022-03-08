@@ -147,13 +147,14 @@ public class RobotContainer {
     JoystickButton climberMotorRetract = new JoystickButton(rightStick, 2);
     climberMotorRetract.whileHeld(new RetractMotor(this.climber));
 
-    JoystickButton climberMotorPartiallyExtend = new JoystickButton(rightStick, 3);
-    climberMotorPartiallyExtend.whileHeld(new ExtendMotor(this.climber, Constants.CLIMBER_EXTENSIONS.partialExtend));
+    JoystickButton climberMotorExtend = new JoystickButton(rightStick, 3);
+    climberMotorExtend.whileHeld(new ExtendMotor(this.climber, Constants.CLIMBER_EXTENSIONS.fullExtend));
 
-    JoystickButton climberMotorFullyExtendButton = new JoystickButton(rightStick, 3);
-    JoystickButton climberMotorFullyExtendTrigger = new JoystickButton(rightStick, 1);
-    ClimberFullExtensionTrigger climberFullExtensionTrigger = new ClimberFullExtensionTrigger(climberMotorFullyExtendButton, climberMotorFullyExtendTrigger);
-    climberFullExtensionTrigger.whileActiveContinuous(new ExtendMotor(this.climber, Constants.CLIMBER_EXTENSIONS.fullExtend));
+    JoystickButton climberMotorPartiallyExtend = new JoystickButton(leftStick, 6);
+    climberMotorPartiallyExtend.whenPressed(new ExtendMotor(this.climber, Constants.CLIMBER_EXTENSIONS.partialExtend));
+
+    JoystickButton climberMotorFullyExtendButton = new JoystickButton(leftStick, 7);
+    climberMotorFullyExtendButton.whenPressed(new ExtendMotor(this.climber, Constants.CLIMBER_EXTENSIONS.fullExtend));
 
     JoystickButton climberPistonRetract = new JoystickButton(rightStick, 4);
     climberPistonRetract.whenPressed(new SetPiston(this.climber, (Boolean) false));
