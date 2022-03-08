@@ -92,7 +92,7 @@ public final class Constants {
     /** The ratio of the intake speed to drive speed is this value:1 */
     public static final double INTAKE_SPEED_TO_DRIVE_SPEED_RATIO = 2.0;
     public static final double INTAKE_INCHES_PER_REVOLUTION = 6.28;
-    public static final int INTAKE_BEAM_BREAK_RECEIVER_DIO = 0;
+    public static final int INTAKE_BEAM_BREAK_RECEIVER_DIO = 1;
     public static final long INTAKE_AT_SENSOR_TIME_ADJUSTMENT_MS = 0;
     public static final double MANUAL_INTAKE_DEADBAND = 0.1;
 
