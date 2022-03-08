@@ -63,7 +63,7 @@ public final class Constants {
 
     // TODO shooting values
     public enum SHOTS {
-        idle(0, false),
+        idle(1000, false),
         fenderLow(3000, true),
         fenderHigh(6000, false),
         cargoRing(8500, true);
@@ -78,7 +78,7 @@ public final class Constants {
         }
     }
 
-    public static final int SHOOTER_VELOCITY_ERROR = 10;
+    public static final int SHOOTER_VELOCITY_ERROR = 40;
 
     // Intake constants
     public static final int INTAKE_PCM_CHANNEL = 8;

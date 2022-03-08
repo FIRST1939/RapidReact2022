@@ -9,7 +9,6 @@ import frc.robot.subsystems.Shooter;
  * shooter subsystem. It is used to shoot cargo during telop
  * with driver input of shooting rings.
  */
-// TODO indexer element, dependency, and incorporation
 public class SetShot extends CommandBase {
 
     private final Shooter shooter;
@@ -17,24 +16,26 @@ public class SetShot extends CommandBase {
 
     /**
      * @param shooter the shooter subsystem used by this command
-     * @param shot    the shot type that we are preparing.
+     * @param shot    the shot type that we are preparing. Null for creating a
+     *                command to return to last shot.
      */
-    public SetShot (final Shooter shooter, final Constants.SHOTS shot) {
-
+    public SetShot(final Shooter shooter, final Constants.SHOTS shot) {
         this.shooter = shooter;
         this.shot = shot;
     }
 
     @Override
-    public void initialize () { 
-
-        this.shooter.cargoShot(this.shot); 
+    public void initialize() {
+        if (this.shot == null) {
+            this.shooter.cargoShot();
+        } else {
+            this.shooter.cargoShot(this.shot);
+        }
     }
 
     // Driving with driver input never ends unless interrupted.
     @Override
-    public boolean isFinished () { 
-
-        return true; 
+    public boolean isFinished() {
+        return true;
     }
 }

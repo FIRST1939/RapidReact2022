@@ -29,7 +29,6 @@ import frc.robot.commands.shooter.SetShot;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.RobotCargoCount;
 import frc.robot.subsystems.Shooter;
 import frc.robot.triggers.ShootTrigger;
 import frc.robot.triggers.ShooterActivateTrigger;
@@ -58,7 +57,6 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final JoystickButton sidewinderManualDeploy = new JoystickButton(leftStick, 1);
   private final DriveTrain driveTrain = new DriveTrain(() -> sidewinderManualDeploy.get());
-  private final RobotCargoCount robotCargoCount = RobotCargoCount.getInstance();
   private final Intake intake = new Intake(() -> this.driveTrain.getRate());
   private final Indexer indexer = new Indexer(() -> isIntakeSendingCargo(), () -> isIntakeInManualMode());
   private final Shooter shooter = Shooter.getInstance();
@@ -108,17 +106,15 @@ public class RobotContainer {
     JoystickButton cargoRing = new JoystickButton(driverTwo, XboxController.Button.kA.value);
     cargoRing.whenPressed(new SetShot(this.shooter, Constants.SHOTS.cargoRing));
 
-    JoystickButton shooterManualIdleTrigger = new JoystickButton(driverTwo, XboxController.Button.kX.value);
-    shooterManualIdleTrigger.whenActive(new SetShot(this.shooter, Constants.SHOTS.idle));
-    
-    ShooterIdleTrigger shooterIdleTrigger = new ShooterIdleTrigger(this.robotCargoCount);
+    ShooterIdleTrigger shooterIdleTrigger = new ShooterIdleTrigger();
     shooterIdleTrigger.whenActive(new SetShot(this.shooter, Constants.SHOTS.idle));
+    shooterIdleTrigger.whenInactive(new SetShot(this.shooter, null));
 
     ShooterActivateTrigger shooterActivateTrigger = new ShooterActivateTrigger(this.indexer);
     shooterActivateTrigger.whenActive(new SetShot(this.shooter, this.shooter.getShot()));
 
-    BooleanSupplier shootTriggerSupplier = () -> (driverTwo
-        .getRawAxis(XboxController.Axis.kRightTrigger.value) > Constants.TRIGGER_THRESHOLD);
+    BooleanSupplier shootTriggerSupplier = () -> Math
+        .abs(driverTwo.getRawAxis(XboxController.Axis.kRightTrigger.value)) > Constants.TRIGGER_THRESHOLD;
     ShootTrigger shootTrigger = new ShootTrigger(this.indexer, this.shooter, shootTriggerSupplier);
     shootTrigger.whileActiveContinuous(IndexerShootingState.getInstance(this.indexer));
 
@@ -162,7 +158,7 @@ public class RobotContainer {
     IndexerReadyToShootState.getInstance(this.indexer).schedule();
   }
 
-  private void pressureInit () {
+  private void pressureInit() {
 
     compressor.enableAnalog(Constants.PNEUMATICS_HUB_MIN_PRESSURE, Constants.PNEUMATICS_HUB_MAX_PRESSURE);
   }
