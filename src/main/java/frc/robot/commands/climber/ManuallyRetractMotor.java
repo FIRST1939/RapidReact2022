@@ -4,11 +4,11 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Climber;
 
-public class RetractMotor extends CommandBase {
+public class ManuallyRetractMotor extends CommandBase {
     
     private final Climber climber;
 
-    public RetractMotor (final Climber climber) {
+    public ManuallyRetractMotor (final Climber climber) {
 
         this.climber = climber;
 
@@ -25,11 +25,5 @@ public class RetractMotor extends CommandBase {
     public void end (boolean interrupted) {
 
         this.climber.setMotor(0);
-    }
-
-    @Override
-    public boolean isFinished () {
-
-        return this.climber.getMotorPosition() <= 6000;
     }
 }

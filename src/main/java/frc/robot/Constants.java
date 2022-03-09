@@ -112,12 +112,14 @@ public final class Constants {
     public static final int CLIMBER_MOTOR_CAN_ID = 31;
     public static final int CLIMBER_PISTON_FORWARD = 6;
     public static final int CLIMBER_PISTON_REVERSE = 9;
-    public static final int CLIMBER_RETRACTION_VELOCITY = 1500; // TODO climber retraction velocity
+    public static final int CLIMBER_EXTENSION_VELOCITY = 5000; // TODO climber extension velocity
+    public static final int CLIMBER_RETRACTION_VELOCITY = 5000; // TODO climber retraction velocity
 
     // TODO climber extension values 
     public enum CLIMBER_EXTENSIONS {
-        partialExtend(1500, 22500),
-        fullExtend(3000, 37500);
+        releaseExtend(3000, 100000),
+        partialExtend(5000, 250000),
+        fullExtend(7000, 340000);
 
         public final int velocity;
         public final int distance;

@@ -37,11 +37,11 @@ import frc.robot.triggers.ShooterActivateTrigger;
 import frc.robot.triggers.ShooterIdleTrigger;
 import frc.robot.commands.climber.Climb;
 import frc.robot.commands.climber.ExtendMotor;
-import frc.robot.commands.climber.RetractMotor;
+import frc.robot.commands.climber.ManuallyExtendMotor;
+import frc.robot.commands.climber.ManuallyRetractMotor;
+import frc.robot.commands.climber.SetHome;
 import frc.robot.commands.climber.SetPiston;
 import frc.robot.subsystems.Climber;
-import frc.robot.triggers.ClimbTrigger;
-import frc.robot.triggers.ClimberFullExtensionTrigger;
 import frc.robot.triggers.ManualShootTrigger;
 
 /**
@@ -141,14 +141,13 @@ public class RobotContainer {
     intakeStopGatherButton.whenPressed(new IntakeRetractCommandSelector(this.intake));
 
     JoystickButton climbButton = new JoystickButton(leftStick, 3);
-    ClimbTrigger climbTrigger = new ClimbTrigger(this.climber, climbButton);
-    climbTrigger.whenActive(new Climb(this.climber));
+    climbButton.whenPressed(new Climb(this.climber));
 
     JoystickButton climberMotorRetract = new JoystickButton(rightStick, 2);
-    climberMotorRetract.whileHeld(new RetractMotor(this.climber));
+    climberMotorRetract.whileHeld(new ManuallyRetractMotor(this.climber));
 
     JoystickButton climberMotorExtend = new JoystickButton(rightStick, 3);
-    climberMotorExtend.whileHeld(new ExtendMotor(this.climber, Constants.CLIMBER_EXTENSIONS.fullExtend));
+    climberMotorExtend.whileHeld(new ManuallyExtendMotor(this.climber));
 
     JoystickButton climberPistonRetract = new JoystickButton(rightStick, 4);
     climberPistonRetract.whenPressed(new SetPiston(this.climber, (Boolean) false));
@@ -161,6 +160,9 @@ public class RobotContainer {
 
     JoystickButton climberMotorFullyExtendButton = new JoystickButton(leftStick, 7);
     climberMotorFullyExtendButton.whenPressed(new ExtendMotor(this.climber, Constants.CLIMBER_EXTENSIONS.fullExtend));
+  
+    JoystickButton climberSetHomeButton = new JoystickButton(rightStick, 8);
+    climberSetHomeButton.whenPressed(new SetHome(this.climber));
   }
 
   /**

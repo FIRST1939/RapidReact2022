@@ -64,7 +64,7 @@ public class Indexer extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putBoolean("Indexer BeamBreak: ", this.beamBreak.get());
+    SmartDashboard.putBoolean("Indexer BeamBreak: ", !this.beamBreak.get());
     Command current = getCurrentCommand();
     SmartDashboard.putString("Indexer Active State: ", current != null ? current.getName() : "<null>");
   }
