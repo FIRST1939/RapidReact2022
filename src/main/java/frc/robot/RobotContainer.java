@@ -40,7 +40,7 @@ import frc.robot.commands.climber.RetractMotor;
 import frc.robot.commands.climber.SetPiston;
 import frc.robot.subsystems.Climber;
 import frc.robot.triggers.ClimbTrigger;
-import frc.robot.triggers.ClimberFullExtensionTrigger;
+
 import frc.robot.triggers.ManualShootTrigger;
 
 /**
