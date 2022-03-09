@@ -5,6 +5,7 @@
 package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.commands.PostLoopCommandScheduler;
 import frc.robot.subsystems.Intake;
 
 public class IntakeGatheringSendState extends CommandBase {
@@ -41,9 +42,11 @@ public class IntakeGatheringSendState extends CommandBase {
   public void end(boolean interrupted) {
     if (!this.intake.isManualMode()) {
       if (interrupted) {
-        IntakeStowedSendState.getInstance(this.intake).schedule();
+        PostLoopCommandScheduler.addCommandToSchedule(
+            IntakeStowedSendState.getInstance(this.intake));
       } else {
-        IntakeGatheringEmptyState.getInstance(this.intake).schedule();
+        PostLoopCommandScheduler.addCommandToSchedule(
+            IntakeGatheringEmptyState.getInstance(this.intake));
       }
     }
   }

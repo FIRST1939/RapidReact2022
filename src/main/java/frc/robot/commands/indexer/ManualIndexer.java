@@ -8,6 +8,7 @@ import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
+import frc.robot.commands.PostLoopCommandScheduler;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.RobotCargoCount;
 import frc.robot.triggers.ManualShootTrigger;
@@ -56,6 +57,7 @@ public class ManualIndexer extends CommandBase {
     // machine with this assumption.
     RobotCargoCount.getInstance().decrement();
     RobotCargoCount.getInstance().decrement();
-    IndexerEmptyState.getInstance(this.indexer).schedule();
+    PostLoopCommandScheduler.addCommandToSchedule(
+        IndexerEmptyState.getInstance(this.indexer));
   }
 }

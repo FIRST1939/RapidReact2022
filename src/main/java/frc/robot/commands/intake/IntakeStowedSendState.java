@@ -5,6 +5,7 @@
 package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.commands.PostLoopCommandScheduler;
 import frc.robot.subsystems.Intake;
 
 public class IntakeStowedSendState extends CommandBase {
@@ -45,7 +46,8 @@ public class IntakeStowedSendState extends CommandBase {
   public void end(boolean interrupted) {
     this.intake.stopIntakeMotor();
     if (!this.intake.isManualMode()) {
-      IntakeStowedEmptyState.getInstance(this.intake).schedule();
+      PostLoopCommandScheduler.addCommandToSchedule(
+          IntakeStowedEmptyState.getInstance(this.intake));
     }
   }
 

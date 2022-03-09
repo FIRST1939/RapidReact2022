@@ -5,6 +5,7 @@
 package frc.robot.commands.indexer;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.commands.PostLoopCommandScheduler;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.RobotCargoCount;
 
@@ -86,7 +87,8 @@ public class IndexerShootingState extends CommandBase {
     this.indexer.stop();
     RobotCargoCount.getInstance().decrement();
     if (!this.indexer.isManualMode()) {
-      IndexerEmptyState.getInstance(this.indexer).schedule();
+      PostLoopCommandScheduler.addCommandToSchedule(
+          IndexerEmptyState.getInstance(this.indexer));
     }
   }
 }

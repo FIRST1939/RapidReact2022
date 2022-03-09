@@ -6,6 +6,7 @@ package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
+import frc.robot.commands.PostLoopCommandScheduler;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.RobotCargoCount;
 
@@ -50,11 +51,14 @@ public class IntakeAtSensorState extends CommandBase {
   public void end(boolean interrupted) {
     if (!this.intake.isManualMode()) {
       if (RobotCargoCount.getInstance().isFull()) {
-        IntakeStowedHoldState.getInstance(this.intake).schedule();
+        PostLoopCommandScheduler.addCommandToSchedule(
+            IntakeStowedHoldState.getInstance(this.intake));
       } else if (interrupted) {
-        IntakeStowedSendState.getInstance(this.intake).schedule();
+        PostLoopCommandScheduler.addCommandToSchedule(
+            IntakeStowedSendState.getInstance(this.intake));
       } else {
-        IntakeGatheringSendState.getInstance(this.intake);
+        PostLoopCommandScheduler.addCommandToSchedule(
+            IntakeGatheringSendState.getInstance(this.intake));
       }
     }
   }
