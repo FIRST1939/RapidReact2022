@@ -9,6 +9,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
@@ -40,9 +41,6 @@ public class Climber extends SubsystemBase {
         climberMotor.config_kF(0, .10792, 30);
         climberMotor.config_kP(0, .0164, 30);
 
-        
-
-        // The climber must be winched before starting the robot.
         setHome();
     }
 
@@ -53,6 +51,11 @@ public class Climber extends SubsystemBase {
 
         if (climberInstance == null) { climberInstance = new Climber(); }
         return climberInstance;
+    }
+
+    @Override
+    public void periodic () {
+        SmartDashboard.putNumber("Climber Encoder Clicks: ", this.getMotorPosition());
     }
 
     public void setMotor (int velocity) {
@@ -77,24 +80,14 @@ public class Climber extends SubsystemBase {
         climberPiston.set(pistonValue);
     }
 
-    private void setHome () {
+    public void setHome () {
         
         climberMotor.setSelectedSensorPosition(0);
     }
 
-    private double getMotorPosition () {
+    public double getMotorPosition () {
 
         return climberMotor.getSelectedSensorPosition();
-    }
-
-    public boolean isMotorFullyRetracted () {
-
-        return getMotorPosition() <= 0;
-    }
-
-    public boolean isMotorFullyExtended () {
-
-        return getMotorPosition() >= Constants.CLIMBER_ENCODER_EXTEND_CLICKS;
     }
 
     public boolean isPistonExtended () {

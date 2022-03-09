@@ -112,8 +112,24 @@ public final class Constants {
     public static final int CLIMBER_MOTOR_CAN_ID = 31;
     public static final int CLIMBER_PISTON_FORWARD = 6;
     public static final int CLIMBER_PISTON_REVERSE = 9;
-    public static final int CLIMBER_EXTENSION_VELOCITY = 4500; // TODO extension velocity
-    public static final int CLIMBER_ENCODER_EXTEND_CLICKS = 500000; // TODO encoder extend clicks
+    public static final int CLIMBER_EXTENSION_VELOCITY = 5000; // TODO climber extension velocity
+    public static final int CLIMBER_RETRACTION_VELOCITY = 5000; // TODO climber retraction velocity
+
+    // TODO climber extension values 
+    public enum CLIMBER_EXTENSIONS {
+        releaseExtend(3000, 100000),
+        partialExtend(5000, 250000),
+        fullExtend(7000, 340000);
+
+        public final int velocity;
+        public final int distance;
+
+        private CLIMBER_EXTENSIONS (int velocity, int distance) {
+
+            this.velocity = velocity;
+            this.distance = distance;
+        }
+    }
 
     // Compressor constants.
     public static final int PNEUMATICS_HUB_CAN_ID = 1;
