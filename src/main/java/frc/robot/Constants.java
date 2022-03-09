@@ -104,6 +104,7 @@ public final class Constants {
     public static final int CLIMBER_PISTON_FORWARD = 6;
     public static final int CLIMBER_PISTON_REVERSE = 9;
     public static final int CLIMBER_RETRACTION_VELOCITY = 1500; // TODO climber retraction velocity
+    public static final int CLIMBER_RETRACTION_BOTTOM = 200; // TODO climber bottom
 
     // TODO climber extension values 
     public enum CLIMBER_EXTENSIONS {
