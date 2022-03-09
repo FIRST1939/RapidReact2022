@@ -2,6 +2,8 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -48,6 +50,9 @@ public class Intake extends SubsystemBase {
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
+        SmartDashboard.putBoolean("Intake BeamBreak: ", this.beamBreak.get());
+        Command current = getCurrentCommand();
+        SmartDashboard.putString("Intake Active State: ", current != null ? current.getName() : "<null>");
     }
 
     public void extendIntake() {
@@ -67,18 +72,17 @@ public class Intake extends SubsystemBase {
      * is moving with enforcement of minimum and maximum speeds.
      */
     public void setIntakeSpeed() {
-        final double targetIntakeSpeed = this.robotSpeedSupplier.getAsDouble()
-                * Constants.INTAKE_SPEED_TO_DRIVE_SPEED_RATIO;
+        final double targetIntakeSpeed = this.robotSpeedSupplier.getAsDouble() * Constants.INTAKE_SPEED_TO_DRIVE_SPEED_RATIO;
         final double targetRevPerSec = targetIntakeSpeed / Constants.INTAKE_INCHES_PER_REVOLUTION;
         final double targetRPM = MathUtil.clamp(
                 targetRevPerSec * 60.0,
                 Constants.INTAKE_MIN_RPM,
                 Constants.INTAKE_MAX_RPM);
-        this.pidController.setReference(targetRPM, ControlType.kVelocity);
+        this.pidController.setReference(-targetRPM, ControlType.kVelocity);
     }
 
     public void stopIntakeMotor() {
-        this.pidController.setReference(0.0, ControlType.kVelocity);
+        this.pidController.setReference(0.0, ControlType.kDutyCycle);
     }
 
     /**

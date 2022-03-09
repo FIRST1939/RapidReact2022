@@ -102,7 +102,7 @@ public final class Constants {
 
     public static final int INDEXER_BEAM_BREAK_EMITTER_DIO = 1;
     public static final int INDEXER_BEAM_BREAK_RECEIVER_DIO = 2;
-    public static final double INDEXER_SHOOTER_FEED_VELOCITY = 100;
+    public static final double INDEXER_SHOOTER_FEED_VELOCITY = -1000;
     public static final double INDEXER_RECEIVE_VELOCITY = 100;
     public static final double MANUAL_INDEXER_DEADBAND = 0.1;
     public static final double MANUAL_INDEXER_FEED_OUTPUT = 0.5;

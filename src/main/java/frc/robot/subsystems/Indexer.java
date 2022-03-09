@@ -13,6 +13,8 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -62,6 +64,9 @@ public class Indexer extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putBoolean("Indexer BeamBreak: ", this.beamBreak.get());
+    Command current = getCurrentCommand();
+    SmartDashboard.putString("Indexer Active State: ", current != null ? current.getName() : "<null>");
   }
 
   /**
@@ -84,7 +89,7 @@ public class Indexer extends SubsystemBase {
    * Stops the indexer motor and the movement of cargo in the indexer.
    */
   public void stop() {
-    this.pidController.setReference(0.0, ControlType.kVelocity);
+    this.pidController.setReference(0.0, ControlType.kDutyCycle);
   }
 
   /**

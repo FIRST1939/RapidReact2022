@@ -118,7 +118,7 @@ public class RobotContainer {
     shooterActivateTrigger.whenActive(new SetShot(this.shooter, this.shooter.getShot()));
 
     BooleanSupplier shootTriggerSupplier = () -> (driverTwo
-        .getRawAxis(XboxController.Axis.kRightTrigger.value) > Constants.TRIGGER_THRESHOLD);
+        .getRawAxis(Math.abs(XboxController.Axis.kRightTrigger.value)) > Constants.TRIGGER_THRESHOLD);
     ShootTrigger shootTrigger = new ShootTrigger(this.indexer, this.shooter, shootTriggerSupplier);
     shootTrigger.whileActiveContinuous(IndexerShootingState.getInstance(this.indexer));
 

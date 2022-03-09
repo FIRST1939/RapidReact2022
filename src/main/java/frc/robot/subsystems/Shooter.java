@@ -17,7 +17,7 @@ public class Shooter extends SubsystemBase {
     private final Solenoid shooterSolenoid;
     private final WPI_TalonFX shooterFlywheel;
 
-    private Constants.SHOTS shot;
+    private Constants.SHOTS shot = Constants.SHOTS.fenderHigh;
 
     // Creates a new shooter.
     private Shooter () {
