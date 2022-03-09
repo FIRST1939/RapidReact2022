@@ -7,6 +7,7 @@ package frc.robot.commands.intake;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.commands.PostLoopCommandScheduler;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.RobotCargoCount;
 
@@ -46,6 +47,7 @@ public class ManualIntakeRollerBelts extends CommandBase {
     // machine with this assumption.
     RobotCargoCount.getInstance().decrement();
     RobotCargoCount.getInstance().decrement();
-    IntakeGatheringEmptyState.getInstance(this.intake).schedule();
+    PostLoopCommandScheduler.addCommandToSchedule(
+        IntakeGatheringEmptyState.getInstance(this.intake));
   }
 }
