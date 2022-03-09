@@ -4,8 +4,10 @@
 
 package frc.robot.commands.auto;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.commands.intake.IntakeGatheringEmptyState;
 import frc.robot.commands.shooter.SetShot;
@@ -27,16 +29,23 @@ public class LeftSide2CargoNoTrajectory extends SequentialCommandGroup {
       final Intake intake,
       final Indexer indexer,
       final Shooter shooter) {
-    // TODO add dashboard settable WaitCommand to start.
     addCommands(
+        // Configurable wait for alliance partner.
+        new WaitCommand(SmartDashboard.getNumber("Auto Start Wait", 0.0)),
+        // Gather, move to cargo and set for fender high.
         new ParallelCommandGroup(
             IntakeGatheringEmptyState.getInstance(intake),
             new DriveStraightDistance(48.00, driveTrain),
             new SetShot(shooter, Constants.SHOTS.fenderHigh)),
+        // Drive to point straight out from the fender.
         new DriveStraightDistance(-100.0, driveTrain),
+        // Turn square to the fender.
         new DriveTurnToRelativeAngle(-22.5, driveTrain),
-        new DriveStraightDistance(-50.0, driveTrain),
-        new AutoModeShooter(2, indexer, shooter),
+        // Drive to fender with timeout because we may hit and not reach distance.
+        new DriveStraightDistance(-50.0, driveTrain).withTimeout(3),
+        // Shoot with timeout in case of jam.
+        new AutoModeShooter(2, indexer, shooter).withTimeout(5),
+        // Exit tarmac.
         new DriveStraightDistance(150.0, driveTrain));
   }
 }
