@@ -25,6 +25,7 @@ import frc.robot.commands.intake.IntakeRetractCommandSelector;
 import frc.robot.commands.intake.IntakeStowedEmptyState;
 import frc.robot.commands.intake.IntakeStowedSendState;
 import frc.robot.commands.intake.ManualIntakeRollerBelts;
+import frc.robot.commands.shooter.ReturnToPriorShot;
 import frc.robot.commands.shooter.SetShot;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Indexer;
@@ -113,6 +114,7 @@ public class RobotContainer {
     
     ShooterIdleTrigger shooterIdleTrigger = new ShooterIdleTrigger(this.robotCargoCount);
     shooterIdleTrigger.whenActive(new SetShot(this.shooter, Constants.SHOTS.idle));
+    shooterIdleTrigger.whenInactive(new ReturnToPriorShot(this.shooter));
 
     ShooterActivateTrigger shooterActivateTrigger = new ShooterActivateTrigger(this.indexer);
     shooterActivateTrigger.whenActive(new SetShot(this.shooter, this.shooter.getShot()));
