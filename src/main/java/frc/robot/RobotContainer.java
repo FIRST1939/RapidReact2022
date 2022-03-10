@@ -37,9 +37,9 @@ import frc.robot.triggers.ShootTrigger;
 import frc.robot.triggers.ShooterActivateTrigger;
 import frc.robot.triggers.ShooterIdleTrigger;
 import frc.robot.commands.climber.Climb;
+import frc.robot.commands.climber.GetToPosition;
+import frc.robot.commands.climber.RetractMotor;
 import frc.robot.commands.climber.ExtendMotor;
-import frc.robot.commands.climber.ManuallyExtendMotor;
-import frc.robot.commands.climber.ManuallyRetractMotor;
 import frc.robot.commands.climber.SetHome;
 import frc.robot.commands.climber.SetPiston;
 import frc.robot.subsystems.Climber;
@@ -141,14 +141,11 @@ public class RobotContainer {
     JoystickButton intakeStopGatherButton = new JoystickButton(driverTwo, XboxController.Button.kLeftBumper.value);
     intakeStopGatherButton.whenPressed(new IntakeRetractCommandSelector(this.intake));
 
-    JoystickButton climbButton = new JoystickButton(leftStick, 3);
-    climbButton.whenPressed(new Climb(this.climber));
-
     JoystickButton climberMotorRetract = new JoystickButton(rightStick, 2);
-    climberMotorRetract.whileHeld(new ManuallyRetractMotor(this.climber));
+    climberMotorRetract.whileHeld(new RetractMotor(this.climber));
 
     JoystickButton climberMotorExtend = new JoystickButton(rightStick, 3);
-    climberMotorExtend.whileHeld(new ManuallyExtendMotor(this.climber));
+    climberMotorExtend.whileHeld(new ExtendMotor(this.climber));
 
     JoystickButton climberPistonRetract = new JoystickButton(rightStick, 4);
     climberPistonRetract.whenPressed(new SetPiston(this.climber, (Boolean) false));
@@ -156,11 +153,14 @@ public class RobotContainer {
     JoystickButton climberPistonExtend = new JoystickButton(rightStick, 5);
     climberPistonExtend.whenPressed(new SetPiston(this.climber, (Boolean) true));
 
+    JoystickButton climbButton = new JoystickButton(leftStick, 3);
+    climbButton.whenPressed(new Climb(this.climber));
+
     JoystickButton climberMotorPartiallyExtend = new JoystickButton(leftStick, 6);
-    climberMotorPartiallyExtend.whenPressed(new ExtendMotor(this.climber, Constants.CLIMBER_EXTENSIONS.partialExtend));
+    climberMotorPartiallyExtend.whenPressed(new GetToPosition(this.climber, Constants.CLIMBER_EXTENSIONS.partialExtend));
 
     JoystickButton climberMotorFullyExtendButton = new JoystickButton(leftStick, 7);
-    climberMotorFullyExtendButton.whenPressed(new ExtendMotor(this.climber, Constants.CLIMBER_EXTENSIONS.fullExtend));
+    climberMotorFullyExtendButton.whenPressed(new GetToPosition(this.climber, Constants.CLIMBER_EXTENSIONS.fullExtend));
   
     JoystickButton climberSetHomeButton = new JoystickButton(rightStick, 8);
     climberSetHomeButton.whenPressed(new SetHome(this.climber));

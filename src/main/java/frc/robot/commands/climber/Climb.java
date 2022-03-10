@@ -15,11 +15,11 @@ public class Climb extends SequentialCommandGroup {
 
         // TODO climbing process
         addCommands(
-            new ExtendMotor(this.climber, Constants.CLIMBER_EXTENSIONS.partialExtend),
+            new GetToPosition(this.climber, Constants.CLIMBER_EXTENSIONS.partialExtend),
             new WaitCommand(.5),
             new SetPiston(this.climber, (Boolean) true),
             new WaitCommand(.5),
-            new ExtendMotor(this.climber, Constants.CLIMBER_EXTENSIONS.fullExtend),
+            new GetToPosition(this.climber, Constants.CLIMBER_EXTENSIONS.fullExtend),
             new WaitCommand(.5),
             new SetPiston(this.climber, (Boolean) false),
             new WaitCommand(1.5),
