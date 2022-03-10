@@ -13,7 +13,6 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.SPI;
@@ -73,7 +72,7 @@ public class DriveTrain extends SubsystemBase {
   private final AHRS navx;
 
   private final BooleanSupplier sidewinderOverride;
-  private PIDController strafeHorizonatal;
+  //private final PIDController strafeHorizonatal = new PIDController(Constants.SIDEWINDER_kP, 0, 0);
 
   /**
    * Creates a new drive train.
@@ -123,7 +122,6 @@ public class DriveTrain extends SubsystemBase {
     this.sidewinderOverride = sidewinderOverride;
 
     this.navx = new AHRS(SPI.Port.kMXP);
-		this.strafeHorizonatal = new PIDController(Constants.SIDEWINDER_kP, 0, 0);
 
     SmartDashboard.putNumber("Current Drawing SparkMax 1: ", left1.getOutputCurrent());
     SmartDashboard.putNumber("Current Drawing SparkMax 2: ", left2.getOutputCurrent());
