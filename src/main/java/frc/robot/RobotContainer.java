@@ -69,6 +69,9 @@ public class RobotContainer {
 
   private final Compressor compressor = new Compressor(Constants.PNEUMATICS_HUB_CAN_ID, PneumaticsModuleType.REVPH);
 
+  private Command intakeCommandOnAutoExit = null;
+  private Command indexerCommandOnAutoExit = null;
+
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -186,6 +189,28 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     return new LeftSide2CargoNoTrajectory(driveTrain, intake, indexer, shooter);
+  }
+
+  /**
+   * To be used in conjunction with restartAutoExitStateCommands to manage the
+   * state machine transition from auto to teleop mode.
+   */
+  public void stashAutoExitStateCommands() {
+    this.intakeCommandOnAutoExit = this.intake.getCurrentCommand();
+    this.indexerCommandOnAutoExit = this.indexer.getCurrentCommand();
+  }
+
+  public void restartAutoExitStateCommands() {
+    if ((this.intakeCommandOnAutoExit != null)
+        && (this.intake.getCurrentCommand() == null)) {
+      this.intakeCommandOnAutoExit.schedule();
+    }
+    if ((this.indexerCommandOnAutoExit != null)
+        && (this.indexer.getCurrentCommand() == null)) {
+      this.indexerCommandOnAutoExit.schedule();
+    }
+    this.intakeCommandOnAutoExit = null;
+    this.indexerCommandOnAutoExit = null;
   }
 
   /**
