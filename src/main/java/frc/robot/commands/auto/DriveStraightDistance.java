@@ -4,6 +4,7 @@
 
 package frc.robot.commands.auto;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.DriveTrain;
@@ -15,6 +16,8 @@ import frc.robot.subsystems.DriveTrain;
 public class DriveStraightDistance extends CommandBase {
   private final boolean forward;
   private final double absInches;
+  // Divide absInches into accel, cruise, and decel sections.
+  private final double[] sectionAbsInches = new double[3];
   private final DriveTrain driveTrain;
 
   /**
@@ -25,6 +28,7 @@ public class DriveStraightDistance extends CommandBase {
   public DriveStraightDistance(final double inches, final DriveTrain driveTrain) {
     this.forward = inches >= 0.0;
     this.absInches = Math.abs(inches);
+    computeSections();
     this.driveTrain = driveTrain;
     addRequirements(this.driveTrain);
   }
@@ -44,8 +48,14 @@ public class DriveStraightDistance extends CommandBase {
     if (!forward) {
       turningValue = -turningValue;
     }
+    double power = Constants.DRIVE_AUTO_STRAIGHT_POWER;
+    double distSoFar = this.driveTrain.getDistance();
+    if ((distSoFar <= this.sectionAbsInches[0])
+        || (distSoFar > (this.sectionAbsInches[0] + this.sectionAbsInches[1]))) {
+      power = power / 2.0;
+    }
     this.driveTrain.arcadeDrive(
-        forward ? Constants.DRIVE_AUTO_STRAIGHT_POWER : -Constants.DRIVE_AUTO_STRAIGHT_POWER,
+        forward ? power : -power,
         turningValue,
         0.0);
   }
@@ -60,5 +70,19 @@ public class DriveStraightDistance extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     this.driveTrain.stop();
+  }
+
+  private void computeSections() {
+    // Start with accel and decel taking 20% each.
+    double accelDecelLen = this.absInches * 0.2;
+    // Clamp to at least 8 inches and at most 16 inches.
+    accelDecelLen = MathUtil.clamp(accelDecelLen, 8.0, 16.0);
+    // Make sure a low clamp does not extend the total distance.
+    accelDecelLen = accelDecelLen * 2.0 <= this.absInches
+        ? accelDecelLen
+        : this.absInches / 2.0;
+    this.sectionAbsInches[0] = accelDecelLen;
+    this.sectionAbsInches[1] = absInches - accelDecelLen - accelDecelLen;
+    this.sectionAbsInches[2] = accelDecelLen;
   }
 }
