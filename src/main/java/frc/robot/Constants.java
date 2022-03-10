@@ -123,15 +123,15 @@ public final class Constants {
     public static final int CLIMBER_RETRACTION_VELOCITY = 5000; // TODO climber retraction velocity
 
     // TODO climber extension values 
-    public enum CLIMBER_EXTENSIONS {
-        releaseExtend(3000, 100000),
-        partialExtend(5000, 250000),
-        fullExtend(7000, 340000);
+    public enum CLIMBER_POSITIONS {
+        release(3000, 100000),
+        partial(5000, 250000),
+        full(7000, 340000);
 
         public final int velocity;
         public final int distance;
 
-        private CLIMBER_EXTENSIONS (int velocity, int distance) {
+        private CLIMBER_POSITIONS (int velocity, int distance) {
 
             this.velocity = velocity;
             this.distance = distance;
