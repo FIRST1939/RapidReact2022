@@ -7,12 +7,10 @@ import frc.robot.subsystems.Climber;
 public class ExtendMotor extends CommandBase {
     
     private final Climber climber;
-    private final Constants.CLIMBER_EXTENSIONS extension;
 
-    public ExtendMotor (final Climber climber, final Constants.CLIMBER_EXTENSIONS extension) {
+    public ExtendMotor (final Climber climber) {
 
         this.climber = climber;
-        this.extension = extension;
 
         addRequirements(this.climber);
     }
@@ -20,18 +18,12 @@ public class ExtendMotor extends CommandBase {
     @Override
     public void execute () {
 
-        this.climber.setMotor(extension.velocity);
+        this.climber.setMotor(Constants.CLIMBER_EXTENSION_VELOCITY);
     }
 
     @Override
     public void end (boolean interrupted) {
 
         this.climber.setMotor(0);
-    }
-
-    @Override
-    public boolean isFinished () {
-
-        return this.climber.getMotorPosition() >= extension.distance;
     }
 }
