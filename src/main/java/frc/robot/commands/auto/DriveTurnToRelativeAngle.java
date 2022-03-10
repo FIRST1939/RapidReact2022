@@ -21,7 +21,7 @@ public class DriveTurnToRelativeAngle extends PIDCommand {
         // Set reference to target
         relativeAngle,
         // Pipe output to turn robot
-        output -> driveTrain.arcadeDrive(0.0, output, 0.0),
+        output -> useOutput(driveTrain, output),
         // Require the drive
         driveTrain);
 
@@ -50,5 +50,12 @@ public class DriveTurnToRelativeAngle extends PIDCommand {
   public boolean isFinished() {
     // End when the controller is at the reference.
     return getController().atSetpoint();
+  }
+
+  private static void useOutput(final DriveTrain dt, final double pidControllerOutput) {
+    double output = (pidControllerOutput >= 0)
+        ? pidControllerOutput + Constants.DRIVE_AUTO_TURN_TO_ANGLE_KF
+        : pidControllerOutput - Constants.DRIVE_AUTO_TURN_TO_ANGLE_KF;
+    dt.arcadeDrive(0.0, output, 0.0);
   }
 }

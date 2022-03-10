@@ -57,7 +57,8 @@ public final class Constants {
     public static final double DRIVE_AUTO_GYRO_STRAIGHT_KP = 0.005;
     public static final double DRIVE_AUTO_STRAIGHT_POWER = 0.7;
     /** The in place turn to angle PID p value. i and d are 0. */
-    public static final double DRIVE_AUTO_TURN_TO_ANGLE_KP = 1.0;
+    public static final double DRIVE_AUTO_TURN_TO_ANGLE_KP = 0.031;
+    public static final double DRIVE_AUTO_TURN_TO_ANGLE_KF = 0.2;
     public static final double DRIVE_AUTO_TURN_TO_ANGLE_TOL_DEG = 5.0;
     public static final double DRIVE_AUTO_TURN_TO_ANGLE_TURN_RATE_TOL_DEG_PER_SEC = 10.0;
 
