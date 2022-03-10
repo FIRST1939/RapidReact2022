@@ -7,10 +7,10 @@ import frc.robot.subsystems.Climber;
 public class GetToPosition extends CommandBase {
     
     private final Climber climber;
-    private final Constants.CLIMBER_EXTENSIONS extension;
+    private final Constants.CLIMBER_POSITIONS extension;
     private int direction = 1;
 
-    public GetToPosition (final Climber climber, final Constants.CLIMBER_EXTENSIONS extension) {
+    public GetToPosition (final Climber climber, final Constants.CLIMBER_POSITIONS extension) {
 
         this.climber = climber;
         this.extension = extension;
