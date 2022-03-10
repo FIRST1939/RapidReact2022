@@ -26,10 +26,4 @@ public class RetractMotor extends CommandBase {
 
         this.climber.setMotor(0);
     }
-
-    @Override
-    public boolean isFinished () {
-
-        return this.climber.getMotorPosition() <= 6000;
-    }
 }
