@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -124,12 +125,26 @@ public class DriveTrain extends SubsystemBase {
     this.navx = new AHRS(SPI.Port.kMXP);
 		this.strafeHorizonatal = new PIDController(Constants.SIDEWINDER_kP, 0, 0);
 
+    SmartDashboard.putNumber("Current Drawing SparkMax 1: ", left1.getOutputCurrent());
+    SmartDashboard.putNumber("Current Drawing SparkMax 2: ", left2.getOutputCurrent());
+    SmartDashboard.putNumber("Current Drawing SparkMax 3: ", left3.getOutputCurrent());
+    SmartDashboard.putNumber("Current Drawing SparkMax 4: ", right1.getOutputCurrent());
+    SmartDashboard.putNumber("Current Drawing SparkMax 5: ", right2.getOutputCurrent());
+    SmartDashboard.putNumber("Current Drawing SparkMax 6: ", right3.getOutputCurrent());
+
+    //SmartDashboard.putNumber("Left Encoder: ", right);
+    //SmartDashboard.putNumber("Right Encoder: ", right);
+
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     //System.out.println(getYaw());
+    SmartDashboard.putNumber("Distance from Encoders: ", this.getDistance());
+    SmartDashboard.putNumber("Left Encoder: ", this.leftEncoder.getDistance());
+    SmartDashboard.putNumber("Right Encoder: ", this.rightEncoder.getDistance());
+    
   }
 
   /**
@@ -189,7 +204,8 @@ public class DriveTrain extends SubsystemBase {
    *         {@link #resetDistance()} call.
    */
   public double getDistance() {
-    return (this.leftEncoder.getDistance() + this.rightEncoder.getDistance()) / 2.0;
+    //return (this.leftEncoder.getDistance() + this.rightEncoder.getDistance()) / 2.0;
+    return this.leftEncoder.getDistance();
   }
 
   /**
@@ -199,7 +215,8 @@ public class DriveTrain extends SubsystemBase {
    * @return the rate of travel in inches per second.
    */
   public double getRate() {
-    return (this.leftEncoder.getRate() + this.rightEncoder.getRate()) / 2.0;
+    //return (this.leftEncoder.getRate() + this.rightEncoder.getRate()) / 2.0;
+    return this.leftEncoder.getRate();
   }
 
   /**

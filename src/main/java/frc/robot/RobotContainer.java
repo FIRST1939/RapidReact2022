@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.DriveWithInput;
 
 import frc.robot.commands.ToggleIntakeIndexerManualMode;
+import frc.robot.commands.auto.LeftSide2CargoNoTrajectory;
 import frc.robot.commands.indexer.IndexerReadyToShootState;
 import frc.robot.commands.indexer.IndexerShootingState;
 import frc.robot.commands.indexer.ManualIndexer;
@@ -184,7 +185,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return null;
+    return new LeftSide2CargoNoTrajectory(driveTrain, intake, indexer, shooter);
   }
 
   /**

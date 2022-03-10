@@ -34,9 +34,9 @@ public class LeftSide2CargoNoTrajectory extends SequentialCommandGroup {
         new WaitCommand(SmartDashboard.getNumber("Auto Start Wait", 0.0)),
         // Gather, move to cargo and set for fender high.
         new ParallelCommandGroup(
-            IntakeGatheringEmptyState.getInstance(intake),
+            //IntakeGatheringEmptyState.getInstance(intake),
             new DriveStraightDistance(48.00, driveTrain),
-            new SetShot(shooter, Constants.SHOTS.fenderHigh)),
+            new SetShot(shooter, Constants.SHOTS.fenderHigh)).withTimeout(2),
         // Drive to point straight out from the fender.
         new DriveStraightDistance(-100.0, driveTrain),
         // Turn square to the fender.
