@@ -138,7 +138,6 @@ public class DriveTrain extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    //System.out.println(getYaw());
     SmartDashboard.putNumber("Distance from Encoders: ", this.getDistance());
     SmartDashboard.putNumber("Left Encoder: ", this.leftEncoder.getDistance());
     SmartDashboard.putNumber("Right Encoder: ", this.rightEncoder.getDistance());
@@ -154,9 +153,11 @@ public class DriveTrain extends SubsystemBase {
 
     // Sidewind above threshold, disengage below, leave as is in gap.
     if ((Math.abs(sidewind) > Constants.SIDEWINDER_ENABLE_THRESHOLD) || this.sidewinderOverride.getAsBoolean()) {
-      if(!this.sidewinderSolenoid.get()){
-        resetYaw();
-      }
+      /*
+       * if (!this.sidewinderSolenoid.get()) {
+       * resetHeading();
+       * }
+       */
       this.sidewinderSolenoid.set(true);
     } else if (Math.abs(sidewind) < Constants.SIDEWINDER_DISABLE_THRESHOLD) {
       this.sidewinderSolenoid.set(false);
@@ -168,11 +169,10 @@ public class DriveTrain extends SubsystemBase {
           -(sidewind - (Math.signum(sidewind) * Constants.SIDEWINDER_OUTPUT_OFFSET)));
       
       /*
-      if(arcadeRotation == 0.0){
-        arcadeRotation = strafeHorizonatal.calculate(getYaw(), 0.0);
-      }
+       * if(arcadeRotation == 0.0){
+       * arcadeRotation = strafeHorizonatal.calculate(getHeading(), 0.0);
+       * }
       */
-      
       
     }
 
@@ -218,13 +218,41 @@ public class DriveTrain extends SubsystemBase {
   }
 
   /**
+   * Configures the getHeading method to return 0. For time limited robot oriented
+   * movements, prefer this method over resetYaw.
+   */
+  public void resetHeading() {
+    this.navx.setAngleAdjustment(-getYaw());
+  }
+
+  /**
+   * Returns the current adjusted robot oriented heading. For time limited robot
+   * oriented movements, prefer this method over getYaw.
+   * 
+   * @return the current robot oriented heading.
+   */
+  public double getHeading() {
+    return this.navx.getAngle();
+  }
+
+  /**
    * Resets the robot's yaw to 0.
+   * 
+   * <p>
+   * WARNING: Use this only in extreme cases. Sometimes the reset can take time
+   * and getYaw could return non-zero values for a short time after this is
+   * called. For time limited robot oriented movements, prefer resetHeading and
+   * getHeading.
+   * </p>
    */
   public void resetYaw() {
     this.navx.reset();
   }
 
   /**
+   * This should rarely be used. For time limited robot oriented movements, prefer
+   * resetHeading and getHeading.
+   * 
    * @return the current yaw value in degrees (-180 to 180).
    */
   public float getYaw() {

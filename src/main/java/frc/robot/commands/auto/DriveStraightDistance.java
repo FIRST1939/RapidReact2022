@@ -37,13 +37,13 @@ public class DriveStraightDistance extends CommandBase {
   @Override
   public void initialize() {
     this.driveTrain.resetDistance();
-    this.driveTrain.resetYaw();
+    this.driveTrain.resetHeading();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double turningValue = (-this.driveTrain.getYaw()) * Constants.DRIVE_AUTO_GYRO_STRAIGHT_KP;
+    double turningValue = (-this.driveTrain.getHeading()) * Constants.DRIVE_AUTO_GYRO_STRAIGHT_KP;
     // Invert the direction of the turn if we are going backwards
     if (!forward) {
       turningValue = -turningValue;

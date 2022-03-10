@@ -16,8 +16,8 @@ public class DriveTurnToRelativeAngle extends PIDCommand {
   public DriveTurnToRelativeAngle(final double relativeAngle, final DriveTrain driveTrain) {
     super(
         new PIDController(Constants.DRIVE_AUTO_TURN_TO_ANGLE_KP, 0.0, 0.0),
-        // Close loop on yaw
-        driveTrain::getYaw,
+        // Close loop on heading (adjusted yaw)
+        driveTrain::getHeading,
         // Set reference to target
         relativeAngle,
         // Pipe output to turn robot
@@ -42,7 +42,7 @@ public class DriveTurnToRelativeAngle extends PIDCommand {
   public void initialize() {
     super.isScheduled();
     this.driveTrain.resetDistance();
-    this.driveTrain.resetYaw();
+    this.driveTrain.resetHeading();
   }
 
   // Returns true when the command should end.
