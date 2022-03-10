@@ -23,7 +23,7 @@ public class Climb extends SequentialCommandGroup {
             new WaitCommand(.5),
             new SetPiston(this.climber, (Boolean) false),
             new WaitCommand(1.5),
-            new RetractMotor(this.climber)
+            new GetToPosition(this.climber, Constants.CLIMBER_POSITIONS.bottom)
         );
     }
 }
