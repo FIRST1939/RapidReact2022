@@ -123,7 +123,7 @@ public class RobotContainer {
     BooleanSupplier shootTriggerSupplier = () -> (driverTwo
         .getRawAxis(Math.abs(XboxController.Axis.kRightTrigger.value)) > Constants.TRIGGER_THRESHOLD);
     ShootTrigger shootTrigger = new ShootTrigger(this.indexer, this.shooter, shootTriggerSupplier);
-    shootTrigger.whileActiveContinuous(IndexerShootingState.getInstance(this.indexer));
+    shootTrigger.whenActive(IndexerShootingState.getInstance(this.indexer));
 
     JoystickButton toggleManualIntakeIndexer = new JoystickButton(driverTwo, XboxController.Button.kStart.value);
     toggleManualIntakeIndexer.whenPressed(

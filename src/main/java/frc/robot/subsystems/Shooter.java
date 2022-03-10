@@ -85,7 +85,8 @@ public class Shooter extends SubsystemBase {
     
     public boolean isShooterReady () {
 
-        return Math.abs(shooterFlywheel.getClosedLoopError()) < Constants.SHOOTER_VELOCITY_ERROR;
+        return true; //To bypass this method since we are not using for now
+        //return Math.abs(shooterFlywheel.getClosedLoopError()) < Constants.SHOOTER_VELOCITY_ERROR;
     }
 
     /**
