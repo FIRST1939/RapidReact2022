@@ -76,6 +76,11 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {}
 
   @Override
+  public void autonomousExit() {
+    this.m_robotContainer.stashAutoExitStateCommands();
+  }
+
+  @Override
   public void teleopInit() {
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
@@ -84,7 +89,7 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    
+    this.m_robotContainer.restartAutoExitStateCommands();
   }
 
   /** This function is called periodically during operator control. */
