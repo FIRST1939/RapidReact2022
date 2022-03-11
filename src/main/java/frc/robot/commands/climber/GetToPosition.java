@@ -19,7 +19,7 @@ public class GetToPosition extends CommandBase {
     }
 
     @Override
-    public void execute () {
+    public void initialize () {
 
         if (this.climber.getMotorPosition() < this.extension.distance) {
 
@@ -28,6 +28,10 @@ public class GetToPosition extends CommandBase {
 
             this.direction = -1;
         }
+    }
+
+    @Override
+    public void execute () {
 
         this.climber.setMotor(this.direction * extension.velocity);
     }
