@@ -20,6 +20,7 @@ import frc.robot.commands.DriveWithInput;
 
 import frc.robot.commands.ToggleIntakeIndexerManualMode;
 import frc.robot.commands.auto.LeftSide2CargoNoTrajectory;
+import frc.robot.commands.indexer.IndexerEmptyState;
 import frc.robot.commands.indexer.IndexerReadyToShootState;
 import frc.robot.commands.indexer.IndexerShootingState;
 import frc.robot.commands.indexer.ManualIndexer;
@@ -62,7 +63,7 @@ public class RobotContainer {
   private final XboxController driverTwo = new XboxController(Constants.DRIVER2_CONTROLLER_PORT);
 
   // The robot's subsystems and commands are defined here...
-  private final JoystickButton sidewinderManualDeploy = new JoystickButton(leftStick, 1);
+  private final JoystickButton sidewinderManualDeploy = new JoystickButton(leftStick, 6);
   private final DriveTrain driveTrain = new DriveTrain(() -> sidewinderManualDeploy.get());
   private final RobotCargoCount robotCargoCount = RobotCargoCount.getInstance();
   private final Intake intake = new Intake(() -> this.driveTrain.getRate());
@@ -74,6 +75,7 @@ public class RobotContainer {
 
   private Command intakeCommandOnAutoExit = null;
   private Command indexerCommandOnAutoExit = null;
+  private boolean exitedAuto = false;
 
   private final SendableChooser<Command> autoChooser = new SendableChooser<>();
 
@@ -85,8 +87,6 @@ public class RobotContainer {
     configureDefaultCommands();
     // Configure the button bindings
     configureButtonBindings();
-    // Schedule the initial states of the state machines
-    scheduleInitialStates();
     pressureInit();
     configureAutoChooser();
   }
@@ -129,13 +129,13 @@ public class RobotContainer {
     fenderHighButton.whenPressed(new SetShot(this.shooter, Constants.SHOTS.fenderHigh));
 
     JoystickButton cargoRing = new JoystickButton(driverTwo, XboxController.Button.kA.value);
-    cargoRing.whenPressed(new SetShot(this.shooter, Constants.SHOTS.cargoRing));
+    cargoRing.whenPressed(new SetShot(this.shooter, Constants.SHOTS.fenderPlusOneLow));
 
     JoystickButton shooterManualIdleTrigger = new JoystickButton(driverTwo, XboxController.Button.kX.value);
-    shooterManualIdleTrigger.whenActive(new SetShot(this.shooter, Constants.SHOTS.idle));
+    shooterManualIdleTrigger.whenActive(new SetShot(this.shooter, Constants.SHOTS.cargoRing));
     
     ShooterIdleTrigger shooterIdleTrigger = new ShooterIdleTrigger(this.robotCargoCount);
-    shooterIdleTrigger.whenActive(new SetShot(this.shooter, Constants.SHOTS.idle));
+    shooterIdleTrigger.whenActive(new WaitCommand(1.0).andThen(new SetShot(this.shooter, Constants.SHOTS.idle)));
     shooterIdleTrigger.whenInactive(new ReturnToPriorShot(this.shooter));
 
     ShooterActivateTrigger shooterActivateTrigger = new ShooterActivateTrigger(this.indexer);
@@ -144,7 +144,7 @@ public class RobotContainer {
     BooleanSupplier shootTriggerSupplier = () -> (driverTwo
         .getRawAxis(Math.abs(XboxController.Axis.kRightTrigger.value)) > Constants.TRIGGER_THRESHOLD);
     ShootTrigger shootTrigger = new ShootTrigger(this.indexer, this.shooter, shootTriggerSupplier);
-    shootTrigger.whenActive(IndexerShootingState.getInstance(this.indexer));
+    shootTrigger.whileActiveContinuous(IndexerShootingState.getInstance(this.indexer));
 
     JoystickButton toggleManualIntakeIndexer = new JoystickButton(driverTwo, XboxController.Button.kStart.value);
     toggleManualIntakeIndexer.whenPressed(
@@ -176,10 +176,10 @@ public class RobotContainer {
     JoystickButton climbButton = new JoystickButton(leftStick, 3);
     climbButton.whenPressed(new Climb(this.climber));
 
-    JoystickButton climberMotorPartialPositionExtend = new JoystickButton(leftStick, 6);
+    JoystickButton climberMotorPartialPositionExtend = new JoystickButton(rightStick, 6);
     climberMotorPartialPositionExtend.whenPressed(new GetToPosition(this.climber, Constants.CLIMBER_POSITIONS.partial));
 
-    JoystickButton climberMotorFullPositionButton = new JoystickButton(leftStick, 7);
+    JoystickButton climberMotorFullPositionButton = new JoystickButton(rightStick, 7);
     climberMotorFullPositionButton.whenPressed(new GetToPosition(this.climber, Constants.CLIMBER_POSITIONS.full));
   
     JoystickButton climberSetHomeButton = new JoystickButton(rightStick, 8);
@@ -192,7 +192,7 @@ public class RobotContainer {
   /**
    * Schedules the initial state commands for the subsystem state machines.
    */
-  private void scheduleInitialStates() {
+  public void scheduleInitialStates() {
     IntakeStowedEmptyState.getInstance(this.intake).schedule();
     IndexerReadyToShootState.getInstance(this.indexer).schedule();
   }
@@ -218,9 +218,16 @@ public class RobotContainer {
   public void stashAutoExitStateCommands() {
     this.intakeCommandOnAutoExit = this.intake.getCurrentCommand();
     this.indexerCommandOnAutoExit = this.indexer.getCurrentCommand();
+    this.exitedAuto = true;
   }
 
   public void restartAutoExitStateCommands() {
+    if(!exitedAuto){
+      IntakeStowedEmptyState.getInstance(intake).schedule();
+      IndexerEmptyState.getInstance(indexer).schedule();
+      RobotCargoCount.getInstance().decrement();
+      return;
+    }
     if ((this.intakeCommandOnAutoExit != null)
         && (this.intake.getCurrentCommand() == null)) {
       this.intakeCommandOnAutoExit.schedule();
@@ -231,6 +238,7 @@ public class RobotContainer {
     }
     this.intakeCommandOnAutoExit = null;
     this.indexerCommandOnAutoExit = null;
+    this.exitedAuto = false;
   }
 
   /**

@@ -37,7 +37,7 @@ public final class Constants {
 
     public static final int SIDEWINDER_PCM_CHANNEL = 7;
     public static final int SIDEWINDER_MOTOR_CAN_ID = 30;
-    public static final double SIDEWINDER_kP = 0.05;
+    public static final double SIDEWINDER_kP = 0.02;
 
     /** Sidewinder engages at this left stick x deflection */
     public static final double SIDEWINDER_ENABLE_THRESHOLD = 0.3;
@@ -52,7 +52,7 @@ public final class Constants {
     public static final int RIGHT_DRIVE_A_CHANNEL = 9;
     public static final int RIGHT_DRIVE_B_CHANNEL = 8;
     /** Circumfrence divided by Grayhill pulses per revolution. */
-    public static final double DRIVE_INCHES_PER_PULSE = 18.85 / 256.0;
+    public static final double DRIVE_INCHES_PER_PULSE = 19.24 / 256.0;
     /** A PID p value for gyro based correction for driving straight. */
     public static final double DRIVE_AUTO_GYRO_STRAIGHT_KP = 0.005;
     public static final double DRIVE_AUTO_STRAIGHT_POWER = 0.7;
@@ -71,10 +71,13 @@ public final class Constants {
 
     // TODO shooting values
     public enum SHOTS {
-        idle(1000, false),
+        idle(2000, false),
         fenderLow(3000, true),
         fenderHigh(6000, false),
-        cargoRing(8500, true);
+        fenderPlusOneLow(4000, true),
+        fenderPlusOneHigh(7000, false),
+        cargoRing(8500, true),
+        launchpad(10000, true);
 
         public final int velocity;
         public final boolean hood;
@@ -86,7 +89,7 @@ public final class Constants {
         }
     }
 
-    public static final int SHOOTER_VELOCITY_ERROR = 40;
+    public static final int SHOOTER_VELOCITY_ERROR = 300;
 
     // Intake constants
     public static final int INTAKE_PCM_CHANNEL = 8;
@@ -110,10 +113,10 @@ public final class Constants {
 
     public static final int INDEXER_BEAM_BREAK_EMITTER_DIO = 1;
     public static final int INDEXER_BEAM_BREAK_RECEIVER_DIO = 2;
-    public static final double INDEXER_SHOOTER_FEED_VELOCITY = -1000;
-    public static final double INDEXER_RECEIVE_VELOCITY = 100;
+    public static final double INDEXER_SHOOTER_FEED_VELOCITY = -700;
+    public static final double INDEXER_RECEIVE_VELOCITY = -700;
     public static final double MANUAL_INDEXER_DEADBAND = 0.1;
-    public static final double MANUAL_INDEXER_FEED_OUTPUT = 0.5;
+    public static final double MANUAL_INDEXER_FEED_OUTPUT = -0.8;
     public static final long INDEXER_AT_SENSOR_TIME_ADJUSTMENT_MS = 0;
 
     // Climber constants.

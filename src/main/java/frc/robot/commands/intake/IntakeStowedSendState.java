@@ -15,6 +15,8 @@ public class IntakeStowedSendState extends CommandBase {
   /** This command's required indexer subsystem. */
   private final Intake intake;
 
+  private long timeout = 0;
+
   public static final synchronized IntakeStowedSendState getInstance(final Intake intake) {
     if (INSTANCE == null) {
       INSTANCE = new IntakeStowedSendState(intake);
@@ -33,6 +35,7 @@ public class IntakeStowedSendState extends CommandBase {
   @Override
   public void initialize() {
     this.intake.retractIntake();
+    timeout = 0;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -54,6 +57,11 @@ public class IntakeStowedSendState extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return !this.intake.isCargoAtSensor();
+    if(timeout != 0){
+      return (System.currentTimeMillis()-this.timeout > 1000);
+    } else if(!this.intake.isCargoAtSensor()){
+      timeout = System.currentTimeMillis();
+    }
+    return false;
   }
 }
