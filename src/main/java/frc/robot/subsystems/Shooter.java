@@ -1,11 +1,13 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -18,6 +20,8 @@ public class Shooter extends SubsystemBase {
     private final WPI_TalonFX shooterFlywheel;
 
     private Constants.SHOTS shot = Constants.SHOTS.fenderHigh;
+    private int lastSetVelocity = 0;
+    private int velocityInRangeCount = 0;
 
     // Creates a new shooter.
     private Shooter () {
@@ -27,14 +31,16 @@ public class Shooter extends SubsystemBase {
         shooterFlywheel = new WPI_TalonFX(Constants.SHOOTER_FLYWHEEL_CAN_ID);
 
         shooterFlywheel.configFactoryDefault();
-        shooterFlywheel.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 30);
-        shooterFlywheel.configNominalOutputForward(0,30);
-        shooterFlywheel.configNominalOutputReverse(0,30);
-        shooterFlywheel.configPeakOutputForward(1,30);
-        shooterFlywheel.configPeakOutputReverse(-1,30);
+        shooterFlywheel.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
+        shooterFlywheel.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 20);
+        shooterFlywheel.configAllowableClosedloopError(0, Constants.SHOOTER_VELOCITY_ERROR / 2);
+        shooterFlywheel.configNominalOutputForward(0);
+        shooterFlywheel.configNominalOutputReverse(0);
+        shooterFlywheel.configPeakOutputForward(1);
+        shooterFlywheel.configPeakOutputReverse(-1);
 
-        shooterFlywheel.config_kF(0, .10792, 30);
-        shooterFlywheel.config_kP(0, .0164, 30);
+        shooterFlywheel.config_kF(0, .10792);
+        shooterFlywheel.config_kP(0, .0164);
 
         shooterFlywheel.setInverted(true);
     }
@@ -78,15 +84,30 @@ public class Shooter extends SubsystemBase {
         shooterSolenoid.set(hood); 
     }
     
-    private void setVelocity (int velocity) {
+    private void setVelocity(int velocity) {
+        if (lastSetVelocity != velocity) {
+            shooterFlywheel.set(ControlMode.Velocity, velocity);
+            this.lastSetVelocity = velocity;
+            this.velocityInRangeCount = 0;
+        }
+    }
 
-        shooterFlywheel.set(ControlMode.Velocity, velocity);
+    @Override
+    public void periodic() {
+        double currentVelocity = shooterFlywheel.getSelectedSensorVelocity();
+        double currentClosedLoopError = shooterFlywheel.getClosedLoopError();
+        SmartDashboard.putNumber("Shooter Velocity", currentVelocity);
+        SmartDashboard.putNumber("Shooter Error", currentClosedLoopError);
+        if (Math.abs(Math.abs(currentVelocity)
+                - this.lastSetVelocity) <= Constants.SHOOTER_VELOCITY_ERROR) {
+            this.velocityInRangeCount++;
+        } else {
+            this.velocityInRangeCount = 0;
+        }
     }
     
-    public boolean isShooterReady () {
-
-        return true; //To bypass this method since we are not using for now
-        //return Math.abs(shooterFlywheel.getClosedLoopError()) < Constants.SHOOTER_VELOCITY_ERROR;
+    public boolean isShooterReady() {
+        return this.velocityInRangeCount >= 5;
     }
 
     /**
