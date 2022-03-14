@@ -37,7 +37,7 @@ public class LeftSide2CargoNoTrajectory extends SequentialCommandGroup {
         new ParallelCommandGroup(
             new ScheduleCommand(IntakeGatheringEmptyState.getInstance(intake)),
             new DriveStraightDistance(48.00, driveTrain),
-            new SetShot(shooter, Constants.SHOTS.fenderHigh)).withTimeout(2),
+            new SetShot(shooter, Constants.SHOTS.fenderHigh)),
         // Drive to point straight out from the fender.
         new DriveStraightDistance(-100.0, driveTrain),
         // Turn square to the fender.
@@ -45,7 +45,9 @@ public class LeftSide2CargoNoTrajectory extends SequentialCommandGroup {
         // Drive to fender with timeout because we may hit and not reach distance.
         new DriveStraightDistance(-50.0, driveTrain).withTimeout(3),
         // Shoot with timeout in case of jam.
-        new AutoModeShooter(2, indexer, shooter).withTimeout(5),
+        new AutoModeShooter(2, indexer, shooter).withTimeout(3),
+        // Do not drive until second shot has cleared shooter.
+        new WaitCommand(1.0),
         // Exit tarmac.
         new DriveStraightDistance(150.0, driveTrain));
   }
