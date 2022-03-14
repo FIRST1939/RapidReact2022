@@ -64,7 +64,7 @@ public class Intake extends SubsystemBase {
     }
 
     public boolean isRetracted() {
-        return this.intakeSolenoid.get();
+        return !this.intakeSolenoid.get();
     }
 
     /**
