@@ -55,7 +55,7 @@ public final class Constants {
     public static final double DRIVE_INCHES_PER_PULSE = 19.24 / 256.0;
     /** A PID p value for gyro based correction for driving straight. */
     public static final double DRIVE_AUTO_GYRO_STRAIGHT_KP = 0.005;
-    public static final double DRIVE_AUTO_STRAIGHT_POWER = 0.7;
+    public static final double DRIVE_AUTO_STRAIGHT_POWER = 0.8;
     /** The in place turn to angle PID p value. i and d are 0. */
     public static final double DRIVE_AUTO_TURN_TO_ANGLE_KP = 0.031;
     public static final double DRIVE_AUTO_TURN_TO_ANGLE_KF = 0.2;
