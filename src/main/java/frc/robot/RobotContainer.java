@@ -38,7 +38,6 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.RobotCargoCount;
 import frc.robot.subsystems.Shooter;
 import frc.robot.triggers.ShootTrigger;
-import frc.robot.triggers.ShooterActivateTrigger;
 import frc.robot.triggers.ShooterIdleTrigger;
 import frc.robot.commands.climber.Climb;
 import frc.robot.commands.climber.GetToPosition;
@@ -137,9 +136,6 @@ public class RobotContainer {
     ShooterIdleTrigger shooterIdleTrigger = new ShooterIdleTrigger(this.robotCargoCount);
     shooterIdleTrigger.whenActive(new WaitCommand(1.0).andThen(new SetShot(this.shooter, Constants.SHOTS.idle)));
     shooterIdleTrigger.whenInactive(new ReturnToPriorShot(this.shooter));
-
-    ShooterActivateTrigger shooterActivateTrigger = new ShooterActivateTrigger(this.indexer);
-    shooterActivateTrigger.whenActive(new SetShot(this.shooter, this.shooter.getShot()));
 
     BooleanSupplier shootTriggerSupplier = () -> (driverTwo
         .getRawAxis(Math.abs(XboxController.Axis.kRightTrigger.value)) > Constants.TRIGGER_THRESHOLD);
