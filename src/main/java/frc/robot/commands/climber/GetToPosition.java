@@ -3,18 +3,17 @@ package frc.robot.commands.climber;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants;
 import frc.robot.subsystems.Climber;
 
 public class GetToPosition extends CommandBase {
     
     private final Climber climber;
-    private final XboxController controller;
+    private final GenericHID controller;
     private final Constants.CLIMBER_POSITIONS extension;
     private int direction = 1;
 
-    public GetToPosition (final Climber climber, final XboxController controller, final Constants.CLIMBER_POSITIONS extension) {
+    public GetToPosition (final Climber climber, final GenericHID controller, final Constants.CLIMBER_POSITIONS extension) {
 
         this.climber = climber;
         this.controller = controller;
