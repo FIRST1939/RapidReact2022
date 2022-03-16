@@ -7,30 +7,32 @@ import edu.wpi.first.wpilibj.Timer;
 public class RumbleController extends CommandBase {
     
     private final GenericHID controller;
-    private boolean finished = false;
 
     public RumbleController (final GenericHID controller) {
 
         this.controller = controller;
     }
+   
 
     @Override
-    public void execute (boolean interrupted) {
+    public void initialize () {
+        
+        Timer.reset();
         
         this.controller.setRumble(GenericHID.RumbleType.kLeftRumble, 1.0);
         this.controller.setRumble(GenericHID.RumbleType.kRightRumble, 1.0);
-        
-        Timer.delay(0.1);
+    }
+    
+    @Override
+    public void end () {
         
         this.controller.setRumble(GenericHID.RumbleType.kLeftRumble, 0.0);
         this.controller.setRumble(GenericHID.RumbleType.kRightRumble, 0.0);
-      
-        this.finished = true;
     }
 
     @Override
     public boolean isFinished () {
 
-        return this.finished;
+        return Timer.get() >= 1.0;
     }
 }
