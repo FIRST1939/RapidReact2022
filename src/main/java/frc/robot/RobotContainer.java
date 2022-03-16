@@ -173,16 +173,16 @@ public class RobotContainer {
     climbButton.whenPressed(new Climb(this.climber));
 
     JoystickButton climberMotorPartialPositionExtend = new JoystickButton(rightStick, 6);
-    climberMotorPartialPositionExtend.whenPressed(new GetToPosition(this.climber, this.driverTwo, Constants.CLIMBER_POSITIONS.partial));
+    climberMotorPartialPositionExtend.whenPressed(new GetToPosition(this.climber, (GenericHID) this.driverTwo, Constants.CLIMBER_POSITIONS.partial));
 
     JoystickButton climberMotorFullPositionButton = new JoystickButton(rightStick, 7);
-    climberMotorFullPositionButton.whenPressed(new GetToPosition(this.climber, this.driverTwo, Constants.CLIMBER_POSITIONS.full));
+    climberMotorFullPositionButton.whenPressed(new GetToPosition(this.climber, (GenericHID) this.driverTwo, Constants.CLIMBER_POSITIONS.full));
   
     JoystickButton climberSetHomeButton = new JoystickButton(rightStick, 8);
     climberSetHomeButton.whenPressed(new SetHome(this.climber));
 
     JoystickButton climberMotorBottomPositionButton = new JoystickButton(rightStick, 9);
-    climberMotorBottomPositionButton.whenPressed(new GetToPosition(this.climber, this.driverTwo, Constants.CLIMBER_POSITIONS.bottom));
+    climberMotorBottomPositionButton.whenPressed(new GetToPosition(this.climber, (GenericHID) this.driverTwo, Constants.CLIMBER_POSITIONS.bottom));
   }
 
   /**
