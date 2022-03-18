@@ -5,15 +5,14 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.subsystems.Climber;
 
-public class Climb extends SequentialCommandGroup {
+public class ClimbToSecond extends SequentialCommandGroup {
     
     private final Climber climber;
 
-    public Climb (final Climber climber) {
+    public ClimbToSecond (final Climber climber) {
 
         this.climber = climber;
 
-        // TODO climbing process
         addCommands(
             new GetToPosition(this.climber, Constants.CLIMBER_POSITIONS.offBar),
             new WaitCommand(.5),
