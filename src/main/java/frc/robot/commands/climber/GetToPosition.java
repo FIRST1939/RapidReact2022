@@ -3,16 +3,19 @@ package frc.robot.commands.climber;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Climber;
+import frc.robot.commands.RumbleController;
 
 public class GetToPosition extends CommandBase {
     
     private final Climber climber;
+    private final RumbleController rumbleController;
     private final Constants.CLIMBER_POSITIONS extension;
     private int direction = 1;
 
-    public GetToPosition (final Climber climber, final Constants.CLIMBER_POSITIONS extension) {
+    public GetToPosition (final Climber climber, final RumbleController rumbleController, final Constants.CLIMBER_POSITIONS extension) {
 
         this.climber = climber;
+        this.rumbleController = rumbleController;
         this.extension = extension;
 
         addRequirements(this.climber);
@@ -40,6 +43,7 @@ public class GetToPosition extends CommandBase {
     public void end (boolean interrupted) {
 
         this.climber.setMotor(0);
+        this.rumbleController.schedule();
     }
 
     @Override

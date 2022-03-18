@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.DriveWithInput;
 
+import frc.robot.commands.RumbleController;
 import frc.robot.commands.ToggleIntakeIndexerManualMode;
 import frc.robot.commands.auto.LeftSide2CargoNoTrajectory;
 import frc.robot.commands.indexer.IndexerEmptyState;
@@ -178,17 +179,19 @@ public class RobotContainer {
     JoystickButton climbToThirdButton = new JoystickButton(leftStick, 3);
     climbToThirdButton.whenPressed(new ClimbToThird(this.climber));
 
+    RumbleController rumbleController = new RumbleController(this.driverTwo);
+    
     JoystickButton climberMotorPartialPositionExtend = new JoystickButton(rightStick, 6);
-    climberMotorPartialPositionExtend.whenPressed(new GetToPosition(this.climber, Constants.CLIMBER_POSITIONS.partial));
+    climberMotorPartialPositionExtend.whenPressed(new GetToPosition(this.climber, rumbleController, Constants.CLIMBER_POSITIONS.partial));
 
     JoystickButton climberMotorFullPositionButton = new JoystickButton(rightStick, 7);
-    climberMotorFullPositionButton.whenPressed(new GetToPosition(this.climber, Constants.CLIMBER_POSITIONS.full));
+    climberMotorFullPositionButton.whenPressed(new GetToPosition(this.climber, rumbleController, Constants.CLIMBER_POSITIONS.full));
   
     JoystickButton climberSetHomeButton = new JoystickButton(rightStick, 8);
     climberSetHomeButton.whenPressed(new SetHome(this.climber));
 
     JoystickButton climberMotorBottomPositionButton = new JoystickButton(rightStick, 9);
-    climberMotorBottomPositionButton.whenPressed(new GetToPosition(this.climber, Constants.CLIMBER_POSITIONS.bottom));
+    climberMotorBottomPositionButton.whenPressed(new GetToPosition(this.climber, rumbleController, Constants.CLIMBER_POSITIONS.bottom));
   }
 
   /**
