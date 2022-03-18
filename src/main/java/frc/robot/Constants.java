@@ -129,6 +129,7 @@ public final class Constants {
     // TODO climber extension values 
     public enum CLIMBER_POSITIONS {
         bottom(6000, 2000),
+        finalBarRetract(6000, 50000),
         offBar(7000, 75000),
         partial(5000, 250000),
         full(10000, 340000);

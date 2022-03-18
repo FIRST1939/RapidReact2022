@@ -39,7 +39,7 @@ import frc.robot.subsystems.RobotCargoCount;
 import frc.robot.subsystems.Shooter;
 import frc.robot.triggers.ShootTrigger;
 import frc.robot.triggers.ShooterIdleTrigger;
-import frc.robot.commands.climber.Climb;
+import frc.robot.commands.climber.ClimbToSecond;
 import frc.robot.commands.climber.GetToPosition;
 import frc.robot.commands.climber.RetractMotor;
 import frc.robot.commands.climber.ExtendMotor;
@@ -120,7 +120,7 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-
+    //shooter buttons
     JoystickButton fenderLowButton = new JoystickButton(driverTwo, XboxController.Button.kY.value);
     fenderLowButton.whenPressed(new SetShot(this.shooter, Constants.SHOTS.fenderLow));
 
@@ -142,6 +142,7 @@ public class RobotContainer {
     ShootTrigger shootTrigger = new ShootTrigger(this.indexer, this.shooter, shootTriggerSupplier);
     shootTrigger.whileActiveContinuous(IndexerShootingState.getInstance(this.indexer));
 
+    //intake and indexer buttons
     JoystickButton toggleManualIntakeIndexer = new JoystickButton(driverTwo, XboxController.Button.kStart.value);
     toggleManualIntakeIndexer.whenPressed(
         new ToggleIntakeIndexerManualMode(
@@ -157,6 +158,7 @@ public class RobotContainer {
     JoystickButton intakeStopGatherButton = new JoystickButton(driverTwo, XboxController.Button.kLeftBumper.value);
     intakeStopGatherButton.whenPressed(new IntakeRetractCommandSelector(this.intake));
 
+    //climber buttons
     JoystickButton climberMotorRetract = new JoystickButton(rightStick, 2);
     climberMotorRetract.whileHeld(new RetractMotor(this.climber));
 
@@ -169,8 +171,11 @@ public class RobotContainer {
     JoystickButton climberPistonExtend = new JoystickButton(rightStick, 5);
     climberPistonExtend.whenPressed(new SetPiston(this.climber, (Boolean) true));
 
-    JoystickButton climbButton = new JoystickButton(leftStick, 3);
-    climbButton.whenPressed(new Climb(this.climber));
+    JoystickButton climbToSecondButton = new JoystickButton(leftStick, 2);
+    climbToSecondButton.whenPressed(new ClimbToSecond(this.climber));
+
+    JoystickButton climbToThirdButton = new JoystickButton(leftStick, 3);
+    climbToThirdButton.whenPressed(new ClimbToSecond(this.climber));
 
     JoystickButton climberMotorPartialPositionExtend = new JoystickButton(rightStick, 6);
     climberMotorPartialPositionExtend.whenPressed(new GetToPosition(this.climber, Constants.CLIMBER_POSITIONS.partial));
