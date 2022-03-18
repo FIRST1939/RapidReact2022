@@ -40,6 +40,7 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.triggers.ShootTrigger;
 import frc.robot.triggers.ShooterIdleTrigger;
 import frc.robot.commands.climber.ClimbToSecond;
+import frc.robot.commands.climber.ClimbToThird;
 import frc.robot.commands.climber.GetToPosition;
 import frc.robot.commands.climber.RetractMotor;
 import frc.robot.commands.climber.ExtendMotor;
@@ -175,7 +176,7 @@ public class RobotContainer {
     climbToSecondButton.whenPressed(new ClimbToSecond(this.climber));
 
     JoystickButton climbToThirdButton = new JoystickButton(leftStick, 3);
-    climbToThirdButton.whenPressed(new ClimbToSecond(this.climber));
+    climbToThirdButton.whenPressed(new ClimbToThird(this.climber));
 
     JoystickButton climberMotorPartialPositionExtend = new JoystickButton(rightStick, 6);
     climberMotorPartialPositionExtend.whenPressed(new GetToPosition(this.climber, Constants.CLIMBER_POSITIONS.partial));
