@@ -173,17 +173,19 @@ public class RobotContainer {
     JoystickButton climbButton = new JoystickButton(leftStick, 3);
     climbButton.whenPressed(new Climb(this.climber));
 
+    RumbleController rumbleController = new RumbleController(this.driverTwo);
+    
     JoystickButton climberMotorPartialPositionExtend = new JoystickButton(rightStick, 6);
-    climberMotorPartialPositionExtend.whenPressed(new GetToPosition(this.climber, new RumbleController(this.driverTwo), Constants.CLIMBER_POSITIONS.partial));
+    climberMotorPartialPositionExtend.whenPressed(new GetToPosition(this.climber, rumbleController, Constants.CLIMBER_POSITIONS.partial));
 
     JoystickButton climberMotorFullPositionButton = new JoystickButton(rightStick, 7);
-    climberMotorFullPositionButton.whenPressed(new GetToPosition(this.climber, new RumbleController(this.driverTwo), Constants.CLIMBER_POSITIONS.full));
+    climberMotorFullPositionButton.whenPressed(new GetToPosition(this.climber, rumbleController, Constants.CLIMBER_POSITIONS.full));
   
     JoystickButton climberSetHomeButton = new JoystickButton(rightStick, 8);
     climberSetHomeButton.whenPressed(new SetHome(this.climber));
 
     JoystickButton climberMotorBottomPositionButton = new JoystickButton(rightStick, 9);
-    climberMotorBottomPositionButton.whenPressed(new GetToPosition(this.climber, new RumbleController(this.driverTwo), Constants.CLIMBER_POSITIONS.bottom));
+    climberMotorBottomPositionButton.whenPressed(new GetToPosition(this.climber, rumbleController, Constants.CLIMBER_POSITIONS.bottom));
   }
 
   /**
