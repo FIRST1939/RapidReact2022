@@ -153,9 +153,8 @@ public class RobotContainer {
                 new ManualShootTrigger(indexer, shooter, shootTriggerSupplier))));
 
     JoystickButton intakeGatherButton = new JoystickButton(driverTwo, XboxController.Button.kRightBumper.value);
-    intakeGatherButton.whileHeld(new IntakeExtendCommandSelector(this.intake));
-    JoystickButton intakeStopGatherButton = new JoystickButton(driverTwo, XboxController.Button.kLeftBumper.value);
-    intakeStopGatherButton.whenPressed(new IntakeRetractCommandSelector(this.intake));
+    intakeGatherButton.whenPressed(new IntakeExtendCommandSelector(this.intake));
+    intakeGatherButton.whenReleased(new IntakeRetractCommandSelector(this.intake));
 
     JoystickButton climberMotorRetract = new JoystickButton(rightStick, 2);
     climberMotorRetract.whileHeld(new RetractMotor(this.climber));
