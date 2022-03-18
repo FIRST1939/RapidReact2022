@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.DriveWithInput;
@@ -23,12 +24,14 @@ import frc.robot.commands.auto.LeftSide2CargoNoTrajectory;
 import frc.robot.commands.indexer.IndexerEmptyState;
 import frc.robot.commands.indexer.IndexerReadyToShootState;
 import frc.robot.commands.indexer.IndexerShootingState;
+import frc.robot.commands.indexer.ManualEjectIndexer;
 import frc.robot.commands.indexer.ManualIndexer;
 import frc.robot.commands.intake.IntakeExtendCommandSelector;
 import frc.robot.commands.intake.IntakeGatheringSendState;
 import frc.robot.commands.intake.IntakeRetractCommandSelector;
 import frc.robot.commands.intake.IntakeStowedEmptyState;
 import frc.robot.commands.intake.IntakeStowedSendState;
+import frc.robot.commands.intake.ManualEjectIntake;
 import frc.robot.commands.intake.ManualIntakeRollerBelts;
 import frc.robot.commands.shooter.ReturnToPriorShot;
 import frc.robot.commands.shooter.SetShot;
@@ -151,6 +154,18 @@ public class RobotContainer {
             new ManualIndexer(this.indexer,
                 () -> enforceDeadband(driverTwo.getRightY(), Constants.MANUAL_INDEXER_DEADBAND),
                 new ManualShootTrigger(indexer, shooter, shootTriggerSupplier))));
+
+    /*
+     * This is to be used to eject all cargo from the robot in the case of jams or a
+     * wrong color cargo that we want to get rid of immediately. Note that the
+     * button must not be released until all cargo is removed to ensure that the
+     * automation is reactivated correctly. If this is not possible, release the
+     * button and immediately press the button to enter manual mode. Use manual mode
+     * to empty the cargo (shooting as appropriate), and then go back to automation.
+     */
+    JoystickButton manualEjectionIntakeIndexer = new JoystickButton(driverTwo, XboxController.Button.kBack.value);
+    manualEjectionIntakeIndexer.whileHeld(
+        ParallelCommandGroup.parallel(new ManualEjectIntake(intake), new ManualEjectIndexer(indexer)));
 
     JoystickButton intakeGatherButton = new JoystickButton(driverTwo, XboxController.Button.kRightBumper.value);
     intakeGatherButton.whileHeld(new IntakeExtendCommandSelector(this.intake));
