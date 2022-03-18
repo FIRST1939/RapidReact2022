@@ -26,7 +26,7 @@ public class RumbleController extends CommandBase {
     }
     
     @Override
-    public void end () {
+    public void end (boolean interrupted) {
         
         this.controller.setRumble(GenericHID.RumbleType.kLeftRumble, 0.0);
         this.controller.setRumble(GenericHID.RumbleType.kRightRumble, 0.0);
