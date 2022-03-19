@@ -7,16 +7,16 @@ package frc.robot.commands.indexer;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants;
 import frc.robot.commands.PostLoopCommandScheduler;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.RobotCargoCount;
-import frc.robot.triggers.ManualShootTrigger;
 
 public class ManualIndexer extends CommandBase {
   private final Indexer indexer;
   private final DoubleSupplier speedSupplier;
-  private final ManualShootTrigger shootTrigger;
+  private final Trigger shootTrigger;
 
   /**
    * If the manual shoot trigger returns true, the speed supplier is ignored. A
@@ -29,7 +29,7 @@ public class ManualIndexer extends CommandBase {
   public ManualIndexer(
       final Indexer indexer,
       final DoubleSupplier speedSupplier,
-      final ManualShootTrigger shootTrigger) {
+      final Trigger shootTrigger) {
     this.indexer = indexer;
     this.speedSupplier = speedSupplier;
     this.shootTrigger = shootTrigger;
