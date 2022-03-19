@@ -12,6 +12,12 @@ public class GetToPosition extends CommandBase {
     private final Constants.CLIMBER_POSITIONS extension;
     private int direction = 1;
 
+    /**
+     * @param climber          the climber being positioned.
+     * @param rumbleController a driver rumble feedback command for end of
+     *                         positioning. Can be null to not have feedback.
+     * @param extension        the desired climber extension.
+     */
     public GetToPosition (final Climber climber, final RumbleController rumbleController, final Constants.CLIMBER_POSITIONS extension) {
 
         this.climber = climber;
@@ -40,10 +46,12 @@ public class GetToPosition extends CommandBase {
     }
 
     @Override
-    public void end (boolean interrupted) {
+    public void end(boolean interrupted) {
 
         this.climber.setMotor(0);
-        this.rumbleController.schedule();
+        if (this.rumbleController != null) {
+            this.rumbleController.schedule();
+        }
     }
 
     @Override

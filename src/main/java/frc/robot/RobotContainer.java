@@ -187,13 +187,13 @@ public class RobotContainer {
     JoystickButton climberPistonExtend = new JoystickButton(rightStick, 5);
     climberPistonExtend.whenPressed(new SetPiston(this.climber, (Boolean) true));
 
+    RumbleController rumbleController = new RumbleController(this.driverTwo);
+
     JoystickButton climbToSecondButton = new JoystickButton(leftStick, 2);
-    climbToSecondButton.whenPressed(new ClimbToSecond(this.climber));
+    climbToSecondButton.whenPressed(new ClimbToSecond(this.climber, rumbleController));
 
     JoystickButton climbToThirdButton = new JoystickButton(leftStick, 3);
-    climbToThirdButton.whenPressed(new ClimbToThird(this.climber));
-
-    RumbleController rumbleController = new RumbleController(this.driverTwo);
+    climbToThirdButton.whenPressed(new ClimbToThird(this.climber, rumbleController));
     
     JoystickButton climberMotorPartialPositionExtend = new JoystickButton(rightStick, 6);
     climberMotorPartialPositionExtend.whenPressed(new GetToPosition(this.climber, rumbleController, Constants.CLIMBER_POSITIONS.partial));
