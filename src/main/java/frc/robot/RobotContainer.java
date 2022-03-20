@@ -14,25 +14,22 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.DriveWithInput;
-
+import frc.robot.commands.ManualEjection;
 import frc.robot.commands.RumbleController;
 import frc.robot.commands.ToggleIntakeIndexerManualMode;
 import frc.robot.commands.auto.LeftSide2CargoNoTrajectory;
 import frc.robot.commands.indexer.IndexerEmptyState;
 import frc.robot.commands.indexer.IndexerReadyToShootState;
 import frc.robot.commands.indexer.IndexerShootingState;
-import frc.robot.commands.indexer.ManualEjectIndexer;
 import frc.robot.commands.indexer.ManualIndexer;
 import frc.robot.commands.intake.IntakeExtendCommandSelector;
 import frc.robot.commands.intake.IntakeGatheringSendState;
 import frc.robot.commands.intake.IntakeRetractCommandSelector;
 import frc.robot.commands.intake.IntakeStowedEmptyState;
 import frc.robot.commands.intake.IntakeStowedSendState;
-import frc.robot.commands.intake.ManualEjectIntake;
 import frc.robot.commands.intake.ManualIntakeRollerBelts;
 import frc.robot.commands.shooter.ReturnToPriorShot;
 import frc.robot.commands.shooter.SetShot;
@@ -167,8 +164,7 @@ public class RobotContainer {
      * to empty the cargo (shooting as appropriate), and then go back to automation.
      */
     JoystickButton manualEjectionIntakeIndexer = new JoystickButton(driverTwo, XboxController.Button.kLeftBumper.value);
-    manualEjectionIntakeIndexer.whileHeld(
-        ParallelCommandGroup.parallel(new ManualEjectIntake(intake), new ManualEjectIndexer(indexer)));
+    manualEjectionIntakeIndexer.whileHeld(new ManualEjection(intake, indexer));
 
     JoystickButton intakeGatherButton = new JoystickButton(driverTwo, XboxController.Button.kRightBumper.value);
     intakeGatherButton.whenPressed(new IntakeExtendCommandSelector(this.intake));
