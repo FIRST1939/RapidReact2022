@@ -166,7 +166,7 @@ public class RobotContainer {
      * button and immediately press the button to enter manual mode. Use manual mode
      * to empty the cargo (shooting as appropriate), and then go back to automation.
      */
-    JoystickButton manualEjectionIntakeIndexer = new JoystickButton(driverTwo, XboxController.Button.kBack.value);
+    JoystickButton manualEjectionIntakeIndexer = new JoystickButton(driverTwo, XboxController.Button.kLeftBumper.value);
     manualEjectionIntakeIndexer.whileHeld(
         ParallelCommandGroup.parallel(new ManualEjectIntake(intake), new ManualEjectIndexer(indexer)));
 

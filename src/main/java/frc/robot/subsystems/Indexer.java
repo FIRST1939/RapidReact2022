@@ -122,7 +122,7 @@ public class Indexer extends SubsystemBase {
    * @return true if manual mode commands (vs state machine) are running.
    */
   public boolean isManualMode() {
-    return this.manualModeSupplier.getAsBoolean();
+    return this.manualMode;  
   }
   
   /**
