@@ -35,6 +35,12 @@ public class ManualIndexer extends CommandBase {
     this.shootTrigger = shootTrigger;
     addRequirements(this.indexer);
   }
+  
+  // Called when the command is initially scheduled.
+  @Override
+  public void initialize() {
+    this.indexer.setManualMode(true);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -49,6 +55,7 @@ public class ManualIndexer extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     this.indexer.stop();
+    this.indexer.setManualMode(false);
     // In a match, we would only enter manual mode if the intake / indexer cargo
     // pipeline was not working due to sensor failure. Therefore, coming out of
     // manual mode in match is not an expected action. However, we need to program
