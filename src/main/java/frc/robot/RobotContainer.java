@@ -71,7 +71,7 @@ public class RobotContainer {
   private final DriveTrain driveTrain = new DriveTrain(() -> sidewinderManualDeploy.get());
   private final RobotCargoCount robotCargoCount = RobotCargoCount.getInstance();
   private final Intake intake = new Intake(() -> this.driveTrain.getRate());
-  private final Indexer indexer = new Indexer(() -> isIntakeSendingCargo(), () -> isIntakeInManualMode());
+  private final Indexer indexer = new Indexer(() -> isIntakeSendingCargo());
   private final Shooter shooter = Shooter.getInstance();
   private final Climber climber = Climber.getInstance();
 
@@ -274,9 +274,5 @@ public class RobotContainer {
     final Command currentIntakeCommand = this.intake.getCurrentCommand();
     return (currentIntakeCommand instanceof IntakeGatheringSendState)
         || (currentIntakeCommand instanceof IntakeStowedSendState);
-  }
-
-  private boolean isIntakeInManualMode() {
-    return this.intake.isManualMode();
   }
 }
