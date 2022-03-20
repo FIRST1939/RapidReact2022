@@ -4,8 +4,6 @@
 
 package frc.robot.subsystems;
 
-import java.util.function.BooleanSupplier;
-
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
@@ -30,7 +28,7 @@ public class Indexer extends SubsystemBase {
   private final CANSparkMax follower;
   private final DigitalInput beamBreak;
   private final BooleanSupplier priorStageSendingSupplier;
-  private final BooleanSupplier manualModeSupplier;
+  private final boolean manualMode = false;
 
   /**
    * Creates the indexer subsystem. The supplier must indicate if the prior cargo
@@ -42,7 +40,7 @@ public class Indexer extends SubsystemBase {
    * @param manualModeSupplier        the supplier indicating if the indexer
    *                                  should consider itself in manual mode.
    */
-  public Indexer(final BooleanSupplier priorStageSendingSupplier, final BooleanSupplier manualModeSupplier) {
+  public Indexer(final BooleanSupplier priorStageSendingSupplier) {
     this.leader = new CANSparkMax(Constants.INDEXER_LEADER_CAN_ID, MotorType.kBrushless);
     this.leader.restoreFactoryDefaults();
     this.leader.setIdleMode(IdleMode.kBrake);
@@ -58,7 +56,6 @@ public class Indexer extends SubsystemBase {
 
     this.beamBreak = new DigitalInput(Constants.INDEXER_BEAM_BREAK_RECEIVER_DIO);
     this.priorStageSendingSupplier = priorStageSendingSupplier;
-    this.manualModeSupplier = manualModeSupplier;
   }
 
   @Override
@@ -124,5 +121,13 @@ public class Indexer extends SubsystemBase {
    */
   public boolean isManualMode() {
     return this.manualModeSupplier.getAsBoolean();
+  }
+  
+  /**
+   * @return manualMode true to indicate that manual mode commands (vs state
+   *                    machine) are running.
+   */
+  public void setManualMode(final boolean manualMode) {
+    this.manualMode = manualMode;
   }
 }
