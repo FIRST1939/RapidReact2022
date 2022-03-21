@@ -17,6 +17,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
+import frc.robot.Constants.SHOTS;
 import frc.robot.commands.DriveWithInput;
 
 import frc.robot.commands.RumbleController;
@@ -127,19 +129,25 @@ public class RobotContainer {
   private void configureButtonBindings() {
     //shooter buttons
     JoystickButton fenderLowButton = new JoystickButton(driverTwo, XboxController.Button.kY.value);
-    fenderLowButton.whenPressed(new SetShot(this.shooter, Constants.SHOTS.fenderLow));
+    fenderLowButton.whenPressed(new SetShot(this.shooter, SHOTS.fenderLow));
 
     JoystickButton fenderHighButton = new JoystickButton(driverTwo, XboxController.Button.kB.value);
-    fenderHighButton.whenPressed(new SetShot(this.shooter, Constants.SHOTS.fenderHigh));
+    fenderHighButton.whenPressed(new SetShot(this.shooter, SHOTS.fenderHigh));
 
-    JoystickButton cargoRing = new JoystickButton(driverTwo, XboxController.Button.kA.value);
-    cargoRing.whenPressed(new SetShot(this.shooter, Constants.SHOTS.fenderPlusOneLow));
+    JoystickButton fenderPlusOneLow = new JoystickButton(driverTwo, XboxController.Button.kA.value);
+    fenderPlusOneLow.whenPressed(new SetShot(this.shooter, SHOTS.fenderPlusOneLow));
 
-    JoystickButton shooterManualIdleTrigger = new JoystickButton(driverTwo, XboxController.Button.kX.value);
-    shooterManualIdleTrigger.whenActive(new SetShot(this.shooter, Constants.SHOTS.cargoRing));
+    JoystickButton fenderPlusOneHigh = new JoystickButton(driverTwo, XboxController.Button.kX.value);
+    fenderPlusOneHigh.whenPressed(new SetShot(this.shooter, SHOTS.fenderPlusOneHigh));
+
+    POVButton cargoRing =  new POVButton(driverTwo, 0); //0 is up, 90 is right, 180 is down, and 270 is left
+    cargoRing.whenPressed(new SetShot(this.shooter, SHOTS.cargoRing));
+
+    POVButton launchpad=  new POVButton(driverTwo, 90);
+    launchpad.whenPressed(new SetShot(this.shooter, SHOTS.launchpad));
     
     ShooterIdleTrigger shooterIdleTrigger = new ShooterIdleTrigger(this.robotCargoCount);
-    shooterIdleTrigger.whenActive(new WaitCommand(1.0).andThen(new SetShot(this.shooter, Constants.SHOTS.idle)));
+    shooterIdleTrigger.whenActive(new WaitCommand(1.0).andThen(new SetShot(this.shooter, SHOTS.idle)));
     shooterIdleTrigger.whenInactive(new ReturnToPriorShot(this.shooter));
 
     BooleanSupplier shootTriggerSupplier = () -> (driverTwo
