@@ -71,7 +71,7 @@ public final class Constants {
 
     // TODO shooting values
     public enum SHOTS {
-        idle(0, false),
+        idle(1000, false),
         fenderLow(3000, true),
         fenderHigh(6000, false),
         fenderPlusOneLow(4000, true),
