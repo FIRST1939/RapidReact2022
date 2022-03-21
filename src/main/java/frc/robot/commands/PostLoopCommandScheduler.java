@@ -5,7 +5,9 @@
 package frc.robot.commands;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
@@ -17,7 +19,7 @@ import frc.robot.Robot;
  * helps us work around the issue.
  */
 public class PostLoopCommandScheduler {
-    private static List<Command> toSchedule = new ArrayList<>();
+    private static Set<Command> toSchedule = new LinkedHashSet<>();
 
     /**
      * No instances of static utility class.
@@ -44,7 +46,7 @@ public class PostLoopCommandScheduler {
     public static void scheduleCommands() {
         // Create copy to avoid concurrant mod exceptions.
         final List<Command> toScheduleCopy = new ArrayList<>(toSchedule);
+        toSchedule.clear();
         toScheduleCopy.forEach(Command::schedule);
-        toSchedule.removeAll(toScheduleCopy);
     }
 }
