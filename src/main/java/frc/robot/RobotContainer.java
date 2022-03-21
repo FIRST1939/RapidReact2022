@@ -17,9 +17,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.DriveWithInput;
-import frc.robot.commands.ManualEjection;
 import frc.robot.commands.RumbleController;
 import frc.robot.commands.ToggleIntakeIndexerManualMode;
+import frc.robot.commands.ToggleManualEjection;
 import frc.robot.commands.auto.LeftSide2CargoNoTrajectory;
 import frc.robot.commands.indexer.IndexerEmptyState;
 import frc.robot.commands.indexer.IndexerReadyToShootState;
@@ -149,6 +149,7 @@ public class RobotContainer {
     toggleManualIntakeIndexer.whenPressed(
         new ToggleIntakeIndexerManualMode(
             this.intake,
+            this.indexer,
             new ManualIntakeRollerBelts(this.intake,
                 () -> enforceDeadband(driverTwo.getLeftX(), Constants.MANUAL_INTAKE_DEADBAND)),
             new ManualIndexer(this.indexer,
@@ -164,7 +165,8 @@ public class RobotContainer {
      * to empty the cargo (shooting as appropriate), and then go back to automation.
      */
     JoystickButton manualEjectionIntakeIndexer = new JoystickButton(driverTwo, XboxController.Button.kLeftBumper.value);
-    manualEjectionIntakeIndexer.whileHeld(new ManualEjection(intake, indexer));
+    manualEjectionIntakeIndexer.whenPressed(new ToggleManualEjection(intake, indexer));
+    manualEjectionIntakeIndexer.whenReleased(new ToggleManualEjection(intake, indexer));
 
     JoystickButton intakeGatherButton = new JoystickButton(driverTwo, XboxController.Button.kRightBumper.value);
     intakeGatherButton.whenPressed(new IntakeExtendCommandSelector(this.intake));
