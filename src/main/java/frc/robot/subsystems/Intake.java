@@ -89,7 +89,7 @@ public class Intake extends SubsystemBase {
      * @return true if there is a cargo at the ready to shoot sensor.
      */
     public boolean isCargoAtSensor() {
-        return !beamBreak.get(); // TODO verify this negation.
+        return !beamBreak.get();
     }
 
     /**

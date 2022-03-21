@@ -14,6 +14,6 @@ public class ManualEjectIndexer extends ManualIndexer {
    * @param indexer the indexer being controlled.
    */
   public ManualEjectIndexer(final Indexer indexer) {
-    super(indexer, () -> 0.6, new Trigger()); // TODO verify sign and magnitude.
+    super(indexer, () -> 0.6, new Trigger());
   }
 }

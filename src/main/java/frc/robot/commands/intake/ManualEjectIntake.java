@@ -13,6 +13,6 @@ public class ManualEjectIntake extends ManualIntakeRollerBelts {
    * @param intake the intake being controlled.
    */
   public ManualEjectIntake(final Intake intake) {
-    super(intake, () -> 0.6); // TODO verify sign and magnitude.
+    super(intake, () -> 0.6);
   }
 }

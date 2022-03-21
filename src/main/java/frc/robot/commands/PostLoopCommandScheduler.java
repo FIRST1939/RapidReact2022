@@ -48,6 +48,5 @@ public class PostLoopCommandScheduler {
         final List<Command> toScheduleCopy = new ArrayList<>(toSchedule);
         toSchedule.clear();
         toScheduleCopy.forEach(Command::schedule);
-        toSchedule.forEach(cmd -> System.out.println(cmd.getName()));
     }
 }
