@@ -74,7 +74,8 @@ public class Indexer extends SubsystemBase {
    */
   public void setToShooterFeedVelocity() {
     //this.pidController.setReference(Constants.INDEXER_SHOOTER_FEED_VELOCITY, ControlType.kVelocity);
-    this.pidController.setReference(-0.3, ControlType.kDutyCycle);
+    //this.pidController.setReference(-0.3, ControlType.kDutyCycle);
+    this.leader.set(-0.3);
   }
 
   /**
@@ -83,14 +84,16 @@ public class Indexer extends SubsystemBase {
    */
   public void setToReceiveVelocity() {
     //this.pidController.setReference(Constants.INDEXER_RECEIVE_VELOCITY, ControlType.kVelocity);
-    this.pidController.setReference(-0.5, ControlType.kDutyCycle);
+    //this.pidController.setReference(-0.5, ControlType.kDutyCycle);
+    this.leader.set(-0.5);
   }
 
   /**
    * Stops the indexer motor and the movement of cargo in the indexer.
    */
   public void stop() {
-    this.pidController.setReference(0.0, ControlType.kDutyCycle);
+    //this.pidController.setReference(0.0, ControlType.kDutyCycle);
+    this.leader.stopMotor();
   }
 
   /**
