@@ -31,6 +31,7 @@ public class ShootTrigger extends AbstractShootTrigger {
   @Override
   public boolean get() {
     return !indexer.isManualMode()
+        && indexer.isCargoAtSensor()
         && indexer.getCurrentCommand() instanceof IndexerReadyToShootState
         && super.get();
   }
