@@ -123,12 +123,14 @@ public class DriveTrain extends SubsystemBase {
 
     this.navx = new AHRS(SPI.Port.kMXP);
 
-    SmartDashboard.putNumber("Current Drawing SparkMax 1: ", left1.getOutputCurrent());
-    SmartDashboard.putNumber("Current Drawing SparkMax 2: ", left2.getOutputCurrent());
-    SmartDashboard.putNumber("Current Drawing SparkMax 3: ", left3.getOutputCurrent());
-    SmartDashboard.putNumber("Current Drawing SparkMax 4: ", right1.getOutputCurrent());
-    SmartDashboard.putNumber("Current Drawing SparkMax 5: ", right2.getOutputCurrent());
-    SmartDashboard.putNumber("Current Drawing SparkMax 6: ", right3.getOutputCurrent());
+    /*
+    SmartDashboard.putNumber("1: ", left1.getAppliedOutput());
+    SmartDashboard.putNumber("2: ", left2.getMotorTemperature());
+    SmartDashboard.putNumber("3: ", left3.getOutputCurrent());
+    SmartDashboard.putNumber("4: ", right1.getOutputCurrent());
+    SmartDashboard.putNumber("5: ", right2.getOutputCurrent());
+    SmartDashboard.putNumber("6: ", right3.getOutputCurrent());
+    */
 
     //SmartDashboard.putNumber("Left Encoder: ", right);
     //SmartDashboard.putNumber("Right Encoder: ", right);

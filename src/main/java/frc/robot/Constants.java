@@ -76,7 +76,7 @@ public final class Constants {
         fenderHigh(6000, false),
         fenderPlusOneLow(4000, true),
         fenderPlusOneHigh(7000, false),
-        cargoRing(8500, true),
+        cargoRing(8200, true),
         launchpad(10000, true);
 
         public final int velocity;
