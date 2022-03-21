@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import java.util.Objects;
 import java.util.function.BooleanSupplier;
 
 import com.revrobotics.CANSparkMax;
@@ -59,12 +60,19 @@ public class Indexer extends SubsystemBase {
     this.priorStageSendingSupplier = priorStageSendingSupplier;
   }
 
+  // TODO delete me
+  private String lastLog = "";
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putBoolean("Indexer BeamBreak: ", !this.beamBreak.get());
     Command current = getCurrentCommand();
-    SmartDashboard.putString("Indexer Active State: ", current != null ? current.getName() : "<null>");
+    final String cmdName = current != null ? current.getName() : "<null>";
+    SmartDashboard.putString("Indexer Active State: ", cmdName);
+    if (!Objects.equals(this.lastLog, cmdName)) {
+      this.lastLog = cmdName;
+      System.out.println(cmdName);
+    }
   }
 
   /**

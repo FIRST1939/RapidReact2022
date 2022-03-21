@@ -86,6 +86,8 @@ public class IndexerShootingState extends CommandBase {
   public void end(boolean interrupted) {
     this.indexer.stop();
     RobotCargoCount.getInstance().decrement();
+    System.out.println("Just decremented cargo count in ISS.end");
+    //new Exception().printStackTrace();
     if (!this.indexer.isManualMode()) {
       PostLoopCommandScheduler.addCommandToSchedule(
           IndexerEmptyState.getInstance(this.indexer));

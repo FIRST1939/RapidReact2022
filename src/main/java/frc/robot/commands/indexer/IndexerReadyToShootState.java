@@ -74,9 +74,11 @@ public class IndexerReadyToShootState extends CommandBase {
    */
   @Override
   public void end(boolean interrupted) {
+    /*
     if (!this.indexer.isManualMode()) {
       PostLoopCommandScheduler.addCommandToSchedule(
           IndexerShootingState.getInstance(indexer));
     }
+    */
   }
 }
