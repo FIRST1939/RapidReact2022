@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.DriveWithInput;
@@ -136,7 +137,7 @@ public class RobotContainer {
     shooterManualIdleTrigger.whenActive(new SetShot(this.shooter, Constants.SHOTS.cargoRing));
     
     ShooterIdleTrigger shooterIdleTrigger = new ShooterIdleTrigger(this.robotCargoCount);
-    shooterIdleTrigger.whenActive(new WaitCommand(1.0).andThen(new SetShot(this.shooter, Constants.SHOTS.idle)));
+    shooterIdleTrigger.whenActive(new WaitCommand(1.0).andThen(new InstantCommand(()-> shooter.idle())));
     shooterIdleTrigger.whenInactive(new ReturnToPriorShot(this.shooter));
 
     BooleanSupplier shootTriggerSupplier = () -> (driverTwo
