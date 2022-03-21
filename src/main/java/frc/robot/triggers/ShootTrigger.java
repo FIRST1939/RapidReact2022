@@ -3,6 +3,7 @@ package frc.robot.triggers;
 import java.util.function.BooleanSupplier;
 
 import frc.robot.commands.indexer.IndexerReadyToShootState;
+import frc.robot.commands.indexer.IndexerShootingState;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Shooter;
 
@@ -30,8 +31,11 @@ public class ShootTrigger extends AbstractShootTrigger {
    */
   @Override
   public boolean get() {
-    return !indexer.isManualMode()
-        && indexer.getCurrentCommand() instanceof IndexerReadyToShootState
-        && super.get();
+    // Added first check to not cancel shooter until cleared.
+    return (IndexerShootingState.getInstance(indexer).isScheduled())
+        || (!indexer.isManualMode()
+            && indexer.isCargoAtSensor()
+            && indexer.getCurrentCommand() instanceof IndexerReadyToShootState
+            && super.get());
   }
 }

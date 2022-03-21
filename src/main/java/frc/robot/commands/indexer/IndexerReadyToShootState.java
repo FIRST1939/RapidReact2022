@@ -5,7 +5,6 @@
 package frc.robot.commands.indexer;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.commands.PostLoopCommandScheduler;
 import frc.robot.subsystems.Indexer;
 
 /**
@@ -74,9 +73,14 @@ public class IndexerReadyToShootState extends CommandBase {
    */
   @Override
   public void end(boolean interrupted) {
+    // The only way this command ends is being interrupted by the
+    // IndexerShootingState being scheduled, so this scheduling is
+    // not needed and could cause issues when shooting quickly.
+    /*
     if (!this.indexer.isManualMode()) {
       PostLoopCommandScheduler.addCommandToSchedule(
           IndexerShootingState.getInstance(indexer));
     }
+    */
   }
 }

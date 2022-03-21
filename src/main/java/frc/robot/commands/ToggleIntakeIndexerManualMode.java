@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
 
 /**
@@ -31,15 +32,18 @@ import frc.robot.subsystems.Intake;
  */
 public class ToggleIntakeIndexerManualMode extends CommandBase {
   private final Intake intake;
+  private final Indexer indexer;
   private final Command intakeManualCommand;
   private final Command indexerManualCommand;
 
   /** Creates a new ToggleIntakeIndexerManualMode. */
   public ToggleIntakeIndexerManualMode(
       final Intake intake,
+      final Indexer indexer,
       final Command intakeManualCommand,
       final Command indexerManualCommand) {
     this.intake = intake;
+    this.indexer = indexer;
     this.intakeManualCommand = intakeManualCommand;
     this.indexerManualCommand = indexerManualCommand;
   }
@@ -49,10 +53,12 @@ public class ToggleIntakeIndexerManualMode extends CommandBase {
   public void initialize() {
     if (this.intake.isManualMode()) {
       this.intake.setManualMode(false);
+      this.indexer.setManualMode(false);
       this.intakeManualCommand.cancel();
       this.indexerManualCommand.cancel();
     } else {
       this.intake.setManualMode(true);
+      this.indexer.setManualMode(true);
       this.intakeManualCommand.schedule();
       this.indexerManualCommand.schedule();
     }

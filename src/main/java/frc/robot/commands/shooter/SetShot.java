@@ -9,7 +9,6 @@ import frc.robot.subsystems.Shooter;
  * shooter subsystem. It is used to shoot cargo during telop
  * with driver input of shooting rings.
  */
-// TODO indexer element, dependency, and incorporation
 public class SetShot extends CommandBase {
 
     private final Shooter shooter;

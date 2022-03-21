@@ -14,27 +14,25 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants.SHOTS;
 import frc.robot.commands.DriveWithInput;
-
 import frc.robot.commands.RumbleController;
 import frc.robot.commands.ToggleIntakeIndexerManualMode;
+import frc.robot.commands.ToggleManualEjection;
 import frc.robot.commands.auto.LeftSide2CargoNoTrajectory;
 import frc.robot.commands.indexer.IndexerEmptyState;
 import frc.robot.commands.indexer.IndexerReadyToShootState;
 import frc.robot.commands.indexer.IndexerShootingState;
-import frc.robot.commands.indexer.ManualEjectIndexer;
 import frc.robot.commands.indexer.ManualIndexer;
 import frc.robot.commands.intake.IntakeExtendCommandSelector;
 import frc.robot.commands.intake.IntakeGatheringSendState;
 import frc.robot.commands.intake.IntakeRetractCommandSelector;
 import frc.robot.commands.intake.IntakeStowedEmptyState;
 import frc.robot.commands.intake.IntakeStowedSendState;
-import frc.robot.commands.intake.ManualEjectIntake;
 import frc.robot.commands.intake.ManualIntakeRollerBelts;
 import frc.robot.commands.shooter.ReturnToPriorShot;
 import frc.robot.commands.shooter.SetShot;
@@ -73,7 +71,7 @@ public class RobotContainer {
   private final DriveTrain driveTrain = new DriveTrain(() -> sidewinderManualDeploy.get());
   private final RobotCargoCount robotCargoCount = RobotCargoCount.getInstance();
   private final Intake intake = new Intake(() -> this.driveTrain.getRate());
-  private final Indexer indexer = new Indexer(() -> isIntakeSendingCargo(), () -> isIntakeInManualMode());
+  private final Indexer indexer = new Indexer(() -> isIntakeSendingCargo());
   private final Shooter shooter = Shooter.getInstance();
   private final Climber climber = Climber.getInstance();
 
@@ -147,7 +145,7 @@ public class RobotContainer {
     launchpad.whenPressed(new SetShot(this.shooter, SHOTS.launchpad));
     
     ShooterIdleTrigger shooterIdleTrigger = new ShooterIdleTrigger(this.robotCargoCount);
-    shooterIdleTrigger.whenActive(new WaitCommand(1.0).andThen(new SetShot(this.shooter, SHOTS.idle)));
+    shooterIdleTrigger.whenActive(new WaitCommand(1.0).andThen(new InstantCommand(()-> shooter.idle())));
     shooterIdleTrigger.whenInactive(new ReturnToPriorShot(this.shooter));
 
     BooleanSupplier shootTriggerSupplier = () -> (driverTwo
@@ -160,6 +158,7 @@ public class RobotContainer {
     toggleManualIntakeIndexer.whenPressed(
         new ToggleIntakeIndexerManualMode(
             this.intake,
+            this.indexer,
             new ManualIntakeRollerBelts(this.intake,
                 () -> enforceDeadband(driverTwo.getLeftX(), Constants.MANUAL_INTAKE_DEADBAND)),
             new ManualIndexer(this.indexer,
@@ -174,9 +173,9 @@ public class RobotContainer {
      * button and immediately press the button to enter manual mode. Use manual mode
      * to empty the cargo (shooting as appropriate), and then go back to automation.
      */
-    JoystickButton manualEjectionIntakeIndexer = new JoystickButton(driverTwo, XboxController.Button.kBack.value);
-    manualEjectionIntakeIndexer.whileHeld(
-        ParallelCommandGroup.parallel(new ManualEjectIntake(intake), new ManualEjectIndexer(indexer)));
+    JoystickButton manualEjectionIntakeIndexer = new JoystickButton(driverTwo, XboxController.Button.kLeftBumper.value);
+    manualEjectionIntakeIndexer.whenPressed(new ToggleManualEjection(intake, indexer));
+    manualEjectionIntakeIndexer.whenReleased(new ToggleManualEjection(intake, indexer));
 
     JoystickButton intakeGatherButton = new JoystickButton(driverTwo, XboxController.Button.kRightBumper.value);
     intakeGatherButton.whenPressed(new IntakeExtendCommandSelector(this.intake));
@@ -282,9 +281,5 @@ public class RobotContainer {
     final Command currentIntakeCommand = this.intake.getCurrentCommand();
     return (currentIntakeCommand instanceof IntakeGatheringSendState)
         || (currentIntakeCommand instanceof IntakeStowedSendState);
-  }
-
-  private boolean isIntakeInManualMode() {
-    return this.intake.isManualMode();
   }
 }

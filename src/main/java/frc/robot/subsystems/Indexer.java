@@ -7,8 +7,6 @@ package frc.robot.subsystems;
 import java.util.function.BooleanSupplier;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.SparkMaxPIDController;
-import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -26,11 +24,10 @@ import frc.robot.Constants;
  */
 public class Indexer extends SubsystemBase {
   private final CANSparkMax leader;
-  private final SparkMaxPIDController pidController;
   private final CANSparkMax follower;
   private final DigitalInput beamBreak;
   private final BooleanSupplier priorStageSendingSupplier;
-  private final BooleanSupplier manualModeSupplier;
+  private boolean manualMode = false;
 
   /**
    * Creates the indexer subsystem. The supplier must indicate if the prior cargo
@@ -42,14 +39,10 @@ public class Indexer extends SubsystemBase {
    * @param manualModeSupplier        the supplier indicating if the indexer
    *                                  should consider itself in manual mode.
    */
-  public Indexer(final BooleanSupplier priorStageSendingSupplier, final BooleanSupplier manualModeSupplier) {
+  public Indexer(final BooleanSupplier priorStageSendingSupplier) {
     this.leader = new CANSparkMax(Constants.INDEXER_LEADER_CAN_ID, MotorType.kBrushless);
     this.leader.restoreFactoryDefaults();
     this.leader.setIdleMode(IdleMode.kBrake);
-    this.pidController = this.leader.getPIDController();
-    // TODO configure kP and kF for velocity control.
-    this.pidController.setFF(0.1);
-    this.pidController.setP(0.1);
 
     this.follower = new CANSparkMax(Constants.INDEXER_FOLLOWER_CAN_ID, MotorType.kBrushless);
     this.follower.restoreFactoryDefaults();
@@ -58,7 +51,6 @@ public class Indexer extends SubsystemBase {
 
     this.beamBreak = new DigitalInput(Constants.INDEXER_BEAM_BREAK_RECEIVER_DIO);
     this.priorStageSendingSupplier = priorStageSendingSupplier;
-    this.manualModeSupplier = manualModeSupplier;
   }
 
   @Override
@@ -66,7 +58,8 @@ public class Indexer extends SubsystemBase {
     // This method will be called once per scheduler run
     SmartDashboard.putBoolean("Indexer BeamBreak: ", !this.beamBreak.get());
     Command current = getCurrentCommand();
-    SmartDashboard.putString("Indexer Active State: ", current != null ? current.getName() : "<null>");
+    final String cmdName = current != null ? current.getName() : "<null>";
+    SmartDashboard.putString("Indexer Active State: ", cmdName);
   }
 
   /**
@@ -74,8 +67,7 @@ public class Indexer extends SubsystemBase {
    * cargo to the shooter.
    */
   public void setToShooterFeedVelocity() {
-    //this.pidController.setReference(Constants.INDEXER_SHOOTER_FEED_VELOCITY, ControlType.kVelocity);
-    this.pidController.setReference(-0.3, ControlType.kDutyCycle);
+    this.leader.set(-0.3);
   }
 
   /**
@@ -83,22 +75,21 @@ public class Indexer extends SubsystemBase {
    * cargo from the intake.
    */
   public void setToReceiveVelocity() {
-    //this.pidController.setReference(Constants.INDEXER_RECEIVE_VELOCITY, ControlType.kVelocity);
-    this.pidController.setReference(-0.5, ControlType.kDutyCycle);
+    this.leader.set(-0.5);
   }
 
   /**
    * Stops the indexer motor and the movement of cargo in the indexer.
    */
   public void stop() {
-    this.pidController.setReference(0.0, ControlType.kDutyCycle);
+    this.leader.stopMotor();
   }
 
   /**
    * @return true if there is a cargo at the ready to shoot sensor.
    */
   public boolean isCargoAtSensor() {
-    return !beamBreak.get(); // TODO verify this negation.
+    return !beamBreak.get();
   }
 
   /**
@@ -115,7 +106,6 @@ public class Indexer extends SubsystemBase {
    * @param speed the percent output (-1.0 to 1.0) to apply.
    */
   public void setManualSpeed(final double speed) {
-    // TODO once we have some experience, consider limiting this power.
     this.leader.set(speed);
   }
 
@@ -123,6 +113,14 @@ public class Indexer extends SubsystemBase {
    * @return true if manual mode commands (vs state machine) are running.
    */
   public boolean isManualMode() {
-    return this.manualModeSupplier.getAsBoolean();
+    return this.manualMode;  
+  }
+  
+  /**
+   * @return manualMode true to indicate that manual mode commands (vs state
+   *                    machine) are running.
+   */
+  public void setManualMode(final boolean manualMode) {
+    this.manualMode = manualMode;
   }
 }
