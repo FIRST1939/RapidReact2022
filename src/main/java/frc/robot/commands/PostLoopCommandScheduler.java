@@ -42,7 +42,9 @@ public class PostLoopCommandScheduler {
      * the next state commands.
      */
     public static void scheduleCommands() {
-        toSchedule.forEach(Command::schedule);
-        toSchedule.clear();
+        // Create copy to avoid concurrant mod exceptions.
+        final List<Command> toScheduleCopy = new ArrayList<>(toSchedule);
+        toScheduleCopy.forEach(Command::schedule);
+        toSchedule.removeAll(toScheduleCopy);
     }
 }
