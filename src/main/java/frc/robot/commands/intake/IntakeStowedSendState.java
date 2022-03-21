@@ -58,7 +58,7 @@ public class IntakeStowedSendState extends CommandBase {
   @Override
   public boolean isFinished() {
     if(timeout != 0){
-      return (System.currentTimeMillis()-this.timeout > 100);
+      return (System.currentTimeMillis()-this.timeout > 500);
     } else if(!this.intake.isCargoAtSensor()){
       timeout = System.currentTimeMillis();
     }
