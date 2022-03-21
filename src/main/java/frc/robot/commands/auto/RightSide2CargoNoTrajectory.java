@@ -18,14 +18,14 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 
 /**
- * This auto command is to be set up in the left tarmac at and square to the
- * backline (just to the left of the angle furthest from the hub). This should
+ * This auto command is to be set up in the right tarmac at and square to the
+ * backline (just to the right of the angle furthest from the hub). This should
  * place it directly across from an alliance color cargo with the intake facing
  * the cargo.
  */
-public class LeftSide2CargoNoTrajectory extends SequentialCommandGroup {
-  /** Creates a new LeftSide2CargoNoTrajectory. */
-  public LeftSide2CargoNoTrajectory(
+public class RightSide2CargoNoTrajectory extends SequentialCommandGroup {
+  /** Creates a new RightSide2CargoNoTrajectory. */
+  public RightSide2CargoNoTrajectory(
       final DriveTrain driveTrain,
       final Intake intake,
       final Indexer indexer,
@@ -41,7 +41,7 @@ public class LeftSide2CargoNoTrajectory extends SequentialCommandGroup {
         // Drive to point straight out from the fender.
         new DriveStraightDistance(-AutoConstants.CLOSE_CARGO_PICKUP_TO_TURN_DIST, driveTrain),
         // Turn square to the fender.
-        new DriveTurnToRelativeAngle(-AutoConstants.TURN_TO_FENDER_SMALL_ANGLE, driveTrain),
+        new DriveTurnToRelativeAngle(AutoConstants.TURN_TO_FENDER_SMALL_ANGLE, driveTrain),
         // Drive to fender with timeout because we may hit and not reach distance.
         new DriveStraightDistance(-AutoConstants.AFTER_TURN_DRIVE_TO_FENDER_DIST, driveTrain).withTimeout(3),
         // Shoot with timeout in case of jam.

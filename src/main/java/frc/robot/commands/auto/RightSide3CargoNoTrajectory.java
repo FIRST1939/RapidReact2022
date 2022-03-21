@@ -18,14 +18,14 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 
 /**
- * This auto command is to be set up in the left tarmac at and square to the
- * backline (just to the left of the angle furthest from the hub). This should
+ * This auto command is to be set up in the right tarmac at and square to the
+ * backline (just to the right of the angle furthest from the hub). This should
  * place it directly across from an alliance color cargo with the intake facing
  * the cargo.
  */
-public class LeftSide2CargoNoTrajectory extends SequentialCommandGroup {
-  /** Creates a new LeftSide2CargoNoTrajectory. */
-  public LeftSide2CargoNoTrajectory(
+public class RightSide3CargoNoTrajectory extends SequentialCommandGroup {
+  /** Creates a new RightSide3CargoNoTrajectory. */
+  public RightSide3CargoNoTrajectory(
       final DriveTrain driveTrain,
       final Intake intake,
       final Indexer indexer,
@@ -41,14 +41,29 @@ public class LeftSide2CargoNoTrajectory extends SequentialCommandGroup {
         // Drive to point straight out from the fender.
         new DriveStraightDistance(-AutoConstants.CLOSE_CARGO_PICKUP_TO_TURN_DIST, driveTrain),
         // Turn square to the fender.
-        new DriveTurnToRelativeAngle(-AutoConstants.TURN_TO_FENDER_SMALL_ANGLE, driveTrain),
+        new DriveTurnToRelativeAngle(AutoConstants.TURN_TO_FENDER_SMALL_ANGLE, driveTrain),
         // Drive to fender with timeout because we may hit and not reach distance.
         new DriveStraightDistance(-AutoConstants.AFTER_TURN_DRIVE_TO_FENDER_DIST, driveTrain).withTimeout(3),
         // Shoot with timeout in case of jam.
         new AutoModeShooter(2, indexer, shooter).withTimeout(3.0),
         // Do not drive until second shot has cleared shooter.
         new WaitCommand(1.0),
-        // Exit tarmac.
-        new DriveStraightDistance(AutoConstants.FROM_FENDER_TO_EXIT_TARMAC_DIST, driveTrain));
+        // Move away from fender and set for cargo ring.
+        new ParallelCommandGroup(
+            new DriveStraightDistance(AutoConstants.AFTER_TURN_DRIVE_TO_FENDER_DIST, driveTrain),
+            new SetShot(shooter, Constants.SHOTS.cargoRing)),
+        // Turn toward cargo.
+        new DriveTurnToRelativeAngle(
+            -AutoConstants.TURN_TO_THIRD_CARGO_ANGLE,
+            driveTrain),
+        // Gather and move to cargo.
+        new ParallelCommandGroup(
+            new ScheduleCommand(IntakeGatheringEmptyState.getInstance(intake)),
+            new DriveStraightDistance(AutoConstants.CLOSE_CARGO_PICKUP_TO_TURN_DIST, driveTrain)),
+        // Shoot
+        new AutoModeShooter(1, indexer, shooter).withTimeout(3.0),
+        // Do not set shot until shot has cleared shooter.
+        new WaitCommand(1.0),
+        new SetShot(shooter, Constants.SHOTS.fenderHigh));
   }
 }
