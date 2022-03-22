@@ -24,6 +24,8 @@ import frc.robot.commands.RumbleController;
 import frc.robot.commands.ToggleIntakeIndexerManualMode;
 import frc.robot.commands.ToggleManualEjection;
 import frc.robot.commands.auto.LeftSide2CargoNoTrajectory;
+import frc.robot.commands.auto.RightSide2CargoNoTrajectory;
+import frc.robot.commands.auto.RightSide3CargoNoTrajectory;
 import frc.robot.commands.indexer.IndexerEmptyState;
 import frc.robot.commands.indexer.IndexerReadyToShootState;
 import frc.robot.commands.indexer.IndexerShootingState;
@@ -99,9 +101,11 @@ public class RobotContainer {
    * Populates the dashboard chooser for auto mode selection.
    */
   private void configureAutoChooser() {
-    this.autoChooser.setDefaultOption("Left side 2 Cargo",
+    this.autoChooser.setDefaultOption("Left 2 Cargo",
         new LeftSide2CargoNoTrajectory(driveTrain, intake, indexer, shooter));
     this.autoChooser.addOption("Do Nothing", new WaitCommand(1.0));
+    this.autoChooser.addOption("Right 2 Cargo", new RightSide2CargoNoTrajectory(driveTrain, intake, indexer, shooter));
+    this.autoChooser.addOption("Right 3 Caggo", new RightSide3CargoNoTrajectory(driveTrain, intake, indexer, shooter));
 
     SmartDashboard.putData("Autonomous Chooser", this.autoChooser);
   }

@@ -9,7 +9,7 @@ public interface AutoConstants {
     /** Drive from edge of tarmac to near cargo. */
     public static final double CLOSE_CARGO_PICKUP_DRIVE_DIST = 35.00;
     /** Drive after near cargo pick up to alignment turn. */
-    public static final double CLOSE_CARGO_PICKUP_TO_TURN_DIST = 50.0;
+    public static final double CLOSE_CARGO_PICKUP_TO_TURN_DIST = 65.0;
     /** Turn to fender small angle (absolute value). */
     public static final double TURN_TO_FENDER_SMALL_ANGLE = 22.5;
     /** Drive to fender after turn distance. */

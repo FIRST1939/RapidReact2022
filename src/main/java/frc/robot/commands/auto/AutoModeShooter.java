@@ -35,7 +35,7 @@ public class AutoModeShooter extends CommandBase {
    * @param shooter the shooter that will be triggered.
    */
   public AutoModeShooter(final int shots, final Indexer indexer, final Shooter shooter) {
-    this.shotsRemaining = Math.min(shots, RobotCargoCount.getInstance().get());
+    this.shotsRemaining = shots;
     this.indexer = indexer;
     this.shooter = shooter;
   }

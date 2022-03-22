@@ -54,12 +54,13 @@ public class RightSide3CargoNoTrajectory extends SequentialCommandGroup {
             new SetShot(shooter, Constants.SHOTS.cargoRing)),
         // Turn toward cargo.
         new DriveTurnToRelativeAngle(
-            -AutoConstants.TURN_TO_THIRD_CARGO_ANGLE,
+            AutoConstants.TURN_TO_THIRD_CARGO_ANGLE,
             driveTrain),
         // Gather and move to cargo.
         new ParallelCommandGroup(
             new ScheduleCommand(IntakeGatheringEmptyState.getInstance(intake)),
             new DriveStraightDistance(AutoConstants.CLOSE_CARGO_PICKUP_TO_TURN_DIST, driveTrain)),
+            new DriveTurnToRelativeAngle(-12, driveTrain),
         // Shoot
         new AutoModeShooter(1, indexer, shooter).withTimeout(3.0),
         // Do not set shot until shot has cleared shooter.
