@@ -5,6 +5,7 @@
 package frc.robot;
 
 import java.util.function.BooleanSupplier;
+import java.util.function.Supplier;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -83,7 +84,7 @@ public class RobotContainer {
   private Command indexerCommandOnAutoExit = null;
   private boolean exitedAuto = false;
 
-  private final SendableChooser<Command> autoChooser = new SendableChooser<>();
+  private final SendableChooser<Supplier<Command>> autoChooser = new SendableChooser<>();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -101,11 +102,10 @@ public class RobotContainer {
    * Populates the dashboard chooser for auto mode selection.
    */
   private void configureAutoChooser() {
-    this.autoChooser.setDefaultOption("Left 2 Cargo",
-        new LeftSide2CargoNoTrajectory(driveTrain, intake, indexer, shooter));
-    this.autoChooser.addOption("Do Nothing", new WaitCommand(1.0));
-    this.autoChooser.addOption("Right 2 Cargo", new RightSide2CargoNoTrajectory(driveTrain, intake, indexer, shooter));
-    this.autoChooser.addOption("Right 3 Cargo", new RightSide3CargoNoTrajectory(driveTrain, intake, indexer, shooter));
+    this.autoChooser.setDefaultOption("Left 2 Cargo", () -> new LeftSide2CargoNoTrajectory(driveTrain, intake, indexer, shooter));
+    this.autoChooser.addOption("Do Nothing", () -> new WaitCommand(1.0));
+    this.autoChooser.addOption("Right 2 Cargo", () -> new RightSide2CargoNoTrajectory(driveTrain, intake, indexer, shooter));
+    this.autoChooser.addOption("Right 3 Cargo", () -> new RightSide3CargoNoTrajectory(driveTrain, intake, indexer, shooter));
 
     SmartDashboard.putData("Autonomous Chooser", this.autoChooser);
   }
@@ -239,7 +239,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return this.autoChooser.getSelected();
+    return this.autoChooser.getSelected().get();
   }
 
   /**
