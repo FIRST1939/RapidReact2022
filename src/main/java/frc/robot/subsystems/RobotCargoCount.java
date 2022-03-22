@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.MathUtil;
+
 /**
  * A single instance of this class keeps track of the total number of cargo
  * present in the robot. There is API available to get, increment and decrement
@@ -82,5 +84,13 @@ public class RobotCargoCount {
      */
     public boolean isFull() {
         return this.count == MAX_CARGO;
+    }
+
+    /**
+     * DO NOT USE THIS! Only for auto and teleop init use for better testing.
+     * @param count the count to set, will be clamped to min and max.
+     */
+    public void setCount(final int count) {
+        this.count = MathUtil.clamp(count, MIN_CARGO , MAX_CARGO);
     }
 }

@@ -221,6 +221,7 @@ public class RobotContainer {
   public void scheduleInitialStates() {
     IntakeStowedEmptyState.getInstance(this.intake).schedule();
     IndexerReadyToShootState.getInstance(this.indexer).schedule();
+    RobotCargoCount.getInstance().setCount(RobotCargoCount.START_CARGO);
   }
 
   private void pressureInit () {
@@ -251,7 +252,7 @@ public class RobotContainer {
     if(!exitedAuto){
       IntakeStowedEmptyState.getInstance(intake).schedule();
       IndexerEmptyState.getInstance(indexer).schedule();
-      RobotCargoCount.getInstance().decrement();
+      RobotCargoCount.getInstance().setCount(0);
       return;
     }
     if ((this.intakeCommandOnAutoExit != null)
