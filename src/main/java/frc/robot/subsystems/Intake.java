@@ -50,9 +50,9 @@ public class Intake extends SubsystemBase {
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
-        SmartDashboard.putBoolean("Intake BeamBreak: ", !this.beamBreak.get());
+        SmartDashboard.putBoolean("Intake: ", !this.beamBreak.get());
         Command current = getCurrentCommand();
-        SmartDashboard.putString("Intake Active State: ", current != null ? current.getName() : "<null>");
+        SmartDashboard.putString("Intake State: ", current != null ? current.getName() : "<null>");
     }
 
     public void extendIntake() {

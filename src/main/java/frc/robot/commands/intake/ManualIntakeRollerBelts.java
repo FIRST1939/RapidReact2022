@@ -48,6 +48,6 @@ public class ManualIntakeRollerBelts extends CommandBase {
     RobotCargoCount.getInstance().decrement();
     RobotCargoCount.getInstance().decrement();
     PostLoopCommandScheduler.addCommandToSchedule(
-        IntakeGatheringEmptyState.getInstance(this.intake));
+        IntakeStowedEmptyState.getInstance(this.intake));
   }
 }

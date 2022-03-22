@@ -105,7 +105,7 @@ public class RobotContainer {
         new LeftSide2CargoNoTrajectory(driveTrain, intake, indexer, shooter));
     this.autoChooser.addOption("Do Nothing", new WaitCommand(1.0));
     this.autoChooser.addOption("Right 2 Cargo", new RightSide2CargoNoTrajectory(driveTrain, intake, indexer, shooter));
-    this.autoChooser.addOption("Right 3 Caggo", new RightSide3CargoNoTrajectory(driveTrain, intake, indexer, shooter));
+    this.autoChooser.addOption("Right 3 Cargo", new RightSide3CargoNoTrajectory(driveTrain, intake, indexer, shooter));
 
     SmartDashboard.putData("Autonomous Chooser", this.autoChooser);
   }
