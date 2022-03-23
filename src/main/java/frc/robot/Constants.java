@@ -89,7 +89,7 @@ public final class Constants {
         }
     }
 
-    public static final int SHOOTER_VELOCITY_ERROR = 300;
+    public static final int SHOOTER_VELOCITY_ERROR = 700;
 
     // Intake constants
     public static final int INTAKE_PCM_CHANNEL = 8;
@@ -151,4 +151,7 @@ public final class Constants {
 
     //Lights constants.
     public static final int LIGHTS_PWM = 0;
+
+    //Pipeline constants.
+    public static final int CARGORING_PIPELINE = 0;
 }
