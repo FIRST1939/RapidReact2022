@@ -45,7 +45,7 @@ public abstract class AbstractShootTrigger extends Trigger {
       // The driver is now and may have been signaling ready.
       if (this.lastDriverTrigger) {
         // Drive was signaling ready before too.
-        if (this.shooterReadyTimeout.get() >= 2.0) {
+        if (this.shooterReadyTimeout.get() >= 2.0) { // TODO validate time
           shooterTimedOut = true;
         }
       } else {
