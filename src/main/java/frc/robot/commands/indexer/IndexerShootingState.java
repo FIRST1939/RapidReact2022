@@ -4,6 +4,7 @@
 
 package frc.robot.commands.indexer;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.commands.PostLoopCommandScheduler;
 import frc.robot.subsystems.Indexer;
@@ -29,6 +30,11 @@ public class IndexerShootingState extends CommandBase {
   /** This command's required indexer subsystem. */
   private final Indexer indexer;
 
+  /** Used to make sure this state runs for a minimum time. */
+  private final Timer minRunTimer = new Timer();
+  /** Have to have our own flag since stupid Timer does not have an isRunning() */
+  private boolean minRunTimerEnabled = false;
+
   /**
    * Must be used to access the singleton instance of this command.
    * 
@@ -48,6 +54,18 @@ public class IndexerShootingState extends CommandBase {
   private IndexerShootingState(final Indexer indexer) {
     this.indexer = indexer;
     addRequirements(this.indexer);
+  }
+
+  @Override
+  public void initialize() {
+    this.minRunTimer.stop();
+    this.minRunTimerEnabled = false;
+    // The cargo must have slipped down, ensure min run time.
+    if (!this.indexer.isCargoAtSensor()) {
+      this.minRunTimer.reset();
+      this.minRunTimer.start();
+      this.minRunTimerEnabled = true;
+    }
   }
 
   /**
@@ -72,7 +90,8 @@ public class IndexerShootingState extends CommandBase {
    */
   @Override
   public boolean isFinished() {
-    return !this.indexer.isCargoAtSensor();
+    return !this.indexer.isCargoAtSensor()
+        && (!this.minRunTimerEnabled || (this.minRunTimer.get() > 0.5)); // TODO validate time
   }
 
   /**
@@ -85,6 +104,8 @@ public class IndexerShootingState extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     this.indexer.stop();
+    this.minRunTimer.stop();
+    this.minRunTimerEnabled = false;
     RobotCargoCount.getInstance().decrement();
     if (!this.indexer.isManualMode()) {
       PostLoopCommandScheduler.addCommandToSchedule(

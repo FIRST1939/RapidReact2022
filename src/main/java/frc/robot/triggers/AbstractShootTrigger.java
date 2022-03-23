@@ -2,6 +2,7 @@ package frc.robot.triggers;
 
 import java.util.function.BooleanSupplier;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.Shooter;
 
@@ -18,6 +19,8 @@ import frc.robot.subsystems.Shooter;
 public abstract class AbstractShootTrigger extends Trigger {
   private final Shooter shooter;
   private final BooleanSupplier triggerSupplier;
+  private boolean lastDriverTrigger = false;
+  private final Timer shooterReadyTimeout = new Timer();
 
   /**
    * @param shooter         the {@link Shooter} for this robot.
@@ -36,6 +39,25 @@ public abstract class AbstractShootTrigger extends Trigger {
    */
   @Override
   public boolean get() {
-    return shooter.isShooterReady() && triggerSupplier.getAsBoolean();
+    final boolean currentDriverTrigger = triggerSupplier.getAsBoolean();
+    boolean shooterTimedOut = false;
+    if (currentDriverTrigger) {
+      // The driver is now and may have been signaling ready.
+      if (this.lastDriverTrigger) {
+        // Drive was signaling ready before too.
+        if (this.shooterReadyTimeout.get() >= 2.0) {
+          shooterTimedOut = true;
+        }
+      } else {
+        // Driver just transitioned to ready.
+        this.shooterReadyTimeout.reset();
+        this.shooterReadyTimeout.start();
+      }
+    } else {
+      // Driver not signaling ready.
+      this.shooterReadyTimeout.stop();
+    }
+    this.lastDriverTrigger = currentDriverTrigger;
+    return (shooterTimedOut || shooter.isShooterReady()) && currentDriverTrigger;
   }
 }
