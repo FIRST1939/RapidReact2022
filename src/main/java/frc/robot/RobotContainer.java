@@ -25,6 +25,7 @@ import frc.robot.commands.RumbleController;
 import frc.robot.commands.ToggleIntakeIndexerManualMode;
 import frc.robot.commands.ToggleManualEjection;
 import frc.robot.commands.auto.LeftSide2CargoNoTrajectory;
+import frc.robot.commands.auto.OneBall;
 import frc.robot.commands.auto.RightSide2CargoNoTrajectory;
 import frc.robot.commands.auto.RightSide3CargoNoTrajectory;
 import frc.robot.commands.indexer.IndexerEmptyState;
@@ -106,6 +107,7 @@ public class RobotContainer {
     this.autoChooser.addOption("Do Nothing", () -> new WaitCommand(1.0));
     this.autoChooser.addOption("Right 2 Cargo", () -> new RightSide2CargoNoTrajectory(driveTrain, intake, indexer, shooter));
     this.autoChooser.addOption("Right 3 Cargo", () -> new RightSide3CargoNoTrajectory(driveTrain, intake, indexer, shooter));
+    this.autoChooser.addOption("One Ball", () -> new OneBall(shooter, indexer, driveTrain));
 
     SmartDashboard.putData("Autonomous Chooser", this.autoChooser);
   }
