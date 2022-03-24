@@ -34,7 +34,6 @@ public class ShootTrigger extends AbstractShootTrigger {
     // Added first check to not cancel shooter until cleared.
     return (IndexerShootingState.getInstance(indexer).isScheduled())
         || (!indexer.isManualMode()
-            && indexer.isCargoAtSensor()
             && indexer.getCurrentCommand() instanceof IndexerReadyToShootState
             && super.get());
   }
