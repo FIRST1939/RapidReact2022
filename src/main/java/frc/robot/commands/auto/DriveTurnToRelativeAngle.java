@@ -4,6 +4,8 @@
 
 package frc.robot.commands.auto;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import frc.robot.Constants;
@@ -13,7 +15,7 @@ public class DriveTurnToRelativeAngle extends PIDCommand {
   private final DriveTrain driveTrain;
 
   /** Creates a new DriveTurnToRelativeAngle. */
-  public DriveTurnToRelativeAngle(final double relativeAngle, final DriveTrain driveTrain) {
+  public DriveTurnToRelativeAngle(final DoubleSupplier relativeAngle, final DriveTrain driveTrain) {
     super(
         new PIDController(Constants.DRIVE_AUTO_TURN_TO_ANGLE_KP, 0.0, 0.0),
         // Close loop on heading (adjusted yaw)
