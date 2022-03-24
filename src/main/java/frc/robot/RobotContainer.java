@@ -5,6 +5,7 @@
 package frc.robot;
 
 import java.util.function.BooleanSupplier;
+import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
 import edu.wpi.first.wpilibj.Compressor;
@@ -21,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants.SHOTS;
 import frc.robot.commands.DriveWithInput;
+import frc.robot.commands.ReadAngle;
 import frc.robot.commands.RumbleController;
 import frc.robot.commands.ToggleIntakeIndexerManualMode;
 import frc.robot.commands.ToggleManualEjection;
@@ -130,8 +132,9 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     JoystickButton turnToTarget = new JoystickButton(leftStick, 1);
-    //Line below is definitely wrong
-    //turnToTarget.whileHeld(new TurnToTargetTeleop(drivetrain, robot));
+    final Command readAngle = new ReadAngle(limelightTurret);
+    final DoubleSupplier angleSupplier = readAngle.getSupplier();
+    
 
     //shooter buttons
     JoystickButton fenderLowButton = new JoystickButton(driverTwo, XboxController.Button.kY.value);
