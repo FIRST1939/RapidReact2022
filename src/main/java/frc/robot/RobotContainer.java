@@ -24,8 +24,10 @@ import frc.robot.commands.DriveWithInput;
 import frc.robot.commands.RumbleController;
 import frc.robot.commands.ToggleIntakeIndexerManualMode;
 import frc.robot.commands.ToggleManualEjection;
+import frc.robot.commands.auto.CargoRingTwoBall;
 import frc.robot.commands.auto.LeftSide2CargoNoTrajectory;
 import frc.robot.commands.auto.OneBall;
+import frc.robot.commands.auto.PlusOneTwoBall;
 import frc.robot.commands.auto.RightSide2CargoNoTrajectory;
 import frc.robot.commands.auto.RightSide3CargoNoTrajectory;
 import frc.robot.commands.indexer.IndexerEmptyState;
@@ -103,11 +105,13 @@ public class RobotContainer {
    * Populates the dashboard chooser for auto mode selection.
    */
   private void configureAutoChooser() {
-    this.autoChooser.setDefaultOption("Left 2 Cargo", () -> new LeftSide2CargoNoTrajectory(driveTrain, intake, indexer, shooter));
+    this.autoChooser.setDefaultOption("PlusOne Two Ball", () -> new PlusOneTwoBall(driveTrain, intake, indexer, shooter));
+    //this.autoChooser.setDefaultOption("Left 2 Cargo", () -> new LeftSide2CargoNoTrajectory(driveTrain, intake, indexer, shooter));
     this.autoChooser.addOption("Do Nothing", () -> new WaitCommand(1.0));
-    this.autoChooser.addOption("Right 2 Cargo", () -> new RightSide2CargoNoTrajectory(driveTrain, intake, indexer, shooter));
+    //this.autoChooser.addOption("Right 2 Cargo", () -> new RightSide2CargoNoTrajectory(driveTrain, intake, indexer, shooter));
     this.autoChooser.addOption("Right 3 Cargo", () -> new RightSide3CargoNoTrajectory(driveTrain, intake, indexer, shooter));
     this.autoChooser.addOption("One Ball", () -> new OneBall(shooter, indexer, driveTrain));
+    this.autoChooser.addOption("Cargo Ring Two Ball", () -> new CargoRingTwoBall(driveTrain, intake, indexer, shooter));
 
     SmartDashboard.putData("Autonomous Chooser", this.autoChooser);
   }

@@ -6,7 +6,10 @@ package frc.robot.subsystems;
 
 import java.util.function.BooleanSupplier;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -24,6 +27,7 @@ import frc.robot.Constants;
  */
 public class Indexer extends SubsystemBase {
   private final CANSparkMax leader;
+  private final SparkMaxPIDController pidController;
   private final CANSparkMax follower;
   private final DigitalInput beamBreak;
   private final BooleanSupplier priorStageSendingSupplier;
@@ -43,6 +47,9 @@ public class Indexer extends SubsystemBase {
     this.leader = new CANSparkMax(Constants.INDEXER_LEADER_CAN_ID, MotorType.kBrushless);
     this.leader.restoreFactoryDefaults();
     this.leader.setIdleMode(IdleMode.kBrake);
+    this.pidController = this.leader.getPIDController();
+    this.pidController.setP(0.1);
+    this.pidController.setFF(0.1);
 
     this.follower = new CANSparkMax(Constants.INDEXER_FOLLOWER_CAN_ID, MotorType.kBrushless);
     this.follower.restoreFactoryDefaults();
@@ -67,7 +74,8 @@ public class Indexer extends SubsystemBase {
    * cargo to the shooter.
    */
   public void setToShooterFeedVelocity() {
-    this.leader.set(-0.3);
+    this.pidController.setReference(Constants.INDEXER_SHOOTER_FEED_VELOCITY, ControlType.kVelocity);
+    //this.leader.set(-0.3);
   }
 
   /**

@@ -99,7 +99,7 @@ public class Shooter extends SubsystemBase {
         //SmartDashboard.putNumber("Shooter Velocity", currentVelocity);
         //SmartDashboard.putNumber("Shooter Error", currentClosedLoopError);
         if (Math.abs(Math.abs(currentVelocity)
-                - this.lastSetVelocity) <= Constants.SHOOTER_VELOCITY_ERROR) {
+                - this.lastSetVelocity) <= this.lastSetVelocity*0.04) {
             this.velocityInRangeCount++;
         } else {
             this.velocityInRangeCount = 0;

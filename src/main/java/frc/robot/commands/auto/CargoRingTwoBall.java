@@ -23,9 +23,9 @@ import frc.robot.subsystems.Shooter;
  * place it directly across from an alliance color cargo with the intake facing
  * the cargo.
  */
-public class RightSide2CargoNoTrajectory extends SequentialCommandGroup {
+public class CargoRingTwoBall extends SequentialCommandGroup {
   /** Creates a new RightSide2CargoNoTrajectory. */
-  public RightSide2CargoNoTrajectory(
+  public CargoRingTwoBall(
       final DriveTrain driveTrain,
       final Intake intake,
       final Indexer indexer,
@@ -36,20 +36,14 @@ public class RightSide2CargoNoTrajectory extends SequentialCommandGroup {
         // Gather, move to cargo and set for fender high.
         new ParallelCommandGroup(
             new ScheduleCommand(IntakeGatheringEmptyState.getInstance(intake)),
-            new DriveStraightDistance(AutoConstants.CLOSE_CARGO_PICKUP_DRIVE_DIST, driveTrain),
+            new DriveStraightDistance(40, driveTrain),
             new SetShot(shooter, Constants.SHOTS.cargoRing)),
-        // Drive to point straight out from the fender.
-        new DriveStraightDistance(-AutoConstants.CLOSE_CARGO_PICKUP_TO_TURN_DIST, driveTrain),
-        // Turn square to the fender.
-        new DriveTurnToRelativeAngle(AutoConstants.TURN_TO_FENDER_SMALL_ANGLE, driveTrain),
-        // Drive to fender with timeout because we may hit and not reach distance.
-        new DriveStraightDistance(-AutoConstants.AFTER_TURN_DRIVE_TO_FENDER_DIST, driveTrain).withTimeout(3),
-        // Shoot with timeout in case of jam.
+        new WaitCommand(1.0),
         new AutoModeShooter(2, indexer, shooter).withTimeout(3.0),
         // Do not drive until second shot has cleared shooter.
-        new WaitCommand(1.0),
+        new WaitCommand(1.0)
         // Exit tarmac.
-        new DriveStraightDistance(AutoConstants.FROM_FENDER_TO_EXIT_TARMAC_DIST, driveTrain)
+        //new DriveStraightDistance(AutoConstants.FROM_FENDER_TO_EXIT_TARMAC_DIST, driveTrain)\
         );
   }
 }
