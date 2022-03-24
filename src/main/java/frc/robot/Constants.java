@@ -73,13 +73,13 @@ public final class Constants {
     public enum SHOTS {
         off(0, false),
         idle(1500, false),
-        fenderLow(3000, true),
-        fenderHigh(6400, false),
+        fenderLow(3500, true),
+        fenderHigh(6275, false),
         fenderPlusOneLow(4000, true),
-        fenderPlusOneHigh(8000, false),
-        cargoRing(8200, true),
-        wallShot(8500, true),
-        launchpad(9500, true);
+        fenderPlusOneHigh(7000, false),
+        cargoRing(7500, true),
+        wallShot(7600, true),
+        launchpad(8300, true);
 
         public final int velocity;
         public final boolean hood;
