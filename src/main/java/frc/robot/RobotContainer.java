@@ -150,6 +150,9 @@ public class RobotContainer {
 
     POVButton launchpad=  new POVButton(driverTwo, 180);
     launchpad.whenPressed(new SetShot(this.shooter, SHOTS.launchpad));
+
+    POVButton offButton = new POVButton(driverTwo, 270);
+    offButton.whenPressed(new SetShot(this.shooter, SHOTS.off));
     
     ShooterIdleTrigger shooterIdleTrigger = new ShooterIdleTrigger(this.robotCargoCount);
     shooterIdleTrigger.whenActive(new WaitCommand(1.0).andThen(new InstantCommand(()-> shooter.idle())));
