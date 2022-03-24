@@ -15,6 +15,9 @@ import frc.robot.Limelight;
 public class ReadAngle extends InstantCommand {
   private final Limelight limelight;
 
+  private double angle;
+  private final DoubleSupplier angleSupplier = () -> angle;
+
   public ReadAngle(final Limelight limelight) {
     this.limelight = limelight;
   }
@@ -23,5 +26,9 @@ public class ReadAngle extends InstantCommand {
   @Override
   public void initialize() {
     double angle = limelight.getHorizontalAngleError();
+  }
+
+  public DoubleSupplier getSupplier(){
+    return angleSupplier;
   }
 }

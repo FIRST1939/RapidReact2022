@@ -26,6 +26,7 @@ import frc.robot.commands.ReadAngle;
 import frc.robot.commands.RumbleController;
 import frc.robot.commands.ToggleIntakeIndexerManualMode;
 import frc.robot.commands.ToggleManualEjection;
+import frc.robot.commands.auto.DriveTurnToRelativeAngle;
 import frc.robot.commands.auto.LeftSide2CargoNoTrajectory;
 import frc.robot.commands.auto.RightSide2CargoNoTrajectory;
 import frc.robot.commands.auto.RightSide3CargoNoTrajectory;
@@ -134,7 +135,7 @@ public class RobotContainer {
     JoystickButton turnToTarget = new JoystickButton(leftStick, 1);
     final Command readAngle = new ReadAngle(limelightTurret);
     final DoubleSupplier angleSupplier = readAngle.getSupplier();
-    
+    turnToTarget.whenPressed(readAngle.andThen(new DriveTurnToRelativeAngle(angleSupplier, driveTrain)));
 
     //shooter buttons
     JoystickButton fenderLowButton = new JoystickButton(driverTwo, XboxController.Button.kY.value);

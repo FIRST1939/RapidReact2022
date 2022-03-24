@@ -41,7 +41,7 @@ public class RightSide2CargoNoTrajectory extends SequentialCommandGroup {
         // Drive to point straight out from the fender.
         new DriveStraightDistance(-AutoConstants.CLOSE_CARGO_PICKUP_TO_TURN_DIST, driveTrain),
         // Turn square to the fender.
-        new DriveTurnToRelativeAngle(AutoConstants.TURN_TO_FENDER_SMALL_ANGLE, driveTrain),
+        new DriveTurnToRelativeAngle(() -> AutoConstants.TURN_TO_FENDER_SMALL_ANGLE, driveTrain),
         // Drive to fender with timeout because we may hit and not reach distance.
         new DriveStraightDistance(-AutoConstants.AFTER_TURN_DRIVE_TO_FENDER_DIST, driveTrain).withTimeout(3),
         // Shoot with timeout in case of jam.
