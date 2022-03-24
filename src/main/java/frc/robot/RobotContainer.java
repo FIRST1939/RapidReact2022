@@ -145,7 +145,10 @@ public class RobotContainer {
     POVButton cargoRing =  new POVButton(driverTwo, 0); //0 is up, 90 is right, 180 is down, and 270 is left
     cargoRing.whenPressed(new SetShot(this.shooter, SHOTS.cargoRing));
 
-    POVButton launchpad=  new POVButton(driverTwo, 90);
+    POVButton wallShot=  new POVButton(driverTwo, 90);
+    wallShot.whenPressed(new SetShot(this.shooter, SHOTS.wallShot));
+
+    POVButton launchpad=  new POVButton(driverTwo, 180);
     launchpad.whenPressed(new SetShot(this.shooter, SHOTS.launchpad));
     
     ShooterIdleTrigger shooterIdleTrigger = new ShooterIdleTrigger(this.robotCargoCount);
