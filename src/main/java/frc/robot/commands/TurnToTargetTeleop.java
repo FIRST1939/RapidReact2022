@@ -4,25 +4,38 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.subsystems.DriveTrain;
 
 public class TurnToTargetTeleop extends CommandBase {
   /** Creates a new TurnToTargetTeleop. */
 
   private final DriveTrain drivetrain;
-  public TurnToTargetTeleop(final DriveTrain drivetrain) {
+  private final Robot robot;
+
+  PIDController turnToAngle = new PIDController(Constants.VISION_TURN_TO_ANGLE_kP, 0, 0);
+
+  public TurnToTargetTeleop(final DriveTrain drivetrain, final Robot robot) {
     this.drivetrain = drivetrain;
+    this.robot = robot;
   }
 
   @Override
   public void initialize() {
     this.drivetrain.resetHeading();
+    turnToAngle.reset();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {;
+    double angle = this.robot.limelightTurret.getHorizontalAngleError();
+    double output = turnToAngle.calculate(angle);
+    this.drivetrain.arcadeDrive(0, output, 0);
+  }
 
   // Called once the command ends or is interrupted.
   @Override
@@ -31,6 +44,10 @@ public class TurnToTargetTeleop extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    if(Math.abs(this.robot.limelightTurret.getHorizontalAngleError()) < Constants.VISION_ANGLE_ERROR){
+      return true;
+    } else {
+      return false;
+    }
   }
 }

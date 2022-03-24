@@ -39,6 +39,9 @@ public final class Constants {
     public static final int SIDEWINDER_MOTOR_CAN_ID = 30;
     public static final double SIDEWINDER_kP = 0.02;
 
+    public static final double VISION_TURN_TO_ANGLE_kP = .031;
+    public static final double VISION_ANGLE_ERROR = 5;
+
     /** Sidewinder engages at this left stick x deflection */
     public static final double SIDEWINDER_ENABLE_THRESHOLD = 0.3;
     /** Sidewinder disengages at this left stick x deflection */
@@ -153,5 +156,8 @@ public final class Constants {
     public static final int LIGHTS_PWM = 0;
 
     //Pipeline constants.
-    public static final int CARGORING_PIPELINE = 0;
+    public static final int SHOOTER_CARGORING_PIPELINE = 0;
+    public static final int SHOOTER_OFF_PIPELINE = 0 ;
+
+    public static final int INTAKE_DEFAULT_PIPELINE = 0;
 }

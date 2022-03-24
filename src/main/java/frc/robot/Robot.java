@@ -22,6 +22,9 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
+  public Limelight limelightTurret;
+  public Limelight limelightBase;
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -33,6 +36,9 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
 
     SmartDashboard.putNumber("Auto Start Wait", 0.0);
+
+    limelightTurret.setPipeline(Constants.SHOOTER_CARGORING_PIPELINE);
+    limelightBase.setPipeline(Constants.INTAKE_DEFAULT_PIPELINE);
   }
 
   /**
@@ -56,7 +62,7 @@ public class Robot extends TimedRobot {
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
-
+    limelightTurret.setPipeline(Constants.SHOOTER_OFF_PIPELINE);
   }
 
   @Override

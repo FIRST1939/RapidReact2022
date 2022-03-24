@@ -24,6 +24,7 @@ import frc.robot.commands.DriveWithInput;
 import frc.robot.commands.RumbleController;
 import frc.robot.commands.ToggleIntakeIndexerManualMode;
 import frc.robot.commands.ToggleManualEjection;
+import frc.robot.commands.TurnToTargetTeleop;
 import frc.robot.commands.auto.LeftSide2CargoNoTrajectory;
 import frc.robot.commands.auto.RightSide2CargoNoTrajectory;
 import frc.robot.commands.auto.RightSide3CargoNoTrajectory;
@@ -129,6 +130,10 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    JoystickButton turnToTarget = new JoystickButton(leftStick, 1);
+    //Line below is definitely wrong
+    //turnToTarget.whileHeld(new TurnToTargetTeleop(drivetrain, robot));
+
     //shooter buttons
     JoystickButton fenderLowButton = new JoystickButton(driverTwo, XboxController.Button.kY.value);
     fenderLowButton.whenPressed(new SetShot(this.shooter, SHOTS.fenderLow));
