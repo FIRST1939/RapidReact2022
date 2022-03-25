@@ -34,8 +34,6 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putNumber("Auto Start Wait", 0.0);
 
-    m_robotContainer.limelightTurret.setPipeline(Constants.SHOOTER_CARGORING_PIPELINE);
-    m_robotContainer.limelightBase.setPipeline(Constants.INTAKE_DEFAULT_PIPELINE);
   }
 
   /**
@@ -96,6 +94,9 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
     this.m_robotContainer.restartAutoExitStateCommands();
+
+    m_robotContainer.limelightTurret.setPipeline(Constants.SHOOTER_CARGORING_PIPELINE);
+    m_robotContainer.limelightBase.setPipeline(Constants.INTAKE_DEFAULT_PIPELINE);
   }
 
   /** This function is called periodically during operator control. */

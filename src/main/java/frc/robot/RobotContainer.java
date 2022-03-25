@@ -81,8 +81,8 @@ public class RobotContainer {
   private final Shooter shooter = Shooter.getInstance();
   private final Climber climber = Climber.getInstance();
 
-  public Limelight limelightTurret;
-  public Limelight limelightBase;
+  public final Limelight limelightTurret = new Limelight("limelight-turret");
+  public final Limelight limelightBase = new Limelight("liemlight-base");
 
   private final Compressor compressor = new Compressor(Constants.PNEUMATICS_HUB_CAN_ID, PneumaticsModuleType.REVPH);
 
@@ -135,7 +135,7 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    JoystickButton turnToTarget = new JoystickButton(leftStick, 1);
+    JoystickButton turnToTarget = new JoystickButton(leftStick, 11);
     final ReadAngle readAngle = new ReadAngle(limelightTurret);
     final DoubleSupplier angleSupplier = readAngle.getSupplier();
     turnToTarget.whenPressed(readAngle.andThen(new DriveTurnToRelativeAngle(angleSupplier, driveTrain)));

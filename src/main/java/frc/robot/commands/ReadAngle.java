@@ -25,10 +25,11 @@ public class ReadAngle extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    double angle = limelight.getHorizontalAngleError();
+    angle = limelight.getHorizontalAngleError();
   }
 
   public DoubleSupplier getSupplier(){
+    System.out.println("Angle: " + angle);
     return angleSupplier;
   }
 }
