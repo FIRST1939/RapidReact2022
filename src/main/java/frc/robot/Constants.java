@@ -58,7 +58,7 @@ public final class Constants {
     public static final double DRIVE_INCHES_PER_PULSE = 19.24 / 256.0;
     /** A PID p value for gyro based correction for driving straight. */
     public static final double DRIVE_AUTO_GYRO_STRAIGHT_KP = 0.005;
-    public static final double DRIVE_AUTO_STRAIGHT_POWER = 0.7;
+    public static final double DRIVE_AUTO_STRAIGHT_POWER = 0.4;
     /** The in place turn to angle PID p value. i and d are 0. */
     public static final double DRIVE_AUTO_TURN_TO_ANGLE_KP = 0.031;
     public static final double DRIVE_VISION_kP = 0.08;
@@ -80,8 +80,8 @@ public final class Constants {
         fenderLow(3700, true),
         fenderHigh(5800, false),
         fenderPlusOneLow(4200, true),
-        fenderPlusOneHigh(5800, false),
-        cargoRing(7200, true),
+        fenderPlusOneHigh(6350, false),
+        cargoRing(6700, true),
         wallShot(7600, true),
         launchpad(8400, true);
 

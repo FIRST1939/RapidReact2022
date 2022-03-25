@@ -36,15 +36,18 @@ public class PlusOneTwoBall extends SequentialCommandGroup {
         // Gather, move to cargo and set for fender high.
         new ParallelCommandGroup(
             new ScheduleCommand(IntakeGatheringEmptyState.getInstance(intake)),
-            new DriveStraightDistance(AutoConstants.CLOSE_CARGO_PICKUP_DRIVE_DIST, driveTrain),
+            new DriveStraightDistance(-AutoConstants.CLOSE_CARGO_PICKUP_DRIVE_DIST, driveTrain),
             new SetShot(shooter, Constants.SHOTS.fenderPlusOneHigh)),
         // Drive to point straight out from the fender.
-        new DriveStraightDistance(-AutoConstants.CLOSE_CARGO_PICKUP_DRIVE_DIST, driveTrain),
+        new WaitCommand(1.0),
+        new DriveStraightDistance(40.0, driveTrain),
         // Turn square to the fender.
+        new WaitCommand(1.0),
+
         new AutoModeShooter(2, indexer, shooter).withTimeout(3.0),
         // Do not drive until second shot has cleared shooter.
         new WaitCommand(1.0),
         // Exit tarmac.
-        new DriveStraightDistance(AutoConstants.CLOSE_CARGO_PICKUP_DRIVE_DIST + 10, driveTrain));
+        new DriveStraightDistance(-AutoConstants.CLOSE_CARGO_PICKUP_DRIVE_DIST + 15.0, driveTrain));
   }
 }

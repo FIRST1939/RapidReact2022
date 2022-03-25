@@ -44,6 +44,7 @@ public class AutoModeShooter extends CommandBase {
   @Override
   public void execute() {
     if ((shotsRemaining > 0)
+        && this.indexer.isCargoAtSensor()
         && (this.indexer.getCurrentCommand() instanceof IndexerReadyToShootState)
         && (this.shooter.isShooterReady())) {
       IndexerShootingState.getInstance(this.indexer).schedule();

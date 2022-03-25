@@ -75,7 +75,7 @@ public class Indexer extends SubsystemBase {
    */
   public void setToShooterFeedVelocity() {
     this.pidController.setReference(Constants.INDEXER_SHOOTER_FEED_VELOCITY, ControlType.kVelocity);
-    //this.leader.set(-0.3);
+    //this.leader.set(-0.65);
   }
 
   /**
@@ -86,6 +86,9 @@ public class Indexer extends SubsystemBase {
     this.leader.set(-0.5);
   }
 
+  public void setToRecieveDownVelocity(){
+    this.leader.set(0.3);
+  }
   /**
    * Stops the indexer motor and the movement of cargo in the indexer.
    */
