@@ -11,8 +11,15 @@ import frc.robot.Constants;
 public class Lights extends SubsystemBase {
   
   private Spark blinkin = new Spark(Constants.LIGHTS_PWM);
+
+  private static Lights lightsInstance = null;
   
-  public Lights() {}
+  private Lights() {}
+
+  public static final synchronized Lights getInstance(){
+    if (lightsInstance == null){ lightsInstance = new Lights(); }
+    return lightsInstance;
+  }
 
   @Override
   public void periodic() {}

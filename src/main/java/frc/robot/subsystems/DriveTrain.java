@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.LEDMode;
 
 /**
  * The drive train consists of three Neos on each side. Encoders are used for
@@ -161,6 +162,7 @@ public class DriveTrain extends SubsystemBase {
        * }
        */
       this.sidewinderSolenoid.set(true);
+      Lights.getInstance().setColor(LEDMode.TWINKLES);
     } else if (Math.abs(sidewind) < Constants.SIDEWINDER_DISABLE_THRESHOLD) {
       this.sidewinderSolenoid.set(false);
     }
@@ -169,7 +171,6 @@ public class DriveTrain extends SubsystemBase {
       sidewinderMotor.set(
           ControlMode.PercentOutput,
           -(sidewind - (Math.signum(sidewind) * Constants.SIDEWINDER_OUTPUT_OFFSET)));
-      
       /*
        * if(arcadeRotation == 0.0){
        * arcadeRotation = strafeHorizonatal.calculate(getHeading(), 0.0);

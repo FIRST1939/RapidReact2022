@@ -5,8 +5,10 @@
 package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.LEDMode;
 import frc.robot.commands.PostLoopCommandScheduler;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Lights;
 import frc.robot.subsystems.RobotCargoCount;
 
 public class IntakeStowedHoldState extends CommandBase {
@@ -32,6 +34,7 @@ public class IntakeStowedHoldState extends CommandBase {
   public void initialize() {
     this.intake.retractIntake();
     this.intake.stopIntakeMotor();
+    Lights.getInstance().setColor(LEDMode.CHASE);
   }
 
   // Returns true when the command should end.
