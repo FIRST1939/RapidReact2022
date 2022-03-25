@@ -41,7 +41,7 @@ public class RightSide3CargoNoTrajectory extends SequentialCommandGroup {
         // Drive to point straight out from the fender.
         new DriveStraightDistance(-AutoConstants.CLOSE_CARGO_PICKUP_TO_TURN_DIST, driveTrain),
         // Turn square to the fender.
-        new DriveTurnToRelativeAngle(AutoConstants.TURN_TO_FENDER_SMALL_ANGLE, driveTrain),
+        new DriveTurnToRelativeAngle(() -> AutoConstants.TURN_TO_FENDER_SMALL_ANGLE, driveTrain),
         // Drive to fender with timeout because we may hit and not reach distance.
         new DriveStraightDistance(-AutoConstants.AFTER_TURN_DRIVE_TO_FENDER_DIST, driveTrain).withTimeout(3),
         // Shoot with timeout in case of jam.
@@ -54,13 +54,13 @@ public class RightSide3CargoNoTrajectory extends SequentialCommandGroup {
             new SetShot(shooter, Constants.SHOTS.cargoRing)),
         // Turn toward cargo.
         new DriveTurnToRelativeAngle(
-            AutoConstants.TURN_TO_THIRD_CARGO_ANGLE,
+            () -> AutoConstants.TURN_TO_THIRD_CARGO_ANGLE,
             driveTrain),
         // Gather and move to cargo.
         new ParallelCommandGroup(
             new ScheduleCommand(IntakeGatheringEmptyState.getInstance(intake)),
             new DriveStraightDistance(AutoConstants.CLOSE_CARGO_PICKUP_TO_TURN_DIST, driveTrain)),
-            new DriveTurnToRelativeAngle(-12, driveTrain),
+            new DriveTurnToRelativeAngle(() -> -12, driveTrain),
         // Shoot
         new AutoModeShooter(1, indexer, shooter).withTimeout(3.0),
         // Do not set shot until shot has cleared shooter.

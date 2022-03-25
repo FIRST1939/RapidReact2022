@@ -39,6 +39,9 @@ public final class Constants {
     public static final int SIDEWINDER_MOTOR_CAN_ID = 30;
     public static final double SIDEWINDER_kP = 0.02;
 
+    public static final double VISION_TURN_TO_ANGLE_kP = .031;
+    public static final double VISION_ANGLE_ERROR = 5;
+
     /** Sidewinder engages at this left stick x deflection */
     public static final double SIDEWINDER_ENABLE_THRESHOLD = 0.3;
     /** Sidewinder disengages at this left stick x deflection */
@@ -58,6 +61,7 @@ public final class Constants {
     public static final double DRIVE_AUTO_STRAIGHT_POWER = 0.7;
     /** The in place turn to angle PID p value. i and d are 0. */
     public static final double DRIVE_AUTO_TURN_TO_ANGLE_KP = 0.031;
+    public static final double DRIVE_VISION_kP = 0.08;
     public static final double DRIVE_AUTO_TURN_TO_ANGLE_KF = 0.2;
     public static final double DRIVE_AUTO_TURN_TO_ANGLE_TOL_DEG = 5.0;
     public static final double DRIVE_AUTO_TURN_TO_ANGLE_TURN_RATE_TOL_DEG_PER_SEC = 10.0;
@@ -91,7 +95,7 @@ public final class Constants {
         }
     }
 
-    public static final int SHOOTER_VELOCITY_ERROR = 300;
+    public static final int SHOOTER_VELOCITY_ERROR = 700;
 
     // Intake constants
     public static final int INTAKE_PCM_CHANNEL = 8;
@@ -154,6 +158,12 @@ public final class Constants {
     //Lights constants.
     public static final int LIGHTS_PWM = 0;
 
+    //Pipeline constants.
+    public static final int SHOOTER_CARGORING_PIPELINE = 0;
+    public static final int SHOOTER_OFF_PIPELINE = 1;
+
+    public static final int INTAKE_DEFAULT_PIPELINE = 0;
+  
     //all these are mostly in red color
     public enum LEDMode{
         BLUE(0.87), RED(0.61), GREEN(0.73), YELLOW(0.67), PURPLE(0.91), PINK(0.57), WHITE(0.93), CONFETTI(-0.87), FIRE(-0.57),

@@ -5,6 +5,7 @@
 package frc.robot;
 
 import java.util.function.BooleanSupplier;
+import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
 import edu.wpi.first.wpilibj.Compressor;
@@ -21,9 +22,11 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants.SHOTS;
 import frc.robot.commands.DriveWithInput;
+import frc.robot.commands.ReadAngle;
 import frc.robot.commands.RumbleController;
 import frc.robot.commands.ToggleIntakeIndexerManualMode;
 import frc.robot.commands.ToggleManualEjection;
+import frc.robot.commands.auto.DriveTurnToRelativeAngle;
 import frc.robot.commands.auto.CargoRingTwoBall;
 import frc.robot.commands.auto.LeftSide2CargoNoTrajectory;
 import frc.robot.commands.auto.OneBall;
@@ -81,6 +84,9 @@ public class RobotContainer {
   private final Shooter shooter = Shooter.getInstance();
   private final Climber climber = Climber.getInstance();
 
+  public final Limelight limelightTurret = new Limelight("limelight-turret");
+  public final Limelight limelightBase = new Limelight("liemlight-base");
+
   private final Compressor compressor = new Compressor(Constants.PNEUMATICS_HUB_CAN_ID, PneumaticsModuleType.REVPH);
 
   private Command intakeCommandOnAutoExit = null;
@@ -135,6 +141,11 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    JoystickButton turnToTarget = new JoystickButton(leftStick, 11);
+    final ReadAngle readAngle = new ReadAngle(limelightTurret);
+    final DoubleSupplier angleSupplier = readAngle.getSupplier();
+    turnToTarget.whenPressed(readAngle.andThen(new DriveTurnToRelativeAngle(angleSupplier, driveTrain)));
+
     //shooter buttons
     JoystickButton fenderLowButton = new JoystickButton(driverTwo, XboxController.Button.kY.value);
     fenderLowButton.whenPressed(new SetShot(this.shooter, SHOTS.fenderLow));

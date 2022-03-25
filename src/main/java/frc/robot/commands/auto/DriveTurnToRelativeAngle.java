@@ -4,7 +4,10 @@
 
 package frc.robot.commands.auto;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import frc.robot.Constants;
 import frc.robot.subsystems.DriveTrain;
@@ -13,9 +16,9 @@ public class DriveTurnToRelativeAngle extends PIDCommand {
   private final DriveTrain driveTrain;
 
   /** Creates a new DriveTurnToRelativeAngle. */
-  public DriveTurnToRelativeAngle(final double relativeAngle, final DriveTrain driveTrain) {
+  public DriveTurnToRelativeAngle(final DoubleSupplier relativeAngle, final DriveTrain driveTrain) {
     super(
-        new PIDController(Constants.DRIVE_AUTO_TURN_TO_ANGLE_KP, 0.0, 0.0),
+        new PIDController(0.05, 0.12, 0.02),
         // Close loop on heading (adjusted yaw)
         driveTrain::getHeading,
         // Set reference to target
@@ -57,5 +60,6 @@ public class DriveTurnToRelativeAngle extends PIDCommand {
         ? pidControllerOutput + Constants.DRIVE_AUTO_TURN_TO_ANGLE_KF
         : pidControllerOutput - Constants.DRIVE_AUTO_TURN_TO_ANGLE_KF;
     dt.arcadeDrive(0.0, output, 0.0);
+    SmartDashboard.putNumber("Output: ", output);
   }
 }

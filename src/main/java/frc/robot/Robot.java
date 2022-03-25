@@ -33,6 +33,7 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
 
     SmartDashboard.putNumber("Auto Start Wait", 0.0);
+
   }
 
   /**
@@ -56,7 +57,7 @@ public class Robot extends TimedRobot {
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
-
+    m_robotContainer.limelightTurret.setPipeline(Constants.SHOOTER_OFF_PIPELINE);
   }
 
   @Override
@@ -93,6 +94,9 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
     this.m_robotContainer.restartAutoExitStateCommands();
+
+    m_robotContainer.limelightTurret.setPipeline(Constants.SHOOTER_CARGORING_PIPELINE);
+    m_robotContainer.limelightBase.setPipeline(Constants.INTAKE_DEFAULT_PIPELINE);
   }
 
   /** This function is called periodically during operator control. */
