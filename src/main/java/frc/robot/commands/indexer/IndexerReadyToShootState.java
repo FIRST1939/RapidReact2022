@@ -5,7 +5,9 @@
 package frc.robot.commands.indexer;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.LEDMode;
 import frc.robot.subsystems.Indexer;
+import frc.robot.subsystems.Lights;
 
 /**
  * This command implements the indexer state "Ready To Shoot". There MUST be a
@@ -61,6 +63,7 @@ public class IndexerReadyToShootState extends CommandBase {
    */
   @Override
   public void initialize() {
+    Lights.getInstance().setColor(LEDMode.RAINBOW);
     this.indexer.stop();
   }
 

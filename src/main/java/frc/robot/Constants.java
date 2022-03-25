@@ -58,7 +58,7 @@ public final class Constants {
     public static final double DRIVE_INCHES_PER_PULSE = 19.24 / 256.0;
     /** A PID p value for gyro based correction for driving straight. */
     public static final double DRIVE_AUTO_GYRO_STRAIGHT_KP = 0.005;
-    public static final double DRIVE_AUTO_STRAIGHT_POWER = 0.8;
+    public static final double DRIVE_AUTO_STRAIGHT_POWER = 0.7;
     /** The in place turn to angle PID p value. i and d are 0. */
     public static final double DRIVE_AUTO_TURN_TO_ANGLE_KP = 0.031;
     public static final double DRIVE_VISION_kP = 0.08;
@@ -75,13 +75,15 @@ public final class Constants {
 
     // TODO shooting values
     public enum SHOTS {
+        off(0, false),
         idle(1500, false),
-        fenderLow(3000, true),
-        fenderHigh(6000, false),
-        fenderPlusOneLow(4000, true),
-        fenderPlusOneHigh(7000, false),
-        cargoRing(8200, true),
-        launchpad(10000, true);
+        fenderLow(3700, true),
+        fenderHigh(5800, false),
+        fenderPlusOneLow(4200, true),
+        fenderPlusOneHigh(6100, false),
+        cargoRing(7200, true),
+        wallShot(7600, true),
+        launchpad(8400, true);
 
         public final int velocity;
         public final boolean hood;
@@ -161,4 +163,15 @@ public final class Constants {
     public static final int SHOOTER_OFF_PIPELINE = 1;
 
     public static final int INTAKE_DEFAULT_PIPELINE = 0;
+  
+    //all these are mostly in red color
+    public enum LEDMode{
+        BLUE(0.87), RED(0.61), GREEN(0.73), YELLOW(0.67), PURPLE(0.91), PINK(0.57), WHITE(0.93), CONFETTI(-0.87), FIRE(-0.57),
+        TWINKLES(-0.49), COLORWAVES(-0.39), SCANNER(-0.35), CHASE(-0.31), STROBE(-0.11), RAINBOW(-0.97), OFF(0.99);
+    
+        public final double value;
+        private LEDMode(double value){
+            this.value = value;
+        }
+    }
 }

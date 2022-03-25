@@ -5,8 +5,10 @@
 package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.LEDMode;
 import frc.robot.commands.PostLoopCommandScheduler;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Lights;
 import frc.robot.subsystems.RobotCargoCount;
 
 public class IntakeGatheringEmptyState extends CommandBase {
@@ -33,6 +35,7 @@ public class IntakeGatheringEmptyState extends CommandBase {
   @Override
   public void initialize() {
     this.intake.extendIntake();
+    Lights.getInstance().setColor(LEDMode.STROBE);
   }
 
   // Called when the command executes.

@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.LEDMode;
 
 public class Shooter extends SubsystemBase {
 
@@ -90,6 +91,7 @@ public class Shooter extends SubsystemBase {
             this.lastSetVelocity = velocity;
             this.velocityInRangeCount = 0;
         }
+        Lights.getInstance().setColor(LEDMode.CONFETTI);
     }
 
     @Override
@@ -99,7 +101,7 @@ public class Shooter extends SubsystemBase {
         //SmartDashboard.putNumber("Shooter Velocity", currentVelocity);
         //SmartDashboard.putNumber("Shooter Error", currentClosedLoopError);
         if (Math.abs(Math.abs(currentVelocity)
-                - this.lastSetVelocity) <= Constants.SHOOTER_VELOCITY_ERROR) {
+                - this.lastSetVelocity) <= this.lastSetVelocity*0.04) {
             this.velocityInRangeCount++;
         } else {
             this.velocityInRangeCount = 0;

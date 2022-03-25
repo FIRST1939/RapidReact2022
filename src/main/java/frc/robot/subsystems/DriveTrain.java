@@ -10,6 +10,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -23,6 +24,7 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.LEDMode;
 
 /**
  * The drive train consists of three Neos on each side. Encoders are used for
@@ -62,6 +64,7 @@ public class DriveTrain extends SubsystemBase {
   private final DifferentialDrive diffDrive;
 
   // Drive train encoders.
+  private final RelativeEncoder leftNeoEncoder;
   private final Encoder leftEncoder;
   private final Encoder rightEncoder;
 
@@ -98,6 +101,7 @@ public class DriveTrain extends SubsystemBase {
     rightGroup.setInverted(true);
     diffDrive = new DifferentialDrive(leftGroup, rightGroup);
 
+    leftNeoEncoder = left1.getEncoder();
     leftEncoder = new Encoder(
         Constants.LEFT_DRIVE_A_CHANNEL,
         Constants.LEFT_DRIVE_B_CHANNEL,
@@ -141,7 +145,7 @@ public class DriveTrain extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     //SmartDashboard.putNumber("Distance from Encoders: ", this.getDistance());
-    //SmartDashboard.putNumber("Left Encoder: ", this.leftEncoder.getDistance());
+    SmartDashboard.putNumber("Left Encoder: ", this.getDistance());
     //SmartDashboard.putNumber("Right Encoder: ", this.rightEncoder.getDistance());
     
   }
@@ -161,6 +165,7 @@ public class DriveTrain extends SubsystemBase {
        * }
        */
       this.sidewinderSolenoid.set(true);
+      Lights.getInstance().setColor(LEDMode.TWINKLES);
     } else if (Math.abs(sidewind) < Constants.SIDEWINDER_DISABLE_THRESHOLD) {
       this.sidewinderSolenoid.set(false);
     }
@@ -169,7 +174,6 @@ public class DriveTrain extends SubsystemBase {
       sidewinderMotor.set(
           ControlMode.PercentOutput,
           -(sidewind - (Math.signum(sidewind) * Constants.SIDEWINDER_OUTPUT_OFFSET)));
-      
       /*
        * if(arcadeRotation == 0.0){
        * arcadeRotation = strafeHorizonatal.calculate(getHeading(), 0.0);
@@ -192,6 +196,7 @@ public class DriveTrain extends SubsystemBase {
    * Resets the distance sensors (aka encoders) of the drive train.
    */
   public void resetDistance() {
+    leftNeoEncoder.setPosition(0.0);
     this.leftEncoder.reset();
     this.rightEncoder.reset();
   }
@@ -205,7 +210,8 @@ public class DriveTrain extends SubsystemBase {
    */
   public double getDistance() {
     //return (this.leftEncoder.getDistance() + this.rightEncoder.getDistance()) / 2.0;
-    return this.leftEncoder.getDistance();
+    //return this.leftEncoder.getDistance();
+    return this.leftNeoEncoder.getPosition() / 8.68 * 19.24;
   }
 
   /**
@@ -216,7 +222,8 @@ public class DriveTrain extends SubsystemBase {
    */
   public double getRate() {
     //return (this.leftEncoder.getRate() + this.rightEncoder.getRate()) / 2.0;
-    return this.leftEncoder.getRate();
+    //return this.leftEncoder.getRate();
+    return leftNeoEncoder.getVelocity() / 8.68 * 19.24 / 60.0;
   }
 
   /**
