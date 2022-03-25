@@ -235,7 +235,7 @@ public class RobotContainer {
     JoystickButton climberMotorFullPositionButton = new JoystickButton(rightStick, 9);
     climberMotorFullPositionButton.whenPressed(new GetToPosition(this.climber, rumbleController, Constants.CLIMBER_POSITIONS.full));
   
-    JoystickButton climberSetHomeButton = new JoystickButton(rightStick, 8);
+    JoystickButton climberSetHomeButton = new JoystickButton(driverTwo, XboxController.Button.kBack.value);
     climberSetHomeButton.whenPressed(new SetHome(this.climber));
 
     JoystickButton climberMotorBottomPositionButton = new JoystickButton(rightStick, 7);
