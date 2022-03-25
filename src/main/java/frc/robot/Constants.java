@@ -74,7 +74,7 @@ public final class Constants {
         off(0, false),
         idle(1500, false),
         fenderLow(3700, true),
-        fenderHigh(6100, false),
+        fenderHigh(5800, false),
         fenderPlusOneLow(4200, true),
         fenderPlusOneHigh(6100, false),
         cargoRing(7200, true),
