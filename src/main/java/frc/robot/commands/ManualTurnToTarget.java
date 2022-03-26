@@ -13,7 +13,8 @@ public class ManualTurnToTarget extends CommandBase {
   private final DriveTrain driveTrain;
   private final Limelight limelight;
 
-  double angle;
+  private double angle;
+  private int direction = 0;
 
   public ManualTurnToTarget(final DriveTrain driveTrain, final Limelight limelight) {
     this.driveTrain = driveTrain;
@@ -23,32 +24,31 @@ public class ManualTurnToTarget extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    angle = limelight.getHorizontalAngleError();
+    this.angle = limelight.getHorizontalAngleError();
+    
+    if (this.angle < -1) {
+      this.direction = -1;
+    } else if (angle > 1) {
+      this.direction = 1;
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(angle < -1){
-      driveTrain.arcadeDrive(0, -0.4, 0);
-    } else if (angle > 1){
-      driveTrain.arcadeDrive(0, 0.4, 0);
-    }
+    this.angle = limelight.getHorizontalAngleError();
+    this.driveTrain.arcadeDrive(0, 0.4 * this.direction, 0);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    driveTrain.arcadeDrive(0, 0, 0);
+    this.driveTrain.arcadeDrive(0, 0, 0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(angle < 1 && angle > -1){
-      return true;
-    } else {
-      return false;
-    }
+    return (this.angle < 1 && this.angle > -1);
   }
 }
