@@ -19,6 +19,8 @@ public class ManualTurnToTarget extends CommandBase {
   public ManualTurnToTarget(final DriveTrain driveTrain, final Limelight limelight) {
     this.driveTrain = driveTrain;
     this.limelight = limelight;
+
+    addRequirements(driveTrain);
   }
 
   // Called when the command is initially scheduled.
