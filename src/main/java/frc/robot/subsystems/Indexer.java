@@ -74,8 +74,8 @@ public class Indexer extends SubsystemBase {
    * cargo to the shooter.
    */
   public void setToShooterFeedVelocity() {
-    this.pidController.setReference(Constants.INDEXER_SHOOTER_FEED_VELOCITY, ControlType.kVelocity);
-    //this.leader.set(-0.65);
+    //this.pidController.setReference(Constants.INDEXER_SHOOTER_FEED_VELOCITY, ControlType.kVelocity);
+    this.leader.set(-0.65);
   }
 
   /**

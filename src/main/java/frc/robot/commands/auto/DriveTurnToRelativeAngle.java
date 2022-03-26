@@ -18,7 +18,7 @@ public class DriveTurnToRelativeAngle extends PIDCommand {
   /** Creates a new DriveTurnToRelativeAngle. */
   public DriveTurnToRelativeAngle(final DoubleSupplier relativeAngle, final DriveTrain driveTrain) {
     super(
-        new PIDController(0.05, 0.12, 0.02),
+        new PIDController(0.1, 0.0, 0.009),
         // Close loop on heading (adjusted yaw)
         driveTrain::getHeading,
         // Set reference to target
@@ -33,9 +33,9 @@ public class DriveTurnToRelativeAngle extends PIDCommand {
     // Set the controller tolerance - the delta tolerance ensures the robot is
     // stationary at the setpoint before it is considered as having reached the
     // reference
-    getController().setTolerance(
+    /*getController().setTolerance(
         Constants.DRIVE_AUTO_TURN_TO_ANGLE_TOL_DEG,
-        Constants.DRIVE_AUTO_TURN_TO_ANGLE_TURN_RATE_TOL_DEG_PER_SEC);
+        Constants.DRIVE_AUTO_TURN_TO_ANGLE_TURN_RATE_TOL_DEG_PER_SEC);*/
 
     this.driveTrain = driveTrain;
   }

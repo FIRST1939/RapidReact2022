@@ -29,6 +29,7 @@ import frc.robot.commands.ToggleIntakeIndexerManualMode;
 import frc.robot.commands.ToggleManualEjection;
 import frc.robot.commands.auto.DriveTurnToRelativeAngle;
 import frc.robot.commands.auto.CargoRingTwoBall;
+import frc.robot.commands.auto.DriveStraightDistance;
 import frc.robot.commands.auto.LeftSide2CargoNoTrajectory;
 import frc.robot.commands.auto.OneBall;
 import frc.robot.commands.auto.PlusOneTwoBall;
@@ -142,13 +143,13 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    JoystickButton turnToTarget = new JoystickButton(rightStick, 11);
+    JoystickButton turnToTarget = new JoystickButton(rightStick, 10);
     final ReadAngle readAngle = new ReadAngle(limelightTurret);
     final DoubleSupplier angleSupplier = readAngle.getSupplier();
     turnToTarget.whenPressed(readAngle.andThen(new DriveTurnToRelativeAngle(angleSupplier, driveTrain)));
 
-    JoystickButton manualTurnToTarget = new JoystickButton(rightStick, 10);
-    manualTurnToTarget.whileHeld(new ManualTurnToTarget(driveTrain, limelightTurret));
+    //JoystickButton manualTurnToTarget = new JoystickButton(rightStick, 10);
+    //manualTurnToTarget.whenPressed(new ManualTurnToTarget(driveTrain, limelightTurret));
 
     //shooter buttons
     JoystickButton fenderLowButton = new JoystickButton(driverTwo, XboxController.Button.kY.value);
@@ -166,10 +167,10 @@ public class RobotContainer {
     POVButton cargoRing =  new POVButton(driverTwo, 0); //0 is up, 90 is right, 180 is down, and 270 is left
     cargoRing.whenPressed(new SetShot(this.shooter, SHOTS.cargoRing));
 
-    POVButton wallShot=  new POVButton(driverTwo, 90);
+    POVButton wallShot =  new POVButton(driverTwo, 90);
     wallShot.whenPressed(new SetShot(this.shooter, SHOTS.wallShot));
 
-    POVButton launchpad=  new POVButton(driverTwo, 180);
+    POVButton launchpad =  new POVButton(driverTwo, 180);
     launchpad.whenPressed(new SetShot(this.shooter, SHOTS.launchpad));
 
     POVButton offButton = new POVButton(driverTwo, 270);

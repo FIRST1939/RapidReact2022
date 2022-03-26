@@ -29,9 +29,9 @@ public class ManualTurnToTarget extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(angle < 0){
+    if(angle < -1){
       driveTrain.arcadeDrive(0, -0.4, 0);
-    } else if (angle > 0){
+    } else if (angle > 1){
       driveTrain.arcadeDrive(0, 0.4, 0);
     }
   }
@@ -45,7 +45,7 @@ public class ManualTurnToTarget extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(angle < 3 && angle > -3){
+    if(angle < 1 && angle > -1){
       return true;
     } else {
       return false;
