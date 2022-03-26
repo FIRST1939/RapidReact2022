@@ -37,7 +37,14 @@ public class ManualTurnToTarget extends CommandBase {
   @Override
   public void execute() {
     this.angle = limelight.getHorizontalAngleError();
-    this.driveTrain.arcadeDrive(0, 0.4 * this.direction, 0);
+
+    if (Math.abs(this.angle) > 60) {
+      this.driveTrain.arcadeDrive(0, 0.70 * this.direction, 0);
+    } else if (Math.abs(this.angle) > 30) {
+      this.driveTrain.arcadeDrive(0, 0.55 * this.direction, 0);
+    } else {
+      this.driveTrain.arcadeDrive(0, 0.45 * this.direction, 0);
+    }
   }
 
   // Called once the command ends or is interrupted.
