@@ -76,14 +76,14 @@ public final class Constants {
     // TODO shooting values
     public enum SHOTS {
         off(0, false),
-        idle(2000, false),
+        idle(5750, false),
         fenderLow(3700, true),
         fenderHigh(5750, false),
         fenderPlusOneLow(4200, true),
         fenderPlusOneHigh(6550, false),
         cargoRing(6700, true),
         wallShot(7600, true),
-        launchpad(8400, true);
+        launchpad(7600, true);
 
         public final int velocity;
         public final boolean hood;
@@ -136,9 +136,9 @@ public final class Constants {
     public enum CLIMBER_POSITIONS {
         bottom(6000, 2000),
         finalBarRetract(6000, 50000),
-        offBar(7000, 75000),
-        partial(5000, 250000),
-        full(10000, 340000);
+        offBar(10000, 50000),
+        partial(15000, 250000),
+        full(15000, 340000);
 
         public final int velocity;
         public final int distance;
@@ -159,8 +159,9 @@ public final class Constants {
     public static final int LIGHTS_PWM = 0;
 
     //Pipeline constants.
-    public static final int SHOOTER_CARGORING_PIPELINE = 0;
+    public static final int SHOOTER_LONG_PIPELINE = 0;
     public static final int SHOOTER_OFF_PIPELINE = 1;
+    public static final int SHOOTER_SHORT_PIPELINE = 2;
 
     public static final int INTAKE_DEFAULT_PIPELINE = 0;
   

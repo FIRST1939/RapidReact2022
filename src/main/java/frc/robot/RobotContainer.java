@@ -22,7 +22,8 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants.SHOTS;
 import frc.robot.commands.DriveWithInput;
-import frc.robot.commands.ManualTurnToTarget;
+import frc.robot.commands.ManualTurnToTargetLong;
+import frc.robot.commands.ManualTurnToTargetShort;
 import frc.robot.commands.ReadAngle;
 import frc.robot.commands.RumbleController;
 import frc.robot.commands.ToggleIntakeIndexerManualMode;
@@ -143,13 +144,18 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    JoystickButton turnToTarget = new JoystickButton(rightStick, 10);
+    /*
+    JoystickButton turnToTarget = new JoystickButton(rightStick, 11);
     final ReadAngle readAngle = new ReadAngle(limelightTurret);
     final DoubleSupplier angleSupplier = readAngle.getSupplier();
     turnToTarget.whenPressed(readAngle.andThen(new DriveTurnToRelativeAngle(angleSupplier, driveTrain)));
+    */
 
-    //JoystickButton manualTurnToTarget = new JoystickButton(rightStick, 10);
-    //manualTurnToTarget.whenPressed(new ManualTurnToTarget(driveTrain, limelightTurret));
+    JoystickButton manualTurnToTargetLong = new JoystickButton(rightStick, 11);
+    manualTurnToTargetLong.whenPressed(new ManualTurnToTargetLong(driveTrain, limelightTurret));
+
+    JoystickButton manualTurnToTargetShort = new JoystickButton(rightStick, 10);
+    manualTurnToTargetShort.whenPressed(new ManualTurnToTargetShort(driveTrain, limelightTurret));
 
     //shooter buttons
     JoystickButton fenderLowButton = new JoystickButton(driverTwo, XboxController.Button.kY.value);
@@ -192,7 +198,7 @@ public class RobotContainer {
             this.intake,
             this.indexer,
             new ManualIntakeRollerBelts(this.intake,
-                () -> enforceDeadband(driverTwo.getLeftX(), Constants.MANUAL_INTAKE_DEADBAND)),
+                () -> enforceDeadband(-driverTwo.getLeftX(), Constants.MANUAL_INTAKE_DEADBAND)),
             new ManualIndexer(this.indexer,
                 () -> enforceDeadband(driverTwo.getRightY(), Constants.MANUAL_INDEXER_DEADBAND),
                 new ManualShootTrigger(indexer, shooter, shootTriggerSupplier))));

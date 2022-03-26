@@ -5,10 +5,11 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.Limelight;
 import frc.robot.subsystems.DriveTrain;
 
-public class ManualTurnToTarget extends CommandBase {
+public class ManualTurnToTargetShort extends CommandBase {
 
   private final DriveTrain driveTrain;
   private final Limelight limelight;
@@ -16,7 +17,7 @@ public class ManualTurnToTarget extends CommandBase {
   private double angle;
   private int direction = 0;
 
-  public ManualTurnToTarget(final DriveTrain driveTrain, final Limelight limelight) {
+  public ManualTurnToTargetShort(final DriveTrain driveTrain, final Limelight limelight) {
     this.driveTrain = driveTrain;
     this.limelight = limelight;
   }
@@ -24,6 +25,7 @@ public class ManualTurnToTarget extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    limelight.setPipeline(Constants.SHOOTER_SHORT_PIPELINE);
     this.angle = limelight.getHorizontalAngleError();
     
     if (this.angle < -1) {
