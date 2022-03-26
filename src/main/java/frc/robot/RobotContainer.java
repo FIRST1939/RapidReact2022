@@ -148,8 +148,8 @@ public class RobotContainer {
     final DoubleSupplier angleSupplier = readAngle.getSupplier();
     turnToTarget.whenPressed(readAngle.andThen(new DriveTurnToRelativeAngle(angleSupplier, driveTrain)));
 
-    //JoystickButton manualTurnToTarget = new JoystickButton(rightStick, 10);
-    //manualTurnToTarget.whenPressed(new ManualTurnToTarget(driveTrain, limelightTurret));
+    JoystickButton manualTurnToTarget = new JoystickButton(rightStick, 10);
+    manualTurnToTarget.whenPressed(new ManualTurnToTarget(driveTrain, limelightTurret));
 
     //shooter buttons
     JoystickButton fenderLowButton = new JoystickButton(driverTwo, XboxController.Button.kY.value);
