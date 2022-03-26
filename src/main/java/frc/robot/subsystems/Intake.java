@@ -67,6 +67,10 @@ public class Intake extends SubsystemBase {
         return !this.intakeSolenoid.get();
     }
 
+    public double getIntakeSpeed() {
+        return this.intakeMotor.get();
+    }
+
     /**
      * Set the intake speed to a value proportional to the speed at which the robot
      * is moving with enforcement of minimum and maximum speeds.
