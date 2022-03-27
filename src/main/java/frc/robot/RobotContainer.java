@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants.SHOTS;
 import frc.robot.commands.DriveWithInput;
+import frc.robot.commands.LightsUpdater;
 import frc.robot.commands.ManualTurnToTarget;
 import frc.robot.commands.ReadAngle;
 import frc.robot.commands.RumbleController;
@@ -54,6 +55,8 @@ import frc.robot.subsystems.RobotCargoCount;
 import frc.robot.subsystems.Shooter;
 import frc.robot.triggers.ShootTrigger;
 import frc.robot.triggers.ShooterIdleTrigger;
+import frc.robot.triggers.lighting.IntakeForward;
+import frc.robot.triggers.lighting.IntakeReverse;
 import frc.robot.commands.climber.ClimbToSecond;
 import frc.robot.commands.climber.ClimbToThird;
 import frc.robot.commands.climber.GetToPosition;
@@ -105,6 +108,7 @@ public class RobotContainer {
     configureDefaultCommands();
     // Configure the button bindings
     configureButtonBindings();
+    configureLightingTriggers();
     pressureInit();
     configureAutoChooser();
   }
@@ -247,6 +251,14 @@ public class RobotContainer {
 
     JoystickButton climberMotorBottomPositionButton = new JoystickButton(rightStick, 7);
     climberMotorBottomPositionButton.whenPressed(new GetToPosition(this.climber, rumbleController, Constants.CLIMBER_POSITIONS.bottom));
+  }
+
+  private void configureLightingTriggers() {
+    IntakeForward intakeForward = new IntakeForward(this.intake);
+    intakeForward.whenActive(new LightsUpdater(Constants.LEDMode.GREEN));
+
+    IntakeReverse intakeReverse = new IntakeReverse(this.intake);
+    intakeReverse.whenActive(new LightsUpdater(Constants.LEDMode.RED));
   }
 
   /**

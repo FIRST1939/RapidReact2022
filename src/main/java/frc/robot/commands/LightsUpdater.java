@@ -14,17 +14,17 @@ import frc.robot.subsystems.Lights;
 
 
 public class LightsUpdater extends InstantCommand {
-  private final Lights lights;
 
+  private final Lights lights = Lights.getInstance();
   private Constants.LEDMode mode;
-  public LightsUpdater(final Lights lights, final Constants.LEDMode mode) {
-    this.lights = lights;
+
+  public LightsUpdater(final Constants.LEDMode mode) {
     this.mode = mode;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    lights.getInstance().setColor(mode);
+    this.lights.setColor(mode);
   }
 }

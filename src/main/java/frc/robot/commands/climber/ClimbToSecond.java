@@ -8,7 +8,6 @@ import frc.robot.Constants.LEDMode;
 import frc.robot.commands.LightsUpdater;
 import frc.robot.commands.RumbleController;
 import frc.robot.subsystems.Climber;
-import frc.robot.subsystems.Lights;
 
 public class ClimbToSecond extends SequentialCommandGroup {
     
@@ -19,7 +18,7 @@ public class ClimbToSecond extends SequentialCommandGroup {
         this.climber = climber;
 
         addCommands(
-            new LightsUpdater(Lights.getInstance(), LEDMode.FIRE),
+            new LightsUpdater(LEDMode.FIRE),
             new GetToPosition(this.climber, null, Constants.CLIMBER_POSITIONS.offBar),
             //new WaitCommand(.2),
             new ParallelCommandGroup(
