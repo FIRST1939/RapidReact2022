@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Limelight;
 import frc.robot.subsystems.DriveTrain;
 
-public class ManualTurnToTarget extends CommandBase {
+public class ManualTurnToTargetLong extends CommandBase {
 
   private final DriveTrain driveTrain;
   private final Limelight limelight;
@@ -16,7 +16,7 @@ public class ManualTurnToTarget extends CommandBase {
   private double angle;
   private int direction = 0;
 
-  public ManualTurnToTarget(final DriveTrain driveTrain, final Limelight limelight) {
+  public ManualTurnToTargetLong(final DriveTrain driveTrain, final Limelight limelight) {
     this.driveTrain = driveTrain;
     this.limelight = limelight;
 

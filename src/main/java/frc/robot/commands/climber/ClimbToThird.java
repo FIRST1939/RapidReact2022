@@ -1,5 +1,6 @@
 package frc.robot.commands.climber;
 
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
@@ -19,9 +20,11 @@ public class ClimbToThird extends SequentialCommandGroup {
     addCommands(
       new LightsUpdater(Lights.getInstance(), LEDMode.FIRE),
       new GetToPosition(this.climber, null, Constants.CLIMBER_POSITIONS.offBar),
-      new WaitCommand(.5),
-      new SetPiston(this.climber, (Boolean) true),
-      new GetToPosition(this.climber, null, Constants.CLIMBER_POSITIONS.full),
+      //new WaitCommand(.5),
+      new ParallelCommandGroup(
+        new SetPiston(this.climber, (Boolean) true),
+        new GetToPosition(this.climber, null, Constants.CLIMBER_POSITIONS.full)
+      ),
       new WaitCommand(.2),
       new SetPiston(this.climber, (Boolean) false),
       new WaitCommand(1.5),

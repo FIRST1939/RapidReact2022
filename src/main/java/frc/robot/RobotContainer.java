@@ -143,10 +143,12 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    JoystickButton turnToTarget = new JoystickButton(rightStick, 10);
+    /*
+    JoystickButton turnToTarget = new JoystickButton(rightStick, 11);
     final ReadAngle readAngle = new ReadAngle(limelightTurret);
     final DoubleSupplier angleSupplier = readAngle.getSupplier();
     turnToTarget.whenPressed(readAngle.andThen(new DriveTurnToRelativeAngle(angleSupplier, driveTrain)));
+    */
 
     JoystickButton manualTurnToTarget = new JoystickButton(rightStick, 10);
     manualTurnToTarget.whenPressed(new ManualTurnToTarget(driveTrain, limelightTurret));
@@ -192,7 +194,7 @@ public class RobotContainer {
             this.intake,
             this.indexer,
             new ManualIntakeRollerBelts(this.intake,
-                () -> enforceDeadband(driverTwo.getLeftX(), Constants.MANUAL_INTAKE_DEADBAND)),
+                () -> enforceDeadband(-driverTwo.getLeftX(), Constants.MANUAL_INTAKE_DEADBAND)),
             new ManualIndexer(this.indexer,
                 () -> enforceDeadband(driverTwo.getRightY(), Constants.MANUAL_INDEXER_DEADBAND),
                 new ManualShootTrigger(indexer, shooter, shootTriggerSupplier))));

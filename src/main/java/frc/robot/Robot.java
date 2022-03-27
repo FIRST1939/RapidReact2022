@@ -95,7 +95,7 @@ public class Robot extends TimedRobot {
     }
     this.m_robotContainer.restartAutoExitStateCommands();
 
-    m_robotContainer.limelightTurret.setPipeline(Constants.SHOOTER_CARGORING_PIPELINE);
+    m_robotContainer.limelightTurret.setPipeline(Constants.SHOOTER_LONG_PIPELINE);
     m_robotContainer.limelightBase.setPipeline(Constants.INTAKE_DEFAULT_PIPELINE);
   }
 
