@@ -5,11 +5,10 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
 import frc.robot.Limelight;
 import frc.robot.subsystems.DriveTrain;
 
-public class ManualTurnToTargetShort extends CommandBase {
+public class ManualTurnToTarget extends CommandBase {
 
   private final DriveTrain driveTrain;
   private final Limelight limelight;
@@ -17,15 +16,16 @@ public class ManualTurnToTargetShort extends CommandBase {
   private double angle;
   private int direction = 0;
 
-  public ManualTurnToTargetShort(final DriveTrain driveTrain, final Limelight limelight) {
+  public ManualTurnToTarget(final DriveTrain driveTrain, final Limelight limelight) {
     this.driveTrain = driveTrain;
     this.limelight = limelight;
+
+    addRequirements(driveTrain);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    limelight.setPipeline(Constants.SHOOTER_SHORT_PIPELINE);
     this.angle = limelight.getHorizontalAngleError();
     
     if (this.angle < -1) {
@@ -39,7 +39,14 @@ public class ManualTurnToTargetShort extends CommandBase {
   @Override
   public void execute() {
     this.angle = limelight.getHorizontalAngleError();
-    this.driveTrain.arcadeDrive(0, 0.4 * this.direction, 0);
+
+    if (Math.abs(this.angle) > 60) {
+      this.driveTrain.arcadeDrive(0, 0.70 * this.direction, 0);
+    } else if (Math.abs(this.angle) > 30) {
+      this.driveTrain.arcadeDrive(0, 0.55 * this.direction, 0);
+    } else {
+      this.driveTrain.arcadeDrive(0, 0.45 * this.direction, 0);
+    }
   }
 
   // Called once the command ends or is interrupted.
