@@ -78,9 +78,9 @@ public final class Constants {
         off(0, false),
         idle(5750, false),
         fenderLow(3700, true),
-        fenderHigh(5750, false),
+        fenderHigh(5300, false),
         fenderPlusOneLow(4200, true),
-        fenderPlusOneHigh(6550, false),
+        fenderPlusOneHigh(6000, true),
         cargoRing(6700, true),
         wallShot(7600, true),
         launchpad(7600, true);
