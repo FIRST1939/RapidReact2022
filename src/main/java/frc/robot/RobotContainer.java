@@ -34,6 +34,7 @@ import frc.robot.commands.auto.DriveStraightDistance;
 import frc.robot.commands.auto.LeftSide2CargoNoTrajectory;
 import frc.robot.commands.auto.OneBall;
 import frc.robot.commands.auto.PlusOneTwoBall;
+import frc.robot.commands.auto.RecordPath;
 import frc.robot.commands.auto.RightSide2CargoNoTrajectory;
 import frc.robot.commands.auto.RightSide3CargoNoTrajectory;
 import frc.robot.commands.indexer.IndexerEmptyState;
@@ -66,6 +67,7 @@ import frc.robot.commands.climber.SetHome;
 import frc.robot.commands.climber.SetPiston;
 import frc.robot.subsystems.Climber;
 import frc.robot.triggers.ManualShootTrigger;
+import frc.robot.triggers.RecordPathTrigger;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -75,6 +77,9 @@ import frc.robot.triggers.ManualShootTrigger;
  * commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+
+  public boolean disabled = false;
+
   // Create the joystick objects.
   private final Joystick leftStick = new Joystick(Constants.LEFT_STICK_PORT);
   private final Joystick rightStick = new Joystick(Constants.RIGHT_STICK_PORT);
@@ -147,6 +152,11 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+
+    JoystickButton recordPathButton = new JoystickButton(leftStick, 11);
+    RecordPathTrigger recordPathTrigger = new RecordPathTrigger(this, recordPathButton);
+    recordPathTrigger.whileActiveContinuous(new RecordPath(this.driveTrain));
+
     /*
     JoystickButton turnToTarget = new JoystickButton(rightStick, 11);
     final ReadAngle readAngle = new ReadAngle(limelightTurret);
