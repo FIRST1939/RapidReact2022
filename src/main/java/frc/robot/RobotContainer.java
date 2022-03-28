@@ -35,6 +35,7 @@ import frc.robot.commands.auto.LeftSide2CargoNoTrajectory;
 import frc.robot.commands.auto.OneBall;
 import frc.robot.commands.auto.PlusOneTwoBall;
 import frc.robot.commands.auto.RecordPath;
+import frc.robot.commands.auto.ReplayPath;
 import frc.robot.commands.auto.RightSide2CargoNoTrajectory;
 import frc.robot.commands.auto.RightSide3CargoNoTrajectory;
 import frc.robot.commands.indexer.IndexerEmptyState;
@@ -68,6 +69,7 @@ import frc.robot.commands.climber.SetPiston;
 import frc.robot.subsystems.Climber;
 import frc.robot.triggers.ManualShootTrigger;
 import frc.robot.triggers.RecordPathTrigger;
+import frc.robot.triggers.ReplayPathTrigger;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -156,6 +158,10 @@ public class RobotContainer {
     JoystickButton recordPathButton = new JoystickButton(leftStick, 11);
     RecordPathTrigger recordPathTrigger = new RecordPathTrigger(this, recordPathButton);
     recordPathTrigger.whileActiveContinuous(new RecordPath(this.driveTrain));
+
+    JoystickButton replayPathButton = new JoystickButton(leftStick, 10);
+    ReplayPathTrigger replayPathTrigger = new ReplayPathTrigger(this, replayPathButton);
+    replayPathTrigger.whenActive(new ReplayPath(this.driveTrain));
 
     /*
     JoystickButton turnToTarget = new JoystickButton(rightStick, 11);

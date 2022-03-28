@@ -4,6 +4,9 @@
 
 package frc.robot.subsystems;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.BooleanSupplier;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -59,8 +62,8 @@ public class DriveTrain extends SubsystemBase {
   private final CANSparkMax right3;
 
   // Differential drive objects and boolean to activate 3rd pushing motor.
-  private final MotorControllerGroup leftGroup;
-  private final MotorControllerGroup rightGroup;
+  public final MotorControllerGroup leftGroup;
+  public final MotorControllerGroup rightGroup;
   private final DifferentialDrive diffDrive;
 
   // Drive train encoders.
@@ -77,6 +80,9 @@ public class DriveTrain extends SubsystemBase {
 
   private final BooleanSupplier sidewinderOverride;
   //private final PIDController strafeHorizonatal = new PIDController(Constants.SIDEWINDER_kP, 0, 0);
+
+  public final ArrayList<Double> leftSteps = new ArrayList<Double>();
+  public final ArrayList<Double> rightSteps = new ArrayList<Double>();
 
   /**
    * Creates a new drive train.
