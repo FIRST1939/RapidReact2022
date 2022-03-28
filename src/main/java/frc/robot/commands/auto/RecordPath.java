@@ -41,9 +41,11 @@ public class RecordPath extends CommandBase {
 
             this.leftSteps.put(time, this.driveTrain.getLeftDistance());
             this.rightSteps.put(time, this.driveTrain.getRightDistance());
-            
+
             this.driveTrain.resetDistance();
             this.timer.reset();
+
+            System.out.println(this.driveTrain.getLeftDistance());
         }
     }
     
