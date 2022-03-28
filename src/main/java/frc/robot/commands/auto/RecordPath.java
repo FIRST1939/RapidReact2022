@@ -13,8 +13,8 @@ public class RecordPath extends CommandBase {
     private final Timer timer = new Timer();
     private final double timeStep = .15;
 
-    private final Map<Double, Integer> leftSteps = new HashMap<Double, Integer>();
-    private final Map<Double, Integer> rightSteps = new HashMap<Double, Integer>();
+    private final Map<Double, Double> leftSteps = new HashMap<Double, Double>();
+    private final Map<Double, Double> rightSteps = new HashMap<Double, Double>();
     
     public RecordPath (final DriveTrain driveTrain) {
 
@@ -26,6 +26,7 @@ public class RecordPath extends CommandBase {
     @Override
     public void initialize () {
 
+        this.driveTrain.resetDistance();
         this.timer.reset();
         this.timer.start();
 
@@ -39,13 +40,14 @@ public class RecordPath extends CommandBase {
 
         if (time >= this.timeStep) {
 
-            this.leftSteps.put(time, this.driveTrain.getLeftDistance());
-            this.rightSteps.put(time, this.driveTrain.getRightDistance());
+            this.leftSteps.put(time, this.driveTrain.getLeftEncoderClicks());
+            this.rightSteps.put(time, this.driveTrain.getRightEncoderClicks());
+
+            System.out.println(this.driveTrain.getLeftEncoderClicks());
 
             this.driveTrain.resetDistance();
             this.timer.reset();
 
-            System.out.println(this.driveTrain.getLeftDistance());
         }
     }
     

@@ -65,6 +65,7 @@ public class DriveTrain extends SubsystemBase {
 
   // Drive train encoders.
   private final RelativeEncoder leftNeoEncoder;
+  private final RelativeEncoder rightNeoEncoder;
   private final Encoder leftEncoder;
   private final Encoder rightEncoder;
 
@@ -101,7 +102,8 @@ public class DriveTrain extends SubsystemBase {
     rightGroup.setInverted(true);
     diffDrive = new DifferentialDrive(leftGroup, rightGroup);
 
-    leftNeoEncoder = left1.getEncoder();
+    leftNeoEncoder = left2.getEncoder();
+    rightNeoEncoder = right2.getEncoder();
     leftEncoder = new Encoder(
         Constants.LEFT_DRIVE_A_CHANNEL,
         Constants.LEFT_DRIVE_B_CHANNEL,
@@ -201,12 +203,12 @@ public class DriveTrain extends SubsystemBase {
     this.rightEncoder.reset();
   }
 
-  public int getLeftDistance () {
-    return this.leftEncoder.get();
+  public double getLeftEncoderClicks () {
+    return this.leftNeoEncoder.getPosition();
   }
 
-  public int getRightDistance () {
-    return this.rightEncoder.get();
+  public double getRightEncoderClicks () {
+    return this.rightNeoEncoder.getPosition();
   }
 
   /**
