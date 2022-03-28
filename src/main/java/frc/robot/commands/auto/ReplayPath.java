@@ -39,4 +39,10 @@ public class ReplayPath extends CommandBase {
 
         return index == this.driveTrain.leftSteps.size();
     }
+
+    @Override
+    public boolean runsWhenDisabled () {
+
+        return true;
+    }
 }
