@@ -58,6 +58,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     m_robotContainer.limelightTurret.setPipeline(Constants.SHOOTER_OFF_PIPELINE);
+    m_robotContainer.driveTrain.coastMode();
   }
 
   @Override

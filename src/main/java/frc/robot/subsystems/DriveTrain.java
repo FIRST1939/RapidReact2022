@@ -286,4 +286,14 @@ public class DriveTrain extends SubsystemBase {
     motor.setIdleMode(IdleMode.kBrake);
     // TODO determine and set current limit.
   }
+
+  public void coastMode () {
+
+    this.left1.setIdleMode(IdleMode.kCoast);
+    this.left2.setIdleMode(IdleMode.kCoast);
+    this.left3.setIdleMode(IdleMode.kCoast);
+    this.right1.setIdleMode(IdleMode.kCoast);
+    this.right2.setIdleMode(IdleMode.kCoast);
+    this.right3.setIdleMode(IdleMode.kCoast);
+  }
 }
