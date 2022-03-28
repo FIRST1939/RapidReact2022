@@ -201,6 +201,14 @@ public class DriveTrain extends SubsystemBase {
     this.rightEncoder.reset();
   }
 
+  public int getLeftDistance () {
+    return this.leftEncoder.get();
+  }
+
+  public int getRightDistance () {
+    return this.rightEncoder.get();
+  }
+
   /**
    * Note that the returned inches are the average of the left and right side
    * sensors.
