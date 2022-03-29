@@ -66,6 +66,8 @@ public final class Constants {
     public static final double DRIVE_AUTO_TURN_TO_ANGLE_TOL_DEG = 5.0;
     public static final double DRIVE_AUTO_TURN_TO_ANGLE_TURN_RATE_TOL_DEG_PER_SEC = 10.0;
 
+    public static final double REPLAY_DIVISER = 2.5;
+
     // Shooter constants.
     public static final int SHOOTER_PCM_CHANNEL = 0;
     public static final int SHOOTER_FLYWHEEL_CAN_ID = 32;
@@ -76,7 +78,7 @@ public final class Constants {
     // TODO shooting values
     public enum SHOTS {
         off(0, false),
-        idle(5750, false),
+        idle(0, false),
         fenderLow(3700, true),
         fenderHigh(5750, false),
         fenderPlusOneLow(4200, true),

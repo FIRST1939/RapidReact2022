@@ -62,9 +62,9 @@ public class DriveTrain extends SubsystemBase {
   private final CANSparkMax right3;
 
   // Differential drive objects and boolean to activate 3rd pushing motor.
-  public final MotorControllerGroup leftGroup;
-  public final MotorControllerGroup rightGroup;
-  private final DifferentialDrive diffDrive;
+  private final MotorControllerGroup leftGroup;
+  private final MotorControllerGroup rightGroup;
+  public final DifferentialDrive diffDrive;
 
   // Drive train encoders.
   private final RelativeEncoder leftNeoEncoder;
@@ -109,7 +109,7 @@ public class DriveTrain extends SubsystemBase {
     diffDrive = new DifferentialDrive(leftGroup, rightGroup);
 
     leftNeoEncoder = left2.getEncoder();
-    rightNeoEncoder = right2.getEncoder();
+    rightNeoEncoder = right1.getEncoder();
     leftEncoder = new Encoder(
         Constants.LEFT_DRIVE_A_CHANNEL,
         Constants.LEFT_DRIVE_B_CHANNEL,
@@ -205,6 +205,7 @@ public class DriveTrain extends SubsystemBase {
    */
   public void resetDistance() {
     leftNeoEncoder.setPosition(0.0);
+    rightNeoEncoder.setPosition(0.0);
     this.leftEncoder.reset();
     this.rightEncoder.reset();
   }
@@ -304,4 +305,14 @@ public class DriveTrain extends SubsystemBase {
     this.right2.setIdleMode(IdleMode.kCoast);
     this.right3.setIdleMode(IdleMode.kCoast);
   }
+
+  /*
+  public void setOutputByEncoder(double clicks){
+    if(leftNeoEncoder.getPosition() < clicks){
+      leftGroup.set(0.3);
+    } else {
+      left
+    }
+  }
+  */
 }

@@ -39,11 +39,19 @@ public class RecordPath extends CommandBase {
             this.driveTrain.leftSteps.add(this.driveTrain.getLeftEncoderClicks());
             this.driveTrain.rightSteps.add(this.driveTrain.getRightEncoderClicks());
 
-            System.out.println(this.driveTrain.getLeftEncoderClicks());
+            System.out.println("Left Encoder Clicks: " + this.driveTrain.getLeftEncoderClicks());
+            System.out.println("Right Encoder Clicks: " + this.driveTrain.getRightEncoderClicks());
 
             this.driveTrain.resetDistance();
             this.timer.reset();
         }
+    }
+
+    @Override
+    public void end (boolean interrupted) {
+
+        this.driveTrain.leftSteps.add(0.0);
+        this.driveTrain.rightSteps.add(0.0);
     }
     
     @Override

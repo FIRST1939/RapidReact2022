@@ -18,6 +18,6 @@ public class ReplayPathTrigger extends Trigger{
     @Override
     public boolean get () {
 
-        return this.robotContainer.disabled && this.joystickButton.get();
+        return this.joystickButton.get();
     }
 }

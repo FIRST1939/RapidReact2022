@@ -2,6 +2,7 @@ package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.DriveTrain;
 
 public class ReplayPath extends CommandBase {
@@ -20,24 +21,31 @@ public class ReplayPath extends CommandBase {
     }
 
     @Override
+    public void initialize () {
+
+        this.timer.reset();
+        this.timer.start();
+        System.out.println("Right Array: " + this.driveTrain.rightSteps);
+        System.out.println("Left Array: " + this.driveTrain.leftSteps);
+    }
+
+    @Override
     public void execute () {
 
         double time = this.timer.get();
+        this.driveTrain.diffDrive.tankDrive(this.driveTrain.leftSteps.get(this.index) / Constants.REPLAY_DIVISER, -1 * this.driveTrain.rightSteps.get(this.index) / Constants.REPLAY_DIVISER);
 
         if (time >= this.timeStep) {
 
-            this.driveTrain.leftGroup.set(this.driveTrain.leftSteps.get(this.index));
-            this.driveTrain.rightGroup.set(this.driveTrain.rightSteps.get(this.index));
-
             this.timer.reset();
-
+            this.index++;
         }
     }
 
     @Override
     public boolean isFinished () {
 
-        return index == this.driveTrain.leftSteps.size();
+        return index == (this.driveTrain.leftSteps.size() - 1);
     }
 
     @Override
