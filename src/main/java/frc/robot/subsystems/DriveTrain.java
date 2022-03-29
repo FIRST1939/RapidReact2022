@@ -296,14 +296,19 @@ public class DriveTrain extends SubsystemBase {
     // TODO determine and set current limit.
   }
 
-  public void coastMode () {
+  public void coastMode (boolean enabled) {
 
-    this.left1.setIdleMode(IdleMode.kCoast);
-    this.left2.setIdleMode(IdleMode.kCoast);
-    this.left3.setIdleMode(IdleMode.kCoast);
-    this.right1.setIdleMode(IdleMode.kCoast);
-    this.right2.setIdleMode(IdleMode.kCoast);
-    this.right3.setIdleMode(IdleMode.kCoast);
+    IdleMode idleMode;
+
+    if (enabled) { idleMode = IdleMode.kCoast; }
+    else { idleMode = IdleMode.kBrake; }
+
+    this.left1.setIdleMode(idleMode);
+    this.left2.setIdleMode(idleMode);
+    this.left3.setIdleMode(idleMode);
+    this.right1.setIdleMode(idleMode);
+    this.right2.setIdleMode(idleMode);
+    this.right3.setIdleMode(idleMode);
   }
 
   /*

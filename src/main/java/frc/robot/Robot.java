@@ -58,7 +58,6 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     m_robotContainer.limelightTurret.setPipeline(Constants.SHOOTER_OFF_PIPELINE);
-    m_robotContainer.driveTrain.coastMode();
 
     m_robotContainer.disabled = true;
   }
@@ -92,7 +91,6 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     m_robotContainer.disabled = false;
-
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove

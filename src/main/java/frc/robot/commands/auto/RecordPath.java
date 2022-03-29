@@ -22,6 +22,7 @@ public class RecordPath extends CommandBase {
     @Override
     public void initialize () {
 
+        this.driveTrain.coastMode(true);
         this.driveTrain.resetDistance();
         this.timer.reset();
         this.timer.start();
@@ -52,6 +53,7 @@ public class RecordPath extends CommandBase {
 
         this.driveTrain.leftSteps.add(0.0);
         this.driveTrain.rightSteps.add(0.0);
+        this.driveTrain.coastMode(false);
     }
     
     @Override
