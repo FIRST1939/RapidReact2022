@@ -4,9 +4,15 @@
 
 package frc.robot;
 
+import java.io.FileReader;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Map;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -34,10 +40,10 @@ import frc.robot.commands.auto.DriveStraightDistance;
 import frc.robot.commands.auto.LeftSide2CargoNoTrajectory;
 import frc.robot.commands.auto.OneBall;
 import frc.robot.commands.auto.PlusOneTwoBall;
-import frc.robot.commands.auto.RecordPath;
-import frc.robot.commands.auto.ReplayPath;
 import frc.robot.commands.auto.RightSide2CargoNoTrajectory;
 import frc.robot.commands.auto.RightSide3CargoNoTrajectory;
+import frc.robot.commands.auto.recording.RecordPath;
+import frc.robot.commands.auto.recording.ReplayPath;
 import frc.robot.commands.indexer.IndexerEmptyState;
 import frc.robot.commands.indexer.IndexerReadyToShootState;
 import frc.robot.commands.indexer.IndexerShootingState;
@@ -102,6 +108,7 @@ public class RobotContainer {
   private boolean exitedAuto = false;
 
   private final SendableChooser<Supplier<Command>> autoChooser = new SendableChooser<>();
+  private final SendableChooser<Supplier<Command>> recordingChooser = new SendableChooser<>();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -114,6 +121,7 @@ public class RobotContainer {
     configureLightingTriggers();
     pressureInit();
     configureAutoChooser();
+    configureRecordingChooser();
   }
 
   /**
@@ -129,6 +137,33 @@ public class RobotContainer {
     this.autoChooser.addOption("Cargo Ring Two Ball", () -> new CargoRingTwoBall(driveTrain, intake, indexer, shooter));
 
     SmartDashboard.putData("Autonomous Chooser", this.autoChooser);
+  }
+
+  private void configureRecordingChooser () {
+
+    ArrayList<Map<String, ?>> recordings;
+
+    try {
+
+      ObjectMapper ObjectMapper = new ObjectMapper();
+      Map<String, ArrayList<Map<String, ?>>> jsonData = ObjectMapper.readValue(Paths.get("commands/auto/recording/Recordings.json").toFile(), Map.class);
+      recordings = jsonData.get("recordings");
+    } catch (Exception exception) {
+
+      exception.printStackTrace();
+      return;
+    }
+
+    Map<String, ?> defaultRecording = recordings.get(0);
+    this.recordingChooser.setDefaultOption((String) defaultRecording.get("name"), () -> new ReplayPath(this.driveTrain, (ArrayList) defaultRecording.get("leftSteps"), (ArrayList) defaultRecording.get("rightSteps")));
+    recordings.remove(0);
+
+    for (Map<String, ?> recording : recordings) {
+
+      this.recordingChooser.addOption((String) recording.get("name"), () -> new ReplayPath(this.driveTrain, (ArrayList) recording.get("leftSteps"), (ArrayList) recording.get("rightSteps")));
+    }
+
+    SmartDashboard.putData("Recording Chooser", this.recordingChooser);
   }
 
   /**
@@ -155,7 +190,7 @@ public class RobotContainer {
     recordPathButton.whileHeld(new RecordPath(this.driveTrain));
 
     JoystickButton replayPathButton = new JoystickButton(leftStick, 10);
-    replayPathButton.whenPressed(new ReplayPath(this.driveTrain));
+    replayPathButton.whenPressed(new ReplayPath(this.driveTrain, null, null));
 
     /*
     JoystickButton turnToTarget = new JoystickButton(rightStick, 11);
