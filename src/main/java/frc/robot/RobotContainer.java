@@ -68,8 +68,6 @@ import frc.robot.commands.climber.SetHome;
 import frc.robot.commands.climber.SetPiston;
 import frc.robot.subsystems.Climber;
 import frc.robot.triggers.ManualShootTrigger;
-import frc.robot.triggers.RecordPathTrigger;
-import frc.robot.triggers.ReplayPathTrigger;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
