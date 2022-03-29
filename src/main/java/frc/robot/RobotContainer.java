@@ -80,8 +80,6 @@ import frc.robot.triggers.ReplayPathTrigger;
  */
 public class RobotContainer {
 
-  public boolean disabled = false;
-
   // Create the joystick objects.
   private final Joystick leftStick = new Joystick(Constants.LEFT_STICK_PORT);
   private final Joystick rightStick = new Joystick(Constants.RIGHT_STICK_PORT);
@@ -156,12 +154,10 @@ public class RobotContainer {
   private void configureButtonBindings() {
 
     JoystickButton recordPathButton = new JoystickButton(leftStick, 11);
-    RecordPathTrigger recordPathTrigger = new RecordPathTrigger(this, recordPathButton);
-    recordPathTrigger.whileActiveContinuous(new RecordPath(this.driveTrain));
+    recordPathButton.whileHeld(new RecordPath(this.driveTrain));
 
     JoystickButton replayPathButton = new JoystickButton(leftStick, 10);
-    ReplayPathTrigger replayPathTrigger = new ReplayPathTrigger(this, replayPathButton);
-    replayPathTrigger.whenActive(new ReplayPath(this.driveTrain));
+    replayPathButton.whenPressed(new ReplayPath(this.driveTrain));
 
     /*
     JoystickButton turnToTarget = new JoystickButton(rightStick, 11);
