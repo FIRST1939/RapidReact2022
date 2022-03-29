@@ -25,8 +25,6 @@ public class ReplayPath extends CommandBase {
 
         this.timer.reset();
         this.timer.start();
-        System.out.println("Right Array: " + this.driveTrain.rightSteps);
-        System.out.println("Left Array: " + this.driveTrain.leftSteps);
     }
 
     @Override
