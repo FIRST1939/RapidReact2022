@@ -15,9 +15,7 @@ public class VisionWithDistance extends CommandBase {
   private final Limelight limelight;
 
   private double dy;
-  private double speed;
-
-  private Constants.SHOTS shot;
+  private double velocity;
 
   public VisionWithDistance(final Shooter shooter, final Limelight limelight) {
     this.shooter = shooter;
@@ -32,13 +30,12 @@ public class VisionWithDistance extends CommandBase {
   @Override
   public void execute() {
     if(limelight.isClosePipeline()){
-      speed = dy * Constants.SHOOTER_DY_MULTIPLIER_CLOSE;
+      velocity = dy * Constants.SHOOTER_DY_MULTIPLIER_CLOSE;
     } else {
-      speed = dy * Constants.SHOOTER_DY_MULTIPLIER_LONG;
+      velocity = dy * Constants.SHOOTER_DY_MULTIPLIER_LONG;
     }
     
-    shot = (speed, true);
-    this.shooter.cargoShot(shot);
+    this.shooter.cargoShot((int) velocity, true);
   }
 
 
