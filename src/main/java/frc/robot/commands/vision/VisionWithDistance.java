@@ -17,6 +17,8 @@ public class VisionWithDistance extends CommandBase {
   private double dy;
   private double speed;
 
+  private Constants.SHOTS shot;
+
   public VisionWithDistance(final Shooter shooter, final Limelight limelight) {
     this.shooter = shooter;
     this.limelight = limelight;
@@ -34,8 +36,9 @@ public class VisionWithDistance extends CommandBase {
     } else {
       speed = dy * Constants.SHOOTER_DY_MULTIPLIER_LONG;
     }
-
-    this.shooter.cargoShot();
+    
+    shot = (speed, true);
+    this.shooter.cargoShot(shot);
   }
 
 
