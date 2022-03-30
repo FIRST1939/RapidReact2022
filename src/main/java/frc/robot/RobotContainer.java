@@ -94,7 +94,7 @@ public class RobotContainer {
 
   // The robot's subsystems and commands are defined here...
   private final JoystickButton sidewinderManualDeploy = new JoystickButton(leftStick, 6);
-  public final DriveTrain driveTrain = new DriveTrain(() -> sidewinderManualDeploy.get());
+  private final DriveTrain driveTrain = new DriveTrain(() -> sidewinderManualDeploy.get());
   private final RobotCargoCount robotCargoCount = RobotCargoCount.getInstance();
   private final Intake intake = new Intake(() -> this.driveTrain.getRate());
   private final Indexer indexer = new Indexer(() -> isIntakeSendingCargo());

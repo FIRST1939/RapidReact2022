@@ -64,7 +64,7 @@ public class DriveTrain extends SubsystemBase {
   // Differential drive objects and boolean to activate 3rd pushing motor.
   private final MotorControllerGroup leftGroup;
   private final MotorControllerGroup rightGroup;
-  public final DifferentialDrive diffDrive;
+  private final DifferentialDrive diffDrive;
 
   // Drive train encoders.
   private final RelativeEncoder leftNeoEncoder;
@@ -188,6 +188,11 @@ public class DriveTrain extends SubsystemBase {
     }
 
     diffDrive.arcadeDrive(speed, arcadeRotation, true);
+  }
+
+  public void tankDrive (final double leftSpeed, final double rightSpeed) {
+
+    this.diffDrive.tankDrive(leftSpeed, rightSpeed);
   }
 
   /**
