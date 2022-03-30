@@ -12,6 +12,7 @@ import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import edu.wpi.first.wpilibj.Compressor;
@@ -22,6 +23,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -121,7 +123,7 @@ public class RobotContainer {
     configureLightingTriggers();
     pressureInit();
     configureAutoChooser();
-    configureRecordingChooser();
+    configureRecordingDashboard();
   }
 
   /**
@@ -139,14 +141,14 @@ public class RobotContainer {
     SmartDashboard.putData("Autonomous Chooser", this.autoChooser);
   }
 
-  private void configureRecordingChooser () {
+  private void configureRecordingDashboard () {
 
-    ArrayList<Map<String, ?>> recordings;
+    ArrayList<Map<String, Object>> recordings;
 
     try {
 
       ObjectMapper ObjectMapper = new ObjectMapper();
-      Map<String, ArrayList<Map<String, ?>>> jsonData = ObjectMapper.readValue(Paths.get("commands/auto/recording/Recordings.json").toFile(), Map.class);
+      Map<String, ArrayList<Map<String, Object>>> jsonData = ObjectMapper.readValue(Paths.get("commands/auto/recording/Recordings.json").toFile(), new TypeReference<Map<String, ArrayList<Map<String, Object>>>>(){});
       recordings = jsonData.get("recordings");
     } catch (Exception exception) {
 
@@ -154,16 +156,17 @@ public class RobotContainer {
       return;
     }
 
-    Map<String, ?> defaultRecording = recordings.get(0);
+    Map<String, Object> defaultRecording = recordings.get(0);
     this.recordingChooser.setDefaultOption((String) defaultRecording.get("name"), () -> new ReplayPath(this.driveTrain, (ArrayList) defaultRecording.get("leftSteps"), (ArrayList) defaultRecording.get("rightSteps")));
     recordings.remove(0);
 
-    for (Map<String, ?> recording : recordings) {
+    for (Map<String, Object> recording : recordings) {
 
       this.recordingChooser.addOption((String) recording.get("name"), () -> new ReplayPath(this.driveTrain, (ArrayList) recording.get("leftSteps"), (ArrayList) recording.get("rightSteps")));
     }
 
     SmartDashboard.putData("Recording Chooser", this.recordingChooser);
+    SmartDashboard.putString("New Recording's Name", "New Recording");
   }
 
   /**
@@ -190,7 +193,7 @@ public class RobotContainer {
     recordPathButton.whileHeld(new RecordPath(this.driveTrain));
 
     JoystickButton replayPathButton = new JoystickButton(leftStick, 10);
-    replayPathButton.whenPressed(new ReplayPath(this.driveTrain, null, null));
+    replayPathButton.whenPressed(this.recordingChooser.getSelected().get());
 
     /*
     JoystickButton turnToTarget = new JoystickButton(rightStick, 11);

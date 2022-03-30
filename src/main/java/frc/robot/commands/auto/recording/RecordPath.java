@@ -1,6 +1,17 @@
 package frc.robot.commands.auto.recording;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
 
@@ -9,13 +20,13 @@ public class RecordPath extends CommandBase {
     private final DriveTrain driveTrain;
     private final Timer timer = new Timer();
     private final double timeStep = .1;
+
+    private ArrayList<Double> leftSteps = new ArrayList<Double>();
+    private ArrayList<Double> rightSteps = new ArrayList<Double>();
     
     public RecordPath (final DriveTrain driveTrain) {
 
         this.driveTrain = driveTrain;
-        this.driveTrain.leftSteps.clear();
-        this.driveTrain.rightSteps.clear();
-
         addRequirements(this.driveTrain);
     }
 
@@ -37,11 +48,8 @@ public class RecordPath extends CommandBase {
 
         if (time >= this.timeStep) {
 
-            this.driveTrain.leftSteps.add(this.driveTrain.getLeftEncoderClicks());
-            this.driveTrain.rightSteps.add(this.driveTrain.getRightEncoderClicks());
-
-            System.out.println("Left Encoder Clicks: " + this.driveTrain.getLeftEncoderClicks());
-            System.out.println("Right Encoder Clicks: " + this.driveTrain.getRightEncoderClicks());
+            this.leftSteps.add(this.driveTrain.getLeftEncoderClicks());
+            this.rightSteps.add(this.driveTrain.getRightEncoderClicks());
 
             this.driveTrain.resetDistance();
             this.timer.reset();
@@ -51,9 +59,34 @@ public class RecordPath extends CommandBase {
     @Override
     public void end (boolean interrupted) {
 
-        this.driveTrain.leftSteps.add(0.0);
-        this.driveTrain.rightSteps.add(0.0);
+        this.leftSteps.add(0.0);
+        this.rightSteps.add(0.0);
         this.driveTrain.coastMode(false);
+
+        try {
+
+            ObjectMapper ObjectMapper = new ObjectMapper();
+            Map<String, ArrayList<Map<String, ?>>> jsonData = ObjectMapper.readValue(Paths.get("Recordings.json").toFile(), new TypeReference<Map<String, ArrayList<Map<String, ?>>>>(){});
+            ArrayList<Map<String, ?>> recordings = jsonData.get("recordings");
+
+            Map<String, Object> recording = new HashMap<>();
+            recording.put("name", SmartDashboard.getString("New Recording's Name", "New Recording"));
+            recording.put("leftSteps", this.leftSteps);
+            recording.put("rightSteps", this.rightSteps);
+
+            recordings.add(recording);
+            jsonData.put("recordings", recordings);
+
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("Recordings.json"));
+            bufferedWriter.write(jsonData.toString());
+            bufferedWriter.close();
+        } catch (Exception exception) {
+
+            exception.printStackTrace();
+            return;
+        }
+
+        System.out.println("Recording saved as: " + SmartDashboard.getString("New Recording's Name", "New Recording"));
     }
     
     @Override

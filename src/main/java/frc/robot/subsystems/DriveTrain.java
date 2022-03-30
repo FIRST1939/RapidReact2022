@@ -81,9 +81,6 @@ public class DriveTrain extends SubsystemBase {
   private final BooleanSupplier sidewinderOverride;
   //private final PIDController strafeHorizonatal = new PIDController(Constants.SIDEWINDER_kP, 0, 0);
 
-  public final ArrayList<Double> leftSteps = new ArrayList<Double>();
-  public final ArrayList<Double> rightSteps = new ArrayList<Double>();
-
   /**
    * Creates a new drive train.
    */

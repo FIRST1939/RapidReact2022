@@ -29,9 +29,6 @@ public class ReplayPath extends CommandBase {
     @Override
     public void initialize () {
 
-        if (this.leftSteps == null) { this.leftSteps = this.driveTrain.leftSteps; }
-        if (this.rightSteps == null) { this.rightSteps = this.driveTrain.rightSteps; }
-
         this.timer.reset();
         this.timer.start();
     }
