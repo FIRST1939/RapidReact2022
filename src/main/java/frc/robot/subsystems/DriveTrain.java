@@ -207,11 +207,11 @@ public class DriveTrain extends SubsystemBase {
     this.rightEncoder.reset();
   }
 
-  public double getLeftEncoderClicks () {
+  public double getLeftRotations () {
     return this.leftNeoEncoder.getPosition();
   }
 
-  public double getRightEncoderClicks () {
+  public double getRightRotations () {
     return this.rightNeoEncoder.getPosition();
   }
 

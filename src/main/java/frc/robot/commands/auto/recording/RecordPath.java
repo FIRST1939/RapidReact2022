@@ -49,8 +49,8 @@ public class RecordPath extends CommandBase {
 
         if (time >= this.timeStep) {
 
-            this.leftSteps.add(this.driveTrain.getLeftEncoderClicks());
-            this.rightSteps.add(this.driveTrain.getRightEncoderClicks());
+            this.leftSteps.add(this.driveTrain.getLeftRotations());
+            this.rightSteps.add(this.driveTrain.getRightRotations());
 
             this.driveTrain.resetDistance();
             this.timer.reset();
