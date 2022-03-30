@@ -307,14 +307,4 @@ public class DriveTrain extends SubsystemBase {
     this.right2.setIdleMode(idleMode);
     this.right3.setIdleMode(idleMode);
   }
-
-  /*
-  public void setOutputByEncoder(double clicks){
-    if(leftNeoEncoder.getPosition() < clicks){
-      leftGroup.set(0.3);
-    } else {
-      left
-    }
-  }
-  */
 }
