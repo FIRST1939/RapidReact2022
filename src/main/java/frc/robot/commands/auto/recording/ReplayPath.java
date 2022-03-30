@@ -37,7 +37,9 @@ public class ReplayPath extends CommandBase {
     public void execute () {
 
         double time = this.timer.get();
-        this.driveTrain.recordingDrive(this.leftSteps.get(this.index) * 600, -1 * this.rightSteps.get(this.index) * 600);
+        double leftSpeed = this.leftSteps.get(this.index) * (60 / this.timeStep); // Converts to RPM
+        double rightSpeed = this.rightSteps.get(this.index) * (60 / this.timeStep) // Converts to RPM
+        this.driveTrain.recordingDrive(leftSpeed, -1 * rightSpeed);
 
         if (time >= this.timeStep) {
 
