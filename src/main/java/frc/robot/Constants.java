@@ -66,8 +66,6 @@ public final class Constants {
     public static final double DRIVE_AUTO_TURN_TO_ANGLE_TOL_DEG = 5.0;
     public static final double DRIVE_AUTO_TURN_TO_ANGLE_TURN_RATE_TOL_DEG_PER_SEC = 10.0;
 
-    public static final double REPLAY_DIVISER = 2.5;
-
     // Shooter constants.
     public static final int SHOOTER_PCM_CHANNEL = 0;
     public static final int SHOOTER_FLYWHEEL_CAN_ID = 32;

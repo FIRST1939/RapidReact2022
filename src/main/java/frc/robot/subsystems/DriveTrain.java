@@ -14,6 +14,8 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -61,6 +63,13 @@ public class DriveTrain extends SubsystemBase {
   private final CANSparkMax right2;
   private final CANSparkMax right3;
 
+  private final SparkMaxPIDController left1PID;
+  private final SparkMaxPIDController left2PID;
+  private final SparkMaxPIDController left3PID;
+  private final SparkMaxPIDController right1PID;
+  private final SparkMaxPIDController right2PID;
+  private final SparkMaxPIDController right3PID;
+
   // Differential drive objects and boolean to activate 3rd pushing motor.
   private final MotorControllerGroup leftGroup;
   private final MotorControllerGroup rightGroup;
@@ -98,6 +107,13 @@ public class DriveTrain extends SubsystemBase {
     motorConfig(right2);
     right3 = new CANSparkMax(Constants.RIGHT_DRIVE_3_CAN_ID, MotorType.kBrushless);
     motorConfig(right3);
+
+    left1PID = left1.getPIDController();
+    left2PID = left2.getPIDController();
+    left3PID = left3.getPIDController();
+    right1PID = right1.getPIDController();
+    right2PID = right2.getPIDController();
+    right3PID = right3.getPIDController();
 
     // Create and configure the drive from the motors.
     leftGroup = new MotorControllerGroup(left1, left2, left3);
@@ -190,9 +206,14 @@ public class DriveTrain extends SubsystemBase {
     diffDrive.arcadeDrive(speed, arcadeRotation, true);
   }
 
-  public void tankDrive (final double leftSpeed, final double rightSpeed) {
+  public void recordingDrive (final double leftSpeed, final double rightSpeed) {
 
-    this.diffDrive.tankDrive(leftSpeed, rightSpeed);
+    this.left1PID.setReference(leftSpeed, ControlType.kVelocity);
+    this.left2PID.setReference(leftSpeed, ControlType.kVelocity);
+    this.left3PID.setReference(leftSpeed, ControlType.kVelocity);
+    this.right1PID.setReference(rightSpeed, ControlType.kVelocity);
+    this.right2PID.setReference(rightSpeed, ControlType.kVelocity);
+    this.right3PID.setReference(rightSpeed, ControlType.kVelocity);
   }
 
   /**
