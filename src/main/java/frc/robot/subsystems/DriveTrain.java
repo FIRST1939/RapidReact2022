@@ -14,6 +14,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.SPI;
@@ -75,7 +76,7 @@ public class DriveTrain extends SubsystemBase {
   private final AHRS navx;
 
   private final BooleanSupplier sidewinderOverride;
-  //private final PIDController strafeHorizonatal = new PIDController(Constants.SIDEWINDER_kP, 0, 0);
+  private final PIDController strafeHorizonatal = new PIDController(Constants.SIDEWINDER_kP, 0, 0);
 
   /**
    * Creates a new drive train.
@@ -127,6 +128,7 @@ public class DriveTrain extends SubsystemBase {
 
     this.navx = new AHRS(SPI.Port.kMXP);
 
+
     /*
     SmartDashboard.putNumber("1: ", left1.getAppliedOutput());
     SmartDashboard.putNumber("2: ", left2.getMotorTemperature());
@@ -174,11 +176,11 @@ public class DriveTrain extends SubsystemBase {
       sidewinderMotor.set(
           ControlMode.PercentOutput,
           -(sidewind - (Math.signum(sidewind) * Constants.SIDEWINDER_OUTPUT_OFFSET)));
-      /*
-       * if(arcadeRotation == 0.0){
-       * arcadeRotation = strafeHorizonatal.calculate(getHeading(), 0.0);
-       * }
-      */
+      
+      if(arcadeRotation == 0.0){
+        arcadeRotation = strafeHorizonatal.calculate(getHeading(), 0.0);
+      }
+      
       
     }
 
