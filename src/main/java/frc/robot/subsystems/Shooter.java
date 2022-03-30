@@ -55,10 +55,15 @@ public class Shooter extends SubsystemBase {
         return shooterInstance;
     }
 
+    public void cargoShot (final int velocity, final boolean hood) {
+
+        setHood(hood);
+        setVelocity(velocity);
+    }
+
     public void cargoShot () {
 
-        setHood(getShot().hood);
-        setVelocity(getShot().velocity);
+        cargoShot(getShot().velocity, getShot().hood);
     }
 
     /**
