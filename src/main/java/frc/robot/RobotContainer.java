@@ -4,9 +4,17 @@
 
 package frc.robot;
 
+import java.io.File;
+import java.io.FileReader;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Map;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -16,6 +24,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -36,6 +45,8 @@ import frc.robot.commands.auto.OneBall;
 import frc.robot.commands.auto.PlusOneTwoBall;
 import frc.robot.commands.auto.RightSide2CargoNoTrajectory;
 import frc.robot.commands.auto.RightSide3CargoNoTrajectory;
+import frc.robot.commands.auto.recording.RecordPath;
+import frc.robot.commands.auto.recording.ReplayPath;
 import frc.robot.commands.indexer.IndexerEmptyState;
 import frc.robot.commands.indexer.IndexerReadyToShootState;
 import frc.robot.commands.indexer.IndexerShootingState;
@@ -75,6 +86,7 @@ import frc.robot.triggers.ManualShootTrigger;
  * commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+
   // Create the joystick objects.
   private final Joystick leftStick = new Joystick(Constants.LEFT_STICK_PORT);
   private final Joystick rightStick = new Joystick(Constants.RIGHT_STICK_PORT);
@@ -99,6 +111,7 @@ public class RobotContainer {
   private boolean exitedAuto = false;
 
   private final SendableChooser<Supplier<Command>> autoChooser = new SendableChooser<>();
+  private final SendableChooser<Supplier<Command>> recordingChooser = new SendableChooser<>();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -111,6 +124,7 @@ public class RobotContainer {
     configureLightingTriggers();
     pressureInit();
     configureAutoChooser();
+    configureRecordingDashboard();
   }
 
   /**
@@ -126,6 +140,37 @@ public class RobotContainer {
     this.autoChooser.addOption("Cargo Ring Two Ball", () -> new CargoRingTwoBall(driveTrain, intake, indexer, shooter));
 
     SmartDashboard.putData("Autonomous Chooser", this.autoChooser);
+  }
+
+  private void configureRecordingDashboard () {
+
+    ArrayList<Map<String, Object>> recordings;
+
+    try {
+
+      String basePath = new File("").getAbsolutePath();
+      String filePath = basePath.concat("commands/auto/recording/Recordings.json");
+
+      ObjectMapper ObjectMapper = new ObjectMapper();
+      Map<String, ArrayList<Map<String, Object>>> jsonData = ObjectMapper.readValue(Paths.get(filePath).toFile(), new TypeReference<Map<String, ArrayList<Map<String, Object>>>>(){});
+      recordings = jsonData.get("recordings");
+    } catch (Exception exception) {
+
+      exception.printStackTrace();
+      return;
+    }
+
+    Map<String, Object> defaultRecording = recordings.get(0);
+    this.recordingChooser.setDefaultOption((String) defaultRecording.get("name"), () -> new ReplayPath(this.driveTrain, (ArrayList) defaultRecording.get("leftSteps"), (ArrayList) defaultRecording.get("rightSteps")));
+    recordings.remove(0);
+
+    for (Map<String, Object> recording : recordings) {
+
+      this.recordingChooser.addOption((String) recording.get("name"), () -> new ReplayPath(this.driveTrain, (ArrayList) recording.get("leftSteps"), (ArrayList) recording.get("rightSteps")));
+    }
+
+    SmartDashboard.putData("Recording Chooser", this.recordingChooser);
+    SmartDashboard.putString("New Recording's Name", "New Recording");
   }
 
   /**
@@ -147,6 +192,13 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+
+    JoystickButton recordPathButton = new JoystickButton(leftStick, 11);
+    recordPathButton.whileHeld(new RecordPath(this.driveTrain));
+
+    JoystickButton replayPathButton = new JoystickButton(leftStick, 10);
+    replayPathButton.whenPressed(this.recordingChooser.getSelected().get());
+
     /*
     JoystickButton turnToTarget = new JoystickButton(rightStick, 11);
     final ReadAngle readAngle = new ReadAngle(limelightTurret);

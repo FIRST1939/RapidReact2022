@@ -4,6 +4,9 @@
 
 package frc.robot.subsystems;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.BooleanSupplier;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -11,6 +14,8 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -58,6 +63,13 @@ public class DriveTrain extends SubsystemBase {
   private final CANSparkMax right2;
   private final CANSparkMax right3;
 
+  private final SparkMaxPIDController left1PID;
+  private final SparkMaxPIDController left2PID;
+  private final SparkMaxPIDController left3PID;
+  private final SparkMaxPIDController right1PID;
+  private final SparkMaxPIDController right2PID;
+  private final SparkMaxPIDController right3PID;
+
   // Differential drive objects and boolean to activate 3rd pushing motor.
   private final MotorControllerGroup leftGroup;
   private final MotorControllerGroup rightGroup;
@@ -65,6 +77,7 @@ public class DriveTrain extends SubsystemBase {
 
   // Drive train encoders.
   private final RelativeEncoder leftNeoEncoder;
+  private final RelativeEncoder rightNeoEncoder;
   private final Encoder leftEncoder;
   private final Encoder rightEncoder;
 
@@ -95,13 +108,27 @@ public class DriveTrain extends SubsystemBase {
     right3 = new CANSparkMax(Constants.RIGHT_DRIVE_3_CAN_ID, MotorType.kBrushless);
     motorConfig(right3);
 
+    left1PID = left1.getPIDController();
+    pidConfig(left1PID);
+    left2PID = left2.getPIDController();
+    pidConfig(left2PID);
+    left3PID = left3.getPIDController();
+    pidConfig(left3PID);
+    right1PID = right1.getPIDController();
+    pidConfig(right1PID);
+    right2PID = right2.getPIDController();
+    pidConfig(right2PID);
+    right3PID = right3.getPIDController();
+    pidConfig(right3PID);
+
     // Create and configure the drive from the motors.
     leftGroup = new MotorControllerGroup(left1, left2, left3);
     rightGroup = new MotorControllerGroup(right1, right2, right3);
     rightGroup.setInverted(true);
     diffDrive = new DifferentialDrive(leftGroup, rightGroup);
 
-    leftNeoEncoder = left1.getEncoder();
+    leftNeoEncoder = left2.getEncoder();
+    rightNeoEncoder = right1.getEncoder();
     leftEncoder = new Encoder(
         Constants.LEFT_DRIVE_A_CHANNEL,
         Constants.LEFT_DRIVE_B_CHANNEL,
@@ -185,6 +212,16 @@ public class DriveTrain extends SubsystemBase {
     diffDrive.arcadeDrive(speed, arcadeRotation, true);
   }
 
+  public void recordingDrive (final double leftSpeed, final double rightSpeed) {
+
+    this.left1PID.setReference(leftSpeed, ControlType.kVelocity);
+    this.left2PID.setReference(leftSpeed, ControlType.kVelocity);
+    this.left3PID.setReference(leftSpeed, ControlType.kVelocity);
+    this.right1PID.setReference(rightSpeed, ControlType.kVelocity);
+    this.right2PID.setReference(rightSpeed, ControlType.kVelocity);
+    this.right3PID.setReference(rightSpeed, ControlType.kVelocity);
+  }
+
   /**
    * Stops all drive motors.
    */
@@ -197,8 +234,17 @@ public class DriveTrain extends SubsystemBase {
    */
   public void resetDistance() {
     leftNeoEncoder.setPosition(0.0);
+    rightNeoEncoder.setPosition(0.0);
     this.leftEncoder.reset();
     this.rightEncoder.reset();
+  }
+
+  public double getLeftRotations () {
+    return this.leftNeoEncoder.getPosition();
+  }
+
+  public double getRightRotations () {
+    return this.rightNeoEncoder.getPosition();
   }
 
   /**
@@ -277,5 +323,25 @@ public class DriveTrain extends SubsystemBase {
     motor.restoreFactoryDefaults();
     motor.setIdleMode(IdleMode.kBrake);
     // TODO determine and set current limit.
+  }
+  
+  private voud pidConfig(final SparkMaxPIDController pidController) {
+    pidController.setFF(0.1);
+    pidController.setP(0.1);
+  }
+
+  public void coastMode (boolean enabled) {
+
+    IdleMode idleMode;
+
+    if (enabled) { idleMode = IdleMode.kCoast; }
+    else { idleMode = IdleMode.kBrake; }
+
+    this.left1.setIdleMode(idleMode);
+    this.left2.setIdleMode(idleMode);
+    this.left3.setIdleMode(idleMode);
+    this.right1.setIdleMode(idleMode);
+    this.right2.setIdleMode(idleMode);
+    this.right3.setIdleMode(idleMode);
   }
 }

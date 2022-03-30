@@ -37,7 +37,8 @@ public class RightSide3CargoNoTrajectory extends SequentialCommandGroup {
         new ParallelCommandGroup(
             new ScheduleCommand(IntakeGatheringEmptyState.getInstance(intake)),
             new DriveStraightDistance(AutoConstants.CLOSE_CARGO_PICKUP_DRIVE_DIST, driveTrain),
-            new SetShot(shooter, Constants.SHOTS.cargoRing)),
+            new SetShot(shooter, Constants.SHOTS.cargoRing)
+        ),
         // Drive to point straight out from the fender.
         //new DriveStraightDistance(-AutoConstants.CLOSE_CARGO_PICKUP_TO_TURN_DIST, driveTrain),
         // Turn square to the fender.
