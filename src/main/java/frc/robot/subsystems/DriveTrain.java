@@ -109,11 +109,17 @@ public class DriveTrain extends SubsystemBase {
     motorConfig(right3);
 
     left1PID = left1.getPIDController();
+    pidConfig(left1PID);
     left2PID = left2.getPIDController();
+    pidConfig(left2PID);
     left3PID = left3.getPIDController();
+    pidConfig(left3PID);
     right1PID = right1.getPIDController();
+    pidConfig(right1PID);
     right2PID = right2.getPIDController();
+    pidConfig(right2PID);
     right3PID = right3.getPIDController();
+    pidConfig(right3PID);
 
     // Create and configure the drive from the motors.
     leftGroup = new MotorControllerGroup(left1, left2, left3);
@@ -317,6 +323,11 @@ public class DriveTrain extends SubsystemBase {
     motor.restoreFactoryDefaults();
     motor.setIdleMode(IdleMode.kBrake);
     // TODO determine and set current limit.
+  }
+  
+  private voud pidConfig(final SparkMaxPIDController pidController) {
+    pidController.setFF(0.1);
+    pidController.setP(0.1);
   }
 
   public void coastMode (boolean enabled) {
