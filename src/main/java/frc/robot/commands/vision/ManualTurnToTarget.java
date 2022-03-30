@@ -2,9 +2,10 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.vision;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.Limelight;
 import frc.robot.subsystems.DriveTrain;
 
@@ -15,10 +16,13 @@ public class ManualTurnToTarget extends CommandBase {
 
   private double angle;
   private int direction = 0;
+  private int pipeline;
 
-  public ManualTurnToTarget(final DriveTrain driveTrain, final Limelight limelight) {
+  public ManualTurnToTarget(final DriveTrain driveTrain, final Limelight limelight, final int pipeline) {
     this.driveTrain = driveTrain;
     this.limelight = limelight;
+
+    this.pipeline = pipeline;
 
     addRequirements(driveTrain);
   }
@@ -26,6 +30,12 @@ public class ManualTurnToTarget extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    this.limelight.setPipeline(pipeline);
+    if(pipeline == Constants.SHOOTER_SHORT_PIPELINE){
+      limelight.setIsClosePipeline(true);
+    } else {
+      limelight.setIsClosePipeline(false);
+    }
     this.angle = limelight.getHorizontalAngleError();
     
     if (this.angle < -1) {

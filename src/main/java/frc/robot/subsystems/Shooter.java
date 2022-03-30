@@ -94,6 +94,7 @@ public class Shooter extends SubsystemBase {
         Lights.getInstance().setColor(LEDMode.CONFETTI);
     }
 
+
     @Override
     public void periodic() {
         double currentVelocity = shooterFlywheel.getSelectedSensorVelocity()/2;

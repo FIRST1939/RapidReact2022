@@ -73,6 +73,9 @@ public final class Constants {
     public static final int SHOOTER_DEFAULT_VELOCITY = 0;
     public static final boolean SHOOTER_DEFAULT_HOOD = false;
 
+    public static final double SHOOTER_DY_MULTIPLIER_CLOSE = 0;
+    public static final double SHOOTER_DY_MULTIPLIER_LONG = 0;
+
     // TODO shooting values
     public enum SHOTS {
         off(0, false),

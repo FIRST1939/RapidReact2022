@@ -19,6 +19,9 @@ public class Limelight {
     public static final double TARGET_HEIGHT = 0.0;
     public static final double CAM_ANGLE = 0.0;
     public static final double CAM_CALIBRATION = 0.0;
+
+    public boolean isClosePipeline = false;
+
     
     public Limelight(String name){
       table = NetworkTableInstance.getDefault().getTable(name);
@@ -115,4 +118,20 @@ public class Limelight {
     public double getLEDMode(){
         return table.getEntry("ledMode").getDouble(0.0);
     }
+
+
+    public boolean isClosePipeline(){
+        return this.isClosePipeline;
+    }
+
+    //true is close and false is long
+    public void setIsClosePipeline(boolean bool){
+        if(bool){
+            this.isClosePipeline = true;
+        } else {
+            this.isClosePipeline = false;
+        }
+    }
+
+
 }

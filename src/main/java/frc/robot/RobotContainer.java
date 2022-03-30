@@ -23,8 +23,6 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants.SHOTS;
 import frc.robot.commands.DriveWithInput;
 import frc.robot.commands.LightsUpdater;
-import frc.robot.commands.ManualTurnToTarget;
-import frc.robot.commands.ReadAngle;
 import frc.robot.commands.RumbleController;
 import frc.robot.commands.ToggleIntakeIndexerManualMode;
 import frc.robot.commands.ToggleManualEjection;
@@ -48,6 +46,9 @@ import frc.robot.commands.intake.IntakeStowedSendState;
 import frc.robot.commands.intake.ManualIntakeRollerBelts;
 import frc.robot.commands.shooter.ReturnToPriorShot;
 import frc.robot.commands.shooter.SetShot;
+import frc.robot.commands.vision.ManualTurnToTarget;
+import frc.robot.commands.vision.ReadAngle;
+import frc.robot.commands.vision.VisionWithDistance;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
@@ -154,8 +155,16 @@ public class RobotContainer {
     turnToTarget.whenPressed(readAngle.andThen(new DriveTurnToRelativeAngle(angleSupplier, driveTrain)));
     */
 
+    JoystickButton manualTurnToTargetLong = new JoystickButton(rightStick, 11);
+    manualTurnToTargetLong.whenPressed(new ManualTurnToTarget(driveTrain, limelightTurret, Constants.SHOOTER_LONG_PIPELINE));
+
+    JoystickButton manualTurnToTargetShort = new JoystickButton(rightStick, 10);
+    manualTurnToTargetShort.whenPressed(new ManualTurnToTarget(driveTrain, limelightTurret, Constants.SHOOTER_SHORT_PIPELINE));
+
+    /*
     JoystickButton manualTurnToTarget = new JoystickButton(rightStick, 10);
     manualTurnToTarget.whenPressed(new ManualTurnToTarget(driveTrain, limelightTurret));
+    */
 
     //shooter buttons
     JoystickButton fenderLowButton = new JoystickButton(driverTwo, XboxController.Button.kY.value);
@@ -173,11 +182,11 @@ public class RobotContainer {
     POVButton cargoRing =  new POVButton(driverTwo, 0); //0 is up, 90 is right, 180 is down, and 270 is left
     cargoRing.whenPressed(new SetShot(this.shooter, SHOTS.cargoRing));
 
-    POVButton wallShot =  new POVButton(driverTwo, 90);
-    wallShot.whenPressed(new SetShot(this.shooter, SHOTS.wallShot));
-
-    POVButton launchpad =  new POVButton(driverTwo, 180);
+    POVButton launchpad =  new POVButton(driverTwo, 90);
     launchpad.whenPressed(new SetShot(this.shooter, SHOTS.launchpad));
+
+    POVButton visionWithDistance =  new POVButton(driverTwo, 180);
+    visionWithDistance.whenPressed(new VisionWithDistance(this.shooter, this.limelightTurret));
 
     POVButton offButton = new POVButton(driverTwo, 270);
     offButton.whenPressed(new SetShot(this.shooter, SHOTS.off));
