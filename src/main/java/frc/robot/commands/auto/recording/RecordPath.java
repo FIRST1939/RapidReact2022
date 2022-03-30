@@ -1,6 +1,7 @@
 package frc.robot.commands.auto.recording;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -65,8 +66,11 @@ public class RecordPath extends CommandBase {
 
         try {
 
+            String basePath = new File("").getAbsolutePath();
+            String filePath = basePath.concat("commands/auto/recording/Recordings.json");
+
             ObjectMapper ObjectMapper = new ObjectMapper();
-            Map<String, ArrayList<Map<String, ?>>> jsonData = ObjectMapper.readValue(Paths.get("Recordings.json").toFile(), new TypeReference<Map<String, ArrayList<Map<String, ?>>>>(){});
+            Map<String, ArrayList<Map<String, ?>>> jsonData = ObjectMapper.readValue(Paths.get(filePath).toFile(), new TypeReference<Map<String, ArrayList<Map<String, ?>>>>(){});
             ArrayList<Map<String, ?>> recordings = jsonData.get("recordings");
 
             Map<String, Object> recording = new HashMap<>();
@@ -77,7 +81,7 @@ public class RecordPath extends CommandBase {
             recordings.add(recording);
             jsonData.put("recordings", recordings);
 
-            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("Recordings.json"));
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filePath));
             bufferedWriter.write(jsonData.toString());
             bufferedWriter.close();
         } catch (Exception exception) {

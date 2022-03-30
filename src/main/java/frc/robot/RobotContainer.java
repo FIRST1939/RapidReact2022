@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import java.io.File;
 import java.io.FileReader;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -147,8 +148,11 @@ public class RobotContainer {
 
     try {
 
+      String basePath = new File("").getAbsolutePath();
+      String filePath = basePath.concat("commands/auto/recording/Recordings.json");
+
       ObjectMapper ObjectMapper = new ObjectMapper();
-      Map<String, ArrayList<Map<String, Object>>> jsonData = ObjectMapper.readValue(Paths.get("commands/auto/recording/Recordings.json").toFile(), new TypeReference<Map<String, ArrayList<Map<String, Object>>>>(){});
+      Map<String, ArrayList<Map<String, Object>>> jsonData = ObjectMapper.readValue(Paths.get(filePath).toFile(), new TypeReference<Map<String, ArrayList<Map<String, Object>>>>(){});
       recordings = jsonData.get("recordings");
     } catch (Exception exception) {
 
