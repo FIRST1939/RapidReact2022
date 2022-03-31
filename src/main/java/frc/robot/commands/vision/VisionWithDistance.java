@@ -30,11 +30,10 @@ public class VisionWithDistance extends CommandBase {
   @Override
   public void execute() {
     if(limelight.isClosePipeline()){
-      velocity = dy * Constants.SHOOTER_DY_MULTIPLIER_CLOSE;
+      velocity = dy * Constants.VISION_M_CLOSE + Constants.VISION_B_CLOSE;
     } else {
-      velocity = dy * Constants.SHOOTER_DY_MULTIPLIER_LONG;
+      velocity = dy * Constants.VISION_M_LONG + Constants.VISION_B_LONG;
     }
-    
     this.shooter.cargoShot((int) velocity, true);
   }
 
