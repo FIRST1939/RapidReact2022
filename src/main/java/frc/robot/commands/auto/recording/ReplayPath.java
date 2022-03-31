@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
 import frc.robot.subsystems.DriveTrain;
 
 public class ReplayPath extends CommandBase {
@@ -38,7 +37,7 @@ public class ReplayPath extends CommandBase {
 
         double time = this.timer.get();
         double leftSpeed = this.leftSteps.get(this.index) * (60 / this.timeStep); // Converts to RPM
-        double rightSpeed = this.rightSteps.get(this.index) * (60 / this.timeStep) // Converts to RPM
+        double rightSpeed = this.rightSteps.get(this.index) * (60 / this.timeStep); // Converts to RPM
         this.driveTrain.recordingDrive(leftSpeed, -1 * rightSpeed);
 
         if (time >= this.timeStep) {
