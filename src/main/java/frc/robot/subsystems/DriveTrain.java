@@ -4,6 +4,9 @@
 
 package frc.robot.subsystems;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.BooleanSupplier;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -322,7 +325,7 @@ public class DriveTrain extends SubsystemBase {
     // TODO determine and set current limit.
   }
   
-  private void pidConfig(final SparkMaxPIDController pidController) {
+  private voud pidConfig(final SparkMaxPIDController pidController) {
     pidController.setFF(0.1);
     pidController.setP(0.1);
   }

@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.commands.indexer.IndexerReadyToShootState;
 import frc.robot.commands.indexer.IndexerShootingState;
 import frc.robot.subsystems.Indexer;
+import frc.robot.subsystems.RobotCargoCount;
 import frc.robot.subsystems.Shooter;
 
 /**
