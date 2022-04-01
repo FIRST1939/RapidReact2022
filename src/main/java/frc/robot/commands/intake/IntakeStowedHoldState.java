@@ -34,7 +34,7 @@ public class IntakeStowedHoldState extends CommandBase {
   public void initialize() {
     this.intake.retractIntake();
     this.intake.stopIntakeMotor();
-    Lights.getInstance().setColor(LEDMode.CHASE);
+    Lights.getInstance().setColor(LEDMode.STROBE);
   }
 
   // Returns true when the command should end.

@@ -35,7 +35,7 @@ public class IntakeGatheringEmptyState extends CommandBase {
   @Override
   public void initialize() {
     this.intake.extendIntake();
-    Lights.getInstance().setColor(LEDMode.STROBE);
+    Lights.getInstance().setColor(LEDMode.PINK);
   }
 
   // Called when the command executes.

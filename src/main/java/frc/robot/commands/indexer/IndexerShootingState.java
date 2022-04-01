@@ -58,6 +58,7 @@ public class IndexerShootingState extends CommandBase {
 
   @Override
   public void initialize() {
+    System.out.println("Shooting State init");
     this.minRunTimer.stop();
     this.minRunTimerEnabled = false;
     // The cargo must have slipped down, ensure min run time.

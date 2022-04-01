@@ -18,7 +18,7 @@ public class DriveTurnToRelativeAngle extends PIDCommand {
   /** Creates a new DriveTurnToRelativeAngle. */
   public DriveTurnToRelativeAngle(final DoubleSupplier relativeAngle, final DriveTrain driveTrain) {
     super(
-        new PIDController(0.1, 0.0, 0.009),
+        new PIDController(0.02, 0.0, 0.0),
         // Close loop on heading (adjusted yaw)
         driveTrain::getHeading,
         // Set reference to target

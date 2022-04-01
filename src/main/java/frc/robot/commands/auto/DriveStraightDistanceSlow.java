@@ -12,7 +12,7 @@ import frc.robot.subsystems.DriveTrain;
  * Use this command during autonomous to drive a straight line for a distance
  * passed to the constructor.
  */
-public class DriveStraightDistance extends CommandBase {
+public class DriveStraightDistanceSlow extends CommandBase {
   private final boolean forward;
   private final double absInches;
   // Divide absInches into accel, cruise, and decel sections.
@@ -24,7 +24,7 @@ public class DriveStraightDistance extends CommandBase {
    *                   Pass a negative value for backwards.
    * @param driveTrain the drive train being controlled.
    */
-  public DriveStraightDistance(final double inches, final DriveTrain driveTrain) {
+  public DriveStraightDistanceSlow(final double inches, final DriveTrain driveTrain) {
     this.forward = inches >= 0.0;
     this.absInches = Math.abs(inches);
     //computeSections();
@@ -47,7 +47,7 @@ public class DriveStraightDistance extends CommandBase {
     if (!forward) {
       turningValue = -turningValue;
     }
-    double power = -0.6;
+    double power = -0.45;
     // double distSoFar = this.driveTrain.getDistance();
     
     /*

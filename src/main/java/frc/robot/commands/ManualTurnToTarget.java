@@ -6,7 +6,9 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Limelight;
+import frc.robot.Constants.LEDMode;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Lights;
 
 public class ManualTurnToTarget extends CommandBase {
 
@@ -16,9 +18,12 @@ public class ManualTurnToTarget extends CommandBase {
   private double angle;
   private int direction = 0;
 
-  public ManualTurnToTarget(final DriveTrain driveTrain, final Limelight limelight) {
+  private int pipeline;
+
+  public ManualTurnToTarget(final DriveTrain driveTrain, final Limelight limelight, final int pipeline) {
     this.driveTrain = driveTrain;
     this.limelight = limelight;
+    this.pipeline = pipeline;
 
     addRequirements(driveTrain);
   }
@@ -26,7 +31,9 @@ public class ManualTurnToTarget extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    Lights.getInstance().setColor(LEDMode.RED);
     this.angle = limelight.getHorizontalAngleError();
+    this.limelight.setPipeline(pipeline);
     
     if (this.angle < -1) {
       this.direction = -1;
@@ -53,6 +60,7 @@ public class ManualTurnToTarget extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     this.driveTrain.arcadeDrive(0, 0, 0);
+    Lights.getInstance().setColor(LEDMode.GREEN);
   }
 
   // Returns true when the command should end.

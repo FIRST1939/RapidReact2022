@@ -14,6 +14,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.SPI;
@@ -22,6 +23,7 @@ import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.LEDMode;
@@ -75,7 +77,7 @@ public class DriveTrain extends SubsystemBase {
   private final AHRS navx;
 
   private final BooleanSupplier sidewinderOverride;
-  //private final PIDController strafeHorizonatal = new PIDController(Constants.SIDEWINDER_kP, 0, 0);
+  private final PIDController strafeHorizonatal = new PIDController(Constants.SIDEWINDER_kP, 0, 0);
 
   /**
    * Creates a new drive train.
@@ -159,11 +161,11 @@ public class DriveTrain extends SubsystemBase {
 
     // Sidewind above threshold, disengage below, leave as is in gap.
     if ((Math.abs(sidewind) > Constants.SIDEWINDER_ENABLE_THRESHOLD) || this.sidewinderOverride.getAsBoolean()) {
-      /*
-       * if (!this.sidewinderSolenoid.get()) {
-       * resetHeading();
-       * }
-       */
+      
+      if (!this.sidewinderSolenoid.get()) {
+        resetHeading();
+      }
+      
       this.sidewinderSolenoid.set(true);
       Lights.getInstance().setColor(LEDMode.TWINKLES);
     } else if (Math.abs(sidewind) < Constants.SIDEWINDER_DISABLE_THRESHOLD) {
@@ -174,11 +176,11 @@ public class DriveTrain extends SubsystemBase {
       sidewinderMotor.set(
           ControlMode.PercentOutput,
           -(sidewind - (Math.signum(sidewind) * Constants.SIDEWINDER_OUTPUT_OFFSET)));
-      /*
-       * if(arcadeRotation == 0.0){
-       * arcadeRotation = strafeHorizonatal.calculate(getHeading(), 0.0);
-       * }
-      */
+      
+      if(arcadeRotation == 0.0){
+        arcadeRotation = strafeHorizonatal.calculate(getHeading(), 0.0);
+      }
+      
       
     }
 

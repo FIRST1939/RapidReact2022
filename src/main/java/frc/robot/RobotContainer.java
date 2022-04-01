@@ -26,6 +26,7 @@ import frc.robot.commands.ManualTurnToTarget;
 import frc.robot.commands.RumbleController;
 import frc.robot.commands.ToggleIntakeIndexerManualMode;
 import frc.robot.commands.ToggleManualEjection;
+import frc.robot.commands.auto.Auto4Ball;
 import frc.robot.commands.auto.CargoRingTwoBall;
 import frc.robot.commands.auto.OneBall;
 import frc.robot.commands.auto.PlusOneTwoBall;
@@ -118,6 +119,7 @@ public class RobotContainer {
     this.autoChooser.addOption("Right 3 Cargo", () -> new RightSide3CargoNoTrajectory(driveTrain, intake, indexer, shooter));
     this.autoChooser.addOption("One Ball", () -> new OneBall(shooter, indexer, driveTrain));
     this.autoChooser.addOption("Cargo Ring Two Ball", () -> new CargoRingTwoBall(driveTrain, intake, indexer, shooter));
+    this.autoChooser.addOption("4 Ball", () -> new Auto4Ball(driveTrain, intake, indexer, shooter, limelightTurret));
 
     SmartDashboard.putData("Autonomous Chooser", this.autoChooser);
   }
@@ -148,8 +150,11 @@ public class RobotContainer {
     turnToTarget.whenPressed(readAngle.andThen(new DriveTurnToRelativeAngle(angleSupplier, driveTrain)));
     */
 
-    JoystickButton manualTurnToTarget = new JoystickButton(rightStick, 10);
-    manualTurnToTarget.whenPressed(new ManualTurnToTarget(driveTrain, limelightTurret));
+    JoystickButton manualTurnToTargetLong = new JoystickButton(rightStick, 10);
+    manualTurnToTargetLong.whenPressed(new ManualTurnToTarget(driveTrain, limelightTurret, 0));
+
+    JoystickButton manualTurnToTargetShort = new JoystickButton(rightStick, 11);
+    manualTurnToTargetShort.whenPressed(new ManualTurnToTarget(driveTrain, limelightTurret, 2));
 
     //shooter buttons
     JoystickButton fenderLowButton = new JoystickButton(driverTwo, XboxController.Button.kY.value);
@@ -183,7 +188,7 @@ public class RobotContainer {
     BooleanSupplier shootTriggerSupplier = () -> (driverTwo
         .getRawAxis(Math.abs(XboxController.Axis.kRightTrigger.value)) > Constants.TRIGGER_THRESHOLD);
     ShootTrigger shootTrigger = new ShootTrigger(this.indexer, this.shooter, shootTriggerSupplier);
-    shootTrigger.whileActiveContinuous(IndexerShootingState.getInstance(this.indexer));
+    shootTrigger.whenActive(IndexerShootingState.getInstance(this.indexer));
 
     //intake and indexer buttons
     JoystickButton toggleManualIntakeIndexer = new JoystickButton(driverTwo, XboxController.Button.kStart.value);
