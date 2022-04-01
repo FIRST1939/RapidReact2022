@@ -86,7 +86,7 @@ public class RobotContainer {
   public final Limelight limelightTurret = new Limelight("limelight-turret");
   public final Limelight limelightBase = new Limelight("liemlight-base");
 
-  private final Compressor compressor = new Compressor(Constants.PNEUMATICS_HUB_CAN_ID, PneumaticsModuleType.REVPH);
+  private final Compressor compressor = new Compressor(Constants.PNEUMATICS_HUB_CAN_ID, PneumaticsModuleType.CTREPCM);
 
   private Command intakeCommandOnAutoExit = null;
   private Command indexerCommandOnAutoExit = null;
@@ -266,7 +266,8 @@ public class RobotContainer {
 
   private void pressureInit () {
 
-    compressor.enableAnalog(Constants.PNEUMATICS_HUB_MIN_PRESSURE, Constants.PNEUMATICS_HUB_MAX_PRESSURE);
+    // compressor.enableAnalog(Constants.PNEUMATICS_HUB_MIN_PRESSURE, Constants.PNEUMATICS_HUB_MAX_PRESSURE);
+    compressor.enableDigital();
   }
 
   /**

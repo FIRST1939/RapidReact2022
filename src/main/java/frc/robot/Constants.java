@@ -35,7 +35,7 @@ public final class Constants {
     public static final int RIGHT_DRIVE_2_CAN_ID = 15;
     public static final int RIGHT_DRIVE_3_CAN_ID = 16;
 
-    public static final int SIDEWINDER_PCM_CHANNEL = 7;
+    public static final int SIDEWINDER_PCM_CHANNEL = 3;
     public static final int SIDEWINDER_MOTOR_CAN_ID = 30;
     public static final double SIDEWINDER_kP = 0.02;
 
@@ -98,7 +98,7 @@ public final class Constants {
     public static final int SHOOTER_VELOCITY_ERROR = 700;
 
     // Intake constants
-    public static final int INTAKE_PCM_CHANNEL = 8;
+    public static final int INTAKE_PCM_CHANNEL = 2;
     public static final int INTAKE_MOTOR_CAN_ID = 7;
     // TODO validate the min and max velocities.
     /** The minimum intake velocity in RPM. */
@@ -127,8 +127,8 @@ public final class Constants {
 
     // Climber constants.
     public static final int CLIMBER_MOTOR_CAN_ID = 31;
-    public static final int CLIMBER_PISTON_FORWARD = 6;
-    public static final int CLIMBER_PISTON_REVERSE = 9;
+    public static final int CLIMBER_PISTON_FORWARD = 1;
+    public static final int CLIMBER_PISTON_REVERSE = 7;
     public static final int CLIMBER_EXTENSION_VELOCITY = 5000; // TODO climber extension velocity
     public static final int CLIMBER_RETRACTION_VELOCITY = 5000; // TODO climber retraction velocity
 

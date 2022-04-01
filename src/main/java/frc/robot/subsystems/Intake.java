@@ -33,7 +33,7 @@ public class Intake extends SubsystemBase {
      */
     public Intake(final DoubleSupplier robotSpeedSupplier) {
         this.robotSpeedSupplier = robotSpeedSupplier;
-        this.intakeSolenoid = new Solenoid(PneumaticsModuleType.REVPH, Constants.INTAKE_PCM_CHANNEL);
+        this.intakeSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Constants.INTAKE_PCM_CHANNEL);
         this.beamBreak = new DigitalInput(Constants.INTAKE_BEAM_BREAK_RECEIVER_DIO);
         this.intakeMotor = new CANSparkMax(Constants.INTAKE_MOTOR_CAN_ID, MotorType.kBrushed);
         this.intakeMotor.restoreFactoryDefaults();
