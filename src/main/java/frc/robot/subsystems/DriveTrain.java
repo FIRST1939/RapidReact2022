@@ -78,6 +78,8 @@ public class DriveTrain extends SubsystemBase {
   private final BooleanSupplier sidewinderOverride;
   private final PIDController strafeHorizonatal = new PIDController(Constants.SIDEWINDER_kP, 0, 0);
 
+  private double lastArcadeRotation = 0.0;
+
   /**
    * Creates a new drive train.
    */
@@ -159,29 +161,39 @@ public class DriveTrain extends SubsystemBase {
    */
   public void arcadeDrive(final double speed, final double rotation, final double sidewind) {
 
+    
+
     // Sidewind above threshold, disengage below, leave as is in gap.
     if ((Math.abs(sidewind) > Constants.SIDEWINDER_ENABLE_THRESHOLD) || this.sidewinderOverride.getAsBoolean()) {
-      /*
-       * if (!this.sidewinderSolenoid.get()) {
-       * resetHeading();
-       * }
-       */
+
+      if (!(this.sidewinderSolenoid.get())) {
+
+        resetHeading();
+      }
       this.sidewinderSolenoid.set(true);
       Lights.getInstance().setColor(LEDMode.TWINKLES);
     } else if (Math.abs(sidewind) < Constants.SIDEWINDER_DISABLE_THRESHOLD) {
       this.sidewinderSolenoid.set(false);
     }
-    double arcadeRotation = 0.85 * rotation;
+    double arcadeRotation = 0.75 * rotation;
     if (this.sidewinderSolenoid.get()) {
       sidewinderMotor.set(
           ControlMode.PercentOutput,
           -(sidewind - (Math.signum(sidewind) * Constants.SIDEWINDER_OUTPUT_OFFSET)));
       
       if(arcadeRotation == 0.0){
+
+        if (lastArcadeRotation != 0.0) { resetHeading(); }
         arcadeRotation = strafeHorizonatal.calculate(getHeading(), 0.0);
+      } else {
+        resetHeading();
       }
       
+      lastArcadeRotation = arcadeRotation;
       
+    } else if (arcadeRotation != 0.0) {
+
+      resetHeading();
     }
 
     diffDrive.arcadeDrive(speed, arcadeRotation, true);
