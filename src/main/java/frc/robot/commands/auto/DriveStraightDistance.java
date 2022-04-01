@@ -4,7 +4,6 @@
 
 package frc.robot.commands.auto;
 
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.DriveTrain;
@@ -49,7 +48,7 @@ public class DriveStraightDistance extends CommandBase {
       turningValue = -turningValue;
     }
     double power = -Constants.DRIVE_AUTO_STRAIGHT_POWER;
-    double distSoFar = this.driveTrain.getDistance();
+    // double distSoFar = this.driveTrain.getDistance();
     
     /*
     if ((distSoFar <= this.sectionAbsInches[0])

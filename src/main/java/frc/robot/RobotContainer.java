@@ -5,7 +5,6 @@
 package frc.robot;
 
 import java.util.function.BooleanSupplier;
-import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
 import edu.wpi.first.wpilibj.Compressor;
@@ -24,17 +23,12 @@ import frc.robot.Constants.SHOTS;
 import frc.robot.commands.DriveWithInput;
 import frc.robot.commands.LightsUpdater;
 import frc.robot.commands.ManualTurnToTarget;
-import frc.robot.commands.ReadAngle;
 import frc.robot.commands.RumbleController;
 import frc.robot.commands.ToggleIntakeIndexerManualMode;
 import frc.robot.commands.ToggleManualEjection;
-import frc.robot.commands.auto.DriveTurnToRelativeAngle;
 import frc.robot.commands.auto.CargoRingTwoBall;
-import frc.robot.commands.auto.DriveStraightDistance;
-import frc.robot.commands.auto.LeftSide2CargoNoTrajectory;
 import frc.robot.commands.auto.OneBall;
 import frc.robot.commands.auto.PlusOneTwoBall;
-import frc.robot.commands.auto.RightSide2CargoNoTrajectory;
 import frc.robot.commands.auto.RightSide3CargoNoTrajectory;
 import frc.robot.commands.indexer.IndexerEmptyState;
 import frc.robot.commands.indexer.IndexerReadyToShootState;
