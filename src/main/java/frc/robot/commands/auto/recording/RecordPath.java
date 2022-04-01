@@ -66,12 +66,9 @@ public class RecordPath extends CommandBase {
 
         try {
 
-            String basePath = new File("").getAbsolutePath();
-            String filePath = basePath.concat("commands/auto/recording/Recordings.json");
-
             ObjectMapper ObjectMapper = new ObjectMapper();
-            Map<String, ArrayList<Map<String, ?>>> jsonData = ObjectMapper.readValue(Paths.get(filePath).toFile(), new TypeReference<Map<String, ArrayList<Map<String, ?>>>>(){});
-            ArrayList<Map<String, ?>> recordings = jsonData.get("recordings");
+            Map<String, ArrayList<Map<String, Object>>> jsonData = ObjectMapper.readValue(new File("commands/auto/recording/Recordings.json"), new TypeReference<Map<String, ArrayList<Map<String, Object>>>>(){});
+            ArrayList<Map<String, Object>> recordings = jsonData.get("recordings");
 
             Map<String, Object> recording = new HashMap<>();
             recording.put("name", SmartDashboard.getString("New Recording's Name", "New Recording"));
@@ -81,7 +78,7 @@ public class RecordPath extends CommandBase {
             recordings.add(recording);
             jsonData.put("recordings", recordings);
 
-            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filePath));
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(new File("commands/auto/recording/Recordings.json")));
             bufferedWriter.write(jsonData.toString());
             bufferedWriter.close();
         } catch (Exception exception) {

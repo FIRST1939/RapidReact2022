@@ -109,14 +109,14 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+    configureAutoChooser();
+    configureRecordingDashboard();
     // Configure default commands.
     configureDefaultCommands();
     // Configure the button bindings
     configureButtonBindings();
     configureLightingTriggers();
     pressureInit();
-    configureAutoChooser();
-    configureRecordingDashboard();
   }
 
   /**
@@ -136,29 +136,24 @@ public class RobotContainer {
 
   private void configureRecordingDashboard () {
 
-    ArrayList<Map<String, Object>> recordings;
-
     try {
 
-      String basePath = new File("").getAbsolutePath();
-      String filePath = basePath.concat("commands/auto/recording/Recordings.json");
-
       ObjectMapper ObjectMapper = new ObjectMapper();
-      Map<String, ArrayList<Map<String, Object>>> jsonData = ObjectMapper.readValue(Paths.get(filePath).toFile(), new TypeReference<Map<String, ArrayList<Map<String, Object>>>>(){});
-      recordings = jsonData.get("recordings");
+      Map<String, ArrayList<Map<String, Object>>> jsonData = ObjectMapper.readValue(new File("commands/auto/recording/Recordings.json"), new TypeReference<Map<String, ArrayList<Map<String, Object>>>>(){});
+      ArrayList<Map<String, Object>> recordings = jsonData.get("recordings");
+
+      Map<String, Object> defaultRecording = recordings.get(0);
+      this.recordingChooser.setDefaultOption((String) defaultRecording.get("name"), () -> new ReplayPath(this.driveTrain, (ArrayList) defaultRecording.get("leftSteps"), (ArrayList) defaultRecording.get("rightSteps")));
+      recordings.remove(0);
+
+      for (Map<String, Object> recording : recordings) {
+
+        this.recordingChooser.addOption((String) recording.get("name"), () -> new ReplayPath(this.driveTrain, (ArrayList) recording.get("leftSteps"), (ArrayList) recording.get("rightSteps")));
+      }
     } catch (Exception exception) {
 
       exception.printStackTrace();
       return;
-    }
-
-    Map<String, Object> defaultRecording = recordings.get(0);
-    this.recordingChooser.setDefaultOption((String) defaultRecording.get("name"), () -> new ReplayPath(this.driveTrain, (ArrayList) defaultRecording.get("leftSteps"), (ArrayList) defaultRecording.get("rightSteps")));
-    recordings.remove(0);
-
-    for (Map<String, Object> recording : recordings) {
-
-      this.recordingChooser.addOption((String) recording.get("name"), () -> new ReplayPath(this.driveTrain, (ArrayList) recording.get("leftSteps"), (ArrayList) recording.get("rightSteps")));
     }
 
     SmartDashboard.putData("Recording Chooser", this.recordingChooser);
