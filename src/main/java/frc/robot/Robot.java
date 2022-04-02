@@ -32,6 +32,7 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    m_robotContainer.getLights().setColor(LEDMode.FIRE);
 
     SmartDashboard.putNumber("Auto Start Wait", 0.0);
 
@@ -59,7 +60,6 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     m_robotContainer.limelightTurret.setPipeline(Constants.SHOOTER_OFF_PIPELINE);
-    m_robotContainer.getLights().setColor(LEDMode.FIRE);
   }
 
   @Override
@@ -75,8 +75,6 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
-
-    m_robotContainer.getLights().setColor(LEDMode.FIRE);
   }
 
   /** This function is called periodically during autonomous. */

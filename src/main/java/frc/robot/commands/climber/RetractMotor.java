@@ -18,7 +18,7 @@ public class RetractMotor extends CommandBase {
     @Override
     public void execute () {
 
-        this.climber.setMotor(-10000);
+        this.climber.setMotor(-5000);
     }
 
     @Override

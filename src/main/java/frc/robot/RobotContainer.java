@@ -116,7 +116,7 @@ public class RobotContainer {
    * Populates the dashboard chooser for auto mode selection.
    */
   private void configureAutoChooser() {
-    this.autoChooser.setDefaultOption("PlusOne Two Ball", () -> new PlusOneTwoBall(driveTrain, intake, indexer, shooter));
+    this.autoChooser.setDefaultOption("PlusOne Two Ball", () -> new PlusOneTwoBall(driveTrain, intake, indexer, shooter, limelightTurret));
     //this.autoChooser.setDefaultOption("Left 2 Cargo", () -> new LeftSide2CargoNoTrajectory(driveTrain, intake, indexer, shooter));
     this.autoChooser.addOption("Do Nothing", () -> new WaitCommand(1.0));
     //this.autoChooser.addOption("Right 2 Cargo", () -> new RightSide2CargoNoTrajectory(driveTrain, intake, indexer, shooter));
