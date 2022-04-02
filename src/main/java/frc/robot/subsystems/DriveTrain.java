@@ -192,8 +192,6 @@ public class DriveTrain extends SubsystemBase {
         // Sidewinder first stops swerving
         if (lastArcadeRotation != 0.0) { resetHeading(); }
         arcadeRotation = strafeHorizonatal.calculate(getHeading(), 0.0);
-      } else {
-        resetHeading();
       }
     }
 
