@@ -42,11 +42,11 @@ public class Auto4Ball extends SequentialCommandGroup {
             new ScheduleCommand(IntakeGatheringEmptyState.getInstance(intake)),
             new DriveStraightDistanceSlow(-48, driveTrain),
             new SetShot(shooter, Constants.SHOTS.cargoRing)),
-        new ManualTurnToTarget(driveTrain, limelight, 0),
+        new ManualTurnToTarget(driveTrain, limelight, 0).withTimeout(1.0),
         new WaitCommand(0.3),
         new AutoModeShooter(2, indexer, shooter).withTimeout(3.0),
         //new WaitCommand(0.5),
-        new DriveTurnToRelativeAngle(() -> 28.5, driveTrain),
+        new DriveTurnToRelativeAngle(() -> 28.5, driveTrain).withTimeout(1.0),
         new DriveStraightDistanceSlow(-28, driveTrain),
         new DriveStraightDistance(-84, driveTrain),
         new WaitCommand(0.2),
@@ -54,17 +54,18 @@ public class Auto4Ball extends SequentialCommandGroup {
             new ScheduleCommand(IntakeGatheringEmptyState.getInstance(intake)),
             new DriveStraightDistanceSlow(-28, driveTrain),
             new SetShot(shooter, Constants.SHOTS.cargoRing)),
+            new WaitCommand(2.5),
         //new DriveStraightDistance(-140, driveTrain),
-        new WaitCommand(2.0),
+        //new WaitCommand(2.0),
         new DriveStraightDistanceSlow(28, driveTrain),
         new DriveStraightDistance(84, driveTrain),
         new DriveStraightDistanceSlow(28, driveTrain),
         new WaitCommand(0.3),
-        new DriveTurnToRelativeAngle(() -> -25, driveTrain),
+        new DriveTurnToRelativeAngle(() -> -27, driveTrain).withTimeout(1.0),
         new WaitCommand(0.2),
-        new ManualTurnToTarget(driveTrain, limelight, 0),
+        new ManualTurnToTarget(driveTrain, limelight, 0).withTimeout(1.0),
         new WaitCommand(0.3),
-        new AutoModeShooter(2, indexer, shooter)
+        new AutoModeShooter(2, indexer, shooter).withTimeout(2.0)
 
     );
 

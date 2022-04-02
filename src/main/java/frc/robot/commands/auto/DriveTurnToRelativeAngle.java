@@ -33,9 +33,9 @@ public class DriveTurnToRelativeAngle extends PIDCommand {
     // Set the controller tolerance - the delta tolerance ensures the robot is
     // stationary at the setpoint before it is considered as having reached the
     // reference
-    /*getController().setTolerance(
+    getController().setTolerance(
         Constants.DRIVE_AUTO_TURN_TO_ANGLE_TOL_DEG,
-        Constants.DRIVE_AUTO_TURN_TO_ANGLE_TURN_RATE_TOL_DEG_PER_SEC);*/
+        Constants.DRIVE_AUTO_TURN_TO_ANGLE_TURN_RATE_TOL_DEG_PER_SEC);
 
     this.driveTrain = driveTrain;
   }

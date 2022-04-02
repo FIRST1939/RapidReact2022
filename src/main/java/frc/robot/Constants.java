@@ -83,7 +83,7 @@ public final class Constants {
         fenderPlusOneHigh(6000, true),
         cargoRing(6700, true),
         wallShot(7600, true),
-        launchpad(7600, true);
+        launchpad(8100, true);
 
         public final int velocity;
         public final boolean hood;
@@ -134,11 +134,12 @@ public final class Constants {
 
     // TODO climber extension values 
     public enum CLIMBER_POSITIONS {
-        bottom(6000, 2000),
-        finalBarRetract(6000, 50000),
-        offBar(10000, 50000),
-        partial(15000, 250000),
-        full(15000, 340000);
+        bottom(7500, 2000),
+        bottomFirst(25000, 2000),
+        finalBarRetract(7500, 50000),
+        offBar(15000, 50000),
+        partial(18000, 250000),
+        full(25000, 340000);
 
         public final int velocity;
         public final int distance;
