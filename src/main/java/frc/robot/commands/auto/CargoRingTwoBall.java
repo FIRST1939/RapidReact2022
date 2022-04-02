@@ -36,7 +36,7 @@ public class CargoRingTwoBall extends SequentialCommandGroup {
         // Gather, move to cargo and set for fender high.
         new ParallelCommandGroup(
             new ScheduleCommand(IntakeGatheringEmptyState.getInstance(intake)),
-            new DriveStraightDistance(40, driveTrain),
+            new DriveStraightDistance(40, driveTrain, 0.4),
             new SetShot(shooter, Constants.SHOTS.cargoRing)),
         new WaitCommand(1.0),
         new AutoModeShooter(2, indexer, shooter).withTimeout(3.0),

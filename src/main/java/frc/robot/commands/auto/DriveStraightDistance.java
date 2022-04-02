@@ -19,14 +19,17 @@ public class DriveStraightDistance extends CommandBase {
   //private final double[] sectionAbsInches = new double[3];
   private final DriveTrain driveTrain;
 
+  private final double power;
+
   /**
    * @param inches     the inches to drive. The intake end is forward (positive).
    *                   Pass a negative value for backwards.
    * @param driveTrain the drive train being controlled.
    */
-  public DriveStraightDistance(final double inches, final DriveTrain driveTrain) {
+  public DriveStraightDistance(final double inches, final DriveTrain driveTrain, final double power) {
     this.forward = inches >= 0.0;
     this.absInches = Math.abs(inches);
+    this.power = power;
     //computeSections();
     this.driveTrain = driveTrain;
     addRequirements(this.driveTrain);
@@ -47,7 +50,6 @@ public class DriveStraightDistance extends CommandBase {
     if (!forward) {
       turningValue = -turningValue;
     }
-    double power = -0.6;
     // double distSoFar = this.driveTrain.getDistance();
     
     /*

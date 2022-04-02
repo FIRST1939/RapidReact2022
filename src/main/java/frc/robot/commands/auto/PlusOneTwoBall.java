@@ -36,7 +36,7 @@ public class PlusOneTwoBall extends SequentialCommandGroup {
         // Gather, move to cargo and set for fender high.
         new ParallelCommandGroup(
             new ScheduleCommand(IntakeGatheringEmptyState.getInstance(intake)),
-            new DriveStraightDistance(-40, driveTrain),
+            new DriveStraightDistance(-40, driveTrain, 0.5),
             new SetShot(shooter, Constants.SHOTS.cargoRing)),
         // Drive to point straight out from the fender.
         new WaitCommand(1.0),
@@ -48,6 +48,6 @@ public class PlusOneTwoBall extends SequentialCommandGroup {
         // Do not drive until second shot has cleared shooter.
         new WaitCommand(1.0),
         // Exit tarmac.
-        new DriveStraightDistance(-10, driveTrain));
+        new DriveStraightDistance(-10, driveTrain, 0.5));
   }
 }

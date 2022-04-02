@@ -27,7 +27,7 @@ public class OneBall extends SequentialCommandGroup {
         // Do not drive until second shot has cleared shooter.
       new WaitCommand(1.0),
         // Exit tarmac.
-      new DriveStraightDistance(AutoConstants.FROM_FENDER_TO_EXIT_TARMAC_DIST, driveTrain).withTimeout(4.0)
+      new DriveStraightDistance(AutoConstants.FROM_FENDER_TO_EXIT_TARMAC_DIST, driveTrain, 0.5).withTimeout(4.0)
     );
   }
 }
