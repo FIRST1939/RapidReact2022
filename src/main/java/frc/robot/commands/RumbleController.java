@@ -6,24 +6,14 @@ import edu.wpi.first.wpilibj.Timer;
 
 public class RumbleController extends CommandBase {
     
-    private static RumbleController rumbleControllerInstance = null;
-
     private final GenericHID controller;
     private final Timer timer = new Timer();
 
-    private RumbleController (final GenericHID controller) {
+    public RumbleController (final GenericHID controller) {
 
         this.controller = controller;
     }
    
-    /**
-     * @return the current instance of the RumbleController command
-     */
-    public static final synchronized RumbleController getInstance (final GenericHID controller) {
-
-        if (rumbleControllerInstance == null) { rumbleControllerInstance = new RumbleController(controller); }
-        return rumbleControllerInstance;
-    }
 
     @Override
     public void initialize () {
