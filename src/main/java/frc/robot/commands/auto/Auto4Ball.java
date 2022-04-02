@@ -39,7 +39,7 @@ public class Auto4Ball extends SequentialCommandGroup {
         // Gather, move to cargo and set for fender high.
         new ParallelCommandGroup(
             new ScheduleCommand(IntakeGatheringEmptyState.getInstance(intake)),
-            new DriveStraightDistanceSlow(-48, driveTrain),
+            new DriveStraightDistance(-48, driveTrain, 0.5),
             new SetShot(shooter, Constants.SHOTS.cargoRing)),
         new ManualTurnToTarget(driveTrain, limelight, 0).withTimeout(1.0),
         new WaitCommand(0.3),
