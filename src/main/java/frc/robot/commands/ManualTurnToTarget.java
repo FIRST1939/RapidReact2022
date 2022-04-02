@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Limelight;
 import frc.robot.Constants.LEDMode;
@@ -13,6 +14,7 @@ import frc.robot.subsystems.Lights;
 public class ManualTurnToTarget extends CommandBase {
 
   private final DriveTrain driveTrain;
+  private final GenericHID controller;
   private final Limelight limelight;
 
   private double angle;
@@ -20,8 +22,9 @@ public class ManualTurnToTarget extends CommandBase {
 
   private int pipeline;
 
-  public ManualTurnToTarget(final DriveTrain driveTrain, final Limelight limelight, final int pipeline) {
+  public ManualTurnToTarget(final DriveTrain driveTrain, final GenericHID controller, final Limelight limelight, final int pipeline) {
     this.driveTrain = driveTrain;
+    this.controller = controller;
     this.limelight = limelight;
     this.pipeline = pipeline;
 
@@ -61,6 +64,7 @@ public class ManualTurnToTarget extends CommandBase {
   public void end(boolean interrupted) {
     this.driveTrain.arcadeDrive(0, 0, 0);
     Lights.getInstance().setColor(LEDMode.GREEN);
+    PostLoopCommandScheduler.addCommandToSchedule(new RumbleController(this.controller));
   }
 
   // Returns true when the command should end.
