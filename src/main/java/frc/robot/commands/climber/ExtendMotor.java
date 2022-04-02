@@ -18,7 +18,7 @@ public class ExtendMotor extends CommandBase {
     @Override
     public void execute () {
 
-        this.climber.setMotor(Constants.CLIMBER_EXTENSION_VELOCITY);
+        this.climber.setMotor(10000);
     }
 
     @Override

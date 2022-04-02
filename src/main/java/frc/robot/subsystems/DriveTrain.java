@@ -234,6 +234,7 @@ public class DriveTrain extends SubsystemBase {
    */
   public void resetHeading() {
     this.navx.setAngleAdjustment(-getYaw());
+    // this.navx.setAngleAdjustment(-(Math.floor(this.getHeading() / 360) * 360) - this.getYaw());
   }
 
   /**

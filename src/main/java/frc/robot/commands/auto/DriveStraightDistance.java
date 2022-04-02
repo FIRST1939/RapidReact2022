@@ -29,7 +29,7 @@ public class DriveStraightDistance extends CommandBase {
   public DriveStraightDistance(final double inches, final DriveTrain driveTrain, final double power) {
     this.forward = inches >= 0.0;
     this.absInches = Math.abs(inches);
-    this.power = power;
+    this.power = -power;
     //computeSections();
     this.driveTrain = driveTrain;
     addRequirements(this.driveTrain);

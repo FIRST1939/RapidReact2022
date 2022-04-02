@@ -17,16 +17,6 @@ public class ClimbToThird extends SequentialCommandGroup {
     this.climber = climber;
 
     addCommands(
-      new LightsUpdater(LEDMode.FIRE),
-      new GetToPosition(this.climber, null, Constants.CLIMBER_POSITIONS.offBar),
-      //new WaitCommand(.5),
-      new ParallelCommandGroup(
-        new SetPiston(this.climber, (Boolean) true),
-        new GetToPosition(this.climber, null, Constants.CLIMBER_POSITIONS.full)
-      ),
-      new WaitCommand(.2),
-      new SetPiston(this.climber, (Boolean) false),
-      new WaitCommand(1.5),
       new GetToPosition(this.climber, rumbleController, Constants.CLIMBER_POSITIONS.finalBarRetract)
     );
   }

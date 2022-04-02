@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.Constants.LEDMode;
 import frc.robot.commands.PostLoopCommandScheduler;
 import frc.robot.subsystems.RobotCargoCount;
 
@@ -58,6 +59,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     m_robotContainer.limelightTurret.setPipeline(Constants.SHOOTER_OFF_PIPELINE);
+    m_robotContainer.getLights().setColor(LEDMode.FIRE);
   }
 
   @Override
@@ -73,6 +75,8 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
+
+    m_robotContainer.getLights().setColor(LEDMode.FIRE);
   }
 
   /** This function is called periodically during autonomous. */

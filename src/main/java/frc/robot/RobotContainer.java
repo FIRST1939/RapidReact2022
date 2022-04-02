@@ -47,12 +47,15 @@ import frc.robot.commands.shooter.SetShot;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Lights;
 import frc.robot.subsystems.RobotCargoCount;
 import frc.robot.subsystems.Shooter;
 import frc.robot.triggers.ShootTrigger;
 import frc.robot.triggers.ShooterIdleTrigger;
 import frc.robot.triggers.lighting.IntakeForward;
 import frc.robot.triggers.lighting.IntakeReverse;
+import frc.robot.commands.climber.CancelClimb;
+import frc.robot.commands.climber.ClimbNextBar;
 import frc.robot.commands.climber.ClimbToSecond;
 import frc.robot.commands.climber.ClimbToThird;
 import frc.robot.commands.climber.GetToPosition;
@@ -234,11 +237,20 @@ public class RobotContainer {
 
     RumbleController rumbleController = new RumbleController(this.driverTwo);
 
+    ClimbToSecond climbToSecond = new ClimbToSecond(this.climber, rumbleController);
+    ClimbToThird climbToThird = new ClimbToThird(this.climber, rumbleController);
+
+    JoystickButton climbToNextBarButton = new JoystickButton(leftStick, 4);
+    climbToNextBarButton.whenPressed(new ClimbNextBar(this.climber, rumbleController));
+
     JoystickButton climbToSecondButton = new JoystickButton(leftStick, 2);
-    climbToSecondButton.whenPressed(new ClimbToSecond(this.climber, rumbleController));
+    climbToSecondButton.whenPressed(climbToSecond);
 
     JoystickButton climbToThirdButton = new JoystickButton(leftStick, 3);
-    climbToThirdButton.whenPressed(new ClimbToThird(this.climber, rumbleController));
+    climbToThirdButton.whenPressed(climbToThird);
+
+    JoystickButton cancelClimbButton = new JoystickButton(leftStick, 5);
+    cancelClimbButton.whenPressed(new CancelClimb(climbToSecond, climbToThird));
     
     JoystickButton climberMotorPartialPositionExtend = new JoystickButton(rightStick, 6);
     climberMotorPartialPositionExtend.whenPressed(new GetToPosition(this.climber, rumbleController, Constants.CLIMBER_POSITIONS.partial));
@@ -248,6 +260,9 @@ public class RobotContainer {
   
     JoystickButton climberSetHomeButton = new JoystickButton(driverTwo, XboxController.Button.kBack.value);
     climberSetHomeButton.whenPressed(new SetHome(this.climber));
+
+    JoystickButton climberSetHomeButtonSecondary = new JoystickButton(rightStick, 8);
+    climberSetHomeButtonSecondary.whenPressed(new SetHome(this.climber));
 
     JoystickButton climberMotorBottomPositionButton = new JoystickButton(rightStick, 7);
     climberMotorBottomPositionButton.whenPressed(new GetToPosition(this.climber, rumbleController, Constants.CLIMBER_POSITIONS.bottomFirst));
@@ -329,5 +344,10 @@ public class RobotContainer {
     final Command currentIntakeCommand = this.intake.getCurrentCommand();
     return (currentIntakeCommand instanceof IntakeGatheringSendState)
         || (currentIntakeCommand instanceof IntakeStowedSendState);
+  }
+
+  public Lights getLights () {
+
+    return Lights.getInstance();
   }
 }
