@@ -29,12 +29,9 @@ public class Lights extends SubsystemBase {
   //Blinkin acts a motor controller,
   //each PWM signal corresponds to a certain voltage output
   public void set(double value) {
-    blinkin.set(SmartDashboard.getNumber("Lights value", 0.0));
-    /*
     if ((value >= -1.0) && (value <= 1.0)) {
       blinkin.set(value);
     }
-    */
   }
 
   public void setColor(Constants.LEDMode ledMode){
