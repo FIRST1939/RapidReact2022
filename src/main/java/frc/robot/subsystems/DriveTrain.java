@@ -166,36 +166,38 @@ public class DriveTrain extends SubsystemBase {
     // Sidewind above threshold, disengage below, leave as is in gap.
     if ((Math.abs(sidewind) > Constants.SIDEWINDER_ENABLE_THRESHOLD) || this.sidewinderOverride.getAsBoolean()) {
 
+      // Sidewinder is first engaged
       if (!(this.sidewinderSolenoid.get())) {
 
         resetHeading();
       }
+
       this.sidewinderSolenoid.set(true);
       Lights.getInstance().setColor(LEDMode.TWINKLES);
     } else if (Math.abs(sidewind) < Constants.SIDEWINDER_DISABLE_THRESHOLD) {
+
       this.sidewinderSolenoid.set(false);
     }
+
     double arcadeRotation = 0.75 * rotation;
+
     if (this.sidewinderSolenoid.get()) {
+
       sidewinderMotor.set(
           ControlMode.PercentOutput,
           -(sidewind - (Math.signum(sidewind) * Constants.SIDEWINDER_OUTPUT_OFFSET)));
       
       if(arcadeRotation == 0.0){
 
+        // Sidewinder first stops swerving
         if (lastArcadeRotation != 0.0) { resetHeading(); }
         arcadeRotation = strafeHorizonatal.calculate(getHeading(), 0.0);
       } else {
         resetHeading();
       }
-      
-      lastArcadeRotation = arcadeRotation;
-      
-    } else if (arcadeRotation != 0.0) {
-
-      resetHeading();
     }
 
+    lastArcadeRotation = arcadeRotation;
     diffDrive.arcadeDrive(speed, arcadeRotation, true);
   }
 
@@ -245,7 +247,7 @@ public class DriveTrain extends SubsystemBase {
    * movements, prefer this method over resetYaw.
    */
   public void resetHeading() {
-    this.navx.setAngleAdjustment(-getYaw());
+    this.navx.setAngleAdjustment(-getHeading());
   }
 
   /**
