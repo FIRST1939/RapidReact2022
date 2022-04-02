@@ -4,6 +4,8 @@
 
 package frc.robot.commands.auto;
 
+import java.util.ArrayList;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ScheduleCommand;
@@ -36,7 +38,11 @@ public class PlusOneTwoBall extends SequentialCommandGroup {
         // Gather, move to cargo and set for fender high.
         new ParallelCommandGroup(
             new ScheduleCommand(IntakeGatheringEmptyState.getInstance(intake)),
-            new DriveStraightDistance(-40, driveTrain, 0.5),
+            new DriveStraightDistance(driveTrain, new ArrayList<Double>() {{
+              add(-40.0);
+            }}, new ArrayList<Double>() {{
+              add(0.5);
+            }}),
             new SetShot(shooter, Constants.SHOTS.cargoRing)),
         // Drive to point straight out from the fender.
         new WaitCommand(1.0),
@@ -48,6 +54,10 @@ public class PlusOneTwoBall extends SequentialCommandGroup {
         // Do not drive until second shot has cleared shooter.
         new WaitCommand(1.0),
         // Exit tarmac.
-        new DriveStraightDistance(-10, driveTrain, 0.5));
+        new DriveStraightDistance(driveTrain, new ArrayList<Double>() {{
+          add(-10.0);
+        }}, new ArrayList<Double>() {{
+          add(0.5);
+        }}));
   }
 }

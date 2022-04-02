@@ -4,6 +4,8 @@
 
 package frc.robot.commands.auto;
 
+import java.util.ArrayList;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ScheduleCommand;
@@ -46,19 +48,34 @@ public class Auto4Ball extends SequentialCommandGroup {
         new AutoModeShooter(2, indexer, shooter).withTimeout(3.0),
         //new WaitCommand(0.5),
         new DriveTurnToRelativeAngle(() -> 28.5, driveTrain).withTimeout(1.0),
-        new DriveStraightDistance(-28, driveTrain, 0.5),
-        new DriveStraightDistance(-84, driveTrain, 0.65),
+        new DriveStraightDistance(driveTrain, new ArrayList<Double>() {{
+          add(-28.0);
+          add(-84.0);
+        }}, new ArrayList<Double>() {{
+          add(0.5);
+          add(0.65);
+        }}),
         new WaitCommand(0.2),
         new ParallelCommandGroup(
             new ScheduleCommand(IntakeGatheringEmptyState.getInstance(intake)),
-            new DriveStraightDistance(-28, driveTrain, 0.5),
+            new DriveStraightDistance(driveTrain, new ArrayList<Double>() {{
+              add(-28.0);
+            }}, new ArrayList<Double>() {{
+              add(0.5);
+            }}),
             new SetShot(shooter, Constants.SHOTS.cargoRing)),
             new WaitCommand(2.5),
         //new DriveStraightDistance(-140, driveTrain),
         //new WaitCommand(2.0),
-        new DriveStraightDistance(28, driveTrain, 0.5),
-        new DriveStraightDistance(84, driveTrain, 0.65),
-        new DriveStraightDistance(28, driveTrain, 0.5),
+        new DriveStraightDistance(driveTrain, new ArrayList<Double>() {{
+          add(28.0);
+          add(84.0);
+          add(28.0);
+        }}, new ArrayList<Double>() {{
+          add(0.5);
+          add(0.65);
+          add(0.5);
+        }}),
         new WaitCommand(0.3),
         new DriveTurnToRelativeAngle(() -> -27, driveTrain).withTimeout(1.0),
         new WaitCommand(0.2),

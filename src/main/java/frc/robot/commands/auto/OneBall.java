@@ -4,6 +4,8 @@
 
 package frc.robot.commands.auto;
 
+import java.util.ArrayList;
+
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.SHOTS;
@@ -27,7 +29,10 @@ public class OneBall extends SequentialCommandGroup {
         // Do not drive until second shot has cleared shooter.
       new WaitCommand(1.0),
         // Exit tarmac.
-      new DriveStraightDistance(AutoConstants.FROM_FENDER_TO_EXIT_TARMAC_DIST, driveTrain, 0.5).withTimeout(4.0)
-    );
+      new DriveStraightDistance(driveTrain, new ArrayList<Double>() {{
+        add(AutoConstants.FROM_FENDER_TO_EXIT_TARMAC_DIST);
+      }}, new ArrayList<Double>() {{
+        add(0.5);
+      }}).withTimeout(4.0));
   }
 }
