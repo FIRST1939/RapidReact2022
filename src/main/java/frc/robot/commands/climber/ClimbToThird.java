@@ -17,6 +17,8 @@ public class ClimbToThird extends SequentialCommandGroup {
     this.climber = climber;
 
     addCommands(
+      new SetPiston(this.climber, (Boolean) false),
+      new WaitCommand(.5),
       new GetToPosition(this.climber, rumbleController, Constants.CLIMBER_POSITIONS.finalBarRetract)
     );
   }

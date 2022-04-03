@@ -35,6 +35,7 @@ public class Auto4Ball extends SequentialCommandGroup {
       final Shooter shooter,
       final Limelight limelight) {
     addCommands(
+
         // Configurable wait for alliance partner.
         new WaitCommand(SmartDashboard.getNumber("Auto Start Wait", 0.0)),
         // Gather, move to cargo and set for fender high.
@@ -46,7 +47,7 @@ public class Auto4Ball extends SequentialCommandGroup {
         new WaitCommand(0.3),
         new AutoModeShooter(2, indexer, shooter).withTimeout(3.0),
         //new WaitCommand(0.5),
-        new DriveTurnToRelativeAngle(() -> 27.2, driveTrain).withTimeout(1.0),
+        new DriveTurnToRelativeAngle(() -> 26, driveTrain).withTimeout(1.0),
         new DriveStraightDistance(-14, driveTrain, 0.55),
         new DriveStraightDistance(-110, driveTrain, 0.7), 
         new WaitCommand(0.2),
@@ -58,8 +59,8 @@ public class Auto4Ball extends SequentialCommandGroup {
         //new DriveStraightDistance(-140, driveTrain),
         //new WaitCommand(2.0),
         new DriveStraightDistance(10, driveTrain, 0.6),
-        new DriveStraightDistance(120, driveTrain, 0.7),
-        new DriveStraightDistance(10, driveTrain, 0.6),
+        new DriveStraightDistance(130, driveTrain, 0.7),
+        //new DriveStraightDistance(10, driveTrain, 0.6),
         new WaitCommand(0.3),
         new DriveTurnToRelativeAngle(() -> -30, driveTrain).withTimeout(1.0),
         new WaitCommand(0.2),

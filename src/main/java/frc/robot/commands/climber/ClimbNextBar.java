@@ -23,12 +23,10 @@ public class ClimbNextBar extends SequentialCommandGroup {
             //new WaitCommand(.2),
             new SetPiston(this.climber, (Boolean) true),
             new WaitCommand(0.5),
-            new GetToPosition(this.climber, null, Constants.CLIMBER_POSITIONS.full),
+            new GetToPosition(this.climber, null, Constants.CLIMBER_POSITIONS.full)
             
             //new WaitCommand(.5),
-           
-            new WaitCommand(.2),
-            new SetPiston(this.climber, (Boolean) false)
+        
         );
     }
 }

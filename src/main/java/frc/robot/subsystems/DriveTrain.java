@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants;
 import frc.robot.Constants.LEDMode;
 
@@ -79,10 +80,14 @@ public class DriveTrain extends SubsystemBase {
   private final BooleanSupplier sidewinderOverride;
   private final PIDController strafeHorizonatal = new PIDController(Constants.SIDEWINDER_kP, 0, 0);
 
+  private double lastArcadeRotation = 0.0;
+
+  private final JoystickButton speedLimit;
+
   /**
    * Creates a new drive train.
    */
-  public DriveTrain(BooleanSupplier sidewinderOverride) {
+  public DriveTrain(BooleanSupplier sidewinderOverride, JoystickButton speedLimit) {
     // Create and configure individual motors.
     left1 = new CANSparkMax(Constants.LEFT_DRIVE_1_CAN_ID, MotorType.kBrushless);
     motorConfig(left1);
@@ -128,6 +133,7 @@ public class DriveTrain extends SubsystemBase {
     this.sidewinderOverride = sidewinderOverride;
 
     this.navx = new AHRS(SPI.Port.kMXP);
+    this.speedLimit = speedLimit;
 
     /*
     SmartDashboard.putNumber("1: ", left1.getAppliedOutput());
@@ -147,7 +153,8 @@ public class DriveTrain extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     //SmartDashboard.putNumber("Distance from Encoders: ", this.getDistance());
-    SmartDashboard.putNumber("Left Encoder: ", this.getDistance());
+    //SmartDashboard.putNumber("Left Encoder: ", this.getDistance());
+    SmartDashboard.putNumber("angle: ", this.getHeading());
     //SmartDashboard.putNumber("Right Encoder: ", this.rightEncoder.getDistance());
     
   }
@@ -157,7 +164,12 @@ public class DriveTrain extends SubsystemBase {
    * @param rotation the raw rotaion input.
    * @param sidewind the sidewinder input. Only used if sidewinder is engaged.
    */
-  public void arcadeDrive(final double speed, final double rotation, final double sidewind) {
+  public void arcadeDrive(double speed, final double rotation, final double sidewind) {
+
+    double arcadeSpeed = speed;
+    if (this.speedLimit.get()) { 
+      arcadeSpeed /= 2; 
+    }
 
     // Sidewind above threshold, disengage below, leave as is in gap.
     if ((Math.abs(sidewind) > Constants.SIDEWINDER_ENABLE_THRESHOLD) || this.sidewinderOverride.getAsBoolean()) {
@@ -178,13 +190,15 @@ public class DriveTrain extends SubsystemBase {
           -(sidewind - (Math.signum(sidewind) * Constants.SIDEWINDER_OUTPUT_OFFSET)));
       
       if(arcadeRotation == 0.0){
+        if (lastArcadeRotation != 0.0) { resetHeading(); }
         arcadeRotation = strafeHorizonatal.calculate(getHeading(), 0.0);
       }
       
       
     }
 
-    diffDrive.arcadeDrive(speed, arcadeRotation, true);
+    lastArcadeRotation = arcadeRotation;
+    diffDrive.arcadeDrive(arcadeSpeed, arcadeRotation, true);
   }
 
   /**
@@ -234,6 +248,7 @@ public class DriveTrain extends SubsystemBase {
    */
   public void resetHeading() {
     this.navx.setAngleAdjustment(-getYaw());
+    // this.navx.setAngleAdjustment(-getHeading());
     // this.navx.setAngleAdjustment(-(Math.floor(this.getHeading() / 360) * 360) - this.getYaw());
   }
 

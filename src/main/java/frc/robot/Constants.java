@@ -37,7 +37,7 @@ public final class Constants {
 
     public static final int SIDEWINDER_PCM_CHANNEL = 3;
     public static final int SIDEWINDER_MOTOR_CAN_ID = 30;
-    public static final double SIDEWINDER_kP = 0.02;
+    public static final double SIDEWINDER_kP = 0.03;
 
     public static final double VISION_TURN_TO_ANGLE_kP = .031;
     public static final double VISION_ANGLE_ERROR = 5;

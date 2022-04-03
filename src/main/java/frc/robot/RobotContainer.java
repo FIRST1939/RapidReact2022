@@ -25,6 +25,7 @@ import frc.robot.commands.LightsUpdater;
 import frc.robot.commands.ManualMoveToTarget;
 import frc.robot.commands.ManualTurnToTarget;
 import frc.robot.commands.RumbleController;
+import frc.robot.commands.SlowlyDrive;
 import frc.robot.commands.ToggleIntakeIndexerManualMode;
 import frc.robot.commands.ToggleManualEjection;
 import frc.robot.commands.auto.Auto4Ball;
@@ -32,6 +33,7 @@ import frc.robot.commands.auto.CargoRingTwoBall;
 import frc.robot.commands.auto.OneBall;
 import frc.robot.commands.auto.PlusOneTwoBall;
 import frc.robot.commands.auto.RightSide3CargoNoTrajectory;
+import frc.robot.commands.auto.TurnToAngle;
 import frc.robot.commands.indexer.IndexerEmptyState;
 import frc.robot.commands.indexer.IndexerReadyToShootState;
 import frc.robot.commands.indexer.IndexerShootingState;
@@ -80,8 +82,10 @@ public class RobotContainer {
   private final XboxController driverTwo = new XboxController(Constants.DRIVER2_CONTROLLER_PORT);
 
   // The robot's subsystems and commands are defined here...
-  private final JoystickButton sidewinderManualDeploy = new JoystickButton(leftStick, 6);
-  private final DriveTrain driveTrain = new DriveTrain(() -> sidewinderManualDeploy.get());
+  // private final JoystickButton sidewinderManualDeploy = new JoystickButton(leftStick, 6);
+  // private final DriveTrain driveTrain = new DriveTrain(() -> sidewinderManualDeploy.get());
+  JoystickButton manualSlowlyDriveButton = new JoystickButton(leftStick, 6);
+  private final DriveTrain driveTrain = new DriveTrain(() -> false, manualSlowlyDriveButton);
   private final RobotCargoCount robotCargoCount = RobotCargoCount.getInstance();
   private final Intake intake = new Intake(() -> this.driveTrain.getRate());
   private final Indexer indexer = new Indexer(() -> isIntakeSendingCargo());
@@ -121,7 +125,7 @@ public class RobotContainer {
     this.autoChooser.addOption("Do Nothing", () -> new WaitCommand(1.0));
     //this.autoChooser.addOption("Right 2 Cargo", () -> new RightSide2CargoNoTrajectory(driveTrain, intake, indexer, shooter));
     this.autoChooser.addOption("Right 3 Cargo", () -> new RightSide3CargoNoTrajectory(driveTrain, intake, indexer, shooter));
-    this.autoChooser.addOption("One Ball", () -> new OneBall(shooter, indexer, driveTrain));
+    this.autoChooser.addOption("One Ball", () -> new OneBall(shooter, indexer, driveTrain, limelightTurret));
     this.autoChooser.addOption("Cargo Ring Two Ball", () -> new CargoRingTwoBall(driveTrain, intake, indexer, shooter));
     this.autoChooser.addOption("4 Ball", () -> new Auto4Ball(driveTrain, intake, indexer, shooter, limelightTurret));
 
@@ -153,12 +157,19 @@ public class RobotContainer {
     final DoubleSupplier angleSupplier = readAngle.getSupplier();
     turnToTarget.whenPressed(readAngle.andThen(new DriveTurnToRelativeAngle(angleSupplier, driveTrain)));
     */
+    // JoystickButton turnToAngle = new JoystickButton(leftStick, 8);
+    // turnToAngle.whenPressed(new TurnToAngle(driveTrain, 360));
+
+    // JoystickButton turnToAngleSecondary = new JoystickButton(leftStick, 9);
+    // turnToAngleSecondary.whenPressed(new TurnToAngle(driveTrain, -180));
 
     JoystickButton manualTurnToTargetLong = new JoystickButton(rightStick, 10);
     manualTurnToTargetLong.whenPressed(new ManualTurnToTarget(driveTrain, limelightTurret, 0));
 
     JoystickButton manualMoveToTargetLong = new JoystickButton(rightStick, 11);
     manualMoveToTargetLong.whenPressed(new ManualMoveToTarget(driveTrain, limelightTurret, 0));
+
+    // manualSlowlyDriveButton.whileHeld(new SlowlyDrive(this.driveTrain));
 
     //shooter buttons
     JoystickButton fenderLowButton = new JoystickButton(driverTwo, XboxController.Button.kY.value);
