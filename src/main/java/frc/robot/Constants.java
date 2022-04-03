@@ -81,9 +81,9 @@ public final class Constants {
         fenderHigh(5300, false),
         fenderPlusOneLow(4200, true),
         fenderPlusOneHigh(6500, true),
-        cargoRing(6850, true),
+        cargoRing(6750, true),
         wallShot(7600, true),
-        launchpad(8100, true);
+        launchpad(8050, true);
 
         public final int velocity;
         public final boolean hood;
