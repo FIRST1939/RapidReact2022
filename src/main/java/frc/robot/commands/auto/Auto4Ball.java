@@ -66,7 +66,7 @@ public class Auto4Ball extends SequentialCommandGroup {
         new WaitCommand(0.2),
         new ManualTurnToTarget(driveTrain, limelight, 0).withTimeout(1.0),
         new WaitCommand(0.3),
-        new ManualMoveToTarget(driveTrain, limelight, 0).withTimeout(1.5),
+        new ManualMoveToTarget(driveTrain, limelight, 0, null).withTimeout(1.5),
         new DriveStraightDistance(6, driveTrain, 0.5),
         new WaitCommand(0.3),
         new AutoModeShooter(2, indexer, shooter).withTimeout(2.0)
