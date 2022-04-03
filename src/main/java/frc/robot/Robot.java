@@ -70,6 +70,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     m_robotContainer.scheduleInitialStates();
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    m_robotContainer.limelightTurret.setPipeline(Constants.SHOOTER_LONG_PIPELINE);
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
