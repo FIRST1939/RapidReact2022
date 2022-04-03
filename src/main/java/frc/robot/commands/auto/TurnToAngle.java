@@ -72,6 +72,6 @@ public class TurnToAngle extends CommandBase {
   @Override
   public boolean isFinished() {
     this.distance = this.target - this.angle;
-    return (this.distance < 1 && this.distance > -1);
+    return (this.distance < .75 && this.distance > -0.75);
   }
 }
