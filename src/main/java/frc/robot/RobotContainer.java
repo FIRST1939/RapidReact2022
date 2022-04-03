@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
@@ -30,6 +31,9 @@ import frc.robot.commands.ToggleIntakeIndexerManualMode;
 import frc.robot.commands.ToggleManualEjection;
 import frc.robot.commands.auto.Auto4Ball;
 import frc.robot.commands.auto.CargoRingTwoBall;
+import frc.robot.commands.auto.DriveStraightDistance;
+import frc.robot.commands.auto.DriveStraightDistanceNoStop;
+import frc.robot.commands.auto.DriveTurnToRelativeAngle;
 import frc.robot.commands.auto.OneBall;
 import frc.robot.commands.auto.PlusOneTwoBall;
 import frc.robot.commands.auto.RightSide3CargoNoTrajectory;
@@ -157,8 +161,19 @@ public class RobotContainer {
     final DoubleSupplier angleSupplier = readAngle.getSupplier();
     turnToTarget.whenPressed(readAngle.andThen(new DriveTurnToRelativeAngle(angleSupplier, driveTrain)));
     */
-    // JoystickButton turnToAngle = new JoystickButton(leftStick, 8);
-    // turnToAngle.whenPressed(new TurnToAngle(driveTrain, 90));
+    /*
+    JoystickButton moveForward = new JoystickButton(leftStick, 8);
+    moveForward.whenPressed(new SequentialCommandGroup(
+      //new DriveStraightDistanceNoStop(-140, driveTrain, 0.7)
+      new DriveStraightDistanceNoStop(-2, driveTrain, 0.2),
+      new DriveStraightDistanceNoStop(-2, driveTrain, 0.25),
+      new DriveStraightDistanceNoStop(-2, driveTrain, 0.3),
+      new DriveStraightDistanceNoStop(-14, driveTrain, 0.4),
+      new DriveStraightDistanceNoStop(-100, driveTrain, 0.55),
+      new DriveStraightDistance(-20, driveTrain, 0.4)
+  
+    ));
+    */
 
     // JoystickButton turnToAngleSecondary = new JoystickButton(leftStick, 9);
     // turnToAngleSecondary.whenPressed(new TurnToAngle(driveTrain, -180));
