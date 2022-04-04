@@ -4,8 +4,6 @@
 
 package frc.robot.commands.auto;
 
-import java.util.ArrayList;
-
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ScheduleCommand;
@@ -38,11 +36,7 @@ public class CargoRingTwoBall extends SequentialCommandGroup {
         // Gather, move to cargo and set for fender high.
         new ParallelCommandGroup(
             new ScheduleCommand(IntakeGatheringEmptyState.getInstance(intake)),
-            new DriveStraightDistance(driveTrain, new ArrayList<Double>() {{
-              add(40.0);
-            }}, new ArrayList<Double>() {{
-              add(0.4);
-            }}),
+            new DriveStraightDistance(40, driveTrain, 0.4),
             new SetShot(shooter, Constants.SHOTS.cargoRing)),
         new WaitCommand(1.0),
         new AutoModeShooter(2, indexer, shooter).withTimeout(3.0),

@@ -4,8 +4,6 @@
 
 package frc.robot.commands.auto;
 
-import java.util.ArrayList;
-
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Limelight;

@@ -171,10 +171,10 @@ public class RobotContainer {
     // turnToAngleSecondary.whenPressed(new TurnToAngle(driveTrain, -180));
 
     JoystickButton manualTurnToTargetLong = new JoystickButton(rightStick, 10);
-    manualTurnToTargetLong.whenPressed(new ManualTurnToTarget(driveTrain, driverTwo, limelightTurret, 0));
+    manualTurnToTargetLong.whenPressed(new ManualTurnToTarget(driveTrain, limelightTurret, 0));
 
     JoystickButton manualMoveToTargetLong = new JoystickButton(rightStick, 11);
-    manualMoveToTargetLong.whenPressed(new ManualMoveToTarget(driveTrain, driverTwo, limelightTurret, 0));
+    manualMoveToTargetLong.whenPressed(new ManualMoveToTarget(driveTrain, limelightTurret, 0));
 
     // manualSlowlyDriveButton.whileHeld(new SlowlyDrive(this.driveTrain));
 
