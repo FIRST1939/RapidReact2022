@@ -1,7 +1,6 @@
 package frc.robot.commands.climber;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
 import frc.robot.subsystems.Climber;
 
 public class ExtendMotor extends CommandBase {
@@ -18,7 +17,7 @@ public class ExtendMotor extends CommandBase {
     @Override
     public void execute () {
 
-        this.climber.setMotor(Constants.CLIMBER_EXTENSION_VELOCITY);
+        this.climber.setMotor(5000);
     }
 
     @Override

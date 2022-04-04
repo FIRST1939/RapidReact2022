@@ -7,10 +7,8 @@ package frc.robot;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
-import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -47,12 +45,15 @@ import frc.robot.commands.shooter.SetShot;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Lights;
 import frc.robot.subsystems.RobotCargoCount;
 import frc.robot.subsystems.Shooter;
 import frc.robot.triggers.ShootTrigger;
 import frc.robot.triggers.ShooterIdleTrigger;
 import frc.robot.triggers.lighting.IntakeForward;
 import frc.robot.triggers.lighting.IntakeReverse;
+import frc.robot.commands.climber.CancelClimb;
+import frc.robot.commands.climber.ClimbNextBar;
 import frc.robot.commands.climber.ClimbToSecond;
 import frc.robot.commands.climber.ClimbToThird;
 import frc.robot.commands.climber.GetToPosition;
@@ -77,8 +78,10 @@ public class RobotContainer {
   private final XboxController driverTwo = new XboxController(Constants.DRIVER2_CONTROLLER_PORT);
 
   // The robot's subsystems and commands are defined here...
-  private final JoystickButton sidewinderManualDeploy = new JoystickButton(leftStick, 6);
-  private final DriveTrain driveTrain = new DriveTrain(() -> sidewinderManualDeploy.get());
+  // private final JoystickButton sidewinderManualDeploy = new JoystickButton(leftStick, 6);
+  // private final DriveTrain driveTrain = new DriveTrain(() -> sidewinderManualDeploy.get());
+  JoystickButton manualSlowlyDriveButton = new JoystickButton(leftStick, 6);
+  private final DriveTrain driveTrain = new DriveTrain(() -> false, manualSlowlyDriveButton);
   private final RobotCargoCount robotCargoCount = RobotCargoCount.getInstance();
   private final Intake intake = new Intake(() -> this.driveTrain.getRate());
   private final Indexer indexer = new Indexer(() -> isIntakeSendingCargo());
@@ -113,12 +116,12 @@ public class RobotContainer {
    * Populates the dashboard chooser for auto mode selection.
    */
   private void configureAutoChooser() {
-    this.autoChooser.setDefaultOption("PlusOne Two Ball", () -> new PlusOneTwoBall(driveTrain, intake, indexer, shooter));
+    this.autoChooser.setDefaultOption("PlusOne Two Ball", () -> new PlusOneTwoBall(driveTrain, intake, indexer, shooter, limelightTurret));
     //this.autoChooser.setDefaultOption("Left 2 Cargo", () -> new LeftSide2CargoNoTrajectory(driveTrain, intake, indexer, shooter));
     this.autoChooser.addOption("Do Nothing", () -> new WaitCommand(1.0));
     //this.autoChooser.addOption("Right 2 Cargo", () -> new RightSide2CargoNoTrajectory(driveTrain, intake, indexer, shooter));
     this.autoChooser.addOption("Right 3 Cargo", () -> new RightSide3CargoNoTrajectory(driveTrain, intake, indexer, shooter));
-    this.autoChooser.addOption("One Ball", () -> new OneBall(shooter, indexer, driveTrain));
+    this.autoChooser.addOption("One Ball", () -> new OneBall(shooter, indexer, driveTrain, limelightTurret));
     this.autoChooser.addOption("Cargo Ring Two Ball", () -> new CargoRingTwoBall(driveTrain, intake, indexer, shooter));
     this.autoChooser.addOption("4 Ball", () -> new Auto4Ball(driveTrain, intake, indexer, shooter, limelightTurret, driverTwo));
 
@@ -150,12 +153,30 @@ public class RobotContainer {
     final DoubleSupplier angleSupplier = readAngle.getSupplier();
     turnToTarget.whenPressed(readAngle.andThen(new DriveTurnToRelativeAngle(angleSupplier, driveTrain)));
     */
+    /*
+    JoystickButton moveForward = new JoystickButton(leftStick, 8);
+    moveForward.whenPressed(new SequentialCommandGroup(
+      //new DriveStraightDistanceNoStop(-140, driveTrain, 0.7)
+      new DriveStraightDistanceNoStop(-2, driveTrain, 0.2),
+      new DriveStraightDistanceNoStop(-2, driveTrain, 0.25),
+      new DriveStraightDistanceNoStop(-2, driveTrain, 0.3),
+      new DriveStraightDistanceNoStop(-14, driveTrain, 0.4),
+      new DriveStraightDistanceNoStop(-100, driveTrain, 0.55),
+      new DriveStraightDistance(-20, driveTrain, 0.4)
+  
+    ));
+    */
+
+    // JoystickButton turnToAngleSecondary = new JoystickButton(leftStick, 9);
+    // turnToAngleSecondary.whenPressed(new TurnToAngle(driveTrain, -180));
 
     JoystickButton manualTurnToTargetLong = new JoystickButton(rightStick, 10);
     manualTurnToTargetLong.whenPressed(new ManualTurnToTarget(driveTrain, driverTwo, limelightTurret, 0));
 
     JoystickButton manualMoveToTargetLong = new JoystickButton(rightStick, 11);
     manualMoveToTargetLong.whenPressed(new ManualMoveToTarget(driveTrain, driverTwo, limelightTurret, 0));
+
+    // manualSlowlyDriveButton.whileHeld(new SlowlyDrive(this.driveTrain));
 
     //shooter buttons
     JoystickButton fenderLowButton = new JoystickButton(driverTwo, XboxController.Button.kY.value);
@@ -234,11 +255,20 @@ public class RobotContainer {
 
     RumbleController rumbleController = new RumbleController(this.driverTwo);
 
+    ClimbToSecond climbToSecond = new ClimbToSecond(this.climber, rumbleController);
+    ClimbToThird climbToThird = new ClimbToThird(this.climber, rumbleController);
+
+    JoystickButton climbToNextBarButton = new JoystickButton(leftStick, 4);
+    climbToNextBarButton.whenPressed(new ClimbNextBar(this.climber, rumbleController));
+
     JoystickButton climbToSecondButton = new JoystickButton(leftStick, 2);
-    climbToSecondButton.whenPressed(new ClimbToSecond(this.climber, rumbleController));
+    climbToSecondButton.whenPressed(climbToSecond);
 
     JoystickButton climbToThirdButton = new JoystickButton(leftStick, 3);
-    climbToThirdButton.whenPressed(new ClimbToThird(this.climber, rumbleController));
+    climbToThirdButton.whenPressed(climbToThird);
+
+    JoystickButton cancelClimbButton = new JoystickButton(leftStick, 5);
+    cancelClimbButton.whenPressed(new CancelClimb(climbToSecond, climbToThird));
     
     JoystickButton climberMotorPartialPositionExtend = new JoystickButton(rightStick, 6);
     climberMotorPartialPositionExtend.whenPressed(new GetToPosition(this.climber, rumbleController, Constants.CLIMBER_POSITIONS.partial));
@@ -248,6 +278,9 @@ public class RobotContainer {
   
     JoystickButton climberSetHomeButton = new JoystickButton(driverTwo, XboxController.Button.kBack.value);
     climberSetHomeButton.whenPressed(new SetHome(this.climber));
+
+    JoystickButton climberSetHomeButtonSecondary = new JoystickButton(rightStick, 8);
+    climberSetHomeButtonSecondary.whenPressed(new SetHome(this.climber));
 
     JoystickButton climberMotorBottomPositionButton = new JoystickButton(rightStick, 7);
     climberMotorBottomPositionButton.whenPressed(new GetToPosition(this.climber, rumbleController, Constants.CLIMBER_POSITIONS.bottomFirst));
@@ -329,5 +362,10 @@ public class RobotContainer {
     final Command currentIntakeCommand = this.intake.getCurrentCommand();
     return (currentIntakeCommand instanceof IntakeGatheringSendState)
         || (currentIntakeCommand instanceof IntakeStowedSendState);
+  }
+
+  public Lights getLights () {
+
+    return Lights.getInstance();
   }
 }

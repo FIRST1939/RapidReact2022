@@ -12,6 +12,9 @@ import edu.wpi.first.wpilibj2.command.ScheduleCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
+import frc.robot.Limelight;
+import frc.robot.commands.ManualMoveToTarget;
+import frc.robot.commands.ManualTurnToTarget;
 import frc.robot.commands.intake.IntakeGatheringEmptyState;
 import frc.robot.commands.shooter.SetShot;
 import frc.robot.subsystems.DriveTrain;
@@ -31,20 +34,20 @@ public class PlusOneTwoBall extends SequentialCommandGroup {
       final DriveTrain driveTrain,
       final Intake intake,
       final Indexer indexer,
-      final Shooter shooter) {
+      final Shooter shooter,
+      final Limelight limelight) {
     addCommands(
         // Configurable wait for alliance partner.
         new WaitCommand(SmartDashboard.getNumber("Auto Start Wait", 0.0)),
         // Gather, move to cargo and set for fender high.
         new ParallelCommandGroup(
             new ScheduleCommand(IntakeGatheringEmptyState.getInstance(intake)),
-            new DriveStraightDistance(driveTrain, new ArrayList<Double>() {{
-              add(-40.0);
-            }}, new ArrayList<Double>() {{
-              add(0.5);
-            }}),
+            new DriveStraightDistance(-40, driveTrain, 0.4),
             new SetShot(shooter, Constants.SHOTS.cargoRing)),
         // Drive to point straight out from the fender.
+        new ManualTurnToTarget(driveTrain, limelight, 0),
+        new WaitCommand(1.0),
+        new ManualMoveToTarget(driveTrain, limelight, 0),
         new WaitCommand(1.0),
         //new DriveStraightDistance(40.0, driveTrain),
         // Turn square to the fender.
@@ -54,10 +57,6 @@ public class PlusOneTwoBall extends SequentialCommandGroup {
         // Do not drive until second shot has cleared shooter.
         new WaitCommand(1.0),
         // Exit tarmac.
-        new DriveStraightDistance(driveTrain, new ArrayList<Double>() {{
-          add(-10.0);
-        }}, new ArrayList<Double>() {{
-          add(0.5);
-        }}));
+        new DriveStraightDistance(-10, driveTrain, 0.4));
   }
 }

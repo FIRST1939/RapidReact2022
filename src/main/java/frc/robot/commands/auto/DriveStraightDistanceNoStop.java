@@ -4,8 +4,6 @@
 
 package frc.robot.commands.auto;
 
-import java.util.ArrayList;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.DriveTrain;
@@ -14,23 +12,21 @@ import frc.robot.subsystems.DriveTrain;
  * Use this command during autonomous to drive a straight line for a distance
  * passed to the constructor.
  */
-public class DriveStraightDistance extends CommandBase {
-  
-  private final ArrayList<Double> inches;
-  private final ArrayList<Double> power;
-
-  private int index = 0;
-
+public class DriveStraightDistanceNoStop extends CommandBase {
+  private final boolean forward;
+  private final double absInches;
   // Divide absInches into accel, cruise, and decel sections.
   //private final double[] sectionAbsInches = new double[3];
   private final DriveTrain driveTrain;
+
+  private final double power;
 
   /**
    * @param inches     the inches to drive. The intake end is forward (positive).
    *                   Pass a negative value for backwards.
    * @param driveTrain the drive train being controlled.
    */
-  public DriveStraightDistance(final double inches, final DriveTrain driveTrain, final double power) {
+  public DriveStraightDistanceNoStop(final double inches, final DriveTrain driveTrain, final double power) {
     this.forward = inches >= 0.0;
     this.absInches = Math.abs(inches);
     this.power = -power;
@@ -42,7 +38,6 @@ public class DriveStraightDistance extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
     this.driveTrain.resetDistance();
     this.driveTrain.resetHeading();
   }
@@ -50,7 +45,6 @@ public class DriveStraightDistance extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
     double turningValue = (-this.driveTrain.getHeading()) * Constants.DRIVE_AUTO_GYRO_STRAIGHT_KP;
     // Invert the direction of the turn if we are going backwards
     if (forward) {
@@ -63,33 +57,24 @@ public class DriveStraightDistance extends CommandBase {
         || (distSoFar > (this.sectionAbsInches[0] + this.sectionAbsInches[1]))) {
       power = power / 2.0;
     }
+    */
     
     this.driveTrain.arcadeDrive(
-        power,
+        forward ? power : -power,
         turningValue,
-        0.0
-    );
-
-    if (Math.abs(driveTrain.getDistance()) >= Math.abs(inches)) {
-
-      this.driveTrain.resetDistance();
-      this.driveTrain.resetHeading();
-      index++;
-    }
+        0.0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-
-    return this.index == (((this.inches.size() + this.power.size()) / 2) - 1);
+    return Math.abs(driveTrain.getDistance()) >= this.absInches;
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    
-    this.driveTrain.stop();
+    //this.driveTrain.stop();
   }
 
   /*

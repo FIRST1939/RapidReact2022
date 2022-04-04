@@ -37,7 +37,7 @@ public final class Constants {
 
     public static final int SIDEWINDER_PCM_CHANNEL = 3;
     public static final int SIDEWINDER_MOTOR_CAN_ID = 30;
-    public static final double SIDEWINDER_kP = 0.02;
+    public static final double SIDEWINDER_kP = 0.03;
 
     public static final double VISION_TURN_TO_ANGLE_kP = .031;
     public static final double VISION_ANGLE_ERROR = 5;
@@ -80,10 +80,10 @@ public final class Constants {
         fenderLow(3700, true),
         fenderHigh(5300, false),
         fenderPlusOneLow(4200, true),
-        fenderPlusOneHigh(6000, true),
-        cargoRing(6700, true),
+        fenderPlusOneHigh(6500, true),
+        cargoRing(6750, true),
         wallShot(7600, true),
-        launchpad(8100, true);
+        launchpad(8050, true);
 
         public final int velocity;
         public final boolean hood;
@@ -134,12 +134,12 @@ public final class Constants {
 
     // TODO climber extension values 
     public enum CLIMBER_POSITIONS {
-        bottom(7500, 2000),
-        bottomFirst(25000, 2000),
-        finalBarRetract(7500, 50000),
-        offBar(15000, 50000),
-        partial(18000, 250000),
-        full(25000, 340000);
+        bottom(8500, 2000),
+        bottomFirst(15000, 2000),
+        finalBarRetract(8500, 50000),
+        offBar(10000, 50000),
+        partial(15000, 250000),
+        full(15000, 340000);
 
         public final int velocity;
         public final int distance;

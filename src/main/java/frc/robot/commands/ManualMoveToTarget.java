@@ -52,11 +52,11 @@ public class ManualMoveToTarget extends CommandBase {
     this.ty = limelight.getVerticalAngleError();
 
     if (Math.abs(this.ty) > 10) {
-      this.driveTrain.arcadeDrive(0.4 * this.direction, 0, 0);
+      this.driveTrain.arcadeDrive(0.45 * this.direction, 0, 0);
     } else if (Math.abs(this.ty) > 5) {
-      this.driveTrain.arcadeDrive(0.35 * this.direction, 0, 0);
+      this.driveTrain.arcadeDrive(0.4 * this.direction, 0, 0);
     } else {
-      this.driveTrain.arcadeDrive(0.3 * this.direction, 0, 0);
+      this.driveTrain.arcadeDrive(0.35 * this.direction, 0, 0);
     }
   }
 
