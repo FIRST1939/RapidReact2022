@@ -90,7 +90,6 @@ public class Shooter extends SubsystemBase {
             this.lastSetVelocity = velocity;
             this.velocityInRangeCount = 0;
         }
-        Lights.getInstance().setColor(LEDMode.CONFETTI);
     }
 
     @Override

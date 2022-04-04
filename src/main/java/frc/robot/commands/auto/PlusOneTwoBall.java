@@ -4,6 +4,8 @@
 
 package frc.robot.commands.auto;
 
+import java.util.ArrayList;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ScheduleCommand;

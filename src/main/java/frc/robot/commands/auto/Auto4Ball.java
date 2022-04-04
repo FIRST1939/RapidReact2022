@@ -4,6 +4,9 @@
 
 package frc.robot.commands.auto;
 
+import java.util.ArrayList;
+
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ScheduleCommand;
@@ -33,7 +36,8 @@ public class Auto4Ball extends SequentialCommandGroup {
       final Intake intake,
       final Indexer indexer,
       final Shooter shooter,
-      final Limelight limelight) {
+      final Limelight limelight,
+      final GenericHID controller) {
     addCommands(
 
         // Configurable wait for alliance partner.
@@ -41,7 +45,11 @@ public class Auto4Ball extends SequentialCommandGroup {
         // Gather, move to cargo and set for fender high.
         new ParallelCommandGroup(
             new ScheduleCommand(IntakeGatheringEmptyState.getInstance(intake)),
-            new DriveStraightDistance(-48, driveTrain, 0.5),
+            new DriveStraightDistance(driveTrain, new ArrayList<Double>() {{
+              add(-48.0);
+          }}, new ArrayList<Double>() {{
+              add(0.5);
+          }}),
             new SetShot(shooter, Constants.SHOTS.cargoRing)),
         new ManualTurnToTarget(driveTrain, limelight, 0).withTimeout(1.0),
         new WaitCommand(0.15),
@@ -69,13 +77,11 @@ public class Auto4Ball extends SequentialCommandGroup {
         new TurnToAngle(driveTrain, -30),
         // new TurnToAngle(driveTrain, -30),
         new WaitCommand(0.2),
-        new ManualTurnToTarget(driveTrain, limelight, 0).withTimeout(1.0),
+        new ManualTurnToTarget(driveTrain, controller, limelight, 0).withTimeout(1.0),
         new WaitCommand(0.3),
         new ManualMoveToTarget(driveTrain, limelight, 0).withTimeout(1.5),
         new WaitCommand(0.3),
         new AutoModeShooter(2, indexer, shooter).withTimeout(2.0)
-
     );
-
   }
 }

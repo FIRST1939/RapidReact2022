@@ -123,7 +123,7 @@ public class RobotContainer {
     this.autoChooser.addOption("Right 3 Cargo", () -> new RightSide3CargoNoTrajectory(driveTrain, intake, indexer, shooter));
     this.autoChooser.addOption("One Ball", () -> new OneBall(shooter, indexer, driveTrain, limelightTurret));
     this.autoChooser.addOption("Cargo Ring Two Ball", () -> new CargoRingTwoBall(driveTrain, intake, indexer, shooter));
-    this.autoChooser.addOption("4 Ball", () -> new Auto4Ball(driveTrain, intake, indexer, shooter, limelightTurret));
+    this.autoChooser.addOption("4 Ball", () -> new Auto4Ball(driveTrain, intake, indexer, shooter, limelightTurret, driverTwo));
 
     SmartDashboard.putData("Autonomous Chooser", this.autoChooser);
   }
@@ -171,10 +171,10 @@ public class RobotContainer {
     // turnToAngleSecondary.whenPressed(new TurnToAngle(driveTrain, -180));
 
     JoystickButton manualTurnToTargetLong = new JoystickButton(rightStick, 10);
-    manualTurnToTargetLong.whenPressed(new ManualTurnToTarget(driveTrain, limelightTurret, 0));
+    manualTurnToTargetLong.whenPressed(new ManualTurnToTarget(driveTrain, driverTwo, limelightTurret, 0));
 
     JoystickButton manualMoveToTargetLong = new JoystickButton(rightStick, 11);
-    manualMoveToTargetLong.whenPressed(new ManualMoveToTarget(driveTrain, limelightTurret, 0));
+    manualMoveToTargetLong.whenPressed(new ManualMoveToTarget(driveTrain, driverTwo, limelightTurret, 0));
 
     // manualSlowlyDriveButton.whileHeld(new SlowlyDrive(this.driveTrain));
 

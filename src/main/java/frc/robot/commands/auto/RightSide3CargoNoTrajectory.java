@@ -4,6 +4,8 @@
 
 package frc.robot.commands.auto;
 
+import java.util.ArrayList;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ScheduleCommand;
@@ -36,7 +38,11 @@ public class RightSide3CargoNoTrajectory extends SequentialCommandGroup {
         // Gather, move to cargo and set for fender high.
         new ParallelCommandGroup(
             new ScheduleCommand(IntakeGatheringEmptyState.getInstance(intake)),
-            new DriveStraightDistance(AutoConstants.CLOSE_CARGO_PICKUP_DRIVE_DIST, driveTrain, 0.5),
+            new DriveStraightDistance(driveTrain, new ArrayList<Double>() {{
+                add(AutoConstants.CLOSE_CARGO_PICKUP_DRIVE_DIST);
+              }}, new ArrayList<Double>() {{
+                add(0.5);
+              }}),
             new SetShot(shooter, Constants.SHOTS.cargoRing)),
         // Drive to point straight out from the fender.
         //new DriveStraightDistance(-AutoConstants.CLOSE_CARGO_PICKUP_TO_TURN_DIST, driveTrain),
@@ -50,16 +56,25 @@ public class RightSide3CargoNoTrajectory extends SequentialCommandGroup {
         new WaitCommand(1.0),
         // Move away from fender and set for cargo ring.
         new ParallelCommandGroup(
-            new DriveStraightDistance(AutoConstants.AFTER_TURN_DRIVE_TO_FENDER_DIST, driveTrain, 0.5),
+            new DriveStraightDistance(driveTrain, new ArrayList<Double>() {{
+                add(AutoConstants.AFTER_TURN_DRIVE_TO_FENDER_DIST);
+            }}, new ArrayList<Double>() {{
+                add(0.5);
+            }}),
             new SetShot(shooter, Constants.SHOTS.cargoRing)),
+            new SetShot(shooter, Constants.SHOTS.cargoRing));
         // Turn toward cargo.
         new DriveTurnToRelativeAngle(
             () -> AutoConstants.TURN_TO_THIRD_CARGO_ANGLE,
-            driveTrain),
+            driveTrain);
         // Gather and move to cargo.
         new ParallelCommandGroup(
             new ScheduleCommand(IntakeGatheringEmptyState.getInstance(intake)),
-            new DriveStraightDistance(AutoConstants.CLOSE_CARGO_PICKUP_TO_TURN_DIST, driveTrain, 0.5)),
+            new DriveStraightDistance(driveTrain, new ArrayList<Double>() {{
+                add(AutoConstants.CLOSE_CARGO_PICKUP_TO_TURN_DIST);
+            }}, new ArrayList<Double>() {{
+                add(0.5);
+            }}),
             new DriveTurnToRelativeAngle(() -> -12, driveTrain),
         // Shoot
         new AutoModeShooter(1, indexer, shooter).withTimeout(3.0),
