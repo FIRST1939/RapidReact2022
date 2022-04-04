@@ -15,16 +15,18 @@ public class ManualMoveToTarget extends CommandBase {
 
   private final DriveTrain driveTrain;
   private final Limelight limelight;
+  private final GenericHID controller;
 
   private double ty;
   private int direction = 0;
 
   private int pipeline;
 
-  public ManualMoveToTarget(final DriveTrain driveTrain, final Limelight limelight, final int pipeline) {
+  public ManualMoveToTarget(final DriveTrain driveTrain, final Limelight limelight, final int pipeline, final GenericHID controller) {
     this.driveTrain = driveTrain;
     this.limelight = limelight;
     this.pipeline = pipeline;
+    this.controller = controller;
 
     addRequirements(driveTrain);
   }
@@ -62,6 +64,10 @@ public class ManualMoveToTarget extends CommandBase {
   public void end(boolean interrupted) {
     this.driveTrain.arcadeDrive(0, 0, 0);
     Lights.getInstance().setColor(LEDMode.GREEN);
+    if (this.controller != null) {
+
+      PostLoopCommandScheduler.addCommandToSchedule(new RumbleController(this.controller));
+    }
   }
 
   // Returns true when the command should end.
