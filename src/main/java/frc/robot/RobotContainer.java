@@ -182,7 +182,7 @@ public class RobotContainer {
     manualTurnToTargetLong.whenPressed(new ManualTurnToTarget(driveTrain, limelightTurret, 0));
 
     JoystickButton manualMoveToTargetLong = new JoystickButton(rightStick, 11);
-    manualMoveToTargetLong.whenPressed(new ManualMoveToTarget(driveTrain, limelightTurret, 0, driverTwo));
+    manualMoveToTargetLong.whenPressed(new ManualMoveToTarget(driveTrain, limelightTurret, 0));
 
     // manualSlowlyDriveButton.whileHeld(new SlowlyDrive(this.driveTrain));
 

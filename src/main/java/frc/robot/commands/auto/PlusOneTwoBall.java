@@ -45,7 +45,7 @@ public class PlusOneTwoBall extends SequentialCommandGroup {
         // Drive to point straight out from the fender.
         new ManualTurnToTarget(driveTrain, limelight, 0),
         new WaitCommand(1.0),
-        new ManualMoveToTarget(driveTrain, limelight, 0, null),
+        new ManualMoveToTarget(driveTrain, limelight, 0),
         new WaitCommand(1.0),
         //new DriveStraightDistance(40.0, driveTrain),
         // Turn square to the fender.
