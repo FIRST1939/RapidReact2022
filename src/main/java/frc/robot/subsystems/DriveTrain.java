@@ -174,6 +174,7 @@ public class DriveTrain extends SubsystemBase {
     if ((Math.abs(sidewind) > Constants.SIDEWINDER_ENABLE_THRESHOLD) || this.sidewinderOverride.getAsBoolean()) {
       
       if (!this.sidewinderSolenoid.get()) {
+        // Sidewider has deployed
         resetHeading();
       }
       
@@ -182,6 +183,7 @@ public class DriveTrain extends SubsystemBase {
     } else if (Math.abs(sidewind) < Constants.SIDEWINDER_DISABLE_THRESHOLD) {
       this.sidewinderSolenoid.set(false);
     }
+
     double arcadeRotation = 0.85 * rotation;
     if (this.sidewinderSolenoid.get()) {
       sidewinderMotor.set(
@@ -189,11 +191,13 @@ public class DriveTrain extends SubsystemBase {
           -(sidewind - (Math.signum(sidewind) * Constants.SIDEWINDER_OUTPUT_OFFSET)));
       
       if(arcadeRotation == 0.0){
-        if (lastArcadeRotation != 0.0) { resetHeading(); }
+        if (lastArcadeRotation != 0.0) { 
+          // Sidewinder has stopped swerving, but is still sidewinding
+          resetHeading(); 
+        }
+        
         arcadeRotation = strafeHorizonatal.calculate(getHeading(), 0.0);
       }
-      
-      
     }
 
     lastArcadeRotation = arcadeRotation;
