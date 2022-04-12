@@ -83,7 +83,7 @@ public class Shooter extends SubsystemBase {
         shooterSolenoid.set(hood); 
     }
     
-    private void setVelocity(int velocity) {
+    public void setVelocity(int velocity) {
         if (lastSetVelocity != velocity) {
             shooterFlywheel.set(ControlMode.Velocity, velocity);
             this.lastSetVelocity = velocity;
