@@ -79,7 +79,7 @@ public class DriveTrain extends SubsystemBase {
   private final BooleanSupplier sidewinderOverride;
   private final PIDController strafeHorizonatal = new PIDController(Constants.SIDEWINDER_kP, 0, 0);
 
-  private double lastArcadeRotation = 0.0;
+  private double lastRotation = 0.0;
 
   private final JoystickButton speedLimit;
 
@@ -127,7 +127,7 @@ public class DriveTrain extends SubsystemBase {
     sidewinderSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Constants.SIDEWINDER_PCM_CHANNEL);
     sidewinderMotor = new WPI_TalonFX(Constants.SIDEWINDER_MOTOR_CAN_ID);
     sidewinderMotor.configFactoryDefault();
-    sidewinderMotor.configOpenloopRamp(0.5);
+    // sidewinderMotor.configOpenloopRamp(0.5);
     // TODO other sidewinder motor config?
     this.sidewinderOverride = sidewinderOverride;
 
@@ -175,6 +175,7 @@ public class DriveTrain extends SubsystemBase {
       
       if (!this.sidewinderSolenoid.get()) {
         // Sidewider has deployed
+        if (Math.abs(getHeading()) > 180) { resetYaw(); }
         resetHeading();
       }
       
@@ -190,17 +191,18 @@ public class DriveTrain extends SubsystemBase {
           ControlMode.PercentOutput,
           -(sidewind - (Math.signum(sidewind) * Constants.SIDEWINDER_OUTPUT_OFFSET)));
       
-      if(arcadeRotation == 0.0){
-        if (lastArcadeRotation != 0.0) { 
+      if(rotation == 0.0){
+        if (lastRotation != 0.0) { 
           // Sidewinder has stopped swerving, but is still sidewinding
-          resetHeading(); 
+          if (Math.abs(getHeading()) > 180) { resetYaw(); }
+          resetHeading();
         }
-        
-        arcadeRotation = strafeHorizonatal.calculate(getHeading(), 0.0);
+
+        arcadeRotation = strafeHorizonatal.calculate(getHeading() % 360, 0.0);
       }
     }
 
-    lastArcadeRotation = arcadeRotation;
+    lastRotation = rotation;
     diffDrive.arcadeDrive(arcadeSpeed, arcadeRotation, true);
   }
 
@@ -250,8 +252,8 @@ public class DriveTrain extends SubsystemBase {
    * movements, prefer this method over resetYaw.
    */
   public void resetHeading() {
-    // this.navx.setAngleAdjustment(-getYaw());
-    this.navx.setAngleAdjustment(-getHeading() + this.navx.getAngleAdjustment());
+    this.navx.setAngleAdjustment(-getYaw());
+    // this.navx.setAngleAdjustment(-getHeading() + this.navx.getAngleAdjustment());
     // this.navx.setAngleAdjustment(-(Math.floor(this.getHeading() / 360) * 360) - this.getYaw());
   }
 
