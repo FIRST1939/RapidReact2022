@@ -81,7 +81,7 @@ public class Indexer extends SubsystemBase {
    * cargo from the intake.
    */
   public void setToReceiveVelocity() {
-    this.leader.set(-0.5);
+    this.leader.set(-0.3);
   }
 
   public void setToRecieveDownVelocity(){

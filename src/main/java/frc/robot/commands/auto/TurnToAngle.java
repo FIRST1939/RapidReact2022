@@ -50,9 +50,11 @@ public class TurnToAngle extends CommandBase {
     this.angle = this.driveTrain.getHeading();
     this.distance = this.target - this.angle;
 
+    /*
     System.out.println("Angle: " + this.angle);
     System.out.println("Target: " + this.target);
     System.out.println("Distance: " + this.distance);
+    */
 
     if (Math.abs(this.distance) > 31) {
       this.driveTrain.arcadeDrive(0, 0.6 * this.direction, 0);

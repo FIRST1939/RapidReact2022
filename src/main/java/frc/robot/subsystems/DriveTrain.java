@@ -301,6 +301,7 @@ public class DriveTrain extends SubsystemBase {
   private void motorConfig(final CANSparkMax motor) {
     motor.restoreFactoryDefaults();
     motor.setIdleMode(IdleMode.kBrake);
+    motor.setOpenLoopRampRate(0.5);
     // TODO determine and set current limit.
   }
 }
