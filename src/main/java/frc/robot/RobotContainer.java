@@ -37,6 +37,7 @@ import frc.robot.commands.auto.DriveTurnToRelativeAngle;
 import frc.robot.commands.auto.OneBall;
 import frc.robot.commands.auto.PlusOneTwoBall;
 import frc.robot.commands.auto.RightSide3CargoNoTrajectory;
+import frc.robot.commands.auto.Rude2Ball;
 import frc.robot.commands.auto.TurnToAngle;
 import frc.robot.commands.indexer.IndexerEmptyState;
 import frc.robot.commands.indexer.IndexerReadyToShootState;
@@ -132,6 +133,7 @@ public class RobotContainer {
     this.autoChooser.addOption("One Ball", () -> new OneBall(shooter, indexer, driveTrain, limelightTurret));
     this.autoChooser.addOption("Cargo Ring Two Ball", () -> new CargoRingTwoBall(driveTrain, intake, indexer, shooter));
     this.autoChooser.addOption("4 Ball", () -> new Auto4Ball(driveTrain, intake, indexer, shooter, limelightTurret));
+    this.autoChooser.addOption("Rude 2 Ball", () -> new Rude2Ball(driveTrain, intake, indexer, shooter, limelightTurret));
 
     SmartDashboard.putData("Autonomous Chooser", this.autoChooser);
   }
