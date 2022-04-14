@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -36,6 +37,8 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putNumber("Auto Start Wait", 0.0);
     SmartDashboard.putNumber("Shooter Velocity", 0);
+
+    CameraServer.startAutomaticCapture();
   }
 
   /**
@@ -99,7 +102,7 @@ public class Robot extends TimedRobot {
     this.m_robotContainer.restartAutoExitStateCommands();
 
     m_robotContainer.limelightTurret.setPipeline(Constants.SHOOTER_LONG_PIPELINE);
-    m_robotContainer.limelightBase.setPipeline(Constants.INTAKE_DEFAULT_PIPELINE);
+    //m_robotContainer.limelightBase.setPipeline(Constants.INTAKE_DEFAULT_PIPELINE);
   }
 
   /** This function is called periodically during operator control. */

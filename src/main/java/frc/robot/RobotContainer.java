@@ -91,7 +91,7 @@ public class RobotContainer {
   private final Climber climber = Climber.getInstance();
 
   public final Limelight limelightTurret = new Limelight("limelight-turret");
-  public final Limelight limelightBase = new Limelight("liemlight-base");
+  //public final Limelight limelightBase = new Limelight("liemlight-base");
 
   //private final Compressor compressor = new Compressor(Constants.PNEUMATICS_HUB_CAN_ID, PneumaticsModuleType.CTREPCM);
 
