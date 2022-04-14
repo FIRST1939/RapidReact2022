@@ -201,7 +201,7 @@ public class RobotContainer {
     launchpad.whenPressed(new SetShot(this.shooter, SHOTS.launchpad));
 
     POVButton setVelocity = new POVButton(driverTwo, 180);
-    setVelocity.whenPressed(new SetVelocity(this.shooter, (int) SmartDashboard.getNumber("Shooter Velocity", 6750)));
+    setVelocity.whenPressed(new SetVelocity(this.shooter, (int) SmartDashboard.getNumber("Shooter Velocity", 0)));
 
     POVButton offButton = new POVButton(driverTwo, 270);
     offButton.whenPressed(new SetShot(this.shooter, SHOTS.off));
