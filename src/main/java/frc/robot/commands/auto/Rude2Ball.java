@@ -34,26 +34,29 @@ public class Rude2Ball extends SequentialCommandGroup {
             new AutoModeShooter(2, indexer, shooter).withTimeout(3.0),
             new WaitCommand(0.2),
 
-            new TurnToAngle(driveTrain, -63.5),
-            new DriveStraightDistanceNoStop(-60, driveTrain, 0.7),
+            new TurnToAngle(driveTrain, -112.5),
+            //new TurnToAngle(driveTrain, 112.5), 
+            new DriveStraightDistanceNoStop(-94.5, driveTrain, 0.7),
             new WaitCommand(0.3),
 
             new ParallelCommandGroup(
                 new ScheduleCommand(IntakeGatheringEmptyState.getInstance(intake)),
-                new DriveStraightDistance(25.5, driveTrain, 0.55)
+                new DriveStraightDistance(-25.5, driveTrain, 0.55)
             ),
 
-            new TurnToAngle(driveTrain, 78.7),
-            new DriveStraightDistanceNoStop(130, driveTrain, .8),
+            new TurnToAngle(driveTrain, -168.745),
+            //new TurnToAngle(driveTrain, 168.745),
+
+            new DriveStraightDistanceNoStop(-135, driveTrain, .8),
             new WaitCommand(0.3),
 
             new ParallelCommandGroup(
                 new ScheduleCommand(IntakeGatheringEmptyState.getInstance(intake)),
-                new DriveStraightDistance(40, driveTrain, 0.55)
+                new DriveStraightDistance(-40, driveTrain, 0.55)
             ),
 
-            new TurnToAngle(driveTrain, 105.3),
-            new DriveStraightDistanceNoStop(95, driveTrain, .7),
+            new TurnToAngle(driveTrain, 110),
+            //new DriveStraightDistanceNoStop(95, driveTrain, .7),
             new WaitCommand(0.3),
 
             new ParallelCommandGroup(
@@ -61,7 +64,7 @@ public class Rude2Ball extends SequentialCommandGroup {
                 new DriveStraightDistance(20, driveTrain, .55)
             ),
 
-            new TurnToAngle(driveTrain, -25),
+            //new TurnToAngle(driveTrain, -25),
             new AutoModeShooter(2, indexer, shooter)
         );
     }
