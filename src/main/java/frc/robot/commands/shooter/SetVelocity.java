@@ -1,26 +1,28 @@
 package frc.robot.commands.shooter;
 
+import java.util.function.IntSupplier;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
 
 public class SetVelocity extends CommandBase {
     
     private final Shooter shooter;
-    private final int velocity;
+    private final IntSupplier velocitySupplier;
 
     /**
      * @param shooter the shooter subsystem used by this command
      */
-    public SetVelocity (final Shooter shooter, final int velocity) {
+    public SetVelocity (final Shooter shooter, final IntSupplier velocitySupplier) {
 
         this.shooter = shooter;
-        this.velocity = velocity;
+        this.velocitySupplier = velocitySupplier;
     }
 
     @Override
     public void initialize () { 
 
-        this.shooter.setVelocity(this.velocity); 
+        this.shooter.setVelocity(this.velocitySupplier.getAsInt()); 
     }
 
     @Override
