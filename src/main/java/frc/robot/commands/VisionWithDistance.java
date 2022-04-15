@@ -7,6 +7,9 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.Limelight;
+import frc.robot.Constants.LEDMode;
+import frc.robot.Constants.SHOTS;
+import frc.robot.subsystems.Lights;
 import frc.robot.subsystems.Shooter;
 
 public class VisionWithDistance extends CommandBase {
@@ -23,24 +26,27 @@ public class VisionWithDistance extends CommandBase {
   }
 
   @Override
-  public void initialize() {
-    dy = limelight.getVerticalAngleError();
-  }
-
-  @Override
   public void execute() {
-
-    velocity = dy * Constants.VISION_M + Constants.VISION_B;
-    this.shooter.cargoShot((int) velocity, true);
+    if (this.shooter.getShot() == SHOTS.visionTracked) {
+      if (this.limelight.isTargetFound()) {
+        dy = this.limelight.getVerticalAngleError();
+        // TODO put the proper velocity function in here.
+        velocity = dy * Constants.VISION_M + Constants.VISION_B;
+        this.shooter.cargoShot((int) velocity, true);
+      } else {
+        Lights.getInstance().setColor(LEDMode.RED);
+      }
+    }
   }
-
-
+  
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    Lights.getInstance().setColor(LEDMode.CONFETTI);
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return this.shooter.getShot() != SHOTS.visionTracked;
   }
 }
