@@ -15,9 +15,9 @@ import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 
-public class Rude21Ball extends SequentialCommandGroup {
+public class Auto2withrude1ball extends SequentialCommandGroup {
 
-    public Rude21Ball (final DriveTrain driveTrain, final Intake intake, final Indexer indexer, final Shooter shooter, final Limelight limelight) {
+    public Auto2withrude1ball (final DriveTrain driveTrain, final Intake intake, final Indexer indexer, final Shooter shooter, final Limelight limelight) {
 
 
     addCommands(
@@ -54,8 +54,6 @@ public class Rude21Ball extends SequentialCommandGroup {
         ),
 
         new AutoModeShooter(1, indexer, shooter)
-
-
         )
     }
 }
