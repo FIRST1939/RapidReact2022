@@ -54,6 +54,6 @@ public class Auto2withrude1ball extends SequentialCommandGroup {
         ),
 
         new AutoModeShooter(1, indexer, shooter)
-        )
+        );
     }
 }
