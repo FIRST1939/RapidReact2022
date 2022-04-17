@@ -22,7 +22,7 @@ public class SetVelocity extends CommandBase {
     @Override
     public void initialize () { 
 
-        this.shooter.setVelocity(this.velocitySupplier.getAsInt()); 
+        this.shooter.cargoShot(this.velocitySupplier.getAsInt(), false); 
     }
 
     @Override

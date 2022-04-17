@@ -81,7 +81,7 @@ public class Shooter extends SubsystemBase {
 
     public void idle () { 
 
-        setVelocity(Constants.SHOTS.idle.velocity);
+        this.cargoShot(Constants.SHOTS.idle);
     }
 
     private void setHood (final boolean hood) { 
@@ -89,7 +89,7 @@ public class Shooter extends SubsystemBase {
         shooterSolenoid.set(hood); 
     }
     
-    public void setVelocity(int velocity) {
+    private void setVelocity(int velocity) {
         if (velocity >= 0) {
             if (lastSetVelocity != velocity) {
                 shooterFlywheel.set(ControlMode.Velocity, velocity);
