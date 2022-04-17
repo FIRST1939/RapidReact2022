@@ -90,12 +90,14 @@ public class Shooter extends SubsystemBase {
     }
     
     public void setVelocity(int velocity) {
-        if (lastSetVelocity != velocity) {
-            shooterFlywheel.set(ControlMode.Velocity, velocity);
-            this.lastSetVelocity = velocity;
-            this.velocityInRangeCount = 0;
+        if (velocity >= 0) {
+            if (lastSetVelocity != velocity) {
+                shooterFlywheel.set(ControlMode.Velocity, velocity);
+                this.lastSetVelocity = velocity;
+                this.velocityInRangeCount = 0;
+            }
+            Lights.getInstance().setColor(LEDMode.CONFETTI);
         }
-        Lights.getInstance().setColor(LEDMode.CONFETTI);
     }
 
     @Override
