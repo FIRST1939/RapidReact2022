@@ -29,6 +29,7 @@ import frc.robot.commands.RumbleController;
 import frc.robot.commands.SlowlyDrive;
 import frc.robot.commands.ToggleIntakeIndexerManualMode;
 import frc.robot.commands.ToggleManualEjection;
+import frc.robot.commands.VisionWithDistance;
 import frc.robot.commands.auto.Auto4Ball;
 import frc.robot.commands.auto.CargoRingTwoBall;
 import frc.robot.commands.auto.DriveStraightDistance;
@@ -201,6 +202,9 @@ public class RobotContainer {
 
     JoystickButton fenderPlusOneHigh = new JoystickButton(driverTwo, XboxController.Button.kX.value);
     fenderPlusOneHigh.whenPressed(new SetShot(this.shooter, SHOTS.fenderPlusOneHigh));
+
+    JoystickButton visionTracked = new JoystickButton(driverTwo, XboxController.Button.kRightStick.value);
+    visionTracked.whenPressed(new SetShot(this.shooter, SHOTS.visionTracked).andThen(new VisionWithDistance(shooter, limelightTurret)));
 
     POVButton cargoRing =  new POVButton(driverTwo, 0); //0 is up, 90 is right, 180 is down, and 270 is left
     cargoRing.whenPressed(new SetShot(this.shooter, SHOTS.cargoRing));
