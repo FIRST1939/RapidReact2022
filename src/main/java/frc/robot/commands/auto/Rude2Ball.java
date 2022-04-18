@@ -42,7 +42,7 @@ public class Rude2Ball extends SequentialCommandGroup {
                 new DriveStraightDistance(-60.6, driveTrain, 0.5)
             ),
 
-            new TurnToAngle(driveTrain, 348.6),
+            new TurnToAngle(driveTrain, 168.6),
 
             new ParallelCommandGroup(
                 new ScheduleCommand(IntakeGatheringEmptyState.getInstance(intake)),
@@ -50,7 +50,7 @@ public class Rude2Ball extends SequentialCommandGroup {
                 new SetShot(shooter, Constants.SHOTS.fenderLow)
             ),
 
-            new TurnToAngle(driveTrain, -306.5),
+            new TurnToAngle(driveTrain, -126.5),
             new DriveStraightDistance(-89.7, driveTrain, 0.4),
 
             new TurnToAngle(driveTrain, 15.9),
