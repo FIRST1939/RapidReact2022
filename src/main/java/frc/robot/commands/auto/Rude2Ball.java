@@ -25,47 +25,36 @@ public class Rude2Ball extends SequentialCommandGroup {
 
             new ParallelCommandGroup(
                 new ScheduleCommand(IntakeGatheringEmptyState.getInstance(intake)),
-                new DriveStraightDistance(-45, driveTrain, 0.5),
+                new DriveStraightDistance(-61, driveTrain, 0.5),
                 new SetShot(shooter, Constants.SHOTS.cargoRing)
             ),
 
+            new DriveStraightDistance(17.1, driveTrain, 0.4),
             new ManualTurnToTarget(driveTrain, limelight, 0).withTimeout(1.0),
             new WaitCommand(0.15),
             new AutoModeShooter(2, indexer, shooter).withTimeout(3.0),
             new WaitCommand(0.2),
 
-            new TurnToAngle(driveTrain, -112.5),
-            //new TurnToAngle(driveTrain, 112.5), 
-            new DriveStraightDistanceNoStop(-94.5, driveTrain, 0.7),
-            new WaitCommand(0.3),
+            new TurnToAngle(driveTrain, -68.2),
 
             new ParallelCommandGroup(
                 new ScheduleCommand(IntakeGatheringEmptyState.getInstance(intake)),
-                new DriveStraightDistance(-25.5, driveTrain, 0.55)
+                new DriveStraightDistance(-60.6, driveTrain, 0.5)
             ),
 
-            new TurnToAngle(driveTrain, -168.745),
-            //new TurnToAngle(driveTrain, 168.745),
-
-            new DriveStraightDistanceNoStop(-135, driveTrain, .8),
-            new WaitCommand(0.3),
+            new TurnToAngle(driveTrain, 348.6),
 
             new ParallelCommandGroup(
                 new ScheduleCommand(IntakeGatheringEmptyState.getInstance(intake)),
-                new DriveStraightDistance(-40, driveTrain, 0.55)
+                new DriveStraightDistance(-160.65, driveTrain, 0.5),
+                new SetShot(shooter, Constants.SHOTS.fenderLow)
             ),
 
-            new TurnToAngle(driveTrain, 110),
-            //new DriveStraightDistanceNoStop(95, driveTrain, .7),
-            new WaitCommand(0.3),
+            new TurnToAngle(driveTrain, -306.5),
+            new DriveStraightDistance(-89.7, driveTrain, 0.4),
 
-            new ParallelCommandGroup(
-                new SetShot(shooter, Constants.SHOTS.fenderLow),
-                new DriveStraightDistance(20, driveTrain, .55)
-            ),
-
-            //new TurnToAngle(driveTrain, -25),
-            new AutoModeShooter(2, indexer, shooter)
+            new TurnToAngle(driveTrain, 15.9),
+            new AutoModeShooter(2, indexer, shooter).withTimeout(3.0)
         );
     }
 }
