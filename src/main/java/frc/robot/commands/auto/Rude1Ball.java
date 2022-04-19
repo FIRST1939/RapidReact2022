@@ -15,9 +15,9 @@ import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 
-public class Auto2withrude1ball extends SequentialCommandGroup {
+public class Rude1Ball extends SequentialCommandGroup {
 
-    public Auto2withrude1ball (final DriveTrain driveTrain, final Intake intake, final Indexer indexer, final Shooter shooter, final Limelight limelight) {
+    public Rude1Ball (final DriveTrain driveTrain, final Intake intake, final Indexer indexer, final Shooter shooter, final Limelight limelight) {
 
 
     addCommands(
@@ -37,12 +37,12 @@ public class Auto2withrude1ball extends SequentialCommandGroup {
 
         //after shoot 2ball 
         new TurnToAngle(driveTrain, 101.25),
-            new DriveStraightDistanceNoStop(-40, driveTrain, 0.7),
+            new DriveStraightDistanceNoStop(-50, driveTrain, 0.5),
             new WaitCommand(0.3),
 
         new ParallelCommandGroup(
             new ScheduleCommand(IntakeGatheringEmptyState.getInstance(intake)),
-            new DriveStraightDistance(-20, driveTrain, 0.55)
+            new DriveStraightDistance(-10, driveTrain, 0.4)
         ),
 
         new TurnToAngle(driveTrain, 133.5),
