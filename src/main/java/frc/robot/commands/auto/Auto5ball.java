@@ -62,7 +62,7 @@ public class Auto5Ball extends SequentialCommandGroup {
         new TurnToAngle(driveTrain, -106.42),
         new ManualTurnToTarget(driveTrain, limelight, 0).withTimeout(1.0),
         new ManualMoveToTarget(driveTrain, limelight, 0).withTimeout(1.5),
-        new AutoModeShooter(2, indexer, shooter).withTimeout(2.0)
+        new AutoModeShooter(2, indexer, shooter).withTimeout(2.0),
 
         //after shoot 4ball        
         new ParallelCommandGroup(
