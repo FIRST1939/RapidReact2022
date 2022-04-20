@@ -23,18 +23,4 @@ public class ClimbToSecond extends SequentialCommandGroup {
             new GetToPosition(this.climber, rumbleController, Constants.CLIMBER_POSITIONS.bottom)
         );
     }
-
-    @Override
-    public void initialize () {
-        this.climber.setIsCommandRunning(true);
-    }
-
-    @Override
-    public boolean isFinished(){
-        if(climber.isCommandRunning()){
-            return true;
-        } else{
-            return false;
-        }
-    }
 }

@@ -23,8 +23,6 @@ public class Climber extends SubsystemBase {
 
     private boolean isPistonExtended = false;
 
-    private boolean isCommandRunning = false;
-
     // Creates a new climber.
     private Climber () {
 
@@ -95,13 +93,5 @@ public class Climber extends SubsystemBase {
     public boolean isPistonExtended () {
 
         return this.isPistonExtended;
-    }
-
-    public boolean isCommandRunning(){
-        return isCommandRunning;
-    }
-
-    public void setIsCommandRunning(boolean bool){
-        isCommandRunning = bool;
     }
 }

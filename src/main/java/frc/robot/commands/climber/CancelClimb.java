@@ -1,19 +1,23 @@
 package frc.robot.commands.climber;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Climber;
 
 public class CancelClimb extends CommandBase {
+    
+    private final CommandBase commandOne;
+    private final CommandBase commandTwo;
 
-    private final Climber climber;;
+    public CancelClimb (final CommandBase commandOne, final CommandBase commandTwo) {
 
-    public CancelClimb (final Climber climber) {
-        this.climber = climber;
+        this.commandOne = commandOne;
+        this.commandTwo = commandTwo;
     }
 
     @Override
-    public void initialize () {
-        climber.setIsCommandRunning(false);
+    public void execute () {
+
+        this.commandOne.cancel();
+        this.commandTwo.cancel();
     }
 
     @Override
