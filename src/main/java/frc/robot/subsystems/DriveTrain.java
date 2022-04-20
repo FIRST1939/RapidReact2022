@@ -185,7 +185,7 @@ public class DriveTrain extends SubsystemBase {
     } else if (Math.abs(sidewind) < Constants.SIDEWINDER_DISABLE_THRESHOLD) {
       this.sidewinderSolenoid.set(false);
     }
-    double arcadeRotation = 0.85 * rotation;
+    double arcadeRotation = 0.7 * rotation;
     if (this.sidewinderSolenoid.get()) {
       sidewinderMotor.set(
           ControlMode.PercentOutput,

@@ -48,7 +48,7 @@ public class Auto4Ball extends SequentialCommandGroup {
         new AutoModeShooter(2, indexer, shooter).withTimeout(3.0),
         new WaitCommand(0.2),
         // new DriveTurnToRelativeAngle(() -> 26, driveTrain).withTimeout(1.0),
-        new TurnToAngle(driveTrain, 31),
+        new TurnToAngle(driveTrain, 30),
         new DriveStraightDistanceNoStop(-14, driveTrain, 0.55),
         new ParallelCommandGroup(
           new ScheduleCommand(IntakeGatheringEmptyState.getInstance(intake)),
