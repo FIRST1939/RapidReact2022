@@ -287,7 +287,7 @@ public class RobotContainer {
     climbToThirdButton.whenPressed(climbToThird);
 
     JoystickButton cancelClimbButton = new JoystickButton(leftStick, 5);
-    cancelClimbButton.whenPressed(new CancelClimb(climbToSecond, climbToThird));
+    cancelClimbButton.whenPressed(new CancelClimb(climber));
     
     JoystickButton climberMotorPartialPositionExtend = new JoystickButton(rightStick, 6);
     climberMotorPartialPositionExtend.whenPressed(new GetToPosition(this.climber, rumbleController, Constants.CLIMBER_POSITIONS.partial));
