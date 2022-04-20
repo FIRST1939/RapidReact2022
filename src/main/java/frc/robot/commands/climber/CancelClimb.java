@@ -22,7 +22,6 @@ public class CancelClimb extends CommandBase {
 
     @Override
     public boolean isFinished () {
-
         return true;
     }
 }
