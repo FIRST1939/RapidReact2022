@@ -71,7 +71,7 @@ public class Auto5Ball extends SequentialCommandGroup {
             new SetShot(shooter, Constants.SHOTS.cargoRing)),
         new ManualTurnToTarget(driveTrain, limelight, 0),
         new ManualMoveToTarget(driveTrain, limelight, 0),
-        new AutoModeShooter(1, indexer, shooter).withTimeout(3.0),
+        new AutoModeShooter(1, indexer, shooter).withTimeout(3.0)
     );
 
   }
