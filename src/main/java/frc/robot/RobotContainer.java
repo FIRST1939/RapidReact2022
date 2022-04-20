@@ -31,6 +31,7 @@ import frc.robot.commands.ToggleIntakeIndexerManualMode;
 import frc.robot.commands.ToggleManualEjection;
 import frc.robot.commands.VisionWithDistance;
 import frc.robot.commands.auto.Auto4Ball;
+import frc.robot.commands.auto.Auto5Ball;
 import frc.robot.commands.auto.CargoRingTwoBall;
 import frc.robot.commands.auto.DriveStraightDistance;
 import frc.robot.commands.auto.DriveStraightDistanceNoStop;
@@ -134,10 +135,11 @@ public class RobotContainer {
     //this.autoChooser.addOption("Right 2 Cargo", () -> new RightSide2CargoNoTrajectory(driveTrain, intake, indexer, shooter));
     //this.autoChooser.addOption("Right 3 Cargo", () -> new RightSide3CargoNoTrajectory(driveTrain, intake, indexer, shooter));
     this.autoChooser.addOption("One Ball", () -> new OneBall(shooter, indexer, driveTrain, limelightTurret));
-    this.autoChooser.addOption("Cargo Ring Two Ball", () -> new CargoRingTwoBall(driveTrain, intake, indexer, shooter, limelightTurret));
-    this.autoChooser.setDefaultOption("4 Ball", () -> new Auto4Ball(driveTrain, intake, indexer, shooter, limelightTurret));
+    this.autoChooser.setDefaultOption("Cargo Ring Two Ball", () -> new CargoRingTwoBall(driveTrain, intake, indexer, shooter, limelightTurret));
+    this.autoChooser.addOption("4 Ball", () -> new Auto4Ball(driveTrain, intake, indexer, shooter, limelightTurret));
     this.autoChooser.addOption("Rude 2 Ball", () -> new Rude2Ball(driveTrain, intake, indexer, shooter, limelightTurret));
     this.autoChooser.addOption("Rude 1 Ball", () -> new Rude1Ball(driveTrain, intake, indexer, shooter, limelightTurret));
+    this.autoChooser.addOption("5 Ball", () -> new Auto5Ball(driveTrain, intake, indexer, shooter, limelightTurret));
 
     SmartDashboard.putData("Autonomous Chooser", this.autoChooser);
   }
