@@ -131,11 +131,11 @@ public class RobotContainer {
   private void configureAutoChooser() {
     //this.autoChooser.setDefaultOption("PlusOne Two Ball", () -> new PlusOneTwoBall(driveTrain, intake, indexer, shooter, limelightTurret));
     //this.autoChooser.setDefaultOption("Left 2 Cargo", () -> new LeftSide2CargoNoTrajectory(driveTrain, intake, indexer, shooter));
-    this.autoChooser.addOption("Do Nothing", () -> new WaitCommand(1.0));
+    this.autoChooser.setDefaultOption("Do Nothing", () -> new WaitCommand(1.0));
     //this.autoChooser.addOption("Right 2 Cargo", () -> new RightSide2CargoNoTrajectory(driveTrain, intake, indexer, shooter));
     //this.autoChooser.addOption("Right 3 Cargo", () -> new RightSide3CargoNoTrajectory(driveTrain, intake, indexer, shooter));
     this.autoChooser.addOption("One Ball", () -> new OneBall(shooter, indexer, driveTrain, limelightTurret));
-    this.autoChooser.setDefaultOption("Cargo Ring Two Ball", () -> new CargoRingTwoBall(driveTrain, intake, indexer, shooter, limelightTurret));
+    this.autoChooser.addOption("Cargo Ring Two Ball", () -> new CargoRingTwoBall(driveTrain, intake, indexer, shooter, limelightTurret));
     this.autoChooser.addOption("4 Ball", () -> new Auto4Ball(driveTrain, intake, indexer, shooter, limelightTurret));
     this.autoChooser.addOption("Rude 2 Ball", () -> new Rude2Ball(driveTrain, intake, indexer, shooter, limelightTurret));
     this.autoChooser.addOption("Rude 1 Ball", () -> new Rude1Ball(driveTrain, intake, indexer, shooter, limelightTurret));
