@@ -82,7 +82,7 @@ public final class Constants {
         fenderHigh(5300, false),
         fenderPlusOneLow(4200, true),
         fenderPlusOneHigh(6500, true),
-        cargoRing(6750, true),
+        cargoRing(6850, true),
         wallShot(7600, true),
         launchpad(8050, true);
 
@@ -167,8 +167,8 @@ public final class Constants {
 
     public static final int INTAKE_DEFAULT_PIPELINE = 0;
 
-    public static final double VISION_M = 0;
-    public static final double VISION_B = 0;
+    public static final double VISION_M = -1500.0/11.0;
+    public static final double VISION_B = 81050.0/11.0;
   
     //all these are mostly in red color
     public enum LEDMode{

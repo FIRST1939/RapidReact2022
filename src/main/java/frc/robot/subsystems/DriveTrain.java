@@ -167,9 +167,13 @@ public class DriveTrain extends SubsystemBase {
   public void arcadeDrive(double speed, final double rotation, final double sidewind) {
 
     double arcadeSpeed = speed;
+    double arcadeRotation = 0.7 * rotation;
+
     if (this.speedLimit.get()) { 
       arcadeSpeed /= 2; 
+      //arcadeRotation *= 0.7;
     }
+  
 
     // Sidewind above threshold, disengage below, leave as is in gap.
     if ((Math.abs(sidewind) > Constants.SIDEWINDER_ENABLE_THRESHOLD) || this.sidewinderOverride.getAsBoolean()) {
@@ -185,7 +189,7 @@ public class DriveTrain extends SubsystemBase {
     } else if (Math.abs(sidewind) < Constants.SIDEWINDER_DISABLE_THRESHOLD) {
       this.sidewinderSolenoid.set(false);
     }
-    double arcadeRotation = 0.7 * rotation;
+
     if (this.sidewinderSolenoid.get()) {
       sidewinderMotor.set(
           ControlMode.PercentOutput,
@@ -301,7 +305,7 @@ public class DriveTrain extends SubsystemBase {
   private void motorConfig(final CANSparkMax motor) {
     motor.restoreFactoryDefaults();
     motor.setIdleMode(IdleMode.kBrake);
-    motor.setOpenLoopRampRate(0.5);
+    motor.setOpenLoopRampRate(0.25);
     // TODO determine and set current limit.
   }
 }

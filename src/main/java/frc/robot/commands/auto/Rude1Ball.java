@@ -37,20 +37,20 @@ public class Rude1Ball extends SequentialCommandGroup {
 
         //after shoot 2ball 
         new TurnToAngle(driveTrain, 101.25),
-            new DriveStraightDistanceNoStop(-50, driveTrain, 0.5),
-            new WaitCommand(0.3),
-
-        new ParallelCommandGroup(
-            new ScheduleCommand(IntakeGatheringEmptyState.getInstance(intake)),
-            new DriveStraightDistance(-10, driveTrain, 0.4)
-        ),
-
-        new TurnToAngle(driveTrain, 133.5),
+        new ScheduleCommand(IntakeGatheringEmptyState.getInstance(intake)),
+        new DriveStraightDistanceNoStop(-55, driveTrain, 0.5),
         new WaitCommand(0.3),
 
         new ParallelCommandGroup(
-            new SetShot(shooter, Constants.SHOTS.fenderLow),
-            new DriveStraightDistance(20, driveTrain, .55)
+            new DriveStraightDistance(-10, driveTrain, 0.4)
+        ),
+
+        new TurnToAngle(driveTrain, 46.5),
+        new WaitCommand(0.3),
+
+        new ParallelCommandGroup(
+            new SetShot(shooter, Constants.SHOTS.fenderPlusOneLow)
+            //new DriveStraightDistance(20, driveTrain, .55)
         ),
 
         new AutoModeShooter(1, indexer, shooter)

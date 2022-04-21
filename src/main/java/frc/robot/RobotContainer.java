@@ -91,10 +91,10 @@ public class RobotContainer {
   private final XboxController driverTwo = new XboxController(Constants.DRIVER2_CONTROLLER_PORT);
 
   // The robot's subsystems and commands are defined here...
-  // private final JoystickButton sidewinderManualDeploy = new JoystickButton(leftStick, 6);
+  JoystickButton sidewinderManualDeploy = new JoystickButton(leftStick, 6);
   // private final DriveTrain driveTrain = new DriveTrain(() -> sidewinderManualDeploy.get());
-  JoystickButton manualSlowlyDriveButton = new JoystickButton(leftStick, 6);
-  private final DriveTrain driveTrain = new DriveTrain(() -> false, manualSlowlyDriveButton);
+  JoystickButton manualSlowlyDriveButton = new JoystickButton(leftStick, 7);
+  private final DriveTrain driveTrain = new DriveTrain(() -> sidewinderManualDeploy.get(), manualSlowlyDriveButton);
   private final RobotCargoCount robotCargoCount = RobotCargoCount.getInstance();
   private final Intake intake = new Intake(() -> this.driveTrain.getRate());
   private final Indexer indexer = new Indexer(() -> isIntakeSendingCargo());
@@ -209,6 +209,7 @@ public class RobotContainer {
 
     JoystickButton visionTracked = new JoystickButton(driverTwo, XboxController.Button.kRightStick.value);
     visionTracked.whenPressed(new SetShot(this.shooter, SHOTS.visionTracked).andThen(new VisionWithDistance(shooter, limelightTurret)));
+    //visionTracked.whileHeld(new VisionWithDistance(shooter, limelightTurret));
 
     POVButton cargoRing =  new POVButton(driverTwo, 0); //0 is up, 90 is right, 180 is down, and 270 is left
     cargoRing.whenPressed(new SetShot(this.shooter, SHOTS.cargoRing));
