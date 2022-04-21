@@ -158,7 +158,7 @@ public final class Constants {
     public static final int PNEUMATICS_HUB_MAX_PRESSURE = 120;
 
     //Lights constants.
-    public static final int LIGHTS_PWM = 1;
+    public static final int LIGHTS_PWM = 2;
 
     //Vision constants.
     public static final int SHOOTER_LONG_PIPELINE = 0;

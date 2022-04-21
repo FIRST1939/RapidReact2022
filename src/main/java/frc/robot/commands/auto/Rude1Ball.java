@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.Limelight;
 import frc.robot.commands.ManualTurnToTarget;
+import frc.robot.commands.ToggleManualEjection;
 import frc.robot.commands.intake.IntakeGatheringEmptyState;
 import frc.robot.commands.shooter.SetShot;
 import frc.robot.subsystems.DriveTrain;
@@ -45,15 +46,21 @@ public class Rude1Ball extends SequentialCommandGroup {
             new DriveStraightDistance(-10, driveTrain, 0.4)
         ),
 
-        new TurnToAngle(driveTrain, 46.5),
+        new TurnToAngle(driveTrain, -133.5),
+        //new TurnToAngle(driveTrain, 46.5),
         new WaitCommand(0.3),
 
+        /*
         new ParallelCommandGroup(
             new SetShot(shooter, Constants.SHOTS.fenderPlusOneLow)
             //new DriveStraightDistance(20, driveTrain, .55)
         ),
+        */
 
-        new AutoModeShooter(1, indexer, shooter)
+        new ToggleManualEjection(intake, indexer),
+        new WaitCommand(1.5),
+        new ToggleManualEjection(intake, indexer)
+        //new AutoModeShooter(1, indexer, shooter)
         );
     }
 }
