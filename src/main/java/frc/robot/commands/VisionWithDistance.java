@@ -19,10 +19,16 @@ public class VisionWithDistance extends CommandBase {
 
   private double dy;
   private double velocity;
+  private double lastVelocitySentToShooter;
 
   public VisionWithDistance(final Shooter shooter, final Limelight limelight) {
     this.shooter = shooter;
     this.limelight = limelight;
+  }
+
+  @Override
+  public void initialize() {
+    this.lastVelocitySentToShooter = 0;
   }
 
   @Override
@@ -32,7 +38,17 @@ public class VisionWithDistance extends CommandBase {
         dy = this.limelight.getVerticalAngleError();
         // TODO put the proper velocity function in here.
         velocity = dy * Constants.VISION_M + Constants.VISION_B;
-        this.shooter.cargoShot((int) velocity, true);
+
+        // I have no idea if 2% change is the right amount of change
+        // to trigger setting the velocity and restarting the periodic
+        // check to see if the shooter it ready. But it is half the
+        // current error checked in the shooter, so seemed like a
+        // reasonable first try. If it still does not shoot, relax
+        // this a bit more. Perhaps 3% or 4% (same as error tolerance).
+        if (Math.abs(this.lastVelocitySentToShooter - velocity) > this.lastVelocitySentToShooter * 0.02) {
+          this.shooter.cargoShot((int) velocity, true);
+          this.lastVelocitySentToShooter = velocity;
+        }
       } else {
         Lights.getInstance().setColor(LEDMode.RED);
       }
