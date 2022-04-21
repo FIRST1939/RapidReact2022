@@ -29,7 +29,8 @@ public class OneBall extends SequentialCommandGroup {
       new WaitCommand(0.5),
       new ManualTurnToTarget(driveTrain, limelight, 0),
       new WaitCommand(0.5),
-      new ManualMoveToTarget(driveTrain, limelight, 0),
+      new DriveStraightDistance(5, driveTrain, 0.5),
+      //new ManualMoveToTarget(driveTrain, limelight, 0),
       new WaitCommand(1.0),
       new AutoModeShooter(1, indexer, shooter).withTimeout(3.0),
         // Do not drive until second shot has cleared shooter.
