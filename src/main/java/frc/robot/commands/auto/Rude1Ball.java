@@ -9,6 +9,7 @@ import frc.robot.Constants;
 import frc.robot.Limelight;
 import frc.robot.commands.ManualMoveAndTurnToTarget;
 import frc.robot.commands.ManualTurnToTarget;
+import frc.robot.commands.ResetGyro;
 import frc.robot.commands.RumbleController;
 import frc.robot.commands.ToggleManualEjection;
 import frc.robot.commands.intake.IntakeGatheringEmptyState;
@@ -43,9 +44,11 @@ public class Rude1Ball extends SequentialCommandGroup {
         new ScheduleCommand(IntakeGatheringEmptyState.getInstance(intake)),
         new DriveStraightDistanceNoStop(-55, driveTrain, 0.5),
         new WaitCommand(0.3),
+        new ResetGyro(driveTrain),
+        new WaitCommand(0.5),
 
-        new TurnToAngle(driveTrain, -138),
-        //new TurnToAngle(driveTrain, 46.5),
+        //new TurnToAngle(driveTrain, -115),
+        new TurnToAngle(driveTrain, -35.0),
         new WaitCommand(0.3),
 
         /*

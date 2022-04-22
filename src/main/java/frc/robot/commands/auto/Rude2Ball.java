@@ -9,6 +9,7 @@ import frc.robot.Constants;
 import frc.robot.Limelight;
 import frc.robot.commands.ManualMoveAndTurnToTarget;
 import frc.robot.commands.ManualTurnToTarget;
+import frc.robot.commands.ResetGyro;
 import frc.robot.commands.RumbleController;
 import frc.robot.commands.ToggleManualEjection;
 import frc.robot.commands.intake.IntakeGatheringEmptyState;
@@ -47,12 +48,14 @@ public class Rude2Ball extends SequentialCommandGroup {
                 new DriveStraightDistance(-50, driveTrain, 0.5)
             ),
 
-            new TurnToAngle(driveTrain, 191),
+            new TurnToAngle(driveTrain, 180),
+
+            new ResetGyro(driveTrain),
 
             new WaitCommand(0.2),
 
             //ERROR HAPPENS HERE AFTER TURNTOANGLE
-            new DriveStraightDistance(-150.65, driveTrain, 0.65),
+            new DriveStraightDistance(-140.65, driveTrain, 0.65),
 
             new ParallelCommandGroup(
                 new ScheduleCommand(IntakeGatheringEmptyState.getInstance(intake)),
@@ -60,10 +63,10 @@ public class Rude2Ball extends SequentialCommandGroup {
                 new SetShot(shooter, Constants.SHOTS.fenderLow)
             ),
 
-            new TurnToAngle(driveTrain, -67.5),
+            new TurnToAngle(driveTrain, -35.0),
             
             new ToggleManualEjection(intake, indexer),
-            new WaitCommand(1.5),
+            new WaitCommand(2.0),
             new ToggleManualEjection(intake, indexer)
         );
     }
