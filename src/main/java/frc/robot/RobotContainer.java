@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants.SHOTS;
 import frc.robot.commands.DriveWithInput;
 import frc.robot.commands.LightsUpdater;
+import frc.robot.commands.ManualMoveAndTurnToTarget;
 import frc.robot.commands.ManualMoveToTarget;
 import frc.robot.commands.ManualTurnToTarget;
 import frc.robot.commands.RumbleController;
@@ -100,8 +101,9 @@ public class RobotContainer {
   private final Indexer indexer = new Indexer(() -> isIntakeSendingCargo());
   private final Shooter shooter = Shooter.getInstance();
   private final Climber climber = Climber.getInstance();
-
   public final Limelight limelightTurret = new Limelight("limelight-turret");
+  public final RumbleController rumbleController = new RumbleController(this.driverTwo);
+
   //public final Limelight limelightBase = new Limelight("liemlight-base");
 
   //private final Compressor compressor = new Compressor(Constants.PNEUMATICS_HUB_CAN_ID, PneumaticsModuleType.CTREPCM);
@@ -131,15 +133,15 @@ public class RobotContainer {
   private void configureAutoChooser() {
     //this.autoChooser.setDefaultOption("PlusOne Two Ball", () -> new PlusOneTwoBall(driveTrain, intake, indexer, shooter, limelightTurret));
     //this.autoChooser.setDefaultOption("Left 2 Cargo", () -> new LeftSide2CargoNoTrajectory(driveTrain, intake, indexer, shooter));
-    this.autoChooser.setDefaultOption("Do Nothing", () -> new WaitCommand(1.0));
+    this.autoChooser.addOption("Do Nothing", () -> new WaitCommand(1.0));
     //this.autoChooser.addOption("Right 2 Cargo", () -> new RightSide2CargoNoTrajectory(driveTrain, intake, indexer, shooter));
     //this.autoChooser.addOption("Right 3 Cargo", () -> new RightSide3CargoNoTrajectory(driveTrain, intake, indexer, shooter));
-    this.autoChooser.addOption("One Ball", () -> new OneBall(shooter, indexer, driveTrain, limelightTurret));
-    this.autoChooser.addOption("Cargo Ring Two Ball", () -> new CargoRingTwoBall(driveTrain, intake, indexer, shooter, limelightTurret));
-    this.autoChooser.addOption("4 Ball", () -> new Auto4Ball(driveTrain, intake, indexer, shooter, limelightTurret));
-    this.autoChooser.addOption("Rude 2 Ball", () -> new Rude2Ball(driveTrain, intake, indexer, shooter, limelightTurret));
-    this.autoChooser.addOption("Rude 1 Ball", () -> new Rude1Ball(driveTrain, intake, indexer, shooter, limelightTurret));
-    this.autoChooser.addOption("5 Ball", () -> new Auto5Ball(driveTrain, intake, indexer, shooter, limelightTurret));
+    this.autoChooser.setDefaultOption("One Ball", () -> new OneBall(shooter, indexer, driveTrain, limelightTurret, rumbleController));
+    this.autoChooser.addOption("Cargo Ring Two Ball", () -> new CargoRingTwoBall(driveTrain, intake, indexer, shooter, limelightTurret, rumbleController));
+    this.autoChooser.addOption("4 Ball", () -> new Auto4Ball(driveTrain, intake, indexer, shooter, limelightTurret, rumbleController));
+    this.autoChooser.addOption("Rude 2 Ball", () -> new Rude2Ball(driveTrain, intake, indexer, shooter, limelightTurret, rumbleController));
+    this.autoChooser.addOption("Rude 1 Ball", () -> new Rude1Ball(driveTrain, intake, indexer, shooter, limelightTurret, rumbleController));
+    this.autoChooser.addOption("5 Ball", () -> new Auto5Ball(driveTrain, intake, indexer, shooter, limelightTurret, rumbleController));
 
     SmartDashboard.putData("Autonomous Chooser", this.autoChooser);
   }
@@ -187,10 +189,10 @@ public class RobotContainer {
     // turnToAngleSecondary.whenPressed(new TurnToAngle(driveTrain, -180));
 
     JoystickButton manualTurnToTargetLong = new JoystickButton(rightStick, 10);
-    manualTurnToTargetLong.whenPressed(new ManualTurnToTarget(driveTrain, limelightTurret, 0));
+    manualTurnToTargetLong.whenPressed(new ManualTurnToTarget(driveTrain, limelightTurret, 0, rumbleController));
 
     JoystickButton manualMoveToTargetLong = new JoystickButton(rightStick, 11);
-    manualMoveToTargetLong.whenPressed(new ManualMoveToTarget(driveTrain, limelightTurret, 0));
+    manualMoveToTargetLong.whenPressed(new ManualMoveAndTurnToTarget(driveTrain, limelightTurret, 0, rumbleController));
 
     // manualSlowlyDriveButton.whileHeld(new SlowlyDrive(this.driveTrain));
 
@@ -272,8 +274,6 @@ public class RobotContainer {
 
     JoystickButton climberPistonExtend = new JoystickButton(rightStick, 5);
     climberPistonExtend.whenPressed(new SetPiston(this.climber, (Boolean) true));
-
-    RumbleController rumbleController = new RumbleController(this.driverTwo);
 
     ClimbToSecond climbToSecond = new ClimbToSecond(this.climber, rumbleController);
     ClimbToThird climbToThird = new ClimbToThird(this.climber, rumbleController);

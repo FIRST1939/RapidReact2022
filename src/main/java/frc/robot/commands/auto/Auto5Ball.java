@@ -8,6 +8,7 @@ import frc.robot.Constants;
 import frc.robot.Limelight;
 import frc.robot.commands.ManualMoveToTarget;
 import frc.robot.commands.ManualTurnToTarget;
+import frc.robot.commands.RumbleController;
 import frc.robot.commands.intake.IntakeGatheringEmptyState;
 import frc.robot.commands.shooter.SetShot;
 import frc.robot.subsystems.DriveTrain;
@@ -28,7 +29,8 @@ public class Auto5Ball extends SequentialCommandGroup {
       final Intake intake,
       final Indexer indexer,
       final Shooter shooter,
-      final Limelight limelight) {
+      final Limelight limelight,
+      final RumbleController rumbleController) {
     addCommands(
 
         // Configurable wait for alliance partner.
@@ -38,7 +40,7 @@ public class Auto5Ball extends SequentialCommandGroup {
             new ScheduleCommand(IntakeGatheringEmptyState.getInstance(intake)),
             new DriveStraightDistance(-48, driveTrain, 0.5),
             new SetShot(shooter, Constants.SHOTS.cargoRing)),
-        new ManualTurnToTarget(driveTrain, limelight, 0).withTimeout(1.0),
+        new ManualTurnToTarget(driveTrain, limelight, 0, rumbleController).withTimeout(1.0),
         new WaitCommand(0.15),
         new AutoModeShooter(2, indexer, shooter).withTimeout(3.0),
         new WaitCommand(0.2),
@@ -60,8 +62,8 @@ public class Auto5Ball extends SequentialCommandGroup {
         new DriveStraightDistance(16, driveTrain, 0.5),
         new WaitCommand(0.3),
         new TurnToAngle(driveTrain, -106.42),
-        new ManualTurnToTarget(driveTrain, limelight, 0).withTimeout(1.0),
-        new ManualMoveToTarget(driveTrain, limelight, 0).withTimeout(1.5),
+        new ManualTurnToTarget(driveTrain, limelight, 0, rumbleController).withTimeout(1.0),
+        new ManualMoveToTarget(driveTrain, limelight, 0, rumbleController).withTimeout(1.5),
         new AutoModeShooter(2, indexer, shooter).withTimeout(2.0),
 
         //after shoot 4ball        
@@ -69,8 +71,8 @@ public class Auto5Ball extends SequentialCommandGroup {
             new DriveStraightDistance(-45, driveTrain, 0.7),
             new ScheduleCommand(IntakeGatheringEmptyState.getInstance(intake)),
             new SetShot(shooter, Constants.SHOTS.cargoRing)),
-        new ManualTurnToTarget(driveTrain, limelight, 0),
-        new ManualMoveToTarget(driveTrain, limelight, 0),
+        new ManualTurnToTarget(driveTrain, limelight, 0, rumbleController),
+        new ManualMoveToTarget(driveTrain, limelight, 0, rumbleController),
         new AutoModeShooter(1, indexer, shooter).withTimeout(3.0)
     );
 

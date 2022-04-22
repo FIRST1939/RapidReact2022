@@ -20,10 +20,14 @@ public class ManualTurnToTarget extends CommandBase {
 
   private int pipeline;
 
-  public ManualTurnToTarget(final DriveTrain driveTrain, final Limelight limelight, final int pipeline) {
+  private final RumbleController rumbleController;
+
+  public ManualTurnToTarget(final DriveTrain driveTrain, final Limelight limelight, final int pipeline, final RumbleController rumbleController) {
     this.driveTrain = driveTrain;
     this.limelight = limelight;
     this.pipeline = pipeline;
+
+    this.rumbleController = rumbleController;
 
     addRequirements(driveTrain);
   }
@@ -61,6 +65,9 @@ public class ManualTurnToTarget extends CommandBase {
   public void end(boolean interrupted) {
     this.driveTrain.arcadeDrive(0, 0, 0);
     Lights.getInstance().setColor(LEDMode.GREEN);
+    if (this.rumbleController != null) {
+      this.rumbleController.schedule();
+  }
   }
 
   // Returns true when the command should end.

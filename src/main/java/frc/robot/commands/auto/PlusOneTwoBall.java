@@ -13,6 +13,7 @@ import frc.robot.Constants;
 import frc.robot.Limelight;
 import frc.robot.commands.ManualMoveToTarget;
 import frc.robot.commands.ManualTurnToTarget;
+import frc.robot.commands.RumbleController;
 import frc.robot.commands.intake.IntakeGatheringEmptyState;
 import frc.robot.commands.shooter.SetShot;
 import frc.robot.subsystems.DriveTrain;
@@ -33,7 +34,8 @@ public class PlusOneTwoBall extends SequentialCommandGroup {
       final Intake intake,
       final Indexer indexer,
       final Shooter shooter,
-      final Limelight limelight) {
+      final Limelight limelight,
+      final RumbleController rumbleController) {
     addCommands(
         // Configurable wait for alliance partner.
         new WaitCommand(SmartDashboard.getNumber("Auto Start Wait", 0.0)),
@@ -43,9 +45,9 @@ public class PlusOneTwoBall extends SequentialCommandGroup {
             new DriveStraightDistance(-40, driveTrain, 0.4),
             new SetShot(shooter, Constants.SHOTS.cargoRing)),
         // Drive to point straight out from the fender.
-        new ManualTurnToTarget(driveTrain, limelight, 0),
+        new ManualTurnToTarget(driveTrain, limelight, 0, rumbleController),
         new WaitCommand(1.0),
-        new ManualMoveToTarget(driveTrain, limelight, 0),
+        new ManualMoveToTarget(driveTrain, limelight, 0, rumbleController),
         new WaitCommand(1.0),
         //new DriveStraightDistance(40.0, driveTrain),
         // Turn square to the fender.

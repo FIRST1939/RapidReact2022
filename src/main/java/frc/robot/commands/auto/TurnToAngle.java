@@ -57,11 +57,11 @@ public class TurnToAngle extends CommandBase {
     */
 
     if (Math.abs(this.distance) > 31) {
-      this.driveTrain.arcadeDrive(0, 0.6 * this.direction, 0);
+      this.driveTrain.arcadeDrive(0, 0.75 * this.direction, 0);
     } else if (Math.abs(this.distance) > 15) {
-      this.driveTrain.arcadeDrive(0, 0.5 * this.direction, 0);
+      this.driveTrain.arcadeDrive(0, 0.6 * this.direction, 0);
     } else {
-      this.driveTrain.arcadeDrive(0, 0.4 * this.direction, 0);
+      this.driveTrain.arcadeDrive(0, 0.48 * this.direction, 0);
     }
   }
 

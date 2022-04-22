@@ -81,8 +81,8 @@ public final class Constants {
         fenderLow(3700, true),
         fenderHigh(5300, false),
         fenderPlusOneLow(4200, true),
-        fenderPlusOneHigh(6500, true),
-        cargoRing(6850, true),
+        fenderPlusOneHigh(6400, true),
+        cargoRing(6750, true),
         wallShot(7600, true),
         launchpad(8050, true);
 

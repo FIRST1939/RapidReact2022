@@ -21,10 +21,14 @@ public class ManualMoveToTarget extends CommandBase {
 
   private int pipeline;
 
-  public ManualMoveToTarget(final DriveTrain driveTrain, final Limelight limelight, final int pipeline) {
+  private final RumbleController rumbleController;
+
+  public ManualMoveToTarget(final DriveTrain driveTrain, final Limelight limelight, final int pipeline, final RumbleController rumbleController) {
     this.driveTrain = driveTrain;
     this.limelight = limelight;
     this.pipeline = pipeline;
+
+    this.rumbleController = rumbleController;
 
     addRequirements(driveTrain);
   }
@@ -36,9 +40,9 @@ public class ManualMoveToTarget extends CommandBase {
     this.ty = limelight.getVerticalAngleError();
     this.limelight.setPipeline(pipeline);
     
-    if (this.ty < 1) {
+    if (this.ty < 6) {
       this.direction = -1;
-    } else if (ty > 3) {
+    } else if (ty > 8) {
       this.direction = 1;
     }
   }
@@ -50,7 +54,7 @@ public class ManualMoveToTarget extends CommandBase {
 
     if (Math.abs(this.ty) > 10) {
       this.driveTrain.arcadeDrive(0.45 * this.direction, 0, 0);
-    } else if (Math.abs(this.ty) > 5) {
+    } else if (Math.abs(this.ty) > 8) {
       this.driveTrain.arcadeDrive(0.4 * this.direction, 0, 0);
     } else {
       this.driveTrain.arcadeDrive(0.35 * this.direction, 0, 0);
@@ -62,11 +66,14 @@ public class ManualMoveToTarget extends CommandBase {
   public void end(boolean interrupted) {
     this.driveTrain.arcadeDrive(0, 0, 0);
     Lights.getInstance().setColor(LEDMode.GREEN);
+    if (this.rumbleController != null) {
+      this.rumbleController.schedule();
+  }
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (this.ty < 2 && this.ty > 1);
+    return (this.ty < 8 && this.ty > 6);
   }
 }
