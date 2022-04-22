@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.Limelight;
+import frc.robot.commands.ManualMoveAndTurnToTarget;
 import frc.robot.commands.ManualMoveToTarget;
 import frc.robot.commands.ManualTurnToTarget;
 import frc.robot.commands.RumbleController;
@@ -45,10 +46,9 @@ public class CargoRingTwoBall extends SequentialCommandGroup {
             new DriveStraightDistance(-40, driveTrain, 0.4),
             new SetShot(shooter, Constants.SHOTS.cargoRing)),
         // Drive to point straight out from the fender.
-        new ManualTurnToTarget(driveTrain, limelight, 0, rumbleController),
         new WaitCommand(1.0),
-        new ManualMoveToTarget(driveTrain, limelight, 0, rumbleController),
-        new WaitCommand(1.0),
+        new ManualMoveAndTurnToTarget(driveTrain, limelight, 0, rumbleController),
+        new WaitCommand(2.0),
         //new DriveStraightDistance(40.0, driveTrain),
         // Turn square to the fender.
         //new WaitCommand(1.0),

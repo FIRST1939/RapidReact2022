@@ -28,7 +28,7 @@ public class Rude2Ball extends SequentialCommandGroup {
 
             new ParallelCommandGroup(
                 new ScheduleCommand(IntakeGatheringEmptyState.getInstance(intake)),
-                new DriveStraightDistanceNoStop(-45, driveTrain, 0.7),
+                new DriveStraightDistanceNoStop(-40, driveTrain, 0.6),
                 new SetShot(shooter, Constants.SHOTS.cargoRing)
             ),
 
@@ -38,18 +38,21 @@ public class Rude2Ball extends SequentialCommandGroup {
             new AutoModeShooter(2, indexer, shooter).withTimeout(3.0),
             new WaitCommand(0.2),
 
-            new TurnToAngle(driveTrain, -112.5),
+            new TurnToAngle(driveTrain, -90),
 
-            new DriveStraightDistanceNoStop(-110, driveTrain, 0.6),
+            new DriveStraightDistanceNoStop(-50, driveTrain, 0.6),
 
             new ParallelCommandGroup(
                 new ScheduleCommand(IntakeGatheringEmptyState.getInstance(intake)),
-                new DriveStraightDistance(-10, driveTrain, 0.5)
+                new DriveStraightDistance(-50, driveTrain, 0.5)
             ),
 
-            new TurnToAngle(driveTrain, -169),
+            new TurnToAngle(driveTrain, 191),
 
-            new DriveStraightDistanceNoStop(-150.65, driveTrain, 0.65),
+            new WaitCommand(0.2),
+
+            //ERROR HAPPENS HERE AFTER TURNTOANGLE
+            new DriveStraightDistance(-150.65, driveTrain, 0.65),
 
             new ParallelCommandGroup(
                 new ScheduleCommand(IntakeGatheringEmptyState.getInstance(intake)),
