@@ -9,8 +9,6 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Limelight;
 import frc.robot.Constants.SHOTS;
 import frc.robot.commands.ManualMoveAndTurnToTarget;
-import frc.robot.commands.ManualMoveToTarget;
-import frc.robot.commands.ManualTurnToTarget;
 import frc.robot.commands.RumbleController;
 import frc.robot.commands.shooter.SetShot;
 import frc.robot.subsystems.DriveTrain;

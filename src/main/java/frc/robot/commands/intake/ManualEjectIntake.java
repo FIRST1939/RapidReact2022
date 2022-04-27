@@ -4,7 +4,7 @@
 
 package frc.robot.commands.intake;
 
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.intake.Intake;
 
 public class ManualEjectIntake extends ManualIntakeRollerBelts {
   /**

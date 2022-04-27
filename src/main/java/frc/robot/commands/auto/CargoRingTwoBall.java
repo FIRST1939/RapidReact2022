@@ -12,15 +12,13 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.Limelight;
 import frc.robot.commands.ManualMoveAndTurnToTarget;
-import frc.robot.commands.ManualMoveToTarget;
-import frc.robot.commands.ManualTurnToTarget;
 import frc.robot.commands.RumbleController;
 import frc.robot.commands.intake.IntakeGatheringEmptyState;
 import frc.robot.commands.shooter.SetShot;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.indexer.Indexer;
+import frc.robot.subsystems.intake.Intake;
 
 /**
  * This auto command is to be set up in the left tarmac at and square to the

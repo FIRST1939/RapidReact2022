@@ -4,13 +4,8 @@
 
 package frc.robot.commands.auto;
 
-import java.util.function.DoubleSupplier;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Limelight;
-import frc.robot.Constants.LEDMode;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.Lights;
 
 public class TurnToAngle extends CommandBase {
 

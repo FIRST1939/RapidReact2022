@@ -7,8 +7,8 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.commands.indexer.ManualEjectIndexer;
 import frc.robot.commands.intake.ManualEjectIntake;
-import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.indexer.Indexer;
+import frc.robot.subsystems.intake.Intake;
 
 /**
  * This command is an explicit subclass of ParallelCommandGroup in order to
