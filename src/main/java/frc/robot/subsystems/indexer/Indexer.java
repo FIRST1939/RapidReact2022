@@ -2,10 +2,9 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.subsystems;
+package frc.robot.subsystems.indexer;
 
-import java.util.EnumMap;
-import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BooleanSupplier;
 
 import com.revrobotics.CANSparkMax;
@@ -16,13 +15,8 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.Constants.LEDMode;
-import frc.robot.commands.indexer.IndexerShootingState2;
-import frc.robot.commands.state.StateMachineCommand;
 
 /**
  * The indexer consists of one motor to drive cargo movement belts and a beam
@@ -36,7 +30,21 @@ public class Indexer extends SubsystemBase {
   private final CANSparkMax follower;
   private final DigitalInput beamBreak;
   private final BooleanSupplier priorStageSendingSupplier;
-  private boolean manualMode = false;
+  private final AtomicReference<FireRequest> firing = new AtomicReference<>(FireRequest.SAFE);
+  private final IndexerStateMachine stateMachine;
+
+  /**
+   * This enum describes the relationship between the shot triggers, the
+   * {@link State#READY_TO_SHOOT} state, and the {@link State#SHOOTING} state.
+   */
+  private enum FireRequest {
+    /** A shot can be requested. */
+    SAFE,
+    /** A shot has been requested. */
+    REQUESTED,
+    /** A requested shot is being performed. */
+    FIRING;
+  }
 
   /**
    * Creates the indexer subsystem. The supplier must indicate if the prior cargo
@@ -63,6 +71,9 @@ public class Indexer extends SubsystemBase {
 
     this.beamBreak = new DigitalInput(Constants.INDEXER_BEAM_BREAK_RECEIVER_DIO);
     this.priorStageSendingSupplier = priorStageSendingSupplier;
+
+    this.stateMachine = new IndexerStateMachine(this);
+    setDefaultCommand(this.stateMachine.getDefaultCommand());
   }
 
   @Override
@@ -79,7 +90,8 @@ public class Indexer extends SubsystemBase {
    * cargo to the shooter.
    */
   public void setToShooterFeedVelocity() {
-    //this.pidController.setReference(Constants.INDEXER_SHOOTER_FEED_VELOCITY, ControlType.kVelocity);
+    // this.pidController.setReference(Constants.INDEXER_SHOOTER_FEED_VELOCITY,
+    // ControlType.kVelocity);
     this.leader.set(-0.65);
   }
 
@@ -91,9 +103,10 @@ public class Indexer extends SubsystemBase {
     this.leader.set(-0.3);
   }
 
-  public void setToRecieveDownVelocity(){
+  public void setToRecieveDownVelocity() {
     this.leader.set(0.3);
   }
+
   /**
    * Stops the indexer motor and the movement of cargo in the indexer.
    */
@@ -125,74 +138,19 @@ public class Indexer extends SubsystemBase {
     this.leader.set(speed);
   }
 
-  /**
-   * @return true if manual mode commands (vs state machine) are running.
-   */
-  public boolean isManualMode() {
-    return this.manualMode;  
-  }
-  
-  /**
-   * @return manualMode true to indicate that manual mode commands (vs state
-   *                    machine) are running.
-   */
-  public void setManualMode(final boolean manualMode) {
-    this.manualMode = manualMode;
+  public boolean requestShot() {
+    return this.firing.compareAndSet(FireRequest.SAFE, FireRequest.REQUESTED);
   }
 
-  public enum State {
-    EMPTY,
-    RECEIVING,
-    AT_SENSOR,
-    READY_TO_SHOOT,
-    SHOOTING
+  public boolean fireShot() {
+    return this.firing.compareAndSet(FireRequest.REQUESTED, FireRequest.FIRING);
   }
 
-  private final Command emptyStateCommand = new RunCommand(() -> stop(), this)
-      .until(() -> isPriorStageSending());
-  private final Command receivingStateCommand = new RunCommand(() -> setToReceiveVelocity(), this)
-      .until(() -> isCargoAtSensor());
-  private final Command atSensorStateCommand = new RunCommand(() -> setToShooterFeedVelocity(), this)
-      .withTimeout(0.0);
-  private final Command readyToShootStateCommand = new InstantCommand(() -> Lights.getInstance().setColor(LEDMode.RAINBOW), this)
-      .andThen(new RunCommand(() -> stop(), this));
-  private final Command shootingStateCommand = IndexerShootingState2.getInstance(this);
-
-  private final Map<State, Command> stateMap = new EnumMap<>(State.class);
-  {
-    stateMap.put(State.EMPTY, emptyStateCommand);
-    stateMap.put(State.RECEIVING, receivingStateCommand);
-    stateMap.put(State.AT_SENSOR, atSensorStateCommand);
-    stateMap.put(State.READY_TO_SHOOT, readyToShootStateCommand);
-    stateMap.put(State.SHOOTING, shootingStateCommand);
+  public void shotFired() {
+    this.firing.set(FireRequest.SAFE);
   }
 
-  private final StateMachineCommand<State> stateMachine = new StateMachineCommand<>(stateMap, this::getNextState);
-
-  private State getNextState(StateMachineCommand<State> machine) {
-    final State currentState = machine.getCurrentState();
-    State nextState = null;
-    if (!isManualMode()) {
-      switch (currentState) {
-        case EMPTY:
-          nextState = State.RECEIVING;
-
-        case RECEIVING:
-          nextState = State.AT_SENSOR;
-
-        case AT_SENSOR:
-          nextState = State.READY_TO_SHOOT;
-
-        case READY_TO_SHOOT:
-          nextState = State.SHOOTING;
-
-        case SHOOTING:
-          nextState = State.EMPTY;
-
-        default:
-          break;
-      }
-    }
-    return nextState;
+  public IndexerStateMachine getStateMachine() {
+    return this.stateMachine;
   }
 }

@@ -5,8 +5,8 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.indexer.Indexer;
 
 /**
  * This command was created to avoid a race condition between scheduling the
@@ -33,15 +33,13 @@ public class ToggleManualEjection extends CommandBase {
   public void initialize() {
     // Some paranoia to make sure we do not exit regular manual mode.
     if (this.intake.isManualMode()
-        && this.indexer.isManualMode()
+        && !this.indexer.getStateMachine().isStateMachineRunning()
         && intake.getCurrentCommand() == this.ejectionCommand
         && indexer.getCurrentCommand() == this.ejectionCommand) {
       this.intake.setManualMode(false);
-      this.indexer.setManualMode(false);
       this.ejectionCommand.cancel();
     } else {
       this.intake.setManualMode(true);
-      this.indexer.setManualMode(true);
       this.ejectionCommand.schedule();
     }
   }

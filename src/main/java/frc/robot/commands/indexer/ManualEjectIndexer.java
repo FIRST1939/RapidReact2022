@@ -5,7 +5,7 @@
 package frc.robot.commands.indexer;
 
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.subsystems.Indexer;
+import frc.robot.subsystems.indexer.Indexer;
 
 public class ManualEjectIndexer extends ManualIndexer {
   /**

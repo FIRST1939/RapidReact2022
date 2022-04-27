@@ -2,11 +2,10 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.indexer;
+package frc.robot.subsystems.indexer;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.RobotCargoCount;
 
 /**
@@ -17,15 +16,7 @@ import frc.robot.subsystems.RobotCargoCount;
  * the commmand interface is what we need, nothing for initialize.
  * </p>
  */
-public class IndexerShootingState2 extends CommandBase {
-  /**
-   * Commands in a WPILib robot implementation are often singletons but not
-   * always. In the case here where we are implementing a state machine, it is a
-   * best practice and sometimes required. For clarity and ease of state
-   * transition implementations, we will enforce it for our state commands.
-   */
-  private static IndexerShootingState2 INSTANCE;
-
+class IndexerShootingState extends CommandBase {
   /** This command's required indexer subsystem. */
   private final Indexer indexer;
 
@@ -35,22 +26,9 @@ public class IndexerShootingState2 extends CommandBase {
   private boolean minRunTimerEnabled = false;
 
   /**
-   * Must be used to access the singleton instance of this command.
-   * 
-   * @param indexer the indexer subsystem to use.
-   * @return the command instance for the indexer state machine.
-   */
-  public static final synchronized IndexerShootingState2 getInstance(final Indexer indexer) {
-    if (INSTANCE == null) {
-      INSTANCE = new IndexerShootingState2(indexer);
-    }
-    return INSTANCE;
-  }
-
-  /**
    * @param indexer the indexer subsystem to use.
    */
-  private IndexerShootingState2(final Indexer indexer) {
+  IndexerShootingState(final Indexer indexer) {
     this.indexer = indexer;
     addRequirements(this.indexer);
   }
@@ -107,5 +85,6 @@ public class IndexerShootingState2 extends CommandBase {
     this.minRunTimer.stop();
     this.minRunTimerEnabled = false;
     RobotCargoCount.getInstance().decrement();
+    this.indexer.shotFired();
   }
 }

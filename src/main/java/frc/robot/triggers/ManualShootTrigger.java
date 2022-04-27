@@ -2,8 +2,8 @@ package frc.robot.triggers;
 
 import java.util.function.BooleanSupplier;
 
-import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.indexer.Indexer;
 
 /**
  * An instance of this class is used to make sure we shoot only when the shooter
@@ -29,6 +29,6 @@ public class ManualShootTrigger extends AbstractShootTrigger {
    */
   @Override
   public boolean get() {
-    return indexer.isManualMode() && super.get();
+    return !indexer.getStateMachine().isStateMachineRunning() && super.get();
   }
 }

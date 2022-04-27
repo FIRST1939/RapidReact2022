@@ -14,8 +14,8 @@ import frc.robot.commands.ManualTurnToTarget;
 import frc.robot.commands.RumbleController;
 import frc.robot.commands.shooter.SetShot;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.indexer.Indexer;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:

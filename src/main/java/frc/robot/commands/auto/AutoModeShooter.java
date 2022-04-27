@@ -5,10 +5,9 @@
 package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.commands.indexer.IndexerReadyToShootState;
-import frc.robot.commands.indexer.IndexerShootingState;
-import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.indexer.Indexer;
+import frc.robot.subsystems.indexer.IndexerStateMachine.State;
 
 /**
  * Used during autonomous mode to shoot 1 or 2 cargo when each is ready to be
@@ -44,9 +43,9 @@ public class AutoModeShooter extends CommandBase {
   public void execute() {
     if ((shotsRemaining > 0)
         && this.indexer.isCargoAtSensor()
-        && (this.indexer.getCurrentCommand() instanceof IndexerReadyToShootState)
+        && (indexer.getStateMachine().getCurrentState() == State.READY_TO_SHOOT)
         && (this.shooter.isShooterReady())) {
-      IndexerShootingState.getInstance(this.indexer).schedule();
+      indexer.requestShot();
       shotsRemaining--;
     }
   }

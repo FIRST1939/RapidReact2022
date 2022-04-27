@@ -13,9 +13,9 @@ import frc.robot.Constants;
 import frc.robot.commands.intake.IntakeGatheringEmptyState;
 import frc.robot.commands.shooter.SetShot;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.indexer.Indexer;
 
 /**
  * This auto command is to be set up in the right tarmac at and square to the

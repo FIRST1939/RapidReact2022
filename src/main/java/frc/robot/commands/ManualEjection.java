@@ -7,8 +7,8 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.commands.indexer.ManualEjectIndexer;
 import frc.robot.commands.intake.ManualEjectIntake;
-import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.indexer.Indexer;
 
 /**
  * This command is an explicit subclass of ParallelCommandGroup in order to
@@ -28,13 +28,11 @@ public class ManualEjection extends ParallelCommandGroup {
   @Override
   public void initialize() {
     this.intake.setManualMode(true);
-    this.indexer.setManualMode(true);
     super.initialize();
   }
 
   @Override
   public void end(boolean interrupted) {
-    this.indexer.setManualMode(false);
     this.intake.setManualMode(false);
     super.end(interrupted);
   }

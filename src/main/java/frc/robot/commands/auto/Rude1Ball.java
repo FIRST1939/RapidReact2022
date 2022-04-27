@@ -15,9 +15,9 @@ import frc.robot.commands.ToggleManualEjection;
 import frc.robot.commands.intake.IntakeGatheringEmptyState;
 import frc.robot.commands.shooter.SetShot;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.indexer.Indexer;
 
 public class Rude1Ball extends SequentialCommandGroup {
 
