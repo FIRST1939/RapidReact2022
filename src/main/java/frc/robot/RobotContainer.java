@@ -34,10 +34,7 @@ import frc.robot.commands.auto.Rude1Ball;
 import frc.robot.commands.auto.Rude2Ball;
 import frc.robot.commands.indexer.ManualIndexer;
 import frc.robot.commands.intake.IntakeExtendCommandSelector;
-import frc.robot.commands.intake.IntakeGatheringSendState;
 import frc.robot.commands.intake.IntakeRetractCommandSelector;
-import frc.robot.commands.intake.IntakeStowedEmptyState;
-import frc.robot.commands.intake.IntakeStowedSendState;
 import frc.robot.commands.intake.ManualIntakeRollerBelts;
 import frc.robot.commands.shooter.ReturnToPriorShot;
 import frc.robot.commands.shooter.SetShot;
@@ -47,7 +44,6 @@ import frc.robot.subsystems.Lights;
 import frc.robot.subsystems.RobotCargoCount;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.indexer.Indexer;
-import frc.robot.subsystems.indexer.IndexerStateMachine.State;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.triggers.ShootTrigger;
 import frc.robot.triggers.ShooterIdleTrigger;
@@ -84,15 +80,11 @@ public class RobotContainer {
   private final DriveTrain driveTrain = new DriveTrain(() -> sidewinderManualDeploy.get(), manualSlowlyDriveButton);
   private final RobotCargoCount robotCargoCount = RobotCargoCount.getInstance();
   private final Intake intake = new Intake(() -> this.driveTrain.getRate());
-  private final Indexer indexer = new Indexer(() -> isIntakeSendingCargo());
+  private final Indexer indexer = new Indexer(() -> this.intake.isSendingCargo());
   private final Shooter shooter = Shooter.getInstance();
   private final Climber climber = Climber.getInstance();
   public final Limelight limelightTurret = new Limelight("limelight-turret");
   public final RumbleController rumbleController = new RumbleController(this.driverTwo);
-
-  private Command intakeCommandOnAutoExit = null;
-  private State indexerStateOnAutoExit = null;
-  private boolean exitedAuto = false;
 
   private final SendableChooser<Supplier<Command>> autoChooser = new SendableChooser<>();
 
@@ -192,7 +184,6 @@ public class RobotContainer {
         .getRawAxis(Math.abs(XboxController.Axis.kRightTrigger.value)) > Constants.TRIGGER_THRESHOLD);
     ShootTrigger shootTrigger = new ShootTrigger(this.indexer, this.shooter, shootTriggerSupplier);
     shootTrigger.whenActive(new InstantCommand(() -> this.indexer.requestShot()));
-    ;
 
     // intake and indexer buttons
     JoystickButton toggleManualIntakeIndexer = new JoystickButton(driverTwo, XboxController.Button.kStart.value);
@@ -277,11 +268,11 @@ public class RobotContainer {
   }
 
   /**
-   * Schedules the initial state commands for the subsystem state machines.
+   * Initializes contained subsystems for autonomous.
    */
-  public void scheduleInitialStates() {
-    IntakeStowedEmptyState.getInstance(this.intake).schedule();
-    this.indexer.getStateMachine().setNextInitialState(State.READY_TO_SHOOT);
+  public void autoInitialization() {
+    this.intake.enterAuto();
+    this.indexer.enterAuto();
     RobotCargoCount.getInstance().setCount(RobotCargoCount.START_CARGO);
   }
 
@@ -295,31 +286,16 @@ public class RobotContainer {
   }
 
   /**
-   * To be used in conjunction with restartAutoExitStateCommands to manage the
-   * state machine transition from auto to teleop mode.
+   * Notifies selected subsystems to prepare for auto to teleop transition.
    */
-  public void stashAutoExitStateCommands() {
-    this.intakeCommandOnAutoExit = this.intake.getCurrentCommand();
-    this.indexerStateOnAutoExit = this.indexer.getStateMachine().getCurrentState();
-    this.exitedAuto = true;
+  public void autoExit() {
+    this.intake.exitAuto();
+    this.indexer.exitAuto();
   }
 
-  public void restartAutoExitStateCommands() {
-    if (!exitedAuto) {
-      IntakeStowedEmptyState.getInstance(intake).schedule();
-      this.indexer.getStateMachine().setNextInitialState(State.EMPTY);
-      RobotCargoCount.getInstance().setCount(0);
-      return;
-    }
-    if ((this.intakeCommandOnAutoExit != null)
-        && (this.intake.getCurrentCommand() == null)) {
-      this.intakeCommandOnAutoExit.schedule();
-    }
-    this.indexer.getStateMachine().setNextInitialState(this.indexerStateOnAutoExit);
-
-    this.intakeCommandOnAutoExit = null;
-    this.indexerStateOnAutoExit = null;
-    this.exitedAuto = false;
+  public void teleopInitialization() {
+    this.intake.enterTeleop();
+    this.indexer.enterTeleop();
   }
 
   /**
@@ -332,14 +308,7 @@ public class RobotContainer {
     return Math.abs(rawSpeed) < deadband ? 0.0 : rawSpeed;
   }
 
-  private boolean isIntakeSendingCargo() {
-    final Command currentIntakeCommand = this.intake.getCurrentCommand();
-    return (currentIntakeCommand instanceof IntakeGatheringSendState)
-        || (currentIntakeCommand instanceof IntakeStowedSendState);
-  }
-
   public Lights getLights() {
-
     return Lights.getInstance();
   }
 }

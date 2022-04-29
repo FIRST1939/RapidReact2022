@@ -4,7 +4,6 @@
 
 package frc.robot.commands.intake;
 
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.intake.Intake;
 
@@ -31,15 +30,10 @@ public class IntakeRetractCommandSelector extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if (this.intake.isManualMode()) {
+    if (!this.intake.isStateMachineRunning()) {
       this.manualRetract.schedule();
     } else {
-      if (!this.intake.isRetracted()) {
-        final Command currentState = this.intake.getCurrentCommand();
-        if (currentState != null) {
-          currentState.cancel();
-        }
-      }
+      this.intake.requestRetraction();
     }
   }
 

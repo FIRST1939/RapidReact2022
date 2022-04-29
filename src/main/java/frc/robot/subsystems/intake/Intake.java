@@ -4,10 +4,13 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.Constants;
+import frc.robot.subsystems.RobotCargoCount;
+import frc.robot.subsystems.intake.IntakeStateMachine.State;
 
 import java.util.function.DoubleSupplier;
 
@@ -24,7 +27,8 @@ public class Intake extends SubsystemBase {
     private final DigitalInput beamBreak;
     private final CANSparkMax intakeMotor;
     private final SparkMaxPIDController pidController;
-    private boolean manualMode = false;
+    private final IntakeStateMachine stateMachine;
+    private State autoExitState = null;
 
     /**
      * @param robotSpeedSupplier a supplier of the current robot speed (inches per
@@ -45,6 +49,9 @@ public class Intake extends SubsystemBase {
         // TODO configure kP and kF for velocity control.
         this.pidController.setFF(0.1);
         this.pidController.setP(0.1);
+
+        this.stateMachine = new IntakeStateMachine(this);
+        setDefaultCommand(this.stateMachine.getDefaultCommand());
     }
 
     @Override
@@ -54,7 +61,6 @@ public class Intake extends SubsystemBase {
         Command current = getCurrentCommand();
         SmartDashboard.putString("Intake State: ", current != null ? current.getName() : "<null>");
         SmartDashboard.putBoolean("Intake direction", intakeDirection());
-
     }
 
     public void extendIntake() {
@@ -78,7 +84,8 @@ public class Intake extends SubsystemBase {
      * is moving with enforcement of minimum and maximum speeds.
      */
     public void setIntakeSpeed() {
-        final double targetIntakeSpeed = this.robotSpeedSupplier.getAsDouble() * Constants.INTAKE_SPEED_TO_DRIVE_SPEED_RATIO;
+        final double targetIntakeSpeed = this.robotSpeedSupplier.getAsDouble()
+                * Constants.INTAKE_SPEED_TO_DRIVE_SPEED_RATIO;
         final double targetRevPerSec = targetIntakeSpeed / Constants.INTAKE_INCHES_PER_REVOLUTION;
         final double targetRPM = MathUtil.clamp(
                 targetRevPerSec * 60.0,
@@ -98,6 +105,12 @@ public class Intake extends SubsystemBase {
         return !beamBreak.get();
     }
 
+    public boolean isSendingCargo() {
+        final State currentState = this.stateMachine.getCurrentState();
+        return (currentState == State.GATHERING_SEND)
+                || (currentState == State.STOWED_SEND);
+    }
+
     /**
      * To be used by manual commands when sensors are compromised.
      * 
@@ -107,28 +120,93 @@ public class Intake extends SubsystemBase {
         this.intakeMotor.set(speed);
     }
 
-    /**
-     * @return true if manual mode commands (vs state machine) are running.
-     */
-    public boolean isManualMode() {
-        return this.manualMode;
+    // returns true if direciton is positive
+    public boolean intakeDirection() {
+        return this.intakeMotor.getOutputCurrent() >= 0;
     }
 
     /**
-     * @param manualMode true to indicate that manual mode commands (vs state
-     *                   machine) are running.
+     * Called to request that the intake be extended for gathering.
+     * 
+     * @return true if the request was granted.
      */
-    public void setManualMode(final boolean manualMode) {
-        this.manualMode = manualMode;
-    }
-
-    //returns true if direciton is positive
-    public boolean intakeDirection(){
-        if(this.intakeMotor.getOutputCurrent() >= 0)
-        {
+    public boolean requestExtension() {
+        if (!this.isCargoAtSensor() && !RobotCargoCount.getInstance().isFull()) {
+            this.stateMachine.forceToState(State.GATHERING_EMPTY);
             return true;
-        } else {
-            return false;
         }
+        return false;
+    }
+
+    /**
+     * A new instance is needed each time since these end up in command groups and a
+     * command can only be in one command group.
+     * 
+     * @return a new command to request intake gathering.
+     */
+    public Command getAutoRequestExtensionCommand() {
+        return new InstantCommand(this::requestExtension);
+    }
+
+    /**
+     * Called to request that the intake be retracted to stop gathering.
+     * 
+     * @return true if the request was granted.
+     */
+    public boolean requestRetraction() {
+        boolean requestGranted = false;
+        if (!this.isRetracted()) {
+            // In a gathering or at sensor state. Not stowed.
+            final State currentState = this.stateMachine.getCurrentState();
+            switch (currentState) {
+                case GATHERING_EMPTY:
+                    this.stateMachine.forceToState(State.STOWED_EMPTY);
+                    requestGranted = true;
+                    break;
+
+                case AT_SENSOR:
+                    if (RobotCargoCount.getInstance().isFull()) {
+                        this.stateMachine.forceToState(State.STOWED_HOLD);
+                    } else {
+                        this.stateMachine.forceToState(State.STOWED_SEND);
+                    }
+                    requestGranted = true;
+                    break;
+
+                case GATHERING_SEND:
+                    this.stateMachine.forceToState(State.STOWED_SEND);
+                    requestGranted = true;
+                    break;
+
+                default:
+                    break;
+            }
+        }
+        return requestGranted;
+    }
+
+    public void enterAuto() {
+        this.stateMachine.forceToState(State.STOWED_EMPTY);
+    }
+
+    public void exitAuto() {
+        this.autoExitState = this.stateMachine.getCurrentState();
+    }
+
+    public void enterTeleop() {
+        if (this.autoExitState == null) {
+            this.stateMachine.forceToState(State.STOWED_EMPTY);
+            RobotCargoCount.getInstance().setCount(0);
+        } else {
+            this.stateMachine.forceToState(this.autoExitState);
+            this.autoExitState = null;
+        }
+    }
+
+    /**
+     * @return true if the state machine is running and false otherwise.
+     */
+    public boolean isStateMachineRunning() {
+        return this.stateMachine.getDefaultCommand().isScheduled();
     }
 }

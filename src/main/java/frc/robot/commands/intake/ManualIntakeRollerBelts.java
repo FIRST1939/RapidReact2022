@@ -7,7 +7,6 @@ package frc.robot.commands.intake;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.commands.PostLoopCommandScheduler;
 import frc.robot.subsystems.RobotCargoCount;
 import frc.robot.subsystems.intake.Intake;
 
@@ -22,12 +21,6 @@ public class ManualIntakeRollerBelts extends CommandBase {
     addRequirements(this.intake);
   }
 
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
-    this.intake.setManualMode(true);
-  }
-
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
@@ -38,7 +31,6 @@ public class ManualIntakeRollerBelts extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     this.intake.stopIntakeMotor();
-    this.intake.setManualMode(false);
     // In a match, we would only enter manual mode if the intake / indexer cargo
     // pipeline was not working due to sensor failure. Therefore, coming out of
     // manual mode in match is not an expected action. However, we need to program
@@ -47,7 +39,5 @@ public class ManualIntakeRollerBelts extends CommandBase {
     // machine with this assumption.
     RobotCargoCount.getInstance().decrement();
     RobotCargoCount.getInstance().decrement();
-    PostLoopCommandScheduler.addCommandToSchedule(
-        IntakeStowedEmptyState.getInstance(this.intake));
   }
 }

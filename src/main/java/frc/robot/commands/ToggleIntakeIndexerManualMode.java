@@ -47,14 +47,12 @@ public class ToggleIntakeIndexerManualMode extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if (this.intake.isManualMode()) {
-      this.intake.setManualMode(false);
-      this.intakeManualCommand.cancel();
-      this.indexerManualCommand.cancel();
-    } else {
-      this.intake.setManualMode(true);
+    if (this.intake.isStateMachineRunning()) {
       this.intakeManualCommand.schedule();
       this.indexerManualCommand.schedule();
+    } else {
+      this.intakeManualCommand.cancel();
+      this.indexerManualCommand.cancel();
     }
   }
 

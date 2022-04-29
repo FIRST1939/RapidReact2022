@@ -8,12 +8,17 @@ import java.util.EnumMap;
 import java.util.concurrent.atomic.AtomicReference;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PerpetualCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.Constants.LEDMode;
 import frc.robot.commands.state.RandomAccessCommandGroup;
 import frc.robot.subsystems.Lights;
+import frc.robot.subsystems.RobotCargoCount;
 
 /**
  * This class defines the state machine for automated operation of the indexer
@@ -21,12 +26,16 @@ import frc.robot.subsystems.Lights;
  * {@link RandomAccessCommandGroup} used to implement the state machine. The
  * wrapper can be used as the default command for the indexer subsystem.
  */
-public class IndexerStateMachine {
+class IndexerStateMachine {
+  /** The indexer this state machine is operating. */
+
+  private final Indexer indexer;
+
   /**
    * This enumeration defines the state names for the machine. The order is
    * important for proper state transition.
    */
-  public enum State {
+  enum State {
     EMPTY,
     RECEIVING,
     AT_SENSOR,
@@ -71,6 +80,8 @@ public class IndexerStateMachine {
   private final AtomicReference<State> nextInitialState = new AtomicReference<>();
 
   IndexerStateMachine(final Indexer indexer) {
+    this.indexer = indexer;
+
     // Create the state commands.
     emptyStateCommand = new RunCommand(() -> indexer.stop(), indexer)
         .until(() -> indexer.isPriorStageSending());
@@ -82,7 +93,18 @@ public class IndexerStateMachine {
         () -> Lights.getInstance().setColor(LEDMode.RAINBOW), indexer)
             .andThen(new RunCommand(() -> indexer.stop(), indexer))
             .until(() -> indexer.fireShot());
-    shootingStateCommand = new IndexerShootingState(indexer);
+    shootingStateCommand = new StartEndCommand(
+        () -> indexer.setToShooterFeedVelocity(),
+        () -> {
+          indexer.stop();
+          RobotCargoCount.getInstance().decrement();
+          indexer.shotFired();
+        }, indexer)
+            .raceWith(
+                new ConditionalCommand(
+                    new WaitUntilCommand(() -> !indexer.isCargoAtSensor()),
+                    new WaitCommand(0.5), // Cargo slipped down case.
+                    () -> indexer.isCargoAtSensor()));
 
     // Populate the state map.
     stateMap.put(State.EMPTY, emptyStateCommand);
@@ -121,19 +143,12 @@ public class IndexerStateMachine {
   }
 
   /**
-   * @return true if the state machine is running and false otherwise.
-   */
-  public boolean isStateMachineRunning() {
-    return this.defaultCommand.isScheduled();
-  }
-
-  /**
    * @return the currently active {@link State} for the state machine. This will
    *         be null if the state machine is not running. It can be null if the
    *         running state machine is between states.
    */
-  public State getCurrentState() {
-    if (isStateMachineRunning() && this.stateMachineCommand.isCurrentCommandIndexInRange()) {
+  State getCurrentState() {
+    if (this.indexer.isStateMachineRunning() && this.stateMachineCommand.isCurrentCommandIndexInRange()) {
       return State.values()[this.stateMachineCommand.getCurrentCommandIndex()];
     }
     return null;
@@ -142,11 +157,11 @@ public class IndexerStateMachine {
   /**
    * @return the wrapper command appropriate for use as the default command.
    */
-  public PerpetualCommand getDefaultCommand() {
+  PerpetualCommand getDefaultCommand() {
     return this.defaultCommand;
   }
 
-  public void setNextInitialState(State nextInitialState) {
+  void setNextInitialState(State nextInitialState) {
     this.nextInitialState.set(nextInitialState);
   }
 }

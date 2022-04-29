@@ -6,11 +6,9 @@ package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.ScheduleCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
-import frc.robot.commands.intake.IntakeGatheringEmptyState;
 import frc.robot.commands.shooter.SetShot;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Shooter;
@@ -35,7 +33,7 @@ public class LeftSide2CargoNoTrajectory extends SequentialCommandGroup {
         new WaitCommand(SmartDashboard.getNumber("Auto Start Wait", 0.0)),
         // Gather, move to cargo and set for fender high.
         new ParallelCommandGroup(
-            new ScheduleCommand(IntakeGatheringEmptyState.getInstance(intake)),
+            intake.getAutoRequestExtensionCommand(),
             new DriveStraightDistance(AutoConstants.CLOSE_CARGO_PICKUP_DRIVE_DIST, driveTrain, 0.5),
             new SetShot(shooter, Constants.SHOTS.fenderHigh)),
         // Drive to point straight out from the fender.

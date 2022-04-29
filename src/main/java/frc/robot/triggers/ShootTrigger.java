@@ -4,7 +4,6 @@ import java.util.function.BooleanSupplier;
 
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.indexer.Indexer;
-import frc.robot.subsystems.indexer.IndexerStateMachine.State;
 
 /**
  * An instance of this class is used to make sure we shoot only when the shooter
@@ -30,7 +29,6 @@ public class ShootTrigger extends AbstractShootTrigger {
    */
   @Override
   public boolean get() {
-    return indexer.getStateMachine().getCurrentState() == State.READY_TO_SHOOT
-        && super.get();
+    return indexer.isReadyToShoot() && super.get();
   }
 }

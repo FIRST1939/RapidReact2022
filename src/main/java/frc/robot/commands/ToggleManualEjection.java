@@ -4,7 +4,11 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import frc.robot.commands.indexer.ManualEjectIndexer;
+import frc.robot.commands.intake.ManualEjectIntake;
 import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.intake.Intake;
 
@@ -17,7 +21,7 @@ import frc.robot.subsystems.intake.Intake;
 public class ToggleManualEjection extends CommandBase {
   private final Intake intake;
   private final Indexer indexer;
-  private final ManualEjection ejectionCommand;
+  private final Command ejectionCommand;
 
   /** Creates a new ToggleManualEjection. */
   public ToggleManualEjection(
@@ -25,21 +29,19 @@ public class ToggleManualEjection extends CommandBase {
       final Indexer indexer) {
     this.intake = intake;
     this.indexer = indexer;
-    this.ejectionCommand = new ManualEjection(this.intake, this.indexer);
+    this.ejectionCommand = new ParallelCommandGroup(new ManualEjectIntake(this.intake), new ManualEjectIndexer(this.indexer));
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     // Some paranoia to make sure we do not exit regular manual mode.
-    if (this.intake.isManualMode()
-        && !this.indexer.getStateMachine().isStateMachineRunning()
+    if (!this.intake.isStateMachineRunning()
+        && !this.indexer.isStateMachineRunning()
         && intake.getCurrentCommand() == this.ejectionCommand
         && indexer.getCurrentCommand() == this.ejectionCommand) {
-      this.intake.setManualMode(false);
       this.ejectionCommand.cancel();
     } else {
-      this.intake.setManualMode(true);
       this.ejectionCommand.schedule();
     }
   }

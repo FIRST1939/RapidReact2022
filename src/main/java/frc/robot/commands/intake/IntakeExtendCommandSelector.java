@@ -5,7 +5,6 @@
 package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.RobotCargoCount;
 import frc.robot.subsystems.intake.Intake;
 
 /**
@@ -30,10 +29,10 @@ public class IntakeExtendCommandSelector extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if (this.intake.isManualMode()) {
+    if (!this.intake.isStateMachineRunning()) {
       this.manualExtend.schedule();
-    } else if (!this.intake.isCargoAtSensor() && !RobotCargoCount.getInstance().isFull()) {
-      IntakeGatheringEmptyState.getInstance(this.intake).schedule();
+    } else {
+      this.intake.requestExtension();
     }
   }
 

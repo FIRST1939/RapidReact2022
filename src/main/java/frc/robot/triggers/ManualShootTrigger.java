@@ -29,6 +29,6 @@ public class ManualShootTrigger extends AbstractShootTrigger {
    */
   @Override
   public boolean get() {
-    return !indexer.getStateMachine().isStateMachineRunning() && super.get();
+    return !indexer.isStateMachineRunning() && super.get();
   }
 }

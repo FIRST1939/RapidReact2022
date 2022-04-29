@@ -17,6 +17,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.subsystems.RobotCargoCount;
+import frc.robot.subsystems.indexer.IndexerStateMachine.State;
 
 /**
  * The indexer consists of one motor to drive cargo movement belts and a beam
@@ -32,6 +34,7 @@ public class Indexer extends SubsystemBase {
   private final BooleanSupplier priorStageSendingSupplier;
   private final AtomicReference<FireRequest> firing = new AtomicReference<>(FireRequest.SAFE);
   private final IndexerStateMachine stateMachine;
+  private State autoExitState = null;
 
   /**
    * This enum describes the relationship between the shot triggers, the
@@ -138,19 +141,58 @@ public class Indexer extends SubsystemBase {
     this.leader.set(speed);
   }
 
+  /**
+   * @return true when the indexer is ready to shoot.
+   */
+  public boolean isReadyToShoot() {
+    return this.stateMachine.getCurrentState() == State.READY_TO_SHOOT;
+  }
+
+  /**
+   * @return true if a shot is successfully requested (shot not already requested
+   *         nor currently firing).
+   */
   public boolean requestShot() {
     return this.firing.compareAndSet(FireRequest.SAFE, FireRequest.REQUESTED);
   }
 
+  /**
+   * @return true if a shot request is pending. If so, we move to firing.
+   */
   public boolean fireShot() {
     return this.firing.compareAndSet(FireRequest.REQUESTED, FireRequest.FIRING);
   }
 
+  /**
+   * Used to reset to safe (ready for another shot request) after firing command
+   * completes.
+   */
   public void shotFired() {
     this.firing.set(FireRequest.SAFE);
   }
 
-  public IndexerStateMachine getStateMachine() {
-    return this.stateMachine;
+  public void enterAuto() {
+    this.stateMachine.setNextInitialState(State.READY_TO_SHOOT);
+  }
+
+  public void exitAuto() {
+    this.autoExitState = this.stateMachine.getCurrentState();
+  }
+
+  public void enterTeleop() {
+    if (this.autoExitState == null) {
+      this.stateMachine.setNextInitialState(State.EMPTY);
+      RobotCargoCount.getInstance().setCount(0);
+    } else {
+      this.stateMachine.setNextInitialState(this.autoExitState);
+      this.autoExitState = null;
+    }
+  }
+
+  /**
+   * @return true if the state machine is running and false otherwise.
+   */
+  public boolean isStateMachineRunning() {
+    return this.stateMachine.getDefaultCommand().isScheduled();
   }
 }

@@ -50,6 +50,16 @@ public class RandomAccessCommandGroup extends CommandGroupBase {
    * selected to run next.
    * 
    * <p>
+   * The only time a contained command's end() method receives true for the
+   * interrupted parameter is when it is the current command and the entire group
+   * is interrupted. All other contained command end() calls will be due to the
+   * contained command's isFinish() returning true, and then the end() interrupted
+   * parameter will be false. One important effect of this is that the interrupted
+   * parameter cannot be used to chose a next command. The isFinished() and end()
+   * methods must properly detect the time for a command change and the proper
+   * next command.
+   * 
+   * <p>
    * Typically, if the nextCommandIndexOperator returned index is out of range
    * (see {@link #isCurrentCommandIndexInRange()}), this command group ends.
    * However, this command is designed to work properly with

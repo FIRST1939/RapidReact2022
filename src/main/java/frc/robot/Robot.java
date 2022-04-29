@@ -71,7 +71,7 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    m_robotContainer.scheduleInitialStates();
+    m_robotContainer.autoInitialization();
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     m_robotContainer.limelightTurret.setPipeline(Constants.SHOOTER_LONG_PIPELINE);
 
@@ -87,7 +87,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousExit() {
-    this.m_robotContainer.stashAutoExitStateCommands();
+    this.m_robotContainer.autoExit();
   }
 
   @Override
@@ -99,7 +99,7 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    this.m_robotContainer.restartAutoExitStateCommands();
+    this.m_robotContainer.teleopInitialization();
 
     m_robotContainer.limelightTurret.setPipeline(Constants.SHOOTER_LONG_PIPELINE);
     //m_robotContainer.limelightBase.setPipeline(Constants.INTAKE_DEFAULT_PIPELINE);
