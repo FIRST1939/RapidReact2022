@@ -128,7 +128,8 @@ public class Intake extends SubsystemBase {
     /**
      * Called to request that the intake be extended for gathering.
      * 
-     * @return true if the request was granted.
+     * @return true if the request was granted (no cargo at sensor and the robot is
+     *         not full).
      */
     public boolean requestExtension() {
         if (!this.isCargoAtSensor() && !RobotCargoCount.getInstance().isFull()) {

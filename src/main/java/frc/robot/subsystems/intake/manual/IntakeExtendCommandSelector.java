@@ -2,28 +2,30 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.intake;
+package frc.robot.subsystems.intake.manual;
 
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.intake.Intake;
 
 /**
  * This is the command to schedule when the button to extend the intake (start
- * gathering) is pressed. It will handle three cases.
+ * gathering) is pressed.
  * <ol>
- * <li>If in manual mode, just extend.
- * <li>If automated, intake empty, and robot not full, start gathering.
- * <li>If automated and in any other state, ignore.
+ * <li>If the state machine is not running, just extend.
+ * <li>If the state machine is running request extension (see
+ * {@link Intake#requestExtension()}).
  * </ol>
  */
 public class IntakeExtendCommandSelector extends CommandBase {
   private final Intake intake;
-  private final ManualIntakeExtend manualExtend;
+  private final Command manualExtend;
 
   /** Creates a new IntakeExtendCommandSelector. */
   public IntakeExtendCommandSelector(final Intake intake) {
     this.intake = intake;
-    this.manualExtend = new ManualIntakeExtend(this.intake);
+    this.manualExtend = new InstantCommand(intake::extendIntake, intake);
   }
 
   // Called when the command is initially scheduled.
