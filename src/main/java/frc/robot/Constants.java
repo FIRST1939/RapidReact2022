@@ -163,9 +163,6 @@ public final class Constants {
     //Vision constants.
     public static final int SHOOTER_LONG_PIPELINE = 0;
     public static final int SHOOTER_OFF_PIPELINE = 1;
-    public static final int SHOOTER_SHORT_PIPELINE = 2;
-
-    public static final int INTAKE_DEFAULT_PIPELINE = 0;
 
     public static final double VISION_M = -1500.0/11.0;
     public static final double VISION_B = 81050.0/11.0;

@@ -35,8 +35,7 @@ import frc.robot.commands.auto.Rude2Ball;
 import frc.robot.commands.shooter.ReturnToPriorShot;
 import frc.robot.commands.shooter.SetShot;
 import frc.robot.commands.shooter.SetVelocity;
-import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.Lights;
+import frc.robot.subsystems.DriveTrain; 
 import frc.robot.subsystems.RobotCargoCount;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.indexer.Indexer;
@@ -83,9 +82,8 @@ public class RobotContainer {
   private final Indexer indexer = new Indexer(() -> this.intake.isSendingCargo());
   private final Shooter shooter = Shooter.getInstance();
   private final Climber climber = Climber.getInstance();
-  public final Limelight limelightTurret = new Limelight("limelight-turret");
-  public final RumbleController rumbleController = new RumbleController(this.driverTwo);
-
+  private final Limelight limelightShooter = new Limelight("limelight-shooter");
+  private final RumbleController rumbleController = new RumbleController(this.driverTwo);
   private final SendableChooser<Supplier<Command>> autoChooser = new SendableChooser<>();
 
   /**
@@ -105,18 +103,18 @@ public class RobotContainer {
    */
   private void configureAutoChooser() {
     this.autoChooser.setDefaultOption("One Ball",
-        () -> new OneBall(shooter, indexer, driveTrain, limelightTurret, rumbleController));
+        () -> new OneBall(shooter, indexer, driveTrain, limelightShooter, rumbleController));
     this.autoChooser.addOption("Do Nothing", () -> new WaitCommand(1.0));
     this.autoChooser.addOption("Cargo Ring Two Ball",
-        () -> new CargoRingTwoBall(driveTrain, intake, indexer, shooter, limelightTurret, rumbleController));
+        () -> new CargoRingTwoBall(driveTrain, intake, indexer, shooter, limelightShooter, rumbleController));
     this.autoChooser.addOption("4 Ball",
-        () -> new Auto4Ball(driveTrain, intake, indexer, shooter, limelightTurret, rumbleController));
+        () -> new Auto4Ball(driveTrain, intake, indexer, shooter, limelightShooter, rumbleController));
     this.autoChooser.addOption("Rude 2 Ball",
-        () -> new Rude2Ball(driveTrain, intake, indexer, shooter, limelightTurret, rumbleController));
+        () -> new Rude2Ball(driveTrain, intake, indexer, shooter, limelightShooter, rumbleController));
     this.autoChooser.addOption("Rude 1 Ball",
-        () -> new Rude1Ball(driveTrain, intake, indexer, shooter, limelightTurret, rumbleController));
+        () -> new Rude1Ball(driveTrain, intake, indexer, shooter, limelightShooter, rumbleController));
     this.autoChooser.addOption("5 Ball",
-        () -> new Auto5Ball(driveTrain, intake, indexer, shooter, limelightTurret, rumbleController));
+        () -> new Auto5Ball(driveTrain, intake, indexer, shooter, limelightShooter, rumbleController));
 
     SmartDashboard.putData("Autonomous Chooser", this.autoChooser);
   }
@@ -141,10 +139,10 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     JoystickButton manualTurnToTargetLong = new JoystickButton(rightStick, 10);
-    manualTurnToTargetLong.whenPressed(new ManualTurnToTarget(driveTrain, limelightTurret, 0, rumbleController));
+    manualTurnToTargetLong.whenPressed(new ManualTurnToTarget(driveTrain, limelightShooter, 0, rumbleController));
 
     JoystickButton manualMoveToTargetLong = new JoystickButton(rightStick, 11);
-    manualMoveToTargetLong.whenPressed(new ManualMoveAndTurnToTarget(driveTrain, limelightTurret, 0, rumbleController));
+    manualMoveToTargetLong.whenPressed(new ManualMoveAndTurnToTarget(driveTrain, limelightShooter, 0, rumbleController));
 
     // shooter buttons
     JoystickButton fenderLowButton = new JoystickButton(driverTwo, XboxController.Button.kY.value);
@@ -161,7 +159,7 @@ public class RobotContainer {
 
     JoystickButton visionTracked = new JoystickButton(driverTwo, XboxController.Button.kRightStick.value);
     visionTracked.whenPressed(
-        new SetShot(this.shooter, SHOTS.visionTracked).andThen(new VisionWithDistance(shooter, limelightTurret)));
+        new SetShot(this.shooter, SHOTS.visionTracked).andThen(new VisionWithDistance(shooter, limelightShooter)));
 
     POVButton cargoRing = new POVButton(driverTwo, 0); // 0 is up, 90 is right, 180 is down, and 270 is left
     cargoRing.whenPressed(new SetShot(this.shooter, SHOTS.cargoRing));
@@ -308,7 +306,15 @@ public class RobotContainer {
     return Math.abs(rawSpeed) < deadband ? 0.0 : rawSpeed;
   }
 
-  public Lights getLights() {
-    return Lights.getInstance();
+  /**
+   * @param enabled turns on vision based target tracking if true. Turns it off,
+   *                if false.
+   */
+  public void enableTargetTracking(boolean enabled) {
+    if (enabled) {
+      limelightShooter.setPipeline(Constants.SHOOTER_LONG_PIPELINE);
+    } else {
+      limelightShooter.setPipeline(Constants.SHOOTER_OFF_PIPELINE);
+    }
   }
 }
