@@ -8,14 +8,11 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
 
 public class TurnToAngle extends CommandBase {
-
+  private final DriveTrain driveTrain;
   private double angle;
   private double target;
   private int direction = 0;
-
   private double distance;
-
-  private final DriveTrain driveTrain;
 
   public TurnToAngle(final DriveTrain driveTrain, final double target) {
     this.driveTrain = driveTrain;
@@ -26,7 +23,6 @@ public class TurnToAngle extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
     this.driveTrain.resetHeading();
     this.angle = this.driveTrain.getHeading();
     this.distance = this.target - this.angle;
@@ -41,15 +37,8 @@ public class TurnToAngle extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
     this.angle = this.driveTrain.getHeading();
     this.distance = this.target - this.angle;
-
-    /*
-    System.out.println("Angle: " + this.angle);
-    System.out.println("Target: " + this.target);
-    System.out.println("Distance: " + this.distance);
-    */
 
     if (Math.abs(this.distance) > 31) {
       this.driveTrain.arcadeDrive(0, 0.75 * this.direction, 0);
@@ -63,7 +52,8 @@ public class TurnToAngle extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    this.driveTrain.arcadeDrive(0, 0, 0);  }
+    this.driveTrain.arcadeDrive(0, 0, 0);
+  }
 
   // Returns true when the command should end.
   @Override
