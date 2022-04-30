@@ -159,24 +159,32 @@ class IntakeStateMachine {
       return this.forceToState.getAndSet(null).ordinal();
     }
 
-    int next = State.STOWED_EMPTY.ordinal();
+    State next = State.STOWED_EMPTY;
     final State currentState = State.getState(current);
     if (currentState != null) {
       switch (currentState) {
         case AT_SENSOR:
           // Note: stop intake case handled in requestRetraction via force
           if (RobotCargoCount.getInstance().isFull()) {
-            next = State.STOWED_HOLD.ordinal();
+            next = State.STOWED_HOLD;
           } else {
-            next = State.GATHERING_SEND.ordinal();
+            next = State.GATHERING_SEND;
           }
+          break;
+
+        case GATHERING_SEND:
+          next = State.GATHERING_EMPTY;
+          break;
+
+        case STOWED_HOLD:
+          next = State.STOWED_SEND;
           break;
 
         default:
           break;
       }
     }
-    return next;
+    return next.ordinal();
   }
 
   /**
