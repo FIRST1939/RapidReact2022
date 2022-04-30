@@ -33,6 +33,11 @@ class IntakeStateMachine {
   /**
    * This enumeration defines the state names for the machine. The order is
    * important for proper state transition.
+   * 
+   * <p>
+   * Note: I would have liked to make each state's command a member of the enum
+   * itself, but that would involve non-static references from a static context,
+   * which is not possible.
    */
   enum State {
     STOWED_EMPTY,
@@ -51,19 +56,6 @@ class IntakeStateMachine {
       return null;
     }
   }
-
-  /** The implementing command for {@link State#STOWED_EMPTY} */
-  private final Command stowedEmptyStateCommand;
-  /** The implementing command for {@link State#GATHERING_EMPTY} */
-  private final Command gatheringEmptyStateCommand;
-  /** The implementing command for {@link State#AT_SENSOR} */
-  private final Command atSensorStateCommand;
-  /** The implementing command for {@link State#GATHERING_SEND} */
-  private final Command gatheringSendStateCommand;
-  /** The implementing command for {@link State#STOWED_HOLD} */
-  private final Command stowedHoldStateCommand;
-  /** The implementing command for {@link State#STOWED_SEND} */
-  private final Command stowedSendStateCommand;
 
   /**
    * An enumeration map of the state machine. Iteration order is the enum
@@ -99,12 +91,12 @@ class IntakeStateMachine {
     this.stateMachineActivationTrigger = new Trigger(this.intake::isStateMachineRunning);
 
     // Create the state commands.
-    stowedEmptyStateCommand = new InstantCommand(() -> {
+    final Command stowedEmptyStateCommand = new InstantCommand(() -> {
       intake.retractIntake();
       intake.stopIntakeMotor();
     }, intake)
         .andThen(new WaitUntilCommand(() -> isForceToState()));
-    gatheringEmptyStateCommand = new FunctionalCommand(
+    final Command gatheringEmptyStateCommand = new FunctionalCommand(
         () -> {
           intake.extendIntake();
           Lights.getInstance().setColor(LEDMode.PINK);
@@ -113,22 +105,22 @@ class IntakeStateMachine {
         interrupted -> intake.stopIntakeMotor(),
         this::gatheringEmptyIsFinished,
         intake);
-    atSensorStateCommand = new RunCommand(() -> intake.setIntakeSpeed(), intake)
+    final Command atSensorStateCommand = new RunCommand(() -> intake.setIntakeSpeed(), intake)
         .withTimeout(0.0)
         .until(this::isForceToState);
-    gatheringSendStateCommand = new FunctionalCommand(
+    final Command gatheringSendStateCommand = new FunctionalCommand(
         intake::extendIntake,
         intake::setIntakeSpeed,
         Function.identity()::apply,
         () -> !intake.isCargoAtSensor() || isForceToState(),
         intake);
-    stowedHoldStateCommand = new InstantCommand(() -> {
+    final Command stowedHoldStateCommand = new InstantCommand(() -> {
       intake.retractIntake();
       intake.stopIntakeMotor();
       Lights.getInstance().setColor(LEDMode.STROBE);
     }, intake)
         .andThen(new WaitUntilCommand(() -> !RobotCargoCount.getInstance().isFull() || isForceToState()));
-    stowedSendStateCommand = new IntakeStowedSendState(intake)
+    final Command stowedSendStateCommand = new IntakeStowedSendState(intake)
         .until(this::isForceToState);
 
     // Populate the state map.
