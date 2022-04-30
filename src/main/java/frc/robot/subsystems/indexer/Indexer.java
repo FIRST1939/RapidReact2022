@@ -56,8 +56,6 @@ public class Indexer extends SubsystemBase {
    * 
    * @param priorStageSendingSupplier the supplier indicating if the prior cargo
    *                                  handling stage is sending a cargo our way.
-   * @param manualModeSupplier        the supplier indicating if the indexer
-   *                                  should consider itself in manual mode.
    */
   public Indexer(final BooleanSupplier priorStageSendingSupplier) {
     this.leader = new CANSparkMax(Constants.INDEXER_LEADER_CAN_ID, MotorType.kBrushless);
@@ -79,13 +77,27 @@ public class Indexer extends SubsystemBase {
     setDefaultCommand(this.stateMachine.getDefaultCommand());
   }
 
+  /**
+   * We use periodic to update indexer status values on the dashboard.
+   * 
+   * <p>
+   * {@inheritDoc}
+   */
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putBoolean("Indexer: ", !this.beamBreak.get());
-    Command current = getCurrentCommand();
-    final String cmdName = current != null ? current.getName() : "<null>";
-    SmartDashboard.putString("Indexer State: ", cmdName);
+    String stateName = "<null>";
+    final State currentState = this.stateMachine.getCurrentState();
+    if (currentState != null) {
+      stateName = currentState.name();
+    } else {
+      final Command current = getCurrentCommand();
+      if (current != null) {
+        stateName = current.getName();
+      }
+    }
+    SmartDashboard.putString("Indexer State: ", stateName);
   }
 
   /**
@@ -93,6 +105,7 @@ public class Indexer extends SubsystemBase {
    * cargo to the shooter.
    */
   public void setToShooterFeedVelocity() {
+    // TODO go back to velocity control or remove PID controller.
     // this.pidController.setReference(Constants.INDEXER_SHOOTER_FEED_VELOCITY,
     // ControlType.kVelocity);
     this.leader.set(-0.65);
@@ -103,11 +116,8 @@ public class Indexer extends SubsystemBase {
    * cargo from the intake.
    */
   public void setToReceiveVelocity() {
+    // TODO go back to velocity control or remove PID controller.
     this.leader.set(-0.3);
-  }
-
-  public void setToRecieveDownVelocity() {
-    this.leader.set(0.3);
   }
 
   /**
@@ -171,14 +181,26 @@ public class Indexer extends SubsystemBase {
     this.firing.set(FireRequest.SAFE);
   }
 
+  /**
+   * Sets the proper state for autonomous. Should only be called from autonomous
+   * initialization.
+   */
   public void enterAuto() {
     this.stateMachine.setNextInitialState(State.READY_TO_SHOOT);
   }
 
+  /**
+   * Saves the last state in autonomous for start of teleop. Should only be called
+   * from autonomous exit.
+   */
   public void exitAuto() {
     this.autoExitState = this.stateMachine.getCurrentState();
   }
 
+  /**
+   * Sets the proper state for teleop. Should only be called from teleop
+   * initialization.
+   */
   public void enterTeleop() {
     if (this.autoExitState == null) {
       this.stateMachine.setNextInitialState(State.EMPTY);

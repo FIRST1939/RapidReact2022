@@ -25,15 +25,23 @@ import frc.robot.subsystems.RobotCargoCount;
  * including a {@link PerpetualCommand} wrapper around the
  * {@link RandomAccessCommandGroup} used to implement the state machine. The
  * wrapper can be used as the default command for the indexer subsystem.
+ * 
+ * <p>
+ * Note that this class and its content is at most package scoped (never
+ * public). It is to be used directly by only the indexer subsystem.
  */
 class IndexerStateMachine {
   /** The indexer this state machine is operating. */
-
   private final Indexer indexer;
 
   /**
    * This enumeration defines the state names for the machine. The order is
    * important for proper state transition.
+   * 
+   * <p>
+   * Note: I would have liked to make each state's command a member of the enum
+   * itself, but that would involve non-static references from a static context,
+   * which is not possible.
    */
   enum State {
     EMPTY,
@@ -42,17 +50,6 @@ class IndexerStateMachine {
     READY_TO_SHOOT,
     SHOOTING
   }
-
-  /** The implementing command for {@link State#EMPTY} */
-  private final Command emptyStateCommand;
-  /** The implementing command for {@link State#RECEIVING} */
-  private final Command receivingStateCommand;
-  /** The implementing command for {@link State#AT_SENSOR} */
-  private final Command atSensorStateCommand;
-  /** The implementing command for {@link State#READY_TO_SHOOT} */
-  private final Command readyToShootStateCommand;
-  /** The implementing command for {@link State#SHOOTING} */
-  private final Command shootingStateCommand;
 
   /**
    * An enumeration map of the state machine. Iteration order is the enum
@@ -79,21 +76,24 @@ class IndexerStateMachine {
    */
   private final AtomicReference<State> nextInitialState = new AtomicReference<>();
 
+  /**
+   * @param indexer the indexer subsystem to be operated.
+   */
   IndexerStateMachine(final Indexer indexer) {
     this.indexer = indexer;
 
     // Create the state commands.
-    emptyStateCommand = new RunCommand(() -> indexer.stop(), indexer)
+    final Command emptyStateCommand = new RunCommand(() -> indexer.stop(), indexer)
         .until(() -> indexer.isPriorStageSending());
-    receivingStateCommand = new RunCommand(() -> indexer.setToReceiveVelocity(), indexer)
+    final Command receivingStateCommand = new RunCommand(() -> indexer.setToReceiveVelocity(), indexer)
         .until(() -> indexer.isCargoAtSensor());
-    atSensorStateCommand = new RunCommand(() -> indexer.setToShooterFeedVelocity(), indexer)
+    final Command atSensorStateCommand = new RunCommand(() -> indexer.setToShooterFeedVelocity(), indexer)
         .withTimeout(0.0);
-    readyToShootStateCommand = new InstantCommand(
+    final Command readyToShootStateCommand = new InstantCommand(
         () -> Lights.getInstance().setColor(LEDMode.RAINBOW), indexer)
             .andThen(new RunCommand(() -> indexer.stop(), indexer))
             .until(() -> indexer.fireShot());
-    shootingStateCommand = new StartEndCommand(
+    final Command shootingStateCommand = new StartEndCommand(
         () -> indexer.setToShooterFeedVelocity(),
         () -> {
           indexer.stop();
@@ -112,7 +112,6 @@ class IndexerStateMachine {
     stateMap.put(State.AT_SENSOR, atSensorStateCommand);
     stateMap.put(State.READY_TO_SHOOT, readyToShootStateCommand);
     stateMap.put(State.SHOOTING, shootingStateCommand);
-
   }
 
   /**
@@ -161,7 +160,12 @@ class IndexerStateMachine {
     return this.defaultCommand;
   }
 
-  void setNextInitialState(State nextInitialState) {
+  /**
+   * @param nextInitialState the {@link State} to use the next time the state
+   *                         machine starts up (start of auto, teleop, or after
+   *                         manual command ends).
+   */
+  void setNextInitialState(final State nextInitialState) {
     this.nextInitialState.set(nextInitialState);
   }
 }
