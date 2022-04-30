@@ -20,7 +20,6 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.SHOTS;
 import frc.robot.commands.DriveWithInput;
-import frc.robot.commands.LightsUpdater;
 import frc.robot.commands.ManualMoveAndTurnToTarget;
 import frc.robot.commands.ManualTurnToTarget;
 import frc.robot.commands.RumbleController;
@@ -37,6 +36,7 @@ import frc.robot.commands.shooter.ReturnToPriorShot;
 import frc.robot.commands.shooter.SetShot;
 import frc.robot.commands.shooter.SetVelocity;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Lights;
 import frc.robot.subsystems.RobotCargoCount;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.indexer.Indexer;
@@ -259,9 +259,9 @@ public class RobotContainer {
 
   private void configureLightingTriggers() {
     new Trigger(() -> this.intake.getIntakeSpeed() > 0)
-        .whenActive(new LightsUpdater(Constants.LEDMode.GREEN));
+        .whenActive(() -> Lights.getInstance().setColor(Constants.LEDMode.GREEN));
     new Trigger(() -> this.intake.getIntakeSpeed() < 0)
-        .whenActive(new LightsUpdater(Constants.LEDMode.RED));
+        .whenActive(() -> Lights.getInstance().setColor(Constants.LEDMode.RED));
   }
 
   /**
