@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PerpetualCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.LEDMode;
 import frc.robot.commands.state.RandomAccessCommandGroup;
 import frc.robot.subsystems.Lights;
@@ -49,6 +48,13 @@ class IntakeStateMachine {
 
     private static State values[] = values();
 
+    /**
+     * Return the enumerator with the given ordinal. If the ordinal is out of range,
+     * null is returned.
+     * 
+     * @param ordinal the ordinal of the enumerator being requested.
+     * @return the enumerator or null if the ordinal is out of range.
+     */
     static State getState(final int ordinal) {
       if (ordinal >= 0 && ordinal < values.length) {
         return values[ordinal];
@@ -69,8 +75,6 @@ class IntakeStateMachine {
       this::getNextStateIndex,
       stateMap.values().toArray(new Command[stateMap.size()]));
 
-  private final Trigger stateMachineActivationTrigger;
-
   /**
    * A wrapper for default command setting that runs the machine perpetually. This
    * makes the machine satisfy the subsystem default command requirement that
@@ -88,7 +92,6 @@ class IntakeStateMachine {
 
   IntakeStateMachine(final Intake intake) {
     this.intake = intake;
-    this.stateMachineActivationTrigger = new Trigger(this.intake::isStateMachineRunning);
 
     // Create the state commands.
     final Command stowedEmptyStateCommand = new InstantCommand(() -> {
@@ -130,9 +133,6 @@ class IntakeStateMachine {
     stateMap.put(State.GATHERING_SEND, gatheringSendStateCommand);
     stateMap.put(State.STOWED_HOLD, stowedHoldStateCommand);
     stateMap.put(State.STOWED_SEND, stowedSendStateCommand);
-
-    // Clean up on state machine termination.
-    this.stateMachineActivationTrigger.whenInactive(new InstantCommand(() -> forceToState(null)));
   }
 
   /**
