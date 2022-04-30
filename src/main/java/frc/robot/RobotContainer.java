@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.SHOTS;
 import frc.robot.commands.DriveWithInput;
 import frc.robot.commands.LightsUpdater;
@@ -35,7 +36,7 @@ import frc.robot.commands.auto.Rude2Ball;
 import frc.robot.commands.shooter.ReturnToPriorShot;
 import frc.robot.commands.shooter.SetShot;
 import frc.robot.commands.shooter.SetVelocity;
-import frc.robot.subsystems.DriveTrain; 
+import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.RobotCargoCount;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.indexer.Indexer;
@@ -46,8 +47,6 @@ import frc.robot.subsystems.intake.manual.IntakeRetractCommandSelector;
 import frc.robot.subsystems.intake.manual.ManualIntakeRollerBelts;
 import frc.robot.triggers.ShootTrigger;
 import frc.robot.triggers.ShooterIdleTrigger;
-import frc.robot.triggers.lighting.IntakeForward;
-import frc.robot.triggers.lighting.IntakeReverse;
 import frc.robot.commands.climber.CancelClimb;
 import frc.robot.commands.climber.ClimbNextBar;
 import frc.robot.commands.climber.ClimbToSecond;
@@ -142,7 +141,8 @@ public class RobotContainer {
     manualTurnToTargetLong.whenPressed(new ManualTurnToTarget(driveTrain, limelightShooter, 0, rumbleController));
 
     JoystickButton manualMoveToTargetLong = new JoystickButton(rightStick, 11);
-    manualMoveToTargetLong.whenPressed(new ManualMoveAndTurnToTarget(driveTrain, limelightShooter, 0, rumbleController));
+    manualMoveToTargetLong
+        .whenPressed(new ManualMoveAndTurnToTarget(driveTrain, limelightShooter, 0, rumbleController));
 
     // shooter buttons
     JoystickButton fenderLowButton = new JoystickButton(driverTwo, XboxController.Button.kY.value);
@@ -258,11 +258,10 @@ public class RobotContainer {
   }
 
   private void configureLightingTriggers() {
-    IntakeForward intakeForward = new IntakeForward(this.intake);
-    intakeForward.whenActive(new LightsUpdater(Constants.LEDMode.GREEN));
-
-    IntakeReverse intakeReverse = new IntakeReverse(this.intake);
-    intakeReverse.whenActive(new LightsUpdater(Constants.LEDMode.RED));
+    new Trigger(() -> this.intake.getIntakeSpeed() > 0)
+        .whenActive(new LightsUpdater(Constants.LEDMode.GREEN));
+    new Trigger(() -> this.intake.getIntakeSpeed() < 0)
+        .whenActive(new LightsUpdater(Constants.LEDMode.RED));
   }
 
   /**
