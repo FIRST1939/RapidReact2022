@@ -28,9 +28,15 @@ public class RandomAccessCommandGroup extends CommandGroupBase {
   /** The result of {@link #getCurrentCommandIndex()} if no current command. */
   public static final int NO_CURRENT_COMMAND = -1;
 
+  /** The order commands that can be access by index (0 based). */
   private final List<Command> m_commands = new ArrayList<>();
+  /** A read only wrapper for {@link #getCommands()}. */
   private final List<Command> m_unmodifiableCommands = Collections.unmodifiableList(m_commands);
-  private final IntUnaryOperator nextCommandIndexOperator;
+  /** The operator for determining the next command. */
+  private final IntUnaryOperator m_nextCommandIndexOperator;
+  /** The initial command index the next time {@link #initialize()} is called. */
+  private int m_initialCommandIndex = NO_CURRENT_COMMAND;
+  /** The currently active command index. */
   private int m_currentCommandIndex = NO_CURRENT_COMMAND;
   private boolean m_runWhenDisabled = true;
 
@@ -81,7 +87,7 @@ public class RandomAccessCommandGroup extends CommandGroupBase {
    */
   public RandomAccessCommandGroup(IntUnaryOperator nextCommandIndexOperator, Command... commands) {
     addCommands(commands);
-    this.nextCommandIndexOperator = nextCommandIndexOperator != null ? nextCommandIndexOperator : i -> i + 1;
+    m_nextCommandIndexOperator = nextCommandIndexOperator != null ? nextCommandIndexOperator : i -> i + 1;
   }
 
   @Override
@@ -106,7 +112,10 @@ public class RandomAccessCommandGroup extends CommandGroupBase {
 
   @Override
   public void initialize() {
-    m_currentCommandIndex = getNextCommandIndex();
+    m_currentCommandIndex = m_initialCommandIndex;
+    if (!isCurrentCommandIndexInRange()) {
+      m_currentCommandIndex = getNextCommandIndex();
+    }
 
     if (isCurrentCommandIndexInRange()) {
       m_commands.get(m_currentCommandIndex).initialize();
@@ -156,6 +165,23 @@ public class RandomAccessCommandGroup extends CommandGroupBase {
   }
 
   /**
+   * Sets the index of the command to use the next time the command group is
+   * initialized. Setting this attribute to {@link #NO_CURRENT_COMMAND} directs
+   * the {@link #initialize()} to call the {@link #m_nextCommandIndexOperator} to
+   * get the initial command index (NO_CURRENT_COMMAND is the default value).
+   * 
+   * @param initialCommandIndex the index of the command to use the next time the
+   *                            command group is initialized. Used as is if in
+   *                            range. Set to {@link #NO_CURRENT_COMMAND} if
+   *                            parameter is out of range.
+   */
+  public void setInitialCommandIndex(final int initialCommandIndex) {
+    m_initialCommandIndex = initialCommandIndex >= 0 && initialCommandIndex < m_commands.size()
+        ? initialCommandIndex
+        : NO_CURRENT_COMMAND;
+  }
+
+  /**
    * @return the current command index. It will be set to
    *         {@link #NO_CURRENT_COMMAND} if out of range.
    */
@@ -173,7 +199,7 @@ public class RandomAccessCommandGroup extends CommandGroupBase {
    *         if out of range.
    */
   private int getNextCommandIndex() {
-    m_currentCommandIndex = nextCommandIndexOperator.applyAsInt(m_currentCommandIndex);
+    m_currentCommandIndex = m_nextCommandIndexOperator.applyAsInt(m_currentCommandIndex);
     isCurrentCommandIndexInRange();
     return m_currentCommandIndex;
   }

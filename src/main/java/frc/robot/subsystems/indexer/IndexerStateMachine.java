@@ -5,7 +5,6 @@
 package frc.robot.subsystems.indexer;
 
 import java.util.EnumMap;
-import java.util.concurrent.atomic.AtomicReference;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
@@ -71,13 +70,6 @@ class IndexerStateMachine {
   private final PerpetualCommand defaultCommand = stateMachineCommand.perpetually();
 
   /**
-   * Used to suggest the state the next time the transition is from no state. A
-   * null value is valid ({@link State#EMPTY} will be used). This field is cleared
-   * when use to start an initial state.
-   */
-  private final AtomicReference<State> nextInitialState = new AtomicReference<>();
-
-  /**
    * @param indexer the indexer subsystem to be operated.
    */
   IndexerStateMachine(final Indexer indexer) {
@@ -116,25 +108,18 @@ class IndexerStateMachine {
   }
 
   /**
-   * This is the next command index operator for the state machine. For the
-   * indexer, we just step through the machine in order and wrap back to 0 after
-   * the last.
+   * This is the next command index operator for the state machine. If the current
+   * state is no state, the result is EMPTY (see
+   * {@link #setNextInitialState(State)} for initial state options).
    * 
    * <p>
-   * NOTE: If the current state is no state, we check to see if a next initial
-   * state was set. If so, it is used rather than the state at index 0.
+   * For the indexer, we just step through the machine in order and wrap back to 0
+   * after the last.
    * 
-   * @param current the current state index as pass from the state machine
+   * @param current the current state index as passed from the state machine
    *                command.
    */
   private int getNextStateIndex(final int current) {
-    if (!this.stateMachineCommand.isCurrentCommandIndexInRange()) {
-      State suggestedNextInitialState = this.nextInitialState.getAndSet(null);
-      return suggestedNextInitialState == null
-          ? State.EMPTY.ordinal()
-          : suggestedNextInitialState.ordinal();
-    }
-
     int next = current + 1;
     if (next < 0 || next >= stateMap.size()) {
       next = 0;
@@ -167,6 +152,9 @@ class IndexerStateMachine {
    *                         manual command ends).
    */
   void setNextInitialState(final State nextInitialState) {
-    this.nextInitialState.set(nextInitialState);
+    this.stateMachineCommand.setInitialCommandIndex(
+        nextInitialState == null
+            ? RandomAccessCommandGroup.NO_CURRENT_COMMAND
+            : nextInitialState.ordinal());
   }
 }

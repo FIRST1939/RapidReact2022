@@ -6,13 +6,13 @@ package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.Limelight;
 import frc.robot.commands.ManualMoveAndTurnToTarget;
 import frc.robot.commands.RumbleController;
 import frc.robot.commands.shooter.SetShot;
+import frc.robot.commands.state.SequentialCommandGroup2;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.indexer.Indexer;
@@ -24,8 +24,8 @@ import frc.robot.subsystems.intake.Intake;
  * place it directly across from an alliance color cargo with the intake facing
  * the cargo.
  */
-public class CargoRingTwoBall extends SequentialCommandGroup {
-  /** Creates a new LeftSide2CargoNoTrajectory. */
+public class CargoRingTwoBall extends SequentialCommandGroup2 {
+  /** Creates a new CargoRingTwoBall. */
   public CargoRingTwoBall(
       final DriveTrain driveTrain,
       final Intake intake,
@@ -36,19 +36,16 @@ public class CargoRingTwoBall extends SequentialCommandGroup {
     addCommands(
         // Configurable wait for alliance partner.
         new WaitCommand(SmartDashboard.getNumber("Auto Start Wait", 0.0)),
-        // Gather, move to cargo and set for fender high.
+        // Gather, move to cargo and set shot for cargo ring.
         new ParallelCommandGroup(
             intake.getAutoRequestExtensionCommand(),
             new DriveStraightDistance(-40, driveTrain, 0.4),
             new SetShot(shooter, Constants.SHOTS.cargoRing)),
-        // Drive to point straight out from the fender.
+        // Drive and turn to square up shot.
         new WaitCommand(1.0),
         new ManualMoveAndTurnToTarget(driveTrain, limelight, 0, rumbleController),
         new WaitCommand(2.0),
-        // new DriveStraightDistance(40.0, driveTrain),
-        // Turn square to the fender.
-        // new WaitCommand(1.0),
-
+        // Shoot 2 cargo.
         new AutoModeShooter(2, indexer, shooter).withTimeout(3.0),
         // Do not drive until second shot has cleared shooter.
         new WaitCommand(1.0),
