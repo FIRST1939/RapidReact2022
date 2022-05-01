@@ -6,12 +6,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.Constants;
 import frc.robot.subsystems.RobotCargoCount;
 import frc.robot.subsystems.intake.IntakeStateMachine.State;
 
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.DoubleSupplier;
 
 import com.revrobotics.CANSparkMax;
@@ -29,6 +31,20 @@ public class Intake extends SubsystemBase {
     private final SparkMaxPIDController pidController;
     private final IntakeStateMachine stateMachine;
     private State autoExitState = null;
+    private final AtomicReference<IntakeRequest> request = new AtomicReference<>(IntakeRequest.NO_REQUEST_PENDING);
+
+    /**
+     * This enum describes the steps in handling the extension and retraction of the
+     * intake.
+     */
+    private enum IntakeRequest {
+        /** Stowed or not, see {@link Intake#isRetracted()} */
+        NO_REQUEST_PENDING,
+        /** Extension (start gathering) of the retracted intake has been requested. */
+        EXTENSION_REQUESTED,
+        /** Retraction (stop gathering) of the extended intake has been requested. */
+        RETRACTION_REQUESTED;
+    }
 
     /**
      * @param robotSpeedSupplier a supplier of the current robot speed (inches per
@@ -52,6 +68,8 @@ public class Intake extends SubsystemBase {
 
         this.stateMachine = new IntakeStateMachine(this);
         setDefaultCommand(this.stateMachine.getDefaultCommand());
+        new Trigger(this::isStateMachineRunning)
+                .whenInactive(new InstantCommand(() -> request.set(IntakeRequest.NO_REQUEST_PENDING)));
     }
 
     @Override
@@ -132,11 +150,9 @@ public class Intake extends SubsystemBase {
      *         not full).
      */
     public boolean requestExtension() {
-        if (!this.isCargoAtSensor() && !RobotCargoCount.getInstance().isFull()) {
-            this.stateMachine.forceToState(State.GATHERING_EMPTY);
-            return true;
-        }
-        return false;
+        return !this.isCargoAtSensor()
+                && !RobotCargoCount.getInstance().isFull()
+                && this.request.compareAndSet(IntakeRequest.NO_REQUEST_PENDING, IntakeRequest.EXTENSION_REQUESTED);
     }
 
     /**
@@ -155,51 +171,51 @@ public class Intake extends SubsystemBase {
      * @return true if the request was granted.
      */
     public boolean requestRetraction() {
-        boolean requestGranted = false;
-        if (!this.isRetracted()) {
-            // In a gathering or at sensor state. Not stowed.
-            final State currentState = this.stateMachine.getCurrentState();
-            switch (currentState) {
-                case GATHERING_EMPTY:
-                    this.stateMachine.forceToState(State.STOWED_EMPTY);
-                    requestGranted = true;
-                    break;
-
-                case AT_SENSOR:
-                    if (RobotCargoCount.getInstance().isFull()) {
-                        this.stateMachine.forceToState(State.STOWED_HOLD);
-                    } else {
-                        this.stateMachine.forceToState(State.STOWED_SEND);
-                    }
-                    requestGranted = true;
-                    break;
-
-                case GATHERING_SEND:
-                    this.stateMachine.forceToState(State.STOWED_SEND);
-                    requestGranted = true;
-                    break;
-
-                default:
-                    break;
-            }
-        }
-        return requestGranted;
+        return !this.isRetracted()
+                && this.request.compareAndSet(IntakeRequest.NO_REQUEST_PENDING, IntakeRequest.RETRACTION_REQUESTED);
     }
 
+    boolean isExtensionRequested() {
+        return this.request.get() == IntakeRequest.EXTENSION_REQUESTED;
+    }
+
+    boolean isRetractionRequested() {
+        return this.request.get() == IntakeRequest.RETRACTION_REQUESTED;
+    }
+
+    boolean extensionHandled() {
+        return this.request.compareAndSet(IntakeRequest.EXTENSION_REQUESTED, IntakeRequest.NO_REQUEST_PENDING);
+    }
+
+    boolean retractionHandled() {
+        return this.request.compareAndSet(IntakeRequest.RETRACTION_REQUESTED, IntakeRequest.NO_REQUEST_PENDING);
+    }
+
+    /**
+     * Sets the proper state for autonomous. Should only be called from autonomous
+     * initialization.
+     */
     public void enterAuto() {
-        this.stateMachine.forceToState(State.STOWED_EMPTY);
+        this.stateMachine.setNextInitialState(State.STOWED_EMPTY);
     }
 
+    /**
+     * Saves the last state in autonomous for start of teleop. Should only be called
+     * from autonomous exit.
+     */
     public void exitAuto() {
         this.autoExitState = this.stateMachine.getCurrentState();
     }
 
+    /**
+     * Sets the proper state for teleop. Should only be called from teleop
+     * initialization.
+     */
     public void enterTeleop() {
         if (this.autoExitState == null) {
-            this.stateMachine.forceToState(State.STOWED_EMPTY);
-            RobotCargoCount.getInstance().setCount(0);
+            this.stateMachine.setNextInitialState(State.STOWED_EMPTY);
         } else {
-            this.stateMachine.forceToState(this.autoExitState);
+            this.stateMachine.setNextInitialState(this.autoExitState);
             this.autoExitState = null;
         }
     }

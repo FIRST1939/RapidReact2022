@@ -72,7 +72,8 @@ class IndexerStateMachine {
 
   /**
    * Used to suggest the state the next time the transition is from no state. A
-   * null value is valid and will use the first state as the initial state.
+   * null value is valid ({@link State#EMPTY} will be used). This field is cleared
+   * when use to start an initial state.
    */
   private final AtomicReference<State> nextInitialState = new AtomicReference<>();
 
@@ -129,9 +130,9 @@ class IndexerStateMachine {
   private int getNextStateIndex(final int current) {
     if (!this.stateMachineCommand.isCurrentCommandIndexInRange()) {
       State suggestedNextInitialState = this.nextInitialState.getAndSet(null);
-      if (suggestedNextInitialState != null) {
-        return suggestedNextInitialState.ordinal();
-      }
+      return suggestedNextInitialState == null
+          ? State.EMPTY.ordinal()
+          : suggestedNextInitialState.ordinal();
     }
 
     int next = current + 1;

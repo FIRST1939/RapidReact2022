@@ -83,12 +83,11 @@ class IntakeStateMachine {
   private final PerpetualCommand defaultCommand = stateMachineCommand.perpetually();
 
   /**
-   * Used to send the state machine to a specific state rather than the next
-   * sequential state. If the state machine is not running, this state will be the
-   * initial state when it restarts. This field is cleared on state machine
-   * termination.
+   * Used to suggest the state the next time the transition is from no state. A
+   * null value is valid ({@link State#STOWED_EMPTY} will be used). This field is
+   * cleared when use to start an initial state.
    */
-  private final AtomicReference<State> forceToState = new AtomicReference<>();
+  private final AtomicReference<State> nextInitialState = new AtomicReference<>();
 
   IntakeStateMachine(final Intake intake) {
     this.intake = intake;
@@ -98,7 +97,7 @@ class IntakeStateMachine {
       intake.retractIntake();
       intake.stopIntakeMotor();
     }, intake)
-        .andThen(new WaitUntilCommand(() -> isForceToState()));
+        .andThen(new WaitUntilCommand(intake::isExtensionRequested));
     final Command gatheringEmptyStateCommand = new FunctionalCommand(
         () -> {
           intake.extendIntake();
@@ -110,21 +109,20 @@ class IntakeStateMachine {
         intake);
     final Command atSensorStateCommand = new RunCommand(() -> intake.setIntakeSpeed(), intake)
         .withTimeout(0.0)
-        .until(this::isForceToState);
+        .until(intake::isRetractionRequested);
     final Command gatheringSendStateCommand = new FunctionalCommand(
         intake::extendIntake,
         intake::setIntakeSpeed,
         Function.identity()::apply,
-        () -> !intake.isCargoAtSensor() || isForceToState(),
+        () -> !intake.isCargoAtSensor() || intake.isRetractionRequested(),
         intake);
     final Command stowedHoldStateCommand = new InstantCommand(() -> {
       intake.retractIntake();
       intake.stopIntakeMotor();
       Lights.getInstance().setColor(LEDMode.STROBE);
     }, intake)
-        .andThen(new WaitUntilCommand(() -> !RobotCargoCount.getInstance().isFull() || isForceToState()));
-    final Command stowedSendStateCommand = new IntakeStowedSendState(intake)
-        .until(this::isForceToState);
+        .andThen(new WaitUntilCommand(() -> !RobotCargoCount.getInstance().isFull()));
+    final Command stowedSendStateCommand = new IntakeStowedSendState(intake);
 
     // Populate the state map.
     stateMap.put(State.STOWED_EMPTY, stowedEmptyStateCommand);
@@ -146,18 +144,38 @@ class IntakeStateMachine {
    *                command.
    */
   private int getNextStateIndex(final int current) {
-    // Handle forcing to specific state.
-    if (isForceToState()) {
-      return this.forceToState.getAndSet(null).ordinal();
+    if (!this.stateMachineCommand.isCurrentCommandIndexInRange()) {
+      State suggestedNextInitialState = this.nextInitialState.getAndSet(null);
+      return suggestedNextInitialState == null
+          ? State.STOWED_EMPTY.ordinal()
+          : suggestedNextInitialState.ordinal();
     }
 
     State next = State.STOWED_EMPTY;
     final State currentState = State.getState(current);
     if (currentState != null) {
       switch (currentState) {
+        case STOWED_EMPTY:
+          if (intake.extensionHandled()) {
+            next = State.GATHERING_EMPTY;
+          }
+          break;
+
+        case GATHERING_EMPTY:
+          if (intake.retractionHandled()) {
+            next = State.STOWED_EMPTY;
+          }
+          next = State.AT_SENSOR;
+          break;
+
         case AT_SENSOR:
-          // Note: stop intake case handled in requestRetraction via force
-          if (RobotCargoCount.getInstance().isFull()) {
+          if (intake.retractionHandled()) {
+            if (RobotCargoCount.getInstance().isFull()) {
+              next = State.STOWED_HOLD;
+            } else {
+              next = State.STOWED_SEND;
+            }
+          } else if (RobotCargoCount.getInstance().isFull()) {
             next = State.STOWED_HOLD;
           } else {
             next = State.GATHERING_SEND;
@@ -165,11 +183,19 @@ class IntakeStateMachine {
           break;
 
         case GATHERING_SEND:
-          next = State.GATHERING_EMPTY;
+          if (intake.retractionHandled()) {
+            next = State.STOWED_SEND;
+          } else {
+            next = State.GATHERING_EMPTY;
+          }
           break;
 
         case STOWED_HOLD:
           next = State.STOWED_SEND;
+          break;
+
+        case STOWED_SEND:
+          next = State.STOWED_EMPTY;
           break;
 
         default:
@@ -199,27 +225,19 @@ class IntakeStateMachine {
   }
 
   /**
-   * Used to send the state machine to a specific state rather than the next
-   * sequential state. If the state machine is not running, this state will be the
-   * initial state when it restarts. This field is cleared on state machine
-   * termination.
-   * 
-   * @param forceToState the state to enter.
+   * @param nextInitialState the {@link State} to use the next time the state
+   *                         machine starts up (start of auto, teleop, or after
+   *                         manual command ends).
    */
-  void forceToState(State forceToState) {
-    this.forceToState.set(forceToState);
-  }
-
-  boolean isForceToState() {
-    return this.forceToState.get() != null;
+  void setNextInitialState(final State nextInitialState) {
+    this.nextInitialState.set(nextInitialState);
   }
 
   private boolean gatheringEmptyIsFinished() {
     boolean cargoDetected = this.intake.isCargoAtSensor();
     if (cargoDetected) {
       RobotCargoCount.getInstance().increment();
-      this.forceToState(State.AT_SENSOR);
     }
-    return cargoDetected || this.isForceToState();
+    return cargoDetected || this.intake.isRetractionRequested();
   }
 }
