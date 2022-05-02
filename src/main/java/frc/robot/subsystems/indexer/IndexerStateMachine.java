@@ -4,8 +4,6 @@
 
 package frc.robot.subsystems.indexer;
 
-import java.util.EnumMap;
-
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -47,27 +45,25 @@ class IndexerStateMachine {
     RECEIVING,
     AT_SENSOR,
     READY_TO_SHOOT,
-    SHOOTING
+    SHOOTING;
+
+    /**
+     * @return the number of enumerators in the State enum.
+     */
+    static int size() {
+      return values().length;
+    }
   }
 
-  /**
-   * An enumeration map of the state machine. Iteration order is the enum
-   * declaration order. This is why passing the map values to the command group in
-   * iteration order, along with enum ordinals as the index works.
-   */
-  private final EnumMap<State, Command> stateMap = new EnumMap<>(State.class);
-
   /** The state machine itself. */
-  private final RandomAccessCommandGroup stateMachineCommand = new RandomAccessCommandGroup(
-      this::getNextStateIndex,
-      stateMap.values().toArray(new Command[stateMap.size()]));
+  private final RandomAccessCommandGroup stateMachineCommand;
 
   /**
    * A wrapper for default command setting that runs the machine perpetually. This
    * makes the machine satisfy the subsystem default command requirement that
    * isFinished always returns false.
    */
-  private final PerpetualCommand defaultCommand = stateMachineCommand.perpetually();
+  private final PerpetualCommand defaultCommand;
 
   /**
    * @param indexer the indexer subsystem to be operated.
@@ -99,12 +95,18 @@ class IndexerStateMachine {
                     new WaitCommand(0.5), // Cargo slipped down case.
                     () -> indexer.isCargoAtSensor()));
 
-    // Populate the state map.
-    stateMap.put(State.EMPTY, emptyStateCommand);
-    stateMap.put(State.RECEIVING, receivingStateCommand);
-    stateMap.put(State.AT_SENSOR, atSensorStateCommand);
-    stateMap.put(State.READY_TO_SHOOT, readyToShootStateCommand);
-    stateMap.put(State.SHOOTING, shootingStateCommand);
+    /*
+     * Create the state machine implementing command group. Make sure the commands
+     * are in the same order as the states in the State enumeration.
+     */
+    stateMachineCommand = new RandomAccessCommandGroup(this::getNextStateIndex,
+        emptyStateCommand,
+        receivingStateCommand,
+        atSensorStateCommand,
+        readyToShootStateCommand,
+        shootingStateCommand);
+
+    defaultCommand = stateMachineCommand.perpetually();
   }
 
   /**
@@ -121,7 +123,7 @@ class IndexerStateMachine {
    */
   private int getNextStateIndex(final int current) {
     int next = current + 1;
-    if (next < 0 || next >= stateMap.size()) {
+    if (next < 0 || next >= State.size()) {
       next = 0;
     }
     return next;

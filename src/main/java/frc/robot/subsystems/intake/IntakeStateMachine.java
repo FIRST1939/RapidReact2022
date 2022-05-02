@@ -4,7 +4,6 @@
 
 package frc.robot.subsystems.intake;
 
-import java.util.EnumMap;
 import java.util.function.Function;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -62,24 +61,15 @@ class IntakeStateMachine {
     }
   }
 
-  /**
-   * An enumeration map of the state machine. Iteration order is the enum
-   * declaration order. This is why passing the map values to the command group in
-   * iteration order, along with enum ordinals as the index works.
-   */
-  private final EnumMap<State, Command> stateMap = new EnumMap<>(State.class);
-
   /** The state machine itself. */
-  private final RandomAccessCommandGroup stateMachineCommand = new RandomAccessCommandGroup(
-      this::getNextStateIndex,
-      stateMap.values().toArray(new Command[stateMap.size()]));
+  private final RandomAccessCommandGroup stateMachineCommand;
 
   /**
    * A wrapper for default command setting that runs the machine perpetually. This
    * makes the machine satisfy the subsystem default command requirement that
    * isFinished always returns false.
    */
-  private final PerpetualCommand defaultCommand = stateMachineCommand.perpetually();
+  private final PerpetualCommand defaultCommand;
 
   IntakeStateMachine(final Intake intake) {
     this.intake = intake;
@@ -116,13 +106,19 @@ class IntakeStateMachine {
         .andThen(new WaitUntilCommand(() -> !RobotCargoCount.getInstance().isFull()));
     final Command stowedSendStateCommand = new IntakeStowedSendState(intake);
 
-    // Populate the state map.
-    stateMap.put(State.STOWED_EMPTY, stowedEmptyStateCommand);
-    stateMap.put(State.GATHERING_EMPTY, gatheringEmptyStateCommand);
-    stateMap.put(State.AT_SENSOR, atSensorStateCommand);
-    stateMap.put(State.GATHERING_SEND, gatheringSendStateCommand);
-    stateMap.put(State.STOWED_HOLD, stowedHoldStateCommand);
-    stateMap.put(State.STOWED_SEND, stowedSendStateCommand);
+    /*
+     * Create the state machine implementing command group. Make sure the commands
+     * are in the same order as the states in the State enumeration.
+     */
+    stateMachineCommand = new RandomAccessCommandGroup(this::getNextStateIndex,
+        stowedEmptyStateCommand,
+        gatheringEmptyStateCommand,
+        atSensorStateCommand,
+        gatheringSendStateCommand,
+        stowedHoldStateCommand,
+        stowedSendStateCommand);
+
+    defaultCommand = stateMachineCommand.perpetually();
   }
 
   /**
