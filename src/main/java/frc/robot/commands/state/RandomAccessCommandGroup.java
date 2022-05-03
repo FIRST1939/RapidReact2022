@@ -46,7 +46,7 @@ public class RandomAccessCommandGroup extends CommandGroupBase {
    *
    * @param commands the commands to include in this group.
    */
-  public RandomAccessCommandGroup(Command... commands) {
+  public RandomAccessCommandGroup(final Command... commands) {
     this(null, commands);
   }
 
@@ -61,9 +61,10 @@ public class RandomAccessCommandGroup extends CommandGroupBase {
    * is interrupted. All other contained command end() calls will be due to the
    * contained command's isFinish() returning true, and then the end() interrupted
    * parameter will be false. One important effect of this is that the interrupted
-   * parameter cannot be used to chose a next command. The isFinished() and end()
-   * methods must properly detect the time for a command change and the proper
-   * next command.
+   * parameter cannot be used as reliable input into selecting the next command.
+   * The isFinished() method must properly detect the time for a command change.
+   * The selection of the next command is left to the
+   * <code>nextCommandIndexOperator</code>.
    * 
    * <p>
    * Typically, if the nextCommandIndexOperator returned index is out of range
@@ -85,13 +86,13 @@ public class RandomAccessCommandGroup extends CommandGroupBase {
    *                                 a {@link SequentialCommandGroup}.
    * @param commands                 the commands to include in this group.
    */
-  public RandomAccessCommandGroup(IntUnaryOperator nextCommandIndexOperator, Command... commands) {
+  public RandomAccessCommandGroup(final IntUnaryOperator nextCommandIndexOperator, final Command... commands) {
     addCommands(commands);
     m_nextCommandIndexOperator = nextCommandIndexOperator != null ? nextCommandIndexOperator : i -> i + 1;
   }
 
   @Override
-  public final void addCommands(Command... commands) {
+  public void addCommands(Command... commands) {
     requireUngrouped(commands);
 
     if (m_currentCommandIndex != NO_CURRENT_COMMAND) {
@@ -152,7 +153,7 @@ public class RandomAccessCommandGroup extends CommandGroupBase {
   }
 
   @Override
-  public void end(boolean interrupted) {
+  public void end(final boolean interrupted) {
     if (interrupted && isCurrentCommandIndexInRange()) {
       m_commands.get(m_currentCommandIndex).end(true);
     }
@@ -198,7 +199,7 @@ public class RandomAccessCommandGroup extends CommandGroupBase {
    *         {@link #m_currentCommandIndex} and set to {@link #NO_CURRENT_COMMAND}
    *         if out of range.
    */
-  private int getNextCommandIndex() {
+  protected int getNextCommandIndex() {
     m_currentCommandIndex = m_nextCommandIndexOperator.applyAsInt(m_currentCommandIndex);
     isCurrentCommandIndexInRange();
     return m_currentCommandIndex;

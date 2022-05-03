@@ -16,7 +16,7 @@ public class SequentialCommandGroup2 extends RandomAccessCommandGroup {
    *
    * @param commands the commands to include in this group.
    */
-  public SequentialCommandGroup2(Command... commands) {
+  public SequentialCommandGroup2(final Command... commands) {
     super(commands);
   }
 }

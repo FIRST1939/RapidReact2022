@@ -13,15 +13,16 @@ import edu.wpi.first.wpilibj2.command.PerpetualCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.Constants.LEDMode;
-import frc.robot.commands.state.RandomAccessCommandGroup;
+import frc.robot.commands.state.EnumeratedRandomAccessCommandGroup;
 import frc.robot.subsystems.Lights;
 import frc.robot.subsystems.RobotCargoCount;
 
 /**
  * This class defines the state machine for automated operation of the intake
  * including a {@link PerpetualCommand} wrapper around the
- * {@link RandomAccessCommandGroup} used to implement the state machine. The
- * wrapper can be used as the default command for the intake subsystem.
+ * {@link EnumeratedRandomAccessCommandGroup} used to implement the state
+ * machine. The wrapper can be used as the default command for the intake
+ * subsystem.
  */
 class IntakeStateMachine {
   /** The intake this state machine operates. */
@@ -62,7 +63,7 @@ class IntakeStateMachine {
   }
 
   /** The state machine itself. */
-  private final RandomAccessCommandGroup stateMachineCommand;
+  private final EnumeratedRandomAccessCommandGroup<State> stateMachineCommand;
 
   /**
    * A wrapper for default command setting that runs the machine perpetually. This
@@ -110,7 +111,9 @@ class IntakeStateMachine {
      * Create the state machine implementing command group. Make sure the commands
      * are in the same order as the states in the State enumeration.
      */
-    stateMachineCommand = new RandomAccessCommandGroup(this::getNextStateIndex,
+    stateMachineCommand = new EnumeratedRandomAccessCommandGroup<>(
+        State.class,
+        this::getNextStateIndex,
         stowedEmptyStateCommand,
         gatheringEmptyStateCommand,
         atSensorStateCommand,
@@ -122,16 +125,15 @@ class IntakeStateMachine {
   }
 
   /**
-   * This is the next command index operator for the state machine. If the current
+   * This is the next command state operator for the state machine. If the current
    * state is no state, the result is STOWED_EMPTY (see
    * {@link #setNextInitialState(State)} for initial state options).
    * 
-   * @param current the current state index as passed from the state machine
-   *                command.
+   * @param currentState the current state index as passed from the state machine
+   *                     command.
    */
-  private int getNextStateIndex(final int current) {
+  private State getNextStateIndex(final State currentState) {
     State next = State.STOWED_EMPTY;
-    final State currentState = State.getState(current);
     if (currentState != null) {
       switch (currentState) {
         case STOWED_EMPTY:
@@ -181,7 +183,7 @@ class IntakeStateMachine {
           break;
       }
     }
-    return next.ordinal();
+    return next;
   }
 
   /**
@@ -190,10 +192,7 @@ class IntakeStateMachine {
    *         running state machine is between states.
    */
   State getCurrentState() {
-    if (this.intake.isStateMachineRunning() && this.stateMachineCommand.isCurrentCommandIndexInRange()) {
-      return State.values()[this.stateMachineCommand.getCurrentCommandIndex()];
-    }
-    return null;
+    return this.stateMachineCommand.getCurrentState();
   }
 
   /**
@@ -209,10 +208,7 @@ class IntakeStateMachine {
    *                         manual command ends).
    */
   void setNextInitialState(final State nextInitialState) {
-    this.stateMachineCommand.setInitialCommandIndex(
-        nextInitialState == null
-            ? RandomAccessCommandGroup.NO_CURRENT_COMMAND
-            : nextInitialState.ordinal());
+    this.stateMachineCommand.setInitialState(nextInitialState);
   }
 
   private boolean gatheringEmptyIsFinished() {
