@@ -15,7 +15,13 @@ import edu.wpi.first.wpilibj2.command.PerpetualCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 /**
- * A CommandGroup that runs a list of commands in an arbitray order.
+ * A CommandGroup that runs a list of commands in an arbitrary order. During
+ * exection, a command included in the group may be executed 0, 1 or more times
+ * and in any order. This can be useful for the implementation of state
+ * machines. One common use cases are to implement a non-terminating state
+ * machine that serves as the default command for a subsystem. Another is to
+ * implement a terminating state machine to execute an autonomous mode that uses
+ * one or more subsystems.
  *
  * <p>
  * As a rule, CommandGroups require the union of the requirements of their

@@ -39,6 +39,7 @@ import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Lights;
 import frc.robot.subsystems.RobotCargoCount;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.climber.Climber;
 import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.indexer.manual.ManualIndexer;
 import frc.robot.subsystems.intake.Intake;
@@ -56,7 +57,6 @@ import frc.robot.commands.climber.RetractMotor;
 import frc.robot.commands.climber.ExtendMotor;
 import frc.robot.commands.climber.SetHome;
 import frc.robot.commands.climber.SetPiston;
-import frc.robot.subsystems.Climber;
 import frc.robot.triggers.ManualShootTrigger;
 
 /**

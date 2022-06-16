@@ -14,6 +14,13 @@ import edu.wpi.first.wpilibj2.command.Command;
  * additional functionality is provided; however, using an enumerated type can
  * often make deisgn and implementation of more complex state machines easier to
  * complete, discuss, and comprehend.
+ * 
+ * <p>
+ * As a rule, CommandGroups require the union of the requirements of their
+ * component commands.
+ *
+ * <p>
+ * This class is provided by the NewCommands VendorDep TODO
  */
 public class EnumeratedRandomAccessCommandGroup<E extends Enum<E>> extends RandomAccessCommandGroup {
     private final Class<E> m_enumClazz;

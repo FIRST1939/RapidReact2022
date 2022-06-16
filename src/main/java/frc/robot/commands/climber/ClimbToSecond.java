@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.commands.RumbleController;
-import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.climber.Climber;
 
 public class ClimbToSecond extends SequentialCommandGroup {
     
