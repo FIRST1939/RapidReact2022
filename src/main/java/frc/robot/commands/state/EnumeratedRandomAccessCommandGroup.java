@@ -59,8 +59,10 @@ public class EnumeratedRandomAccessCommandGroup<E extends Enum<E>> extends Rando
      *                                 defines the set of states for the state
      *                                 machine being implemented.
      * @param nextCommandStateOperator an operator that takes the current state as a
-     *                                 parameter and returns the next state. It
-     *                                 cannot be null.
+     *                                 parameter and returns the next state. If
+     *                                 null, a operator that returns the next enum
+     *                                 value is used. This operator returns null if
+     *                                 the end of the enumeration has been reached.
      * @param commands                 the commands to include in this group.
      */
     public EnumeratedRandomAccessCommandGroup(
@@ -74,7 +76,22 @@ public class EnumeratedRandomAccessCommandGroup<E extends Enum<E>> extends Rando
         // TODO add null checks (all parms) in wpilib style.
         m_enumClazz = enumClazz;
         m_enumValues = m_enumClazz.getEnumConstants();
-        m_nextCommandStateOperator = nextCommandStateOperator;
+        m_nextCommandStateOperator = nextCommandStateOperator != null ? nextCommandStateOperator : this::nextEnumValue;
+    }
+
+    /**
+     * Same as
+     * {@link #EnumeratedRandomAccessCommandGroup(Class, UnaryOperator, Command...)}
+     * with a null operator.
+     * 
+     * @param enumClazz the class of the Java <code>enum</code> the defines the set
+     *                  of states for the state machine being implemented.
+     * @param commands  the commands to include in this group.
+     */
+    public EnumeratedRandomAccessCommandGroup(
+            final Class<E> enumClazz,
+            final Command... commands) {
+        this(enumClazz, null, commands);
     }
 
     @Override
@@ -115,5 +132,22 @@ public class EnumeratedRandomAccessCommandGroup<E extends Enum<E>> extends Rando
         return nextState != null
                 ? nextState.ordinal()
                 : NO_CURRENT_COMMAND;
+    }
+
+    /**
+     * Implemenation of the default next enum value operator for getting the next
+     * state enum.
+     * 
+     * @param e the current enum value.
+     * @return the next enum value or null if e is null or the last enum value.
+     */
+    private E nextEnumValue(E e) {
+        if (e != null) {
+            int nextOrdinal = e.ordinal() + 1;
+            if (nextOrdinal < m_enumValues.length) {
+                return m_enumValues[nextOrdinal];
+            }
+        }
+        return null;
     }
 }

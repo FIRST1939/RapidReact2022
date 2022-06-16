@@ -4,16 +4,18 @@
 
 package frc.robot.commands.state;
 
+import java.lang.reflect.Array;
+
 import edu.wpi.first.wpilibj2.command.Command;
 
 /**
- * An extension of {@link RandomAccessCommandGroup} that runs a script of
- * command indexes. The script can be changed whenever the command group is not
- * running. The currently set script will be used on the next command group
- * execution. The default script is empty.
+ * An extension of {@link EnumeratedRandomAccessCommandGroup} that runs a script
+ * of command enum values. The script can be changed whenever the command group
+ * is not running. The currently set script will be used on the next command
+ * group execution. The default script is empty.
  * 
  * <p>
- * Note that the script may contain a given command index 0, 1, or more times.
+ * Note that the script may contain a given enum value 0, 1, or more times.
  * 
  * <p>
  * The primary motivation for this class is to execute a terminating command
@@ -32,19 +34,20 @@ import edu.wpi.first.wpilibj2.command.Command;
  * <p>
  * This class is provided by the NewCommands VendorDep TODO
  */
-public class ScriptedCommandGroup extends RandomAccessCommandGroup {
-    public static final int[] EMPTY_SCRIPT = {};
-    private int[] m_script = EMPTY_SCRIPT;
+public class EnumeratedScriptedCommandGroup<E extends Enum<E>> extends EnumeratedRandomAccessCommandGroup<E> {
+    private final E[] EMPTY_SCRIPT;
+    private E[] m_script;
     private int m_currentScriptIndex = RandomAccessCommandGroup.NO_CURRENT_COMMAND;
 
     /**
-     * Creates a new ScriptedCommandGroup. The given commands will be run in a
-     * scripted order, with the CommandGroup finishing when no command is
+     * Creates a new EnumeratedScriptedCommandGroup. The given commands will be run
+     * in a scripted order, with the CommandGroup finishing when no command is
      * selected to run next, that is, the end of the script is reached.
      * 
      * <p>
      * Note that execution always starts at the beginning of the script. Therefore,
-     * the {@link #setInitialCommandIndex(int)} is overridden to do nothing.
+     * the {@link #setInitialCommandIndex(int)} and {@link #setInitialState(Enum)}
+     * are overridden to do nothing.
      * 
      * <p>
      * The only time a contained command's end() method receives true for the
@@ -59,13 +62,20 @@ public class ScriptedCommandGroup extends RandomAccessCommandGroup {
      * {@link PerpetualCommand} (see {@link #perpetually()}). In that case, it will
      * be restarted from the beginning of the script.
      *
-     * @param commands the commands to include in this group.
+     * @param enumClazz the class of the Java <code>enum</code> the defines the set
+     *                  of states for the state machine being implemented.
+     * @param commands  the commands to include in this group.
      */
-    public ScriptedCommandGroup(final Command... commands) {
+    @SuppressWarnings("unchecked")
+    public EnumeratedScriptedCommandGroup(
+            final Class<E> enumClazz,
+            final Command... commands) {
         // Would prefer to send an IntUnaryOperator on super call, but that would
         // require an instance method reference during construction which is not
         // allowed. See the getNextCommandIndex() override instead.
-        super(commands);
+        super(enumClazz, commands);
+        EMPTY_SCRIPT = (E[]) Array.newInstance(enumClazz, 0);
+        m_script = EMPTY_SCRIPT;
     }
 
     @Override
@@ -75,10 +85,10 @@ public class ScriptedCommandGroup extends RandomAccessCommandGroup {
             m_currentScriptIndex = RandomAccessCommandGroup.NO_CURRENT_COMMAND;
             return RandomAccessCommandGroup.NO_CURRENT_COMMAND;
         }
-        return m_script[m_currentScriptIndex];
+        return m_script[m_currentScriptIndex].ordinal();
     }
 
-    public void setScript(final int[] script) {
+    public void setScript(final E[] script) {
         if (isScheduled()) {
             throw new IllegalStateException("Cannot change the script while running.");
         }
@@ -90,5 +100,13 @@ public class ScriptedCommandGroup extends RandomAccessCommandGroup {
 
     @Override
     public void setInitialCommandIndex(final int initialCommandIndex) {
+    }
+
+    @Override
+    /**
+     * @param nextInitialState the {@link E} to use the next time the state machine
+     *                         is initialized.
+     */
+    public void setInitialState(final E nextInitialState) {
     }
 }
