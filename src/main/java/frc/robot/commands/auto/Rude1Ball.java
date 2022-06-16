@@ -8,7 +8,6 @@ import frc.robot.Constants;
 import frc.robot.Limelight;
 import frc.robot.commands.ManualMoveAndTurnToTarget;
 import frc.robot.commands.ResetGyro;
-import frc.robot.commands.RumbleController;
 import frc.robot.commands.ToggleManualEjection;
 import frc.robot.commands.shooter.SetShot;
 import frc.robot.subsystems.DriveTrain;
@@ -19,7 +18,7 @@ import frc.robot.subsystems.intake.Intake;
 public class Rude1Ball extends SequentialCommandGroup {
 
     public Rude1Ball(final DriveTrain driveTrain, final Intake intake, final Indexer indexer, final Shooter shooter,
-            final Limelight limelight, final RumbleController rumbleController) {
+            final Limelight limelight) {
         addCommands(
                 // Configurable wait for alliance partner.
                 new WaitCommand(SmartDashboard.getNumber("Auto Start Wait", 0.0)),
@@ -29,7 +28,7 @@ public class Rude1Ball extends SequentialCommandGroup {
                         new DriveStraightDistance(-45, driveTrain, 0.5),
                         new SetShot(shooter, Constants.SHOTS.cargoRing)),
 
-                new ManualMoveAndTurnToTarget(driveTrain, limelight, 0, rumbleController).withTimeout(1.0),
+                new ManualMoveAndTurnToTarget(driveTrain, limelight, 0).withTimeout(1.0),
                 new WaitCommand(0.15),
                 new AutoModeShooter(2, indexer, shooter).withTimeout(3.0),
                 new WaitCommand(0.2),

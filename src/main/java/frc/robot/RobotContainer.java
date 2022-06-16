@@ -102,18 +102,18 @@ public class RobotContainer {
    */
   private void configureAutoChooser() {
     this.autoChooser.setDefaultOption("One Ball",
-        () -> new OneBall(shooter, indexer, driveTrain, limelightShooter, rumbleController));
+        () -> new OneBall(shooter, indexer, driveTrain, limelightShooter));
     this.autoChooser.addOption("Do Nothing", () -> new WaitCommand(1.0));
     this.autoChooser.addOption("Cargo Ring Two Ball",
-        () -> new CargoRingTwoBall(driveTrain, intake, indexer, shooter, limelightShooter, rumbleController));
+        () -> new CargoRingTwoBall(driveTrain, intake, indexer, shooter, limelightShooter));
     this.autoChooser.addOption("4 Ball",
-        () -> new Auto4Ball(driveTrain, intake, indexer, shooter, limelightShooter, rumbleController));
+        () -> new Auto4Ball(driveTrain, intake, indexer, shooter, limelightShooter));
     this.autoChooser.addOption("Rude 2 Ball",
-        () -> new Rude2Ball(driveTrain, intake, indexer, shooter, limelightShooter, rumbleController));
+        () -> new Rude2Ball(driveTrain, intake, indexer, shooter, limelightShooter));
     this.autoChooser.addOption("Rude 1 Ball",
-        () -> new Rude1Ball(driveTrain, intake, indexer, shooter, limelightShooter, rumbleController));
+        () -> new Rude1Ball(driveTrain, intake, indexer, shooter, limelightShooter));
     this.autoChooser.addOption("5 Ball",
-        () -> new Auto5Ball(driveTrain, intake, indexer, shooter, limelightShooter, rumbleController));
+        () -> new Auto5Ball(driveTrain, intake, indexer, shooter, limelightShooter));
 
     SmartDashboard.putData("Autonomous Chooser", this.autoChooser);
   }

@@ -22,6 +22,10 @@ public class ManualMoveToTarget extends CommandBase {
 
   private final RumbleController rumbleController;
 
+  public ManualMoveToTarget(final DriveTrain driveTrain, final Limelight limelight, final int pipeline) {
+    this(driveTrain, limelight, pipeline, null);
+  }
+
   public ManualMoveToTarget(final DriveTrain driveTrain, final Limelight limelight, final int pipeline, final RumbleController rumbleController) {
     this.driveTrain = driveTrain;
     this.limelight = limelight;

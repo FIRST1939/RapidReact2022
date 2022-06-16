@@ -22,6 +22,10 @@ public class ManualTurnToTarget extends CommandBase {
 
   private final RumbleController rumbleController;
 
+  public ManualTurnToTarget(final DriveTrain driveTrain, final Limelight limelight, final int pipeline) {
+    this(driveTrain, limelight, pipeline, null);
+  }
+
   public ManualTurnToTarget(final DriveTrain driveTrain, final Limelight limelight, final int pipeline, final RumbleController rumbleController) {
     this.driveTrain = driveTrain;
     this.limelight = limelight;
