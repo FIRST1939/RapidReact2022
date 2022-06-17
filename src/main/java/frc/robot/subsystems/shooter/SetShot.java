@@ -4,12 +4,14 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 
 /**
- * This command is designed to be the default command for the
- * shooter subsystem. It is used to shoot cargo during telop
- * with driver input of shooting rings.
+ * This command is used to configure the shooter for a particular shot (see
+ * {@link Constants.SHOTS}). It can be tied to a button for teleop or made part
+ * of an automode command group. Note that this does not cause a shot to be
+ * fired.
+ * 
+ * TODO get rid of this class in favor of InstantCommand.
  */
 public class SetShot extends CommandBase {
-
     private final Shooter shooter;
     private final Constants.SHOTS shot;
 
@@ -17,22 +19,19 @@ public class SetShot extends CommandBase {
      * @param shooter the shooter subsystem used by this command
      * @param shot    the shot type that we are preparing.
      */
-    public SetShot (final Shooter shooter, final Constants.SHOTS shot) {
-
+    public SetShot(final Shooter shooter, final Constants.SHOTS shot) {
         this.shooter = shooter;
         this.shot = shot;
     }
 
     @Override
-    public void initialize () { 
-
-        this.shooter.cargoShot(this.shot); 
+    public void initialize() {
+        this.shooter.cargoShot(this.shot);
     }
 
     // Driving with driver input never ends unless interrupted.
     @Override
-    public boolean isFinished () { 
-
-        return true; 
+    public boolean isFinished() {
+        return true;
     }
 }
