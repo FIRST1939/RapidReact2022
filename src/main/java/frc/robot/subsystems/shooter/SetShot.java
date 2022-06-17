@@ -1,8 +1,7 @@
-package frc.robot.commands.shooter;
+package frc.robot.subsystems.shooter;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.subsystems.shooter.Shooter;
 
 /**
  * This command is designed to be the default command for the
