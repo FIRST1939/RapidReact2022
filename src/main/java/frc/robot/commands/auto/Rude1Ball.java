@@ -8,12 +8,12 @@ import frc.robot.Constants;
 import frc.robot.Limelight;
 import frc.robot.commands.ToggleManualEjection;
 import frc.robot.commands.shooter.SetShot;
-import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.drive.DriveTrain;
 import frc.robot.subsystems.drive.ManualMoveAndTurnToTarget;
 import frc.robot.subsystems.drive.ResetGyro;
 import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.intake.Intake;
+import frc.robot.subsystems.shooter.Shooter;
 
 public class Rude1Ball extends SequentialCommandGroup {
 

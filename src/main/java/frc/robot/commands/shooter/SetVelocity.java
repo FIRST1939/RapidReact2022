@@ -3,7 +3,7 @@ package frc.robot.commands.shooter;
 import java.util.function.IntSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.shooter.Shooter;
 
 public class SetVelocity extends CommandBase {
     

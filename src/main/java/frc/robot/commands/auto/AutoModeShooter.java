@@ -5,8 +5,8 @@
 package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.indexer.Indexer;
+import frc.robot.subsystems.shooter.Shooter;
 
 /**
  * Used during autonomous mode to shoot 1 or 2 cargo when each is ready to be

@@ -2,8 +2,8 @@ package frc.robot.triggers;
 
 import java.util.function.BooleanSupplier;
 
-import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.indexer.Indexer;
+import frc.robot.subsystems.shooter.Shooter;
 
 /**
  * An instance of this class is used to make sure we shoot only when the shooter

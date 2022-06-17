@@ -11,12 +11,12 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.Limelight;
 import frc.robot.commands.shooter.SetShot;
-import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.drive.DriveTrain;
 import frc.robot.subsystems.drive.ManualMoveToTarget;
 import frc.robot.subsystems.drive.ManualTurnToTarget;
 import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.intake.Intake;
+import frc.robot.subsystems.shooter.Shooter;
 
 /**
  * This auto command is to be set up in the left tarmac at and square to the

@@ -10,7 +10,7 @@ import frc.robot.Limelight;
 import frc.robot.Constants.LEDMode;
 import frc.robot.Constants.SHOTS;
 import frc.robot.subsystems.Lights;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.shooter.Shooter;
 
 public class VisionWithDistance extends CommandBase {
 
