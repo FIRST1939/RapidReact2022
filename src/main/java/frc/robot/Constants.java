@@ -73,7 +73,10 @@ public final class Constants {
     public static final int SHOOTER_DEFAULT_VELOCITY = 0;
     public static final boolean SHOOTER_DEFAULT_HOOD = false;
 
-    // TODO shooting values
+    /**
+     * The configurations for known position shots and one to indicate the use of
+     * vision and a distance to velocity mapping.
+     */
     public enum SHOTS {
         off(0, false),
         visionTracked(-1, true),
