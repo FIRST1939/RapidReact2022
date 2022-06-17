@@ -4,6 +4,9 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Timer;
 
+/**
+ * 
+ */
 public class RumbleController extends CommandBase {
     private final GenericHID controller;
     private final Timer timer = new Timer();
