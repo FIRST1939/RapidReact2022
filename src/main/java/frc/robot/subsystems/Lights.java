@@ -5,10 +5,9 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class Lights extends SubsystemBase {
+public class Lights {
   private Spark blinkin = new Spark(Constants.LIGHTS_PWM);
   private static Lights lightsInstance = null;
 
