@@ -14,11 +14,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ScheduleCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.SHOTS;
+import frc.robot.commands.CancelCommand;
 import frc.robot.commands.DriveWithInput;
 import frc.robot.commands.ManualMoveAndTurnToTarget;
 import frc.robot.commands.ManualTurnToTarget;
@@ -48,7 +51,6 @@ import frc.robot.subsystems.intake.manual.IntakeRetractCommandSelector;
 import frc.robot.subsystems.intake.manual.ManualIntakeRollerBelts;
 import frc.robot.triggers.ShootTrigger;
 import frc.robot.triggers.ShooterIdleTrigger;
-import frc.robot.commands.climber.CancelClimb;
 import frc.robot.commands.climber.ClimbNextBar;
 import frc.robot.commands.climber.ClimbToSecond;
 import frc.robot.commands.climber.ClimbToThird;
@@ -138,11 +140,12 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     JoystickButton manualTurnToTargetLong = new JoystickButton(rightStick, 10);
-    manualTurnToTargetLong.whenPressed(new ManualTurnToTarget(driveTrain, limelightShooter, 0, rumbleController));
+    manualTurnToTargetLong.whenPressed(
+        rumbleAfter(new ManualTurnToTarget(driveTrain, limelightShooter, 0)));
 
     JoystickButton manualMoveToTargetLong = new JoystickButton(rightStick, 11);
-    manualMoveToTargetLong
-        .whenPressed(new ManualMoveAndTurnToTarget(driveTrain, limelightShooter, 0, rumbleController));
+    manualMoveToTargetLong.whenPressed(
+        rumbleAfter(new ManualMoveAndTurnToTarget(driveTrain, limelightShooter, 0)));
 
     // shooter buttons
     JoystickButton fenderLowButton = new JoystickButton(driverTwo, XboxController.Button.kY.value);
@@ -223,11 +226,12 @@ public class RobotContainer {
     JoystickButton climberPistonExtend = new JoystickButton(rightStick, 5);
     climberPistonExtend.whenPressed(new SetPiston(this.climber, (Boolean) true));
 
-    ClimbToSecond climbToSecond = new ClimbToSecond(this.climber, rumbleController);
-    ClimbToThird climbToThird = new ClimbToThird(this.climber, rumbleController);
+    Command climbToSecond = rumbleAfter(new ClimbToSecond(this.climber));
+    Command climbToThird = rumbleAfter(new ClimbToThird(this.climber));
 
     JoystickButton climbToNextBarButton = new JoystickButton(leftStick, 4);
-    climbToNextBarButton.whenPressed(new ClimbNextBar(this.climber, rumbleController));
+    climbToNextBarButton.whenPressed(
+        rumbleAfter(new ClimbNextBar(this.climber)));
 
     JoystickButton climbToSecondButton = new JoystickButton(leftStick, 2);
     climbToSecondButton.whenPressed(climbToSecond);
@@ -236,15 +240,15 @@ public class RobotContainer {
     climbToThirdButton.whenPressed(climbToThird);
 
     JoystickButton cancelClimbButton = new JoystickButton(leftStick, 5);
-    cancelClimbButton.whenPressed(new CancelClimb(climbToSecond, climbToThird));
+    cancelClimbButton.whenPressed(new CancelCommand(climbToSecond, climbToThird));
 
     JoystickButton climberMotorPartialPositionExtend = new JoystickButton(rightStick, 6);
-    climberMotorPartialPositionExtend
-        .whenPressed(new GetToPosition(this.climber, rumbleController, Constants.CLIMBER_POSITIONS.partial));
+    climberMotorPartialPositionExtend.whenPressed(
+        rumbleAfter(new GetToPosition(this.climber, Constants.CLIMBER_POSITIONS.partial)));
 
     JoystickButton climberMotorFullPositionButton = new JoystickButton(rightStick, 9);
-    climberMotorFullPositionButton
-        .whenPressed(new GetToPosition(this.climber, rumbleController, Constants.CLIMBER_POSITIONS.full));
+    climberMotorFullPositionButton.whenPressed(
+        rumbleAfter(new GetToPosition(this.climber, Constants.CLIMBER_POSITIONS.full)));
 
     JoystickButton climberSetHomeButton = new JoystickButton(driverTwo, XboxController.Button.kBack.value);
     climberSetHomeButton.whenPressed(new SetHome(this.climber));
@@ -253,8 +257,8 @@ public class RobotContainer {
     climberSetHomeButtonSecondary.whenPressed(new SetHome(this.climber));
 
     JoystickButton climberMotorBottomPositionButton = new JoystickButton(rightStick, 7);
-    climberMotorBottomPositionButton
-        .whenPressed(new GetToPosition(this.climber, rumbleController, Constants.CLIMBER_POSITIONS.bottomFirst));
+    climberMotorBottomPositionButton.whenPressed(
+        rumbleAfter(new GetToPosition(this.climber, Constants.CLIMBER_POSITIONS.bottomFirst)));
   }
 
   private void configureLightingTriggers() {
@@ -315,5 +319,29 @@ public class RobotContainer {
     } else {
       limelightShooter.setPipeline(Constants.SHOOTER_OFF_PIPELINE);
     }
+  }
+
+  /**
+   * It is desirable to have a single rumble command instance so that if a command
+   * tries to rumble while we are already rumbling (schedule the rumble command
+   * while it is already running), the second rumble is ignored. The proper way to
+   * compose commands in WPILIB (any given commmand and a rumble in this case) is
+   * to fold them into a command group, usually via one of the decorator methods
+   * on the {@link Command} class (for example,
+   * {@link Command#andThen(Command...)}). The problem with this approach in our
+   * case is that a single command instance can only be included in one command
+   * group. Using andThen directly would require a new rumble commmand instance
+   * for each group. That is where this method and its usage of
+   * {@link ScheduleCommand} comes in. The schedule command is an instant command
+   * that simply schedules the commands it is given. The schedule command will
+   * belong to the command group (therefore a new instance each time) but its
+   * forked commands, in this case just our single rumble command, will not.
+   * 
+   * @param command the command after which we wish to rumble.
+   * @return a new sequential command group that runs the command and then
+   *         rumbles.
+   */
+  private SequentialCommandGroup rumbleAfter(final Command command) {
+    return command.andThen(new ScheduleCommand(this.rumbleController));
   }
 }

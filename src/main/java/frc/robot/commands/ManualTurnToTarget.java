@@ -11,7 +11,6 @@ import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Lights;
 
 public class ManualTurnToTarget extends CommandBase {
-
   private final DriveTrain driveTrain;
   private final Limelight limelight;
 
@@ -20,19 +19,10 @@ public class ManualTurnToTarget extends CommandBase {
 
   private int pipeline;
 
-  private final RumbleController rumbleController;
-
   public ManualTurnToTarget(final DriveTrain driveTrain, final Limelight limelight, final int pipeline) {
-    this(driveTrain, limelight, pipeline, null);
-  }
-
-  public ManualTurnToTarget(final DriveTrain driveTrain, final Limelight limelight, final int pipeline, final RumbleController rumbleController) {
     this.driveTrain = driveTrain;
     this.limelight = limelight;
     this.pipeline = pipeline;
-
-    this.rumbleController = rumbleController;
-
     addRequirements(driveTrain);
   }
 
@@ -42,11 +32,14 @@ public class ManualTurnToTarget extends CommandBase {
     Lights.getInstance().setColor(LEDMode.RED);
     this.angle = limelight.getHorizontalAngleError();
     this.limelight.setPipeline(pipeline);
-    
+
     if (this.angle < -1) {
       this.direction = -1;
     } else if (angle > 1) {
       this.direction = 1;
+    } else {
+      // Commands can run more than once. Always fully initialize.
+      this.direction = 0;
     }
   }
 
@@ -69,9 +62,6 @@ public class ManualTurnToTarget extends CommandBase {
   public void end(boolean interrupted) {
     this.driveTrain.arcadeDrive(0, 0, 0);
     Lights.getInstance().setColor(LEDMode.GREEN);
-    if (this.rumbleController != null) {
-      this.rumbleController.schedule();
-  }
   }
 
   // Returns true when the command should end.

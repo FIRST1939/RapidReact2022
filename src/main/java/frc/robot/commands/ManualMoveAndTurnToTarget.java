@@ -12,17 +12,13 @@ import frc.robot.subsystems.DriveTrain;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class ManualMoveAndTurnToTarget extends SequentialCommandGroup {
-  public ManualMoveAndTurnToTarget(final DriveTrain driveTrain, final Limelight limelight, final int pipeline) {
-    this(driveTrain, limelight, pipeline, null);
-  }
-
   /** Creates a new ManualMoveAndTurnToTarget. */
-  public ManualMoveAndTurnToTarget(final DriveTrain driveTrain, final Limelight limelight, final int pipeline, final RumbleController rumbleController) {
+  public ManualMoveAndTurnToTarget(final DriveTrain driveTrain, final Limelight limelight, final int pipeline) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new ManualTurnToTarget(driveTrain, limelight, pipeline, rumbleController).withTimeout(3.0),
-      new ManualMoveToTarget(driveTrain, limelight, pipeline, rumbleController).withTimeout(3.0)
+        new ManualTurnToTarget(driveTrain, limelight, pipeline).withTimeout(3.0),
+        new ManualMoveToTarget(driveTrain, limelight, pipeline).withTimeout(3.0)
 
     );
   }
