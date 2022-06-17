@@ -47,8 +47,9 @@ import frc.robot.subsystems.intake.manual.ManualIntakeRollerBelts;
 import frc.robot.subsystems.shooter.SetShot;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.VisionWithDistance;
-import frc.robot.triggers.ShootTrigger;
-import frc.robot.triggers.ShooterIdleTrigger;
+import frc.robot.subsystems.shooter.triggers.ManualShootTrigger;
+import frc.robot.subsystems.shooter.triggers.ShootTrigger;
+import frc.robot.subsystems.shooter.triggers.ShooterIdleTrigger;
 import frc.robot.commands.climber.ClimbNextBar;
 import frc.robot.commands.climber.ClimbToSecond;
 import frc.robot.commands.climber.ClimbToThird;
@@ -57,7 +58,6 @@ import frc.robot.commands.climber.RetractMotor;
 import frc.robot.commands.climber.ExtendMotor;
 import frc.robot.commands.climber.SetHome;
 import frc.robot.commands.climber.SetPiston;
-import frc.robot.triggers.ManualShootTrigger;
 
 /**
  * This class is where the bulk of the robot should be declared. Since

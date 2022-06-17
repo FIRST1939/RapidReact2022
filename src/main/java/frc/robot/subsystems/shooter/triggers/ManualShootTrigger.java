@@ -1,4 +1,4 @@
-package frc.robot.triggers;
+package frc.robot.subsystems.shooter.triggers;
 
 import java.util.function.BooleanSupplier;
 
