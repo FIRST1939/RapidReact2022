@@ -35,12 +35,11 @@ public class VisionWithDistance extends CommandBase {
     if (this.shooter.getShot() == SHOTS.visionTracked) {
       if (this.limelight.isTargetFound()) {
         dy = this.limelight.getVerticalAngleError();
-        // TODO put the proper velocity function in here.
         velocity = dy * Constants.VISION_M + Constants.VISION_B;
 
         // I have no idea if 2% change is the right amount of change
         // to trigger setting the velocity and restarting the periodic
-        // check to see if the shooter it ready. But it is half the
+        // check to see if the shooter is ready. But it is half the
         // current error checked in the shooter, so seemed like a
         // reasonable first try. If it still does not shoot, relax
         // this a bit more. Perhaps 3% or 4% (same as error tolerance).
