@@ -1,7 +1,7 @@
 package frc.robot.subsystems.shooter.triggers;
 
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.subsystems.RobotCargoCount;
+import frc.robot.devices.RobotCargoCount;
 
 public class ShooterIdleTrigger extends Trigger{
 

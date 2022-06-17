@@ -9,7 +9,7 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants;
-import frc.robot.subsystems.RobotCargoCount;
+import frc.robot.devices.RobotCargoCount;
 import frc.robot.subsystems.indexer.Indexer;
 
 public class ManualIndexer extends CommandBase {

@@ -31,7 +31,6 @@ import frc.robot.commands.auto.CargoRingTwoBall;
 import frc.robot.commands.auto.OneBall;
 import frc.robot.commands.auto.Rude1Ball;
 import frc.robot.commands.auto.Rude2Ball;
-import frc.robot.subsystems.RobotCargoCount;
 import frc.robot.subsystems.climber.Climber;
 import frc.robot.subsystems.drive.DriveTrain;
 import frc.robot.subsystems.drive.DriveWithInput;
@@ -59,6 +58,7 @@ import frc.robot.commands.climber.SetHome;
 import frc.robot.commands.climber.SetPiston;
 import frc.robot.devices.Lights;
 import frc.robot.devices.Limelight;
+import frc.robot.devices.RobotCargoCount;
 
 /**
  * This class is where the bulk of the robot should be declared. Since

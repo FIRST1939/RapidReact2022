@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants;
-import frc.robot.subsystems.RobotCargoCount;
+import frc.robot.devices.RobotCargoCount;
 import frc.robot.subsystems.indexer.IndexerStateMachine.State;
 
 /**
