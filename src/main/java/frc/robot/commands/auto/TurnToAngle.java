@@ -5,7 +5,7 @@
 package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.drive.DriveTrain;
 
 public class TurnToAngle extends CommandBase {
   private final DriveTrain driveTrain;

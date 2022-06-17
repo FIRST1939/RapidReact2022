@@ -11,7 +11,8 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /**
  * Cancels the given commands when this command is initialized. This command as
- * finishes instantly.
+ * finishes instantly. This command is a generalization of the CancelClimb
+ * command we use to have.
  */
 public class CancelCommand extends CommandBase {
   private final Set<Command> m_toCancel;

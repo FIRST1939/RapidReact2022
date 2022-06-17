@@ -10,8 +10,8 @@ import frc.robot.commands.ManualMoveAndTurnToTarget;
 import frc.robot.commands.ResetGyro;
 import frc.robot.commands.ToggleManualEjection;
 import frc.robot.commands.shooter.SetShot;
-import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.drive.DriveTrain;
 import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.intake.Intake;
 

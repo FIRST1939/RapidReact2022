@@ -4,16 +4,14 @@
 
 package frc.robot.commands;
 
-import frc.robot.subsystems.DriveTrain;
-
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.drive.DriveTrain;
 
 /**
- * This command is designed to be the default command for the
- * drive train subsystem. It is used to drive during teleop
- * with driver input.
+ * This command is designed to be the default command for the drive train
+ * subsystem. It is used to drive during teleop with driver input.
  */
 public class DriveWithInput extends CommandBase {
   private final DriveTrain driveTrain;
@@ -42,13 +40,7 @@ public class DriveWithInput extends CommandBase {
     this.speedSupplier = speedSupplier;
     this.rotationSupplier = rotationSupplier;
     this.sidewindSupplier = sidewinderSpeedSupplier;
-    // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(this.driveTrain);
-  }
-
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -58,14 +50,6 @@ public class DriveWithInput extends CommandBase {
         this.speedSupplier.getAsDouble(),
         this.rotationSupplier.getAsDouble(),
         this.sidewindSupplier.getAsDouble());
-  }
-  
-  /**
-   * Driving with driver input never ends unless interrupted.
-   */
-  @Override
-  public boolean isFinished() {
-    return false;
   }
 
   // Called once the command ends or is interrupted.

@@ -7,8 +7,8 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Limelight;
 import frc.robot.Constants.LEDMode;
-import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Lights;
+import frc.robot.subsystems.drive.DriveTrain;
 
 public class ManualMoveToTarget extends CommandBase {
   private final DriveTrain driveTrain;

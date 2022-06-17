@@ -6,7 +6,7 @@ package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.drive.DriveTrain;
 
 /**
  * Use this command during autonomous to drive a straight line for a distance
