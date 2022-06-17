@@ -27,7 +27,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants;
 import frc.robot.Constants.LEDMode;
-import frc.robot.subsystems.Lights;
+import frc.robot.devices.Lights;
 
 /**
  * The drive train consists of three Neos on each side. Encoders are used for

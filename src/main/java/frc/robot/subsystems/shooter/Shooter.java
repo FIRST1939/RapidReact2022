@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.LEDMode;
-import frc.robot.subsystems.Lights;
+import frc.robot.devices.Lights;
 
 public class Shooter extends SubsystemBase {
     private static Shooter shooterInstance = null;

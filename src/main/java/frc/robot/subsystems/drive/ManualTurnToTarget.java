@@ -5,9 +5,9 @@
 package frc.robot.subsystems.drive;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Limelight;
 import frc.robot.Constants.LEDMode;
-import frc.robot.subsystems.Lights;
+import frc.robot.devices.Lights;
+import frc.robot.devices.Limelight;
 
 public class ManualTurnToTarget extends CommandBase {
   private final DriveTrain driveTrain;

@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.Constants.LEDMode;
 import frc.robot.commands.state.RandomAccessCommandGroup;
-import frc.robot.subsystems.Lights;
+import frc.robot.devices.Lights;
 import frc.robot.subsystems.RobotCargoCount;
 
 /**

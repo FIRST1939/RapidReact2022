@@ -6,10 +6,10 @@ package frc.robot.subsystems.shooter;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.Limelight;
 import frc.robot.Constants.LEDMode;
 import frc.robot.Constants.SHOTS;
-import frc.robot.subsystems.Lights;
+import frc.robot.devices.Lights;
+import frc.robot.devices.Limelight;
 
 public class VisionWithDistance extends CommandBase {
 

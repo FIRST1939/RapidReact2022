@@ -6,8 +6,8 @@ package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.Limelight;
 import frc.robot.Constants.SHOTS;
+import frc.robot.devices.Limelight;
 import frc.robot.subsystems.drive.DriveTrain;
 import frc.robot.subsystems.drive.ManualMoveAndTurnToTarget;
 import frc.robot.subsystems.indexer.Indexer;
