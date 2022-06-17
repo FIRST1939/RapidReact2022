@@ -8,7 +8,7 @@ import frc.robot.Constants;
 import frc.robot.commands.multisub.ToggleManualEjection;
 import frc.robot.devices.Limelight;
 import frc.robot.subsystems.drive.DriveTrain;
-import frc.robot.subsystems.drive.ManualMoveAndTurnToTarget;
+import frc.robot.subsystems.drive.MoveAndTurnToTarget;
 import frc.robot.subsystems.drive.ResetGyro;
 import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.intake.Intake;
@@ -30,7 +30,7 @@ public class Rude2Ball extends SequentialCommandGroup {
                         new SetShot(shooter, Constants.SHOTS.cargoRing)),
 
                 // new DriveStraightDistance(17.1, driveTrain, 0.4),
-                new ManualMoveAndTurnToTarget(driveTrain, limelight, 0).withTimeout(2.0),
+                new MoveAndTurnToTarget(driveTrain, limelight, 0).withTimeout(2.0),
                 new WaitCommand(0.15),
                 new AutoModeShooter(2, indexer, shooter).withTimeout(3.0),
                 new WaitCommand(0.2),

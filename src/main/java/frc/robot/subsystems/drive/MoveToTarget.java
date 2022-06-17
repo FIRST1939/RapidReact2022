@@ -9,16 +9,16 @@ import frc.robot.Constants.LEDMode;
 import frc.robot.devices.Lights;
 import frc.robot.devices.Limelight;
 
-public class ManualTurnToTarget extends CommandBase {
+public class MoveToTarget extends CommandBase {
   private final DriveTrain driveTrain;
   private final Limelight limelight;
 
-  private double angle;
+  private double ty;
   private int direction = 0;
 
   private int pipeline;
 
-  public ManualTurnToTarget(final DriveTrain driveTrain, final Limelight limelight, final int pipeline) {
+  public MoveToTarget(final DriveTrain driveTrain, final Limelight limelight, final int pipeline) {
     this.driveTrain = driveTrain;
     this.limelight = limelight;
     this.pipeline = pipeline;
@@ -29,12 +29,12 @@ public class ManualTurnToTarget extends CommandBase {
   @Override
   public void initialize() {
     Lights.getInstance().setColor(LEDMode.RED);
-    this.angle = limelight.getHorizontalAngleError();
+    this.ty = limelight.getVerticalAngleError();
     this.limelight.setPipeline(pipeline);
 
-    if (this.angle < -1) {
+    if (this.ty < 6) {
       this.direction = -1;
-    } else if (angle > 1) {
+    } else if (ty > 8) {
       this.direction = 1;
     } else {
       // Commands can run more than once. Always fully initialize.
@@ -45,14 +45,14 @@ public class ManualTurnToTarget extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    this.angle = limelight.getHorizontalAngleError();
+    this.ty = limelight.getVerticalAngleError();
 
-    if (Math.abs(this.angle) > 60) {
-      this.driveTrain.arcadeDrive(0, 0.70 * this.direction, 0);
-    } else if (Math.abs(this.angle) > 30) {
-      this.driveTrain.arcadeDrive(0, 0.55 * this.direction, 0);
+    if (Math.abs(this.ty) > 10) {
+      this.driveTrain.arcadeDrive(0.45 * this.direction, 0, 0);
+    } else if (Math.abs(this.ty) > 8) {
+      this.driveTrain.arcadeDrive(0.4 * this.direction, 0, 0);
     } else {
-      this.driveTrain.arcadeDrive(0, 0.45 * this.direction, 0);
+      this.driveTrain.arcadeDrive(0.35 * this.direction, 0, 0);
     }
   }
 
@@ -66,6 +66,6 @@ public class ManualTurnToTarget extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (this.angle < 1 && this.angle > -1);
+    return (this.ty < 8 && this.ty > 6);
   }
 }

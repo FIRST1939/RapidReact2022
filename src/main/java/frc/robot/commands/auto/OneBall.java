@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.SHOTS;
 import frc.robot.devices.Limelight;
 import frc.robot.subsystems.drive.DriveTrain;
-import frc.robot.subsystems.drive.ManualMoveAndTurnToTarget;
+import frc.robot.subsystems.drive.MoveAndTurnToTarget;
 import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.shooter.SetShot;
 import frc.robot.subsystems.shooter.Shooter;
@@ -28,7 +28,7 @@ public class OneBall extends SequentialCommandGroup {
       new WaitCommand(0.5),
       //new ManualTurnToTarget(driveTrain, limelight, 0),
       //new WaitCommand(0.5),
-      new ManualMoveAndTurnToTarget(driveTrain, limelight, 0),
+      new MoveAndTurnToTarget(driveTrain, limelight, 0),
       new WaitCommand(1.0),
       new AutoModeShooter(1, indexer, shooter).withTimeout(3.0),
         // Do not drive until second shot has cleared shooter.

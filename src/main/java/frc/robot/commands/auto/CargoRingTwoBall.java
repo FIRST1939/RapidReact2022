@@ -11,7 +11,7 @@ import frc.robot.Constants;
 import frc.robot.commands.state.SequentialCommandGroup2;
 import frc.robot.devices.Limelight;
 import frc.robot.subsystems.drive.DriveTrain;
-import frc.robot.subsystems.drive.ManualMoveAndTurnToTarget;
+import frc.robot.subsystems.drive.MoveAndTurnToTarget;
 import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.shooter.SetShot;
@@ -41,7 +41,7 @@ public class CargoRingTwoBall extends SequentialCommandGroup2 {
             new SetShot(shooter, Constants.SHOTS.cargoRing)),
         // Drive and turn to square up shot.
         new WaitCommand(1.0),
-        new ManualMoveAndTurnToTarget(driveTrain, limelight, 0),
+        new MoveAndTurnToTarget(driveTrain, limelight, 0),
         new WaitCommand(2.0),
         // Shoot 2 cargo.
         new AutoModeShooter(2, indexer, shooter).withTimeout(3.0),

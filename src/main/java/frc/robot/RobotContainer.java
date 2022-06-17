@@ -30,8 +30,8 @@ import frc.robot.commands.auto.Rude2Ball;
 import frc.robot.subsystems.climber.Climber;
 import frc.robot.subsystems.drive.DriveTrain;
 import frc.robot.subsystems.drive.DriveWithInput;
-import frc.robot.subsystems.drive.ManualMoveAndTurnToTarget;
-import frc.robot.subsystems.drive.ManualTurnToTarget;
+import frc.robot.subsystems.drive.MoveAndTurnToTarget;
+import frc.robot.subsystems.drive.TurnToTarget;
 import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.indexer.manual.ManualIndexer;
 import frc.robot.subsystems.intake.Intake;
@@ -140,11 +140,11 @@ public class RobotContainer {
   private void configureButtonBindings() {
     JoystickButton manualTurnToTargetLong = new JoystickButton(rightStick, 10);
     manualTurnToTargetLong.whenPressed(
-        rumbleAfter(new ManualTurnToTarget(driveTrain, limelightShooter, 0)));
+        rumbleAfter(new TurnToTarget(driveTrain, limelightShooter, 0)));
 
     JoystickButton manualMoveToTargetLong = new JoystickButton(rightStick, 11);
     manualMoveToTargetLong.whenPressed(
-        rumbleAfter(new ManualMoveAndTurnToTarget(driveTrain, limelightShooter, 0)));
+        rumbleAfter(new MoveAndTurnToTarget(driveTrain, limelightShooter, 0)));
 
     // shooter buttons
     JoystickButton fenderLowButton = new JoystickButton(driverTwo, XboxController.Button.kY.value);

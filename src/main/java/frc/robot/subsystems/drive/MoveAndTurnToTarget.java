@@ -10,14 +10,14 @@ import frc.robot.devices.Limelight;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class ManualMoveAndTurnToTarget extends SequentialCommandGroup {
+public class MoveAndTurnToTarget extends SequentialCommandGroup {
   /** Creates a new ManualMoveAndTurnToTarget. */
-  public ManualMoveAndTurnToTarget(final DriveTrain driveTrain, final Limelight limelight, final int pipeline) {
+  public MoveAndTurnToTarget(final DriveTrain driveTrain, final Limelight limelight, final int pipeline) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-        new ManualTurnToTarget(driveTrain, limelight, pipeline).withTimeout(3.0),
-        new ManualMoveToTarget(driveTrain, limelight, pipeline).withTimeout(3.0)
+        new TurnToTarget(driveTrain, limelight, pipeline).withTimeout(3.0),
+        new MoveToTarget(driveTrain, limelight, pipeline).withTimeout(3.0)
 
     );
   }

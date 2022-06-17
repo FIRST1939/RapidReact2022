@@ -7,8 +7,8 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.devices.Limelight;
 import frc.robot.subsystems.drive.DriveTrain;
-import frc.robot.subsystems.drive.ManualMoveToTarget;
-import frc.robot.subsystems.drive.ManualTurnToTarget;
+import frc.robot.subsystems.drive.MoveToTarget;
+import frc.robot.subsystems.drive.TurnToTarget;
 import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.shooter.SetShot;
@@ -36,7 +36,7 @@ public class Auto5Ball extends SequentialCommandGroup {
             intake.getAutoRequestExtensionCommand(),
             new DriveStraightDistance(-48, driveTrain, 0.5),
             new SetShot(shooter, Constants.SHOTS.cargoRing)),
-        new ManualTurnToTarget(driveTrain, limelight, 0).withTimeout(1.0),
+        new TurnToTarget(driveTrain, limelight, 0).withTimeout(1.0),
         new WaitCommand(0.15),
         new AutoModeShooter(2, indexer, shooter).withTimeout(3.0),
         new WaitCommand(0.2),
@@ -57,8 +57,8 @@ public class Auto5Ball extends SequentialCommandGroup {
         new DriveStraightDistance(16, driveTrain, 0.5),
         new WaitCommand(0.3),
         new TurnToAngle(driveTrain, -106.42),
-        new ManualTurnToTarget(driveTrain, limelight, 0).withTimeout(1.0),
-        new ManualMoveToTarget(driveTrain, limelight, 0).withTimeout(1.5),
+        new TurnToTarget(driveTrain, limelight, 0).withTimeout(1.0),
+        new MoveToTarget(driveTrain, limelight, 0).withTimeout(1.5),
         new AutoModeShooter(2, indexer, shooter).withTimeout(2.0),
 
         // after shoot 4ball
@@ -66,8 +66,8 @@ public class Auto5Ball extends SequentialCommandGroup {
             new DriveStraightDistance(-45, driveTrain, 0.7),
             intake.getAutoRequestExtensionCommand(),
             new SetShot(shooter, Constants.SHOTS.cargoRing)),
-        new ManualTurnToTarget(driveTrain, limelight, 0),
-        new ManualMoveToTarget(driveTrain, limelight, 0),
+        new TurnToTarget(driveTrain, limelight, 0),
+        new MoveToTarget(driveTrain, limelight, 0),
         new AutoModeShooter(1, indexer, shooter).withTimeout(3.0));
 
   }

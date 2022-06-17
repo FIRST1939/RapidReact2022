@@ -11,8 +11,8 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.devices.Limelight;
 import frc.robot.subsystems.drive.DriveTrain;
-import frc.robot.subsystems.drive.ManualMoveToTarget;
-import frc.robot.subsystems.drive.ManualTurnToTarget;
+import frc.robot.subsystems.drive.MoveToTarget;
+import frc.robot.subsystems.drive.TurnToTarget;
 import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.shooter.SetShot;
@@ -40,7 +40,7 @@ public class Auto4Ball extends SequentialCommandGroup {
             intake.getAutoRequestExtensionCommand(),
             new DriveStraightDistance(-48, driveTrain, 0.5),
             new SetShot(shooter, Constants.SHOTS.cargoRing)),
-        new ManualTurnToTarget(driveTrain, limelight, 0).withTimeout(1.0),
+        new TurnToTarget(driveTrain, limelight, 0).withTimeout(1.0),
         new WaitCommand(0.15),
         new AutoModeShooter(2, indexer, shooter).withTimeout(3.0),
         new WaitCommand(0.2),
@@ -65,9 +65,9 @@ public class Auto4Ball extends SequentialCommandGroup {
         new TurnToAngle(driveTrain, -30),
         // new TurnToAngle(driveTrain, -30),
         new WaitCommand(0.2),
-        new ManualTurnToTarget(driveTrain, limelight, 0).withTimeout(1.0),
+        new TurnToTarget(driveTrain, limelight, 0).withTimeout(1.0),
         new WaitCommand(0.3),
-        new ManualMoveToTarget(driveTrain, limelight, 0).withTimeout(1.5),
+        new MoveToTarget(driveTrain, limelight, 0).withTimeout(1.5),
         new WaitCommand(0.3),
         new AutoModeShooter(2, indexer, shooter).withTimeout(2.0)
 
