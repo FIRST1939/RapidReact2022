@@ -44,9 +44,7 @@ import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.intake.manual.IntakeExtendCommandSelector;
 import frc.robot.subsystems.intake.manual.IntakeRetractCommandSelector;
 import frc.robot.subsystems.intake.manual.ManualIntakeRollerBelts;
-import frc.robot.subsystems.shooter.ReturnToPriorShot;
 import frc.robot.subsystems.shooter.SetShot;
-import frc.robot.subsystems.shooter.SetVelocity;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.VisionWithDistance;
 import frc.robot.triggers.ShootTrigger;
@@ -170,16 +168,18 @@ public class RobotContainer {
     POVButton launchpad = new POVButton(driverTwo, 90);
     launchpad.whenPressed(new SetShot(this.shooter, SHOTS.launchpad));
 
+    // A button to read a velocity from the dashboard and apply it to the shooter.
     POVButton setVelocity = new POVButton(driverTwo, 180);
-    setVelocity
-        .whenPressed(new SetVelocity(this.shooter, () -> (int) SmartDashboard.getNumber("Shooter Velocity", 6750)));
+    setVelocity.whenPressed(new InstantCommand(
+        () -> this.shooter.cargoShot((int) SmartDashboard.getNumber("Shooter Velocity", 6750), true)));
 
     POVButton offButton = new POVButton(driverTwo, 270);
     offButton.whenPressed(new SetShot(this.shooter, SHOTS.off));
 
+    // A button that will idle the shooter while held.
     ShooterIdleTrigger shooterIdleTrigger = new ShooterIdleTrigger(this.robotCargoCount);
-    shooterIdleTrigger.whenActive(new WaitCommand(1.0).andThen(new InstantCommand(() -> shooter.idle())));
-    shooterIdleTrigger.whenInactive(new ReturnToPriorShot(this.shooter));
+    shooterIdleTrigger.whenActive(new WaitCommand(1.0).andThen(new InstantCommand(shooter::idle)));
+    shooterIdleTrigger.whenInactive(new InstantCommand(this.shooter::cargoShot));
 
     BooleanSupplier shootTriggerSupplier = () -> (driverTwo
         .getRawAxis(Math.abs(XboxController.Axis.kRightTrigger.value)) > Constants.TRIGGER_THRESHOLD);

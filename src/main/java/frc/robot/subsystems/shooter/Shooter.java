@@ -13,7 +13,6 @@ import frc.robot.Constants.LEDMode;
 import frc.robot.subsystems.Lights;
 
 public class Shooter extends SubsystemBase {
-
     private static Shooter shooterInstance = null;
 
     // Shooter elements.
@@ -25,8 +24,7 @@ public class Shooter extends SubsystemBase {
     private int velocityInRangeCount = 0;
 
     // Creates a new shooter.
-    private Shooter () {
-
+    private Shooter() {
         // Create and configure shooter elements.
         shooterSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Constants.SHOOTER_PCM_CHANNEL);
         shooterFlywheel = new WPI_TalonFX(Constants.SHOOTER_FLYWHEEL_CAN_ID);
@@ -49,47 +47,49 @@ public class Shooter extends SubsystemBase {
     /**
      * @return the current instance of the shooter subsystem
      */
-    public static final synchronized Shooter getInstance () {
-
-        if (shooterInstance == null) { shooterInstance = new Shooter(); }
+    public static final synchronized Shooter getInstance() {
+        if (shooterInstance == null) {
+            shooterInstance = new Shooter();
+        }
         return shooterInstance;
     }
 
-    public void cargoShot (final int velocity, final boolean hood) {
+    public void cargoShot(final int velocity, final boolean hood) {
 
         setHood(hood);
         setVelocity(velocity);
     }
 
-    public void cargoShot () {
-
+    /**
+     * Reapplies the last set shooter velocity. Typically used to come out of idle.
+     */
+    public void cargoShot() {
         cargoShot(getShot().velocity, getShot().hood);
     }
 
     /**
      * @param shot the shot type that we are preparing.
      */
-    public void cargoShot (final Constants.SHOTS shot) {
-
+    public void cargoShot(final Constants.SHOTS shot) {
         this.shot = shot;
         cargoShot();
     }
 
-    public Constants.SHOTS getShot () {
-
+    public Constants.SHOTS getShot() {
         return shot;
     }
 
-    public void idle () { 
-
+    /**
+     * Set the shooter velocity to a slower idle speed.
+     */
+    public void idle() {
         this.cargoShot(Constants.SHOTS.idle);
     }
 
-    private void setHood (final boolean hood) { 
-
-        shooterSolenoid.set(hood); 
+    private void setHood(final boolean hood) {
+        shooterSolenoid.set(hood);
     }
-    
+
     private void setVelocity(int velocity) {
         if (velocity >= 0) {
             if (lastSetVelocity != velocity) {
@@ -103,18 +103,18 @@ public class Shooter extends SubsystemBase {
 
     @Override
     public void periodic() {
-        double currentVelocity = shooterFlywheel.getSelectedSensorVelocity()/2;
-        //double currentClosedLoopError = shooterFlywheel.getClosedLoopError();
-        //SmartDashboard.putNumber("Shooter Velocity", currentVelocity);
-        //SmartDashboard.putNumber("Shooter Error", currentClosedLoopError);
+        double currentVelocity = shooterFlywheel.getSelectedSensorVelocity() / 2;
+        // double currentClosedLoopError = shooterFlywheel.getClosedLoopError();
+        // SmartDashboard.putNumber("Shooter Velocity", currentVelocity);
+        // SmartDashboard.putNumber("Shooter Error", currentClosedLoopError);
         if (Math.abs(Math.abs(currentVelocity)
-                - this.lastSetVelocity) <= this.lastSetVelocity*0.04) {
+                - this.lastSetVelocity) <= this.lastSetVelocity * 0.04) {
             this.velocityInRangeCount++;
         } else {
             this.velocityInRangeCount = 0;
         }
     }
-    
+
     public boolean isShooterReady() {
         return this.velocityInRangeCount >= 5;
     }
@@ -122,7 +122,7 @@ public class Shooter extends SubsystemBase {
     /**
      * @return true if hood is up false otherwise
      */
-    public boolean isHoodUp (){ 
+    public boolean isHoodUp() {
 
         return shooterSolenoid.get();
     }
