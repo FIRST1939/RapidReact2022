@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems.drive;
 
+import static frc.robot.Constants.DriveTrain.*;
+
 import java.util.function.BooleanSupplier;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -25,7 +27,6 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.Constants;
 import frc.robot.Constants.LEDMode;
 import frc.robot.devices.Lights;
 
@@ -78,7 +79,7 @@ public class DriveTrain extends SubsystemBase {
   private final AHRS navx;
 
   private final BooleanSupplier sidewinderOverride;
-  private final PIDController strafeHorizonatal = new PIDController(Constants.SIDEWINDER_kP, 0, 0);
+  private final PIDController strafeHorizonatal = new PIDController(SIDEWINDER_kP, 0, 0);
 
   private double lastRotation = 0.0;
 
@@ -89,17 +90,17 @@ public class DriveTrain extends SubsystemBase {
    */
   public DriveTrain(BooleanSupplier sidewinderOverride, JoystickButton speedLimit) {
     // Create and configure individual motors.
-    left1 = new CANSparkMax(Constants.LEFT_DRIVE_1_CAN_ID, MotorType.kBrushless);
+    left1 = new CANSparkMax(LEFT_DRIVE_1_CAN_ID, MotorType.kBrushless);
     motorConfig(left1);
-    left2 = new CANSparkMax(Constants.LEFT_DRIVE_2_CAN_ID, MotorType.kBrushless);
+    left2 = new CANSparkMax(LEFT_DRIVE_2_CAN_ID, MotorType.kBrushless);
     motorConfig(left2);
-    left3 = new CANSparkMax(Constants.LEFT_DRIVE_3_CAN_ID, MotorType.kBrushless);
+    left3 = new CANSparkMax(LEFT_DRIVE_3_CAN_ID, MotorType.kBrushless);
     motorConfig(left3);
-    right1 = new CANSparkMax(Constants.RIGHT_DRIVE_1_CAN_ID, MotorType.kBrushless);
+    right1 = new CANSparkMax(RIGHT_DRIVE_1_CAN_ID, MotorType.kBrushless);
     motorConfig(right1);
-    right2 = new CANSparkMax(Constants.RIGHT_DRIVE_2_CAN_ID, MotorType.kBrushless);
+    right2 = new CANSparkMax(RIGHT_DRIVE_2_CAN_ID, MotorType.kBrushless);
     motorConfig(right2);
-    right3 = new CANSparkMax(Constants.RIGHT_DRIVE_3_CAN_ID, MotorType.kBrushless);
+    right3 = new CANSparkMax(RIGHT_DRIVE_3_CAN_ID, MotorType.kBrushless);
     motorConfig(right3);
 
     // Create and configure the drive from the motors.
@@ -110,23 +111,23 @@ public class DriveTrain extends SubsystemBase {
 
     leftNeoEncoder = left1.getEncoder();
     leftEncoder = new Encoder(
-        Constants.LEFT_DRIVE_A_CHANNEL,
-        Constants.LEFT_DRIVE_B_CHANNEL,
+        LEFT_DRIVE_A_CHANNEL,
+        LEFT_DRIVE_B_CHANNEL,
         false,
         EncodingType.k4X);
-    leftEncoder.setDistancePerPulse(Constants.DRIVE_INCHES_PER_PULSE);
+    leftEncoder.setDistancePerPulse(DRIVE_INCHES_PER_PULSE);
     leftEncoder.setSamplesToAverage(5);
     rightEncoder = new Encoder(
-        Constants.RIGHT_DRIVE_A_CHANNEL,
-        Constants.RIGHT_DRIVE_B_CHANNEL,
-        true, // TODO verify this.
+        RIGHT_DRIVE_A_CHANNEL,
+        RIGHT_DRIVE_B_CHANNEL,
+        true,
         EncodingType.k4X);
-    rightEncoder.setDistancePerPulse(Constants.DRIVE_INCHES_PER_PULSE);
+    rightEncoder.setDistancePerPulse(DRIVE_INCHES_PER_PULSE);
     rightEncoder.setSamplesToAverage(5);
 
     // Create and configure sidewinder elements.
-    sidewinderSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Constants.SIDEWINDER_PCM_CHANNEL);
-    sidewinderMotor = new WPI_TalonFX(Constants.SIDEWINDER_MOTOR_CAN_ID);
+    sidewinderSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, SIDEWINDER_PCM_CHANNEL);
+    sidewinderMotor = new WPI_TalonFX(SIDEWINDER_MOTOR_CAN_ID);
     sidewinderMotor.configFactoryDefault();
     // sidewinderMotor.configOpenloopRamp(0.5);
     // TODO other sidewinder motor config?
@@ -134,29 +135,11 @@ public class DriveTrain extends SubsystemBase {
 
     this.navx = new AHRS(SPI.Port.kMXP);
     this.speedLimit = speedLimit;
-
-    /*
-    SmartDashboard.putNumber("1: ", left1.getAppliedOutput());
-    SmartDashboard.putNumber("2: ", left2.getMotorTemperature());
-    SmartDashboard.putNumber("3: ", left3.getOutputCurrent());
-    SmartDashboard.putNumber("4: ", right1.getOutputCurrent());
-    SmartDashboard.putNumber("5: ", right2.getOutputCurrent());
-    SmartDashboard.putNumber("6: ", right3.getOutputCurrent());
-    */
-
-    //SmartDashboard.putNumber("Left Encoder: ", right);
-    //SmartDashboard.putNumber("Right Encoder: ", right);
-
   }
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
-    //SmartDashboard.putNumber("Distance from Encoders: ", this.getDistance());
-    //SmartDashboard.putNumber("Left Encoder: ", this.getDistance());
     SmartDashboard.putNumber("angle: ", this.getHeading());
-    //SmartDashboard.putNumber("Right Encoder: ", this.rightEncoder.getDistance());
-    
   }
 
   /**
@@ -169,43 +152,45 @@ public class DriveTrain extends SubsystemBase {
     double arcadeSpeed = speed;
     double arcadeRotation = 0.7 * rotation;
 
-    if (this.speedLimit.get()) { 
-      arcadeSpeed /= 2; 
-      //arcadeRotation *= 0.7;
+    if (this.speedLimit.get()) {
+      arcadeSpeed /= 2;
+      // arcadeRotation *= 0.7;
     }
-  
 
     // Sidewind above threshold, disengage below, leave as is in gap.
-    if ((Math.abs(sidewind) > Constants.SIDEWINDER_ENABLE_THRESHOLD) || this.sidewinderOverride.getAsBoolean()) {
-      
+    if ((Math.abs(sidewind) > SIDEWINDER_ENABLE_THRESHOLD) || this.sidewinderOverride.getAsBoolean()) {
+
       if (!this.sidewinderSolenoid.get()) {
         // Sidewider has deployed
-        if (Math.abs(getHeading()) > 180) { resetYaw(); }
+        if (Math.abs(getHeading()) > 180) {
+          resetYaw();
+        }
         resetHeading();
       }
-      
+
       this.sidewinderSolenoid.set(true);
       Lights.getInstance().setColor(LEDMode.TWINKLES);
-    } else if (Math.abs(sidewind) < Constants.SIDEWINDER_DISABLE_THRESHOLD) {
+    } else if (Math.abs(sidewind) < SIDEWINDER_DISABLE_THRESHOLD) {
       this.sidewinderSolenoid.set(false);
     }
 
     if (this.sidewinderSolenoid.get()) {
       sidewinderMotor.set(
           ControlMode.PercentOutput,
-          -(sidewind - (Math.signum(sidewind) * Constants.SIDEWINDER_OUTPUT_OFFSET)));
-      
-      if(rotation == 0.0){
-        if (lastRotation != 0.0) { 
+          -(sidewind - (Math.signum(sidewind) * SIDEWINDER_OUTPUT_OFFSET)));
+
+      if (rotation == 0.0) {
+        if (lastRotation != 0.0) {
           // Sidewinder has stopped swerving, but is still sidewinding
-          if (Math.abs(getHeading()) > 180) { resetYaw(); }
+          if (Math.abs(getHeading()) > 180) {
+            resetYaw();
+          }
           resetHeading();
         }
 
         arcadeRotation = strafeHorizonatal.calculate(getHeading() % 360, 0.0);
       }
-      
-      
+
     }
 
     lastRotation = rotation;
@@ -230,26 +215,27 @@ public class DriveTrain extends SubsystemBase {
 
   /**
    * Note that the returned inches are the average of the left and right side
-   * sensors.
+   * sensors. TODO should it be? It is not now.
    * 
    * @return the distance traveled in inches since the last
    *         {@link #resetDistance()} call.
    */
   public double getDistance() {
-    //return (this.leftEncoder.getDistance() + this.rightEncoder.getDistance()) / 2.0;
-    //return this.leftEncoder.getDistance();
+    // return (this.leftEncoder.getDistance() + this.rightEncoder.getDistance()) /
+    // 2.0;
+    // return this.leftEncoder.getDistance();
     return this.leftNeoEncoder.getPosition() / 8.68 * 19.24;
   }
 
   /**
    * Note that the returned inches per second are the average of the left and
-   * right side sensors.
+   * right side sensors. TODO should it be? It is not now.
    * 
    * @return the rate of travel in inches per second.
    */
   public double getRate() {
-    //return (this.leftEncoder.getRate() + this.rightEncoder.getRate()) / 2.0;
-    //return this.leftEncoder.getRate();
+    // return (this.leftEncoder.getRate() + this.rightEncoder.getRate()) / 2.0;
+    // return this.leftEncoder.getRate();
     return leftNeoEncoder.getVelocity() / 8.68 * 19.24 / 60.0;
   }
 
@@ -259,8 +245,6 @@ public class DriveTrain extends SubsystemBase {
    */
   public void resetHeading() {
     this.navx.setAngleAdjustment(-getYaw());
-    // this.navx.setAngleAdjustment(-getHeading() + this.navx.getAngleAdjustment());
-    // this.navx.setAngleAdjustment(-(Math.floor(this.getHeading() / 360) * 360) - this.getYaw());
   }
 
   /**

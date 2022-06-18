@@ -4,8 +4,9 @@
 
 package frc.robot.commands.auto;
 
+import static frc.robot.Constants.DriveTrain.DRIVE_AUTO_GYRO_STRAIGHT_KP;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
 import frc.robot.subsystems.drive.DriveTrain;
 
 /**
@@ -42,7 +43,7 @@ public class DriveStraightDistance extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double turningValue = (-this.driveTrain.getHeading()) * Constants.DRIVE_AUTO_GYRO_STRAIGHT_KP;
+    double turningValue = (-this.driveTrain.getHeading()) * DRIVE_AUTO_GYRO_STRAIGHT_KP;
     // Invert the direction of the turn if we are going backwards
     if (forward) {
       turningValue = -turningValue;

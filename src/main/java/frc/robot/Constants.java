@@ -41,37 +41,42 @@ public final class Constants {
         public static final double MANUAL_INDEXER_DEADBAND = 0.1;
     }
 
-    // Drive train normal drive CAN id constants.
-    public static final int LEFT_DRIVE_1_CAN_ID = 11;
-    public static final int LEFT_DRIVE_2_CAN_ID = 12;
-    public static final int LEFT_DRIVE_3_CAN_ID = 13;
-    public static final int RIGHT_DRIVE_1_CAN_ID = 14;
-    public static final int RIGHT_DRIVE_2_CAN_ID = 15;
-    public static final int RIGHT_DRIVE_3_CAN_ID = 16;
+    /**
+     * Constants related to the physical structure and operation of the drive train.
+     */
+    public final class DriveTrain {
+        // Drive train normal drive CAN id constants.
+        public static final int LEFT_DRIVE_1_CAN_ID = 11;
+        public static final int LEFT_DRIVE_2_CAN_ID = 12;
+        public static final int LEFT_DRIVE_3_CAN_ID = 13;
+        public static final int RIGHT_DRIVE_1_CAN_ID = 14;
+        public static final int RIGHT_DRIVE_2_CAN_ID = 15;
+        public static final int RIGHT_DRIVE_3_CAN_ID = 16;
 
-    /** Solenoid channel for sidewinder activation. */
-    public static final int SIDEWINDER_PCM_CHANNEL = 3;
-    /** Sidewinder motor controller CAN id. */
-    public static final int SIDEWINDER_MOTOR_CAN_ID = 30;
-    /** Proportional PID gain for straight sidewinding. */
-    public static final double SIDEWINDER_kP = 0.03;
+        /** Solenoid channel for sidewinder activation. */
+        public static final int SIDEWINDER_PCM_CHANNEL = 3;
+        /** Sidewinder motor controller CAN id. */
+        public static final int SIDEWINDER_MOTOR_CAN_ID = 30;
+        /** Proportional PID gain for straight sidewinding. */
+        public static final double SIDEWINDER_kP = 0.03;
 
-    /** Sidewinder engages at this left stick x deflection */
-    public static final double SIDEWINDER_ENABLE_THRESHOLD = 0.3;
-    /** Sidewinder disengages at this left stick x deflection */
-    public static final double SIDEWINDER_DISABLE_THRESHOLD = 0.2;
-    /** Sidewinder output adjusted toward 0 by this amount while engaged */
-    public static final double SIDEWINDER_OUTPUT_OFFSET = 0.1;
+        /** Sidewinder engages at this left stick x deflection */
+        public static final double SIDEWINDER_ENABLE_THRESHOLD = 0.3;
+        /** Sidewinder disengages at this left stick x deflection */
+        public static final double SIDEWINDER_DISABLE_THRESHOLD = 0.2;
+        /** Sidewinder output adjusted toward 0 by this amount while engaged */
+        public static final double SIDEWINDER_OUTPUT_OFFSET = 0.1;
 
-    // Drive train encoder DIO ports
-    public static final int LEFT_DRIVE_A_CHANNEL = 7;
-    public static final int LEFT_DRIVE_B_CHANNEL = 6;
-    public static final int RIGHT_DRIVE_A_CHANNEL = 9;
-    public static final int RIGHT_DRIVE_B_CHANNEL = 8;
-    /** Circumfrence divided by Grayhill pulses per revolution. */
-    public static final double DRIVE_INCHES_PER_PULSE = 19.24 / 256.0;
-    /** A PID p value for gyro based correction for driving straight. */
-    public static final double DRIVE_AUTO_GYRO_STRAIGHT_KP = 0.005;
+        // Drive train encoder DIO ports
+        public static final int LEFT_DRIVE_A_CHANNEL = 7;
+        public static final int LEFT_DRIVE_B_CHANNEL = 6;
+        public static final int RIGHT_DRIVE_A_CHANNEL = 9;
+        public static final int RIGHT_DRIVE_B_CHANNEL = 8;
+        /** Circumfrence divided by Grayhill pulses per revolution. */
+        public static final double DRIVE_INCHES_PER_PULSE = 19.24 / 256.0;
+        /** A PID p value for gyro based correction for driving straight. */
+        public static final double DRIVE_AUTO_GYRO_STRAIGHT_KP = 0.005;
+    }
 
     /** Shooter hood solenoid channel. */
     public static final int SHOOTER_PCM_CHANNEL = 0;
@@ -208,5 +213,9 @@ public final class Constants {
         private LEDMode(double value) {
             this.value = value;
         }
+    }
+
+    /** Prevent misguided creation of a instance of this class. */
+    private Constants() {
     }
 }
