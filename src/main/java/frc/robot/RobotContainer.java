@@ -4,7 +4,14 @@
 
 package frc.robot;
 
-import static frc.robot.Constants.Controllers.*;
+import static frc.robot.Constants.Controllers.DRIVER2_CONTROLLER_PORT;
+import static frc.robot.Constants.Controllers.LEFT_STICK_PORT;
+import static frc.robot.Constants.Controllers.MANUAL_INDEXER_DEADBAND;
+import static frc.robot.Constants.Controllers.MANUAL_INTAKE_DEADBAND;
+import static frc.robot.Constants.Controllers.RIGHT_STICK_PORT;
+import static frc.robot.Constants.Controllers.ROTATE_DEAD_BAND;
+import static frc.robot.Constants.Controllers.SPEED_DEAD_BAND;
+import static frc.robot.Constants.Controllers.TRIGGER_THRESHOLD;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
@@ -22,6 +29,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.CLIMBER_POSITIONS;
 import frc.robot.Constants.Shots;
 import frc.robot.commands.auto.Auto4Ball;
 import frc.robot.commands.auto.Auto5Ball;
@@ -29,6 +37,13 @@ import frc.robot.commands.auto.CargoRingTwoBall;
 import frc.robot.commands.auto.OneBall;
 import frc.robot.commands.auto.Rude1Ball;
 import frc.robot.commands.auto.Rude2Ball;
+import frc.robot.commands.multisub.ToggleIntakeIndexerManualMode;
+import frc.robot.commands.multisub.ToggleManualEjection;
+import frc.robot.commands.util.CancelCommand;
+import frc.robot.commands.util.RumbleController;
+import frc.robot.devices.Lights;
+import frc.robot.devices.Limelight;
+import frc.robot.devices.RobotCargoCount;
 import frc.robot.subsystems.climber.ClimbNextBar;
 import frc.robot.subsystems.climber.ClimbToSecond;
 import frc.robot.subsystems.climber.ClimbToThird;
@@ -54,13 +69,6 @@ import frc.robot.subsystems.shooter.VisionWithDistance;
 import frc.robot.subsystems.shooter.triggers.ManualShootTrigger;
 import frc.robot.subsystems.shooter.triggers.ShootTrigger;
 import frc.robot.subsystems.shooter.triggers.ShooterIdleTrigger;
-import frc.robot.commands.multisub.ToggleIntakeIndexerManualMode;
-import frc.robot.commands.multisub.ToggleManualEjection;
-import frc.robot.commands.util.CancelCommand;
-import frc.robot.commands.util.RumbleController;
-import frc.robot.devices.Lights;
-import frc.robot.devices.Limelight;
-import frc.robot.devices.RobotCargoCount;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -247,11 +255,11 @@ public class RobotContainer {
 
     JoystickButton climberMotorPartialPositionExtend = new JoystickButton(rightStick, 6);
     climberMotorPartialPositionExtend.whenPressed(
-        rumbleAfter(new GetToPosition(this.climber, Constants.CLIMBER_POSITIONS.partial)));
+        rumbleAfter(new GetToPosition(this.climber, CLIMBER_POSITIONS.partial)));
 
     JoystickButton climberMotorFullPositionButton = new JoystickButton(rightStick, 9);
     climberMotorFullPositionButton.whenPressed(
-        rumbleAfter(new GetToPosition(this.climber, Constants.CLIMBER_POSITIONS.full)));
+        rumbleAfter(new GetToPosition(this.climber, CLIMBER_POSITIONS.full)));
 
     JoystickButton climberSetHomeButton = new JoystickButton(driverTwo, XboxController.Button.kBack.value);
     climberSetHomeButton.whenPressed(new SetHome(this.climber));
@@ -261,7 +269,7 @@ public class RobotContainer {
 
     JoystickButton climberMotorBottomPositionButton = new JoystickButton(rightStick, 7);
     climberMotorBottomPositionButton.whenPressed(
-        rumbleAfter(new GetToPosition(this.climber, Constants.CLIMBER_POSITIONS.bottomFirst)));
+        rumbleAfter(new GetToPosition(this.climber, CLIMBER_POSITIONS.bottomFirst)));
   }
 
   private void configureLightingTriggers() {

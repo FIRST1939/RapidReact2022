@@ -1,18 +1,18 @@
 package frc.robot.subsystems.climber;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
+import frc.robot.Constants.CLIMBER_POSITIONS;
 
 public class GetToPosition extends CommandBase {
     private final Climber climber;
-    private final Constants.CLIMBER_POSITIONS extension;
+    private final CLIMBER_POSITIONS extension;
     private int direction = 1;
 
     /**
      * @param climber   the climber being positioned.
      * @param extension the desired climber extension.
      */
-    public GetToPosition(final Climber climber, final Constants.CLIMBER_POSITIONS extension) {
+    public GetToPosition(final Climber climber, final CLIMBER_POSITIONS extension) {
         this.climber = climber;
         this.extension = extension;
         addRequirements(this.climber);
