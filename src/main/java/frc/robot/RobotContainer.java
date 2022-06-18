@@ -12,6 +12,8 @@ import static frc.robot.Constants.Controllers.RIGHT_STICK_PORT;
 import static frc.robot.Constants.Controllers.ROTATE_DEAD_BAND;
 import static frc.robot.Constants.Controllers.SPEED_DEAD_BAND;
 import static frc.robot.Constants.Controllers.TRIGGER_THRESHOLD;
+import static frc.robot.Constants.Devices.SHOOTER_LONG_PIPELINE;
+import static frc.robot.Constants.Devices.SHOOTER_OFF_PIPELINE;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
@@ -326,9 +328,9 @@ public class RobotContainer {
    */
   public void enableTargetTracking(boolean enabled) {
     if (enabled) {
-      limelightShooter.setPipeline(Constants.SHOOTER_LONG_PIPELINE);
+      limelightShooter.setPipeline(SHOOTER_LONG_PIPELINE);
     } else {
-      limelightShooter.setPipeline(Constants.SHOOTER_OFF_PIPELINE);
+      limelightShooter.setPipeline(SHOOTER_OFF_PIPELINE);
     }
   }
 

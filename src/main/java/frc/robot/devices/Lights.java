@@ -4,11 +4,13 @@
 
 package frc.robot.devices;
 
+import static frc.robot.Constants.Devices.LIGHTS_PWM;
+
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import frc.robot.Constants;
 
 public class Lights {
-  private Spark blinkin = new Spark(Constants.LIGHTS_PWM);
+  private Spark blinkin = new Spark(LIGHTS_PWM);
   private static Lights lightsInstance = null;
 
   private Lights() {

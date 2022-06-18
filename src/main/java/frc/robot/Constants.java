@@ -209,12 +209,18 @@ public final class Constants {
         }
     }
 
-    // Lights constants.
-    public static final int LIGHTS_PWM = 2;
+    /**
+     * Constants related to the physical structure and operation of the simple
+     * devices on the robot.
+     */
+    public final class Devices {
+        // Lights constants.
+        public static final int LIGHTS_PWM = 2;
 
-    // Vision constants.
-    public static final int SHOOTER_LONG_PIPELINE = 0;
-    public static final int SHOOTER_OFF_PIPELINE = 1;
+        // Vision constants.
+        public static final int SHOOTER_LONG_PIPELINE = 0;
+        public static final int SHOOTER_OFF_PIPELINE = 1;
+    }
 
     /**
      * LED driver feedback (and bling) colors.
