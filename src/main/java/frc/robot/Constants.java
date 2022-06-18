@@ -133,7 +133,7 @@ public final class Constants {
     }
 
     /**
-     * Constants related to the physical structure and operation of the shooter.
+     * Constants related to the physical structure and operation of the intake.
      */
     public final class Intake {
         /** Intake deploy solenoid channel. */
@@ -156,7 +156,7 @@ public final class Constants {
     }
 
     /**
-     * Constants related to the physical structure and operation of the shooter.
+     * Constants related to the physical structure and operation of the indexer.
      */
     public final class Indexer {
         /** Indexer lead motor controller CAN id. */
@@ -170,10 +170,17 @@ public final class Constants {
         public static final double INDEXER_AT_SENSOR_TIME_ADJUSTMENT_SEC = 0.0;
     }
 
-    // Climber constants.
-    public static final int CLIMBER_MOTOR_CAN_ID = 31;
-    public static final int CLIMBER_PISTON_FORWARD = 1;
-    public static final int CLIMBER_PISTON_REVERSE = 7;
+    /**
+     * Constants related to the physical structure and operation of the climber.
+     */
+    public final class Climber {
+        /** Climber motor controller CAN id. */
+        public static final int CLIMBER_MOTOR_CAN_ID = 31;
+        /** Channel (forward on double solenoid) to reach for next bar. */
+        public static final int CLIMBER_PISTON_FORWARD = 1;
+        /** Channel (reverse on double solenoid) to return to vertical. */
+        public static final int CLIMBER_PISTON_REVERSE = 7;
+    }
 
     /**
      * The configurations for known climber hook positions.
