@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import static frc.robot.Constants.Controllers.*;
+
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
@@ -69,9 +71,9 @@ import frc.robot.devices.RobotCargoCount;
  */
 public class RobotContainer {
   // Create the joystick objects.
-  private final Joystick leftStick = new Joystick(Constants.LEFT_STICK_PORT);
-  private final Joystick rightStick = new Joystick(Constants.RIGHT_STICK_PORT);
-  private final XboxController driverTwo = new XboxController(Constants.DRIVER2_CONTROLLER_PORT);
+  private final Joystick leftStick = new Joystick(LEFT_STICK_PORT);
+  private final Joystick rightStick = new Joystick(RIGHT_STICK_PORT);
+  private final XboxController driverTwo = new XboxController(DRIVER2_CONTROLLER_PORT);
 
   // The robot's subsystems and commands are defined here...
   JoystickButton sidewinderManualDeploy = new JoystickButton(leftStick, 6);
@@ -126,9 +128,9 @@ public class RobotContainer {
   private void configureDefaultCommands() {
     this.driveTrain
         .setDefaultCommand(new DriveWithInput(driveTrain,
-            () -> enforceDeadband(-leftStick.getY(), Constants.SPEED_DEAD_BAND),
-            () -> enforceDeadband(rightStick.getX(), Constants.ROTATE_DEAD_BAND),
-            () -> enforceDeadband(leftStick.getX(), Constants.SPEED_DEAD_BAND)));
+            () -> enforceDeadband(-leftStick.getY(), SPEED_DEAD_BAND),
+            () -> enforceDeadband(rightStick.getX(), ROTATE_DEAD_BAND),
+            () -> enforceDeadband(leftStick.getX(), SPEED_DEAD_BAND)));
   }
 
   /**
@@ -183,7 +185,7 @@ public class RobotContainer {
     shooterIdleTrigger.whenInactive(new InstantCommand(this.shooter::cargoShot));
 
     BooleanSupplier shootTriggerSupplier = () -> (driverTwo
-        .getRawAxis(Math.abs(XboxController.Axis.kRightTrigger.value)) > Constants.TRIGGER_THRESHOLD);
+        .getRawAxis(Math.abs(XboxController.Axis.kRightTrigger.value)) > TRIGGER_THRESHOLD);
     ShootTrigger shootTrigger = new ShootTrigger(this.indexer, this.shooter, shootTriggerSupplier);
     shootTrigger.whenActive(new InstantCommand(() -> this.indexer.requestShot()));
 
@@ -193,9 +195,9 @@ public class RobotContainer {
         new ToggleIntakeIndexerManualMode(
             this.intake,
             new ManualIntakeRollerBelts(this.intake,
-                () -> enforceDeadband(-driverTwo.getLeftX(), Constants.MANUAL_INTAKE_DEADBAND)),
+                () -> enforceDeadband(-driverTwo.getLeftX(), MANUAL_INTAKE_DEADBAND)),
             new ManualIndexer(this.indexer,
-                () -> enforceDeadband(driverTwo.getRightY(), Constants.MANUAL_INDEXER_DEADBAND),
+                () -> enforceDeadband(driverTwo.getRightY(), MANUAL_INDEXER_DEADBAND),
                 new ManualShootTrigger(indexer, shooter, shootTriggerSupplier))));
 
     /*

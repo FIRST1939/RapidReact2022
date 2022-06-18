@@ -9,21 +9,37 @@ package frc.robot;
  * numerical or boolean constants. This class should not be used for any other
  * purpose. All constants should be declared globally (i.e. public static). Do
  * not put anything functional in this class.
+ * 
+ * <p>
+ * It is advised to statically import this class (or one of its inner classes)
+ * wherever the constants are needed, to reduce verbosity.
  */
 public final class Constants {
-    /** Driver 1 left stick port. */
-    public static final int LEFT_STICK_PORT = 0;
-    /** Driver 1 right stick port. */
-    public static final int RIGHT_STICK_PORT = 1;
-    /** Driver 1 dead band for speed axes (normal and sidewinder). */
-    public static final double SPEED_DEAD_BAND = 0.1;
-    /** Driver 1 dead band for rotation axis. */
-    public static final double ROTATE_DEAD_BAND = 0.1;
+    /**
+     * Constants defining the driver controller connections and general controller
+     * behavior.
+     */
+    public final class Controllers {
+        /** Driver 1 left stick port. */
+        public static final int LEFT_STICK_PORT = 0;
+        /** Driver 1 right stick port. */
+        public static final int RIGHT_STICK_PORT = 1;
+        /** Driver 2 controller port. */
+        public static final int DRIVER2_CONTROLLER_PORT = 2;
+        /** Driver 2 trigger axes threshold for button like behavior. */
+        public static final double TRIGGER_THRESHOLD = .3;
 
-    /** Driver 2 controller port. */
-    public static final int DRIVER2_CONTROLLER_PORT = 2;
-    /** Driver 2 trigger axes threshold for button like behavior. */
-    public static final double TRIGGER_THRESHOLD = .3;
+        /** Dead band for speed axes (normal and sidewinder). */
+        public static final double SPEED_DEAD_BAND = 0.1;
+        /** Dead band for rotation axis. */
+        public static final double ROTATE_DEAD_BAND = 0.1;
+
+        /** Axis dead band used when intaking manually. */
+        public static final double MANUAL_INTAKE_DEADBAND = 0.1;
+
+        /** Axis dead band used when indexing manually. */
+        public static final double MANUAL_INDEXER_DEADBAND = 0.1;
+    }
 
     // Drive train normal drive CAN id constants.
     public static final int LEFT_DRIVE_1_CAN_ID = 11;
@@ -117,18 +133,19 @@ public final class Constants {
     public static final int INTAKE_ENCODER_CYCLES_PER_ROTATION = 2048;
     /** The ratio of the intake speed to drive speed is this value:1 */
     public static final double INTAKE_SPEED_TO_DRIVE_SPEED_RATIO = 2.0;
+    /** Distance the intake wheels surface travels in one revolution. */
     public static final double INTAKE_INCHES_PER_REVOLUTION = 6.28;
     public static final int INTAKE_BEAM_BREAK_RECEIVER_DIO = 0;
+    /** Time in seconds to continue intake after cargo detection. */
     public static final double INTAKE_AT_SENSOR_TIME_ADJUSTMENT_SEC = 0.0;
-    public static final double MANUAL_INTAKE_DEADBAND = 0.1;
 
     // Indexer constants
     public static final int INDEXER_LEADER_CAN_ID = 10;
     public static final int INDEXER_FOLLOWER_CAN_ID = 17;
 
     public static final int INDEXER_BEAM_BREAK_RECEIVER_DIO = 2;
-    public static final double MANUAL_INDEXER_DEADBAND = 0.1;
     public static final double MANUAL_INDEXER_FEED_OUTPUT = -0.8;
+    /** Time in seconds to continue indexer run after cargo detection. */
     public static final double INDEXER_AT_SENSOR_TIME_ADJUSTMENT_SEC = 0.0;
 
     // Climber constants.
