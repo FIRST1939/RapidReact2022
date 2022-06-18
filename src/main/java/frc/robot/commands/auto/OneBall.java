@@ -12,6 +12,7 @@ import frc.robot.subsystems.drive.DriveStraightDistance;
 import frc.robot.subsystems.drive.DriveTrain;
 import frc.robot.subsystems.drive.MoveAndTurnToTarget;
 import frc.robot.subsystems.indexer.Indexer;
+import frc.robot.subsystems.shooter.AutoModeShooter;
 import frc.robot.subsystems.shooter.SetShot;
 import frc.robot.subsystems.shooter.Shooter;
 

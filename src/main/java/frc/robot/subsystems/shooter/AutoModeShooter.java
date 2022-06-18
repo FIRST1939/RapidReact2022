@@ -2,11 +2,10 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.auto;
+package frc.robot.subsystems.shooter;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.indexer.Indexer;
-import frc.robot.subsystems.shooter.Shooter;
 
 /**
  * Used during autonomous mode to shoot 1 or 2 cargo when each is ready to be
@@ -24,7 +23,10 @@ public class AutoModeShooter extends CommandBase {
    * <p>
    * NOTE: The command group that defines the autonomous command MUST set the shot
    * as early as possible before this command runs.
-   * </p>
+   * 
+   * <p>
+   * This command typically runs as part of automode code; however, it could also
+   * be part of auto shooting during teleop.
    * 
    * @param shots   the number of cargo to fire. Will be forced to be less than or
    *                equal to the number of cargo in the robot.
@@ -45,7 +47,7 @@ public class AutoModeShooter extends CommandBase {
         && indexer.isReadyToShoot()
         && this.shooter.isShooterReady()
         && indexer.requestShot()) {
-        shotsRemaining--;
+      shotsRemaining--;
     }
   }
 

@@ -14,6 +14,7 @@ import frc.robot.subsystems.drive.TurnToAngle;
 import frc.robot.subsystems.drive.TurnToTarget;
 import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.intake.Intake;
+import frc.robot.subsystems.shooter.AutoModeShooter;
 import frc.robot.subsystems.shooter.SetShot;
 import frc.robot.subsystems.shooter.Shooter;
 
