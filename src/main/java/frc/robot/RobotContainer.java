@@ -33,6 +33,7 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ClimberPositions;
 import frc.robot.Constants.Shots;
+import frc.robot.Constants.LEDMode;
 import frc.robot.commands.auto.Auto4Ball;
 import frc.robot.commands.auto.Auto5Ball;
 import frc.robot.commands.auto.CargoRingTwoBall;
@@ -276,9 +277,9 @@ public class RobotContainer {
 
   private void configureLightingTriggers() {
     new Trigger(() -> this.intake.getIntakeSpeed() > 0)
-        .whenActive(() -> Lights.getInstance().setColor(Constants.LEDMode.GREEN));
+        .whenActive(() -> Lights.getInstance().setColor(LEDMode.GREEN));
     new Trigger(() -> this.intake.getIntakeSpeed() < 0)
-        .whenActive(() -> Lights.getInstance().setColor(Constants.LEDMode.RED));
+        .whenActive(() -> Lights.getInstance().setColor(LEDMode.RED));
   }
 
   /**

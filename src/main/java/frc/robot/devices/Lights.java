@@ -7,7 +7,7 @@ package frc.robot.devices;
 import static frc.robot.Constants.Devices.LIGHTS_PWM;
 
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
-import frc.robot.Constants;
+import frc.robot.Constants.LEDMode;
 
 public class Lights {
   private Spark blinkin = new Spark(LIGHTS_PWM);
@@ -28,7 +28,7 @@ public class Lights {
    * 
    * @param ledMode the mode to set.
    */
-  public void setColor(Constants.LEDMode ledMode) {
+  public void setColor(LEDMode ledMode) {
     set(ledMode.value);
   }
 
