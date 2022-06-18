@@ -10,7 +10,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.SHOTS;
+import frc.robot.Constants.Shots;
 import frc.robot.Constants.LEDMode;
 import frc.robot.devices.Lights;
 
@@ -21,7 +21,7 @@ public class Shooter extends SubsystemBase {
     private final Solenoid shooterSolenoid;
     private final WPI_TalonFX shooterFlywheel;
 
-    private SHOTS shot = SHOTS.fenderHigh;
+    private Shots shot = Shots.fenderHigh;
     private int lastSetVelocity = 0;
     private int velocityInRangeCount = 0;
 
@@ -72,12 +72,12 @@ public class Shooter extends SubsystemBase {
     /**
      * @param shot the shot type that we are preparing.
      */
-    public void cargoShot(final SHOTS shot) {
+    public void cargoShot(final Shots shot) {
         this.shot = shot;
         cargoShot();
     }
 
-    public SHOTS getShot() {
+    public Shots getShot() {
         return shot;
     }
 
@@ -85,7 +85,7 @@ public class Shooter extends SubsystemBase {
      * Set the shooter velocity to a slower idle speed.
      */
     public void idle() {
-        this.cargoShot(SHOTS.idle);
+        this.cargoShot(Shots.idle);
     }
 
     private void setHood(final boolean hood) {

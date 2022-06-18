@@ -22,7 +22,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Constants.SHOTS;
+import frc.robot.Constants.Shots;
 import frc.robot.commands.auto.Auto4Ball;
 import frc.robot.commands.auto.Auto5Ball;
 import frc.robot.commands.auto.CargoRingTwoBall;
@@ -150,26 +150,26 @@ public class RobotContainer {
 
     // shooter buttons
     JoystickButton fenderLowButton = new JoystickButton(driverTwo, XboxController.Button.kY.value);
-    fenderLowButton.whenPressed(new SetShot(this.shooter, SHOTS.fenderLow));
+    fenderLowButton.whenPressed(new SetShot(this.shooter, Shots.fenderLow));
 
     JoystickButton fenderHighButton = new JoystickButton(driverTwo, XboxController.Button.kB.value);
-    fenderHighButton.whenPressed(new SetShot(this.shooter, SHOTS.fenderHigh));
+    fenderHighButton.whenPressed(new SetShot(this.shooter, Shots.fenderHigh));
 
     JoystickButton fenderPlusOneLow = new JoystickButton(driverTwo, XboxController.Button.kA.value);
-    fenderPlusOneLow.whenPressed(new SetShot(this.shooter, SHOTS.fenderPlusOneLow));
+    fenderPlusOneLow.whenPressed(new SetShot(this.shooter, Shots.fenderPlusOneLow));
 
     JoystickButton fenderPlusOneHigh = new JoystickButton(driverTwo, XboxController.Button.kX.value);
-    fenderPlusOneHigh.whenPressed(new SetShot(this.shooter, SHOTS.fenderPlusOneHigh));
+    fenderPlusOneHigh.whenPressed(new SetShot(this.shooter, Shots.fenderPlusOneHigh));
 
     JoystickButton visionTracked = new JoystickButton(driverTwo, XboxController.Button.kRightStick.value);
     visionTracked.whenPressed(
-        new SetShot(this.shooter, SHOTS.visionTracked).andThen(new VisionWithDistance(shooter, limelightShooter)));
+        new SetShot(this.shooter, Shots.visionTracked).andThen(new VisionWithDistance(shooter, limelightShooter)));
 
     POVButton cargoRing = new POVButton(driverTwo, 0); // 0 is up, 90 is right, 180 is down, and 270 is left
-    cargoRing.whenPressed(new SetShot(this.shooter, SHOTS.cargoRing));
+    cargoRing.whenPressed(new SetShot(this.shooter, Shots.cargoRing));
 
     POVButton launchpad = new POVButton(driverTwo, 90);
-    launchpad.whenPressed(new SetShot(this.shooter, SHOTS.launchpad));
+    launchpad.whenPressed(new SetShot(this.shooter, Shots.launchpad));
 
     // A button to read a velocity from the dashboard and apply it to the shooter.
     POVButton setVelocity = new POVButton(driverTwo, 180);
@@ -177,7 +177,7 @@ public class RobotContainer {
         () -> this.shooter.cargoShot((int) SmartDashboard.getNumber("Shooter Velocity", 6750), true)));
 
     POVButton offButton = new POVButton(driverTwo, 270);
-    offButton.whenPressed(new SetShot(this.shooter, SHOTS.off));
+    offButton.whenPressed(new SetShot(this.shooter, Shots.off));
 
     // A button that will idle the shooter while held.
     ShooterIdleTrigger shooterIdleTrigger = new ShooterIdleTrigger(this.robotCargoCount);

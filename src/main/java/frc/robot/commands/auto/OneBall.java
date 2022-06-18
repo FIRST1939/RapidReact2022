@@ -6,7 +6,7 @@ package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.Constants.SHOTS;
+import frc.robot.Constants.Shots;
 import frc.robot.devices.Limelight;
 import frc.robot.subsystems.drive.DriveStraightDistance;
 import frc.robot.subsystems.drive.DriveTrain;
@@ -25,7 +25,7 @@ public class OneBall extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new SetShot(shooter, SHOTS.cargoRing),
+      new SetShot(shooter, Shots.cargoRing),
       new DriveStraightDistance(-47, driveTrain, 0.5),
       new WaitCommand(0.5),
       //new ManualTurnToTarget(driveTrain, limelight, 0),

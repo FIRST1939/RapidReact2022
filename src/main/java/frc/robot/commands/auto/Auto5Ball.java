@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.Constants;
+import frc.robot.Constants.Shots;
 import frc.robot.devices.Limelight;
 import frc.robot.subsystems.drive.DriveStraightDistance;
 import frc.robot.subsystems.drive.DriveStraightDistanceNoStop;
@@ -39,7 +39,7 @@ public class Auto5Ball extends SequentialCommandGroup {
         new ParallelCommandGroup(
             intake.getAutoRequestExtensionCommand(),
             new DriveStraightDistance(-48, driveTrain, 0.5),
-            new SetShot(shooter, Constants.SHOTS.cargoRing)),
+            new SetShot(shooter, Shots.cargoRing)),
         new TurnToTarget(driveTrain, limelight, 0).withTimeout(1.0),
         new WaitCommand(0.15),
         new AutoModeShooter(2, indexer, shooter).withTimeout(3.0),
@@ -52,7 +52,7 @@ public class Auto5Ball extends SequentialCommandGroup {
             new DriveStraightDistanceNoStop(-113, driveTrain, 0.8)),
         new ParallelCommandGroup(
             new DriveStraightDistance(-17, driveTrain, 0.6),
-            new SetShot(shooter, Constants.SHOTS.cargoRing)),
+            new SetShot(shooter, Shots.cargoRing)),
         new WaitCommand(2.0),
 
         // after intake 2ball in humanplayer station
@@ -69,7 +69,7 @@ public class Auto5Ball extends SequentialCommandGroup {
         new ParallelCommandGroup(
             new DriveStraightDistance(-45, driveTrain, 0.7),
             intake.getAutoRequestExtensionCommand(),
-            new SetShot(shooter, Constants.SHOTS.cargoRing)),
+            new SetShot(shooter, Shots.cargoRing)),
         new TurnToTarget(driveTrain, limelight, 0),
         new MoveToTarget(driveTrain, limelight, 0),
         new AutoModeShooter(1, indexer, shooter).withTimeout(3.0));

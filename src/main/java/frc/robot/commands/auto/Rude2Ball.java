@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.Constants;
+import frc.robot.Constants.Shots;
 import frc.robot.commands.multisub.ToggleManualEjection;
 import frc.robot.devices.Limelight;
 import frc.robot.subsystems.drive.DriveStraightDistance;
@@ -31,7 +31,7 @@ public class Rude2Ball extends SequentialCommandGroup {
                 new ParallelCommandGroup(
                         intake.getAutoRequestExtensionCommand(),
                         new DriveStraightDistanceNoStop(-40, driveTrain, 0.6),
-                        new SetShot(shooter, Constants.SHOTS.cargoRing)),
+                        new SetShot(shooter, Shots.cargoRing)),
 
                 // new DriveStraightDistance(17.1, driveTrain, 0.4),
                 new MoveAndTurnToTarget(driveTrain, limelight, 0).withTimeout(2.0),
@@ -59,7 +59,7 @@ public class Rude2Ball extends SequentialCommandGroup {
                 new ParallelCommandGroup(
                         intake.getAutoRequestExtensionCommand(),
                         new DriveStraightDistance(-10, driveTrain, 0.5),
-                        new SetShot(shooter, Constants.SHOTS.fenderLow)),
+                        new SetShot(shooter, Shots.fenderLow)),
 
                 new TurnToAngle(driveTrain, -35.0),
 

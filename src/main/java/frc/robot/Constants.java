@@ -101,7 +101,7 @@ public final class Constants {
      * vision and a distance to velocity mapping.
      * TODO move this to separate file in shooter package.
      */
-    public enum SHOTS {
+    public enum Shots {
         /** Turn the shooter off. */
         off(0, false),
         /** Use vision to determine distance and proper velocity. */
@@ -126,7 +126,7 @@ public final class Constants {
         public final int velocity;
         public final boolean hood;
 
-        private SHOTS(int velocity, boolean hood) {
+        private Shots(int velocity, boolean hood) {
             this.velocity = velocity;
             this.hood = hood;
         }

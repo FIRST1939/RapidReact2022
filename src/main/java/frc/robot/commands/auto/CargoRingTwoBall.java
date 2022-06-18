@@ -7,7 +7,7 @@ package frc.robot.commands.auto;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.Constants;
+import frc.robot.Constants.Shots;
 import frc.robot.commands.state.SequentialCommandGroup2;
 import frc.robot.devices.Limelight;
 import frc.robot.subsystems.drive.DriveStraightDistance;
@@ -40,7 +40,7 @@ public class CargoRingTwoBall extends SequentialCommandGroup2 {
         new ParallelCommandGroup(
             intake.getAutoRequestExtensionCommand(),
             new DriveStraightDistance(-40, driveTrain, 0.4),
-            new SetShot(shooter, Constants.SHOTS.cargoRing)),
+            new SetShot(shooter, Shots.cargoRing)),
         // Drive and turn to square up shot.
         new WaitCommand(1.0),
         new MoveAndTurnToTarget(driveTrain, limelight, 0),
