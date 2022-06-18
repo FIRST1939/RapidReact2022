@@ -155,14 +155,20 @@ public final class Constants {
         public static final double INTAKE_AT_SENSOR_TIME_ADJUSTMENT_SEC = 0.0;
     }
 
-    // Indexer constants
-    public static final int INDEXER_LEADER_CAN_ID = 10;
-    public static final int INDEXER_FOLLOWER_CAN_ID = 17;
+    /**
+     * Constants related to the physical structure and operation of the shooter.
+     */
+    public final class Indexer {
+        /** Indexer lead motor controller CAN id. */
+        public static final int INDEXER_LEADER_CAN_ID = 10;
+        /** Indexer follower motor controller CAN id. */
+        public static final int INDEXER_FOLLOWER_CAN_ID = 17;
 
-    public static final int INDEXER_BEAM_BREAK_RECEIVER_DIO = 2;
-    public static final double MANUAL_INDEXER_FEED_OUTPUT = -0.8;
-    /** Time in seconds to continue indexer run after cargo detection. */
-    public static final double INDEXER_AT_SENSOR_TIME_ADJUSTMENT_SEC = 0.0;
+        public static final int INDEXER_BEAM_BREAK_RECEIVER_DIO = 2;
+        public static final double MANUAL_INDEXER_FEED_OUTPUT = -0.8;
+        /** Time in seconds to continue indexer run after cargo detection. */
+        public static final double INDEXER_AT_SENSOR_TIME_ADJUSTMENT_SEC = 0.0;
+    }
 
     // Climber constants.
     public static final int CLIMBER_MOTOR_CAN_ID = 31;

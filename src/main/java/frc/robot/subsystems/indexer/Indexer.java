@@ -4,13 +4,17 @@
 
 package frc.robot.subsystems.indexer;
 
+import static frc.robot.Constants.Indexer.INDEXER_BEAM_BREAK_RECEIVER_DIO;
+import static frc.robot.Constants.Indexer.INDEXER_FOLLOWER_CAN_ID;
+import static frc.robot.Constants.Indexer.INDEXER_LEADER_CAN_ID;
+
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BooleanSupplier;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.SparkMaxPIDController;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -18,7 +22,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Constants;
 import frc.robot.devices.RobotCargoCount;
 import frc.robot.subsystems.indexer.IndexerStateMachine.State;
 
@@ -60,19 +63,19 @@ public class Indexer extends SubsystemBase {
    *                                  handling stage is sending a cargo our way.
    */
   public Indexer(final BooleanSupplier priorStageSendingSupplier) {
-    this.leader = new CANSparkMax(Constants.INDEXER_LEADER_CAN_ID, MotorType.kBrushless);
+    this.leader = new CANSparkMax(INDEXER_LEADER_CAN_ID, MotorType.kBrushless);
     this.leader.restoreFactoryDefaults();
     this.leader.setIdleMode(IdleMode.kBrake);
     this.pidController = this.leader.getPIDController();
     this.pidController.setP(0.1);
     this.pidController.setFF(0.1);
 
-    this.follower = new CANSparkMax(Constants.INDEXER_FOLLOWER_CAN_ID, MotorType.kBrushless);
+    this.follower = new CANSparkMax(INDEXER_FOLLOWER_CAN_ID, MotorType.kBrushless);
     this.follower.restoreFactoryDefaults();
     this.follower.setIdleMode(IdleMode.kBrake);
     this.follower.follow(this.leader, true);
 
-    this.beamBreak = new DigitalInput(Constants.INDEXER_BEAM_BREAK_RECEIVER_DIO);
+    this.beamBreak = new DigitalInput(INDEXER_BEAM_BREAK_RECEIVER_DIO);
     this.priorStageSendingSupplier = priorStageSendingSupplier;
 
     this.stateMachine = new IndexerStateMachine(this);
