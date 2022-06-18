@@ -32,7 +32,7 @@ public class Shooter extends SubsystemBase {
         shooterFlywheel.configFactoryDefault();
         shooterFlywheel.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
         shooterFlywheel.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 20);
-        shooterFlywheel.configAllowableClosedloopError(0, Constants.SHOOTER_VELOCITY_ERROR / 2);
+        shooterFlywheel.configAllowableClosedloopError(0, Constants.SHOOTER_VELOCITY_ERROR);
         shooterFlywheel.configNominalOutputForward(0);
         shooterFlywheel.configNominalOutputReverse(0);
         shooterFlywheel.configPeakOutputForward(1);

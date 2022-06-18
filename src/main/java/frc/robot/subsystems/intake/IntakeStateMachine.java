@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PerpetualCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
+import frc.robot.Constants;
 import frc.robot.Constants.LEDMode;
 import frc.robot.commands.state.EnumeratedRandomAccessCommandGroup;
 import frc.robot.devices.Lights;
@@ -91,7 +92,7 @@ class IntakeStateMachine {
         this::gatheringEmptyIsFinished,
         intake);
     final Command atSensorStateCommand = new RunCommand(() -> intake.setIntakeSpeed(), intake)
-        .withTimeout(0.0)
+        .withTimeout(Constants.INTAKE_AT_SENSOR_TIME_ADJUSTMENT_SEC)
         .until(intake::isRetractionRequested);
     final Command gatheringSendStateCommand = new FunctionalCommand(
         intake::extendIntake,

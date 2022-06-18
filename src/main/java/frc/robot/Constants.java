@@ -9,25 +9,23 @@ package frc.robot;
  * numerical or boolean constants. This class should not be used for any other
  * purpose. All constants should be declared globally (i.e. public static). Do
  * not put anything functional in this class.
- *
- * <p>
- * It is advised to statically import this class (or one of its inner classes)
- * wherever the constants are needed, to reduce verbosity.
  */
 public final class Constants {
-    // Joystick constants.
+    /** Driver 1 left stick port. */
     public static final int LEFT_STICK_PORT = 0;
+    /** Driver 1 right stick port. */
     public static final int RIGHT_STICK_PORT = 1;
+    /** Driver 1 dead band for speed axes (normal and sidewinder). */
     public static final double SPEED_DEAD_BAND = 0.1;
+    /** Driver 1 dead band for rotation axis. */
     public static final double ROTATE_DEAD_BAND = 0.1;
 
+    /** Driver 2 controller port. */
     public static final int DRIVER2_CONTROLLER_PORT = 2;
-    public static final int MANUAL_CONTROLLER_PORT = 3;
-
+    /** Driver 2 trigger axes threshold for button like behavior. */
     public static final double TRIGGER_THRESHOLD = .3;
-    public static final double AXIS_THRESHOLD = .1;
 
-    // Drive train constants.
+    // Drive train normal drive CAN id constants.
     public static final int LEFT_DRIVE_1_CAN_ID = 11;
     public static final int LEFT_DRIVE_2_CAN_ID = 12;
     public static final int LEFT_DRIVE_3_CAN_ID = 13;
@@ -35,12 +33,12 @@ public final class Constants {
     public static final int RIGHT_DRIVE_2_CAN_ID = 15;
     public static final int RIGHT_DRIVE_3_CAN_ID = 16;
 
+    /** Solenoid channel for sidewinder activation. */
     public static final int SIDEWINDER_PCM_CHANNEL = 3;
+    /** Sidewinder motor controller CAN id. */
     public static final int SIDEWINDER_MOTOR_CAN_ID = 30;
+    /** Proportional PID gain for straight sidewinding. */
     public static final double SIDEWINDER_kP = 0.03;
-
-    public static final double VISION_TURN_TO_ANGLE_kP = .031;
-    public static final double VISION_ANGLE_ERROR = 5;
 
     /** Sidewinder engages at this left stick x deflection */
     public static final double SIDEWINDER_ENABLE_THRESHOLD = 0.3;
@@ -58,125 +56,139 @@ public final class Constants {
     public static final double DRIVE_INCHES_PER_PULSE = 19.24 / 256.0;
     /** A PID p value for gyro based correction for driving straight. */
     public static final double DRIVE_AUTO_GYRO_STRAIGHT_KP = 0.005;
-    public static final double DRIVE_AUTO_STRAIGHT_POWER = 0.6;
-    /** The in place turn to angle PID p value. i and d are 0. */
-    public static final double DRIVE_AUTO_TURN_TO_ANGLE_KP = 0.031;
-    public static final double DRIVE_VISION_kP = 0.08;
-    public static final double DRIVE_AUTO_TURN_TO_ANGLE_KF = 0.2;
-    public static final double DRIVE_AUTO_TURN_TO_ANGLE_TOL_DEG = 5.0;
-    public static final double DRIVE_AUTO_TURN_TO_ANGLE_TURN_RATE_TOL_DEG_PER_SEC = 10.0;
 
-    // Shooter constants.
+    /** Shooter hood solenoid channel. */
     public static final int SHOOTER_PCM_CHANNEL = 0;
+    /** Shooter motor controller CAN id. */
     public static final int SHOOTER_FLYWHEEL_CAN_ID = 32;
-
-    public static final int SHOOTER_DEFAULT_VELOCITY = 0;
-    public static final boolean SHOOTER_DEFAULT_HOOD = false;
 
     /**
      * The configurations for known position shots and one to indicate the use of
      * vision and a distance to velocity mapping.
      */
     public enum SHOTS {
+        /** Turn the shooter off. */
         off(0, false),
+        /** Use vision to determine distance and proper velocity. */
         visionTracked(-1, true),
+        /** A speed to save power when not shooting. */
         idle(5750, false),
+        /** Tuned shot from fender to low goal. */
         fenderLow(3700, true),
+        /** Tuned shot from fender to high goal. */
         fenderHigh(5300, false),
+        /** Tuned shot to low goal with one robot between us and the fender. */
         fenderPlusOneLow(4200, true),
+        /** Tuned shot to high goal with one robot between us and the fender. */
         fenderPlusOneHigh(6400, true),
+        /** Tuned shot to high goal from ring of start of match staged cargo. */
         cargoRing(6750, true),
+        /** Tuned shot to high goal from mid-field wall. */
         wallShot(7600, true),
+        /** Tuned shot to high goal from the closer launchpad. */
         launchpad(8050, true);
 
         public final int velocity;
         public final boolean hood;
 
         private SHOTS(int velocity, boolean hood) {
-
             this.velocity = velocity;
             this.hood = hood;
         }
     }
 
-    public static final int SHOOTER_VELOCITY_ERROR = 700;
+    /** Shooter velocity tolerance in TalonFX sensor units per 100ms. */
+    public static final int SHOOTER_VELOCITY_ERROR = 350;
 
-    // Intake constants
+    /** Vertical target angle to shooter velocity linear equation slope. */
+    public static final double VISION_M = -1500.0 / 11.0;
+    /** Vertical target angle to shooter velocity linear equation y intercept. */
+    public static final double VISION_B = 81050.0 / 11.0;
+
+    /** Intake deploy solenoid channel. */
     public static final int INTAKE_PCM_CHANNEL = 2;
+    /** Intake motor controller CAN id. */
     public static final int INTAKE_MOTOR_CAN_ID = 7;
-    // TODO validate the min and max velocities.
+
     /** The minimum intake velocity in RPM. */
     public static final int INTAKE_MIN_RPM = 600;
     /** The maximum intake velocity in RPM. */
     public static final int INTAKE_MAX_RPM = 2200;
-    public static final int INTAKE_ENCODER_CYCLES_PER_ROTATION = 2048; // TODO verify encoder info
+    public static final int INTAKE_ENCODER_CYCLES_PER_ROTATION = 2048;
     /** The ratio of the intake speed to drive speed is this value:1 */
     public static final double INTAKE_SPEED_TO_DRIVE_SPEED_RATIO = 2.0;
     public static final double INTAKE_INCHES_PER_REVOLUTION = 6.28;
     public static final int INTAKE_BEAM_BREAK_RECEIVER_DIO = 0;
-    public static final long INTAKE_AT_SENSOR_TIME_ADJUSTMENT_MS = 0;
+    public static final double INTAKE_AT_SENSOR_TIME_ADJUSTMENT_SEC = 0.0;
     public static final double MANUAL_INTAKE_DEADBAND = 0.1;
 
     // Indexer constants
     public static final int INDEXER_LEADER_CAN_ID = 10;
     public static final int INDEXER_FOLLOWER_CAN_ID = 17;
 
-    public static final int INDEXER_BEAM_BREAK_EMITTER_DIO = 1;
     public static final int INDEXER_BEAM_BREAK_RECEIVER_DIO = 2;
-    public static final double INDEXER_SHOOTER_FEED_VELOCITY = -700;
-    public static final double INDEXER_RECEIVE_VELOCITY = -700;
     public static final double MANUAL_INDEXER_DEADBAND = 0.1;
     public static final double MANUAL_INDEXER_FEED_OUTPUT = -0.8;
-    public static final long INDEXER_AT_SENSOR_TIME_ADJUSTMENT_MS = 0;
+    public static final double INDEXER_AT_SENSOR_TIME_ADJUSTMENT_SEC = 0.0;
 
     // Climber constants.
     public static final int CLIMBER_MOTOR_CAN_ID = 31;
     public static final int CLIMBER_PISTON_FORWARD = 1;
     public static final int CLIMBER_PISTON_REVERSE = 7;
-    public static final int CLIMBER_EXTENSION_VELOCITY = 5000; // TODO climber extension velocity
-    public static final int CLIMBER_RETRACTION_VELOCITY = 5000; // TODO climber retraction velocity
 
-    // TODO climber extension values 
+    /** The configurations for known climber hook positions. */
     public enum CLIMBER_POSITIONS {
+        /** Hooks fully retracted (for automation). */
         bottom(8500, 2000),
+        /** Hooks fully retracted (for driver). TODO why two of these? */
         bottomFirst(15000, 2000),
+        /** Hooks not quite fully retracted on last bar. */
         finalBarRetract(8500, 50000),
+        /** Move hooks off current bar in prep for next bar. */
         offBar(10000, 50000),
+        /** Partial extension for drive onto first bar from floor. */
         partial(15000, 250000),
+        /** Full extension for grabbing next bar from another bar. */
         full(15000, 340000);
 
         public final int velocity;
         public final int distance;
 
-        private CLIMBER_POSITIONS (int velocity, int distance) {
-
+        private CLIMBER_POSITIONS(int velocity, int distance) {
             this.velocity = velocity;
             this.distance = distance;
         }
     }
 
-    // Compressor constants.
-    public static final int PNEUMATICS_HUB_CAN_ID = 1;
-    public static final int PNEUMATICS_HUB_MIN_PRESSURE = 110;
-    public static final int PNEUMATICS_HUB_MAX_PRESSURE = 120;
-
-    //Lights constants.
+    // Lights constants.
     public static final int LIGHTS_PWM = 2;
 
-    //Vision constants.
+    // Vision constants.
     public static final int SHOOTER_LONG_PIPELINE = 0;
     public static final int SHOOTER_OFF_PIPELINE = 1;
 
-    public static final double VISION_M = -1500.0/11.0;
-    public static final double VISION_B = 81050.0/11.0;
-  
-    //all these are mostly in red color
-    public enum LEDMode{
-        BLUE(0.87), RED(0.61), GREEN(0.73), YELLOW(0.67), PURPLE(0.91), PINK(0.57), WHITE(0.93), CONFETTI(-0.87), FIRE(-0.57),
-        TWINKLES(-0.49), COLORWAVES(-0.39), SCANNER(-0.35), CHASE(-0.31), STROBE(-0.11), RAINBOW(-0.97), OFF(0.99);
-    
+    /** LED driver feedback (and bling) colors. */
+    public enum LEDMode {
+        BLUE(0.87),
+        RED(0.61),
+        GREEN(0.73),
+        YELLOW(0.67),
+        PURPLE(0.91),
+        PINK(0.57),
+        WHITE(0.93),
+        CONFETTI(-0.87),
+        FIRE(-0.57),
+        TWINKLES(-0.49),
+        COLORWAVES(-0.39),
+        SCANNER(-0.35),
+        CHASE(-0.31),
+        STROBE(-0.11),
+        RAINBOW(-0.97),
+        OFF(0.99);
+
         public final double value;
-        private LEDMode(double value){
+
+        private LEDMode(double value) {
             this.value = value;
         }
     }
