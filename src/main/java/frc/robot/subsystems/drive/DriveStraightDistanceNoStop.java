@@ -2,12 +2,11 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.auto;
+package frc.robot.subsystems.drive;
 
 import static frc.robot.Constants.DriveTrain.DRIVE_AUTO_GYRO_STRAIGHT_KP;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.drive.DriveTrain;
 
 /**
  * Use this command during autonomous to drive a straight line for a distance
