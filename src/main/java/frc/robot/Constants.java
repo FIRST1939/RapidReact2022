@@ -132,23 +132,28 @@ public final class Constants {
         }
     }
 
-    /** Intake deploy solenoid channel. */
-    public static final int INTAKE_PCM_CHANNEL = 2;
-    /** Intake motor controller CAN id. */
-    public static final int INTAKE_MOTOR_CAN_ID = 7;
+    /**
+     * Constants related to the physical structure and operation of the shooter.
+     */
+    public final class Intake {
+        /** Intake deploy solenoid channel. */
+        public static final int INTAKE_PCM_CHANNEL = 2;
+        /** Intake motor controller CAN id. */
+        public static final int INTAKE_MOTOR_CAN_ID = 7;
 
-    /** The minimum intake velocity in RPM. */
-    public static final int INTAKE_MIN_RPM = 600;
-    /** The maximum intake velocity in RPM. */
-    public static final int INTAKE_MAX_RPM = 2200;
-    public static final int INTAKE_ENCODER_CYCLES_PER_ROTATION = 2048;
-    /** The ratio of the intake speed to drive speed is this value:1 */
-    public static final double INTAKE_SPEED_TO_DRIVE_SPEED_RATIO = 2.0;
-    /** Distance the intake wheels surface travels in one revolution. */
-    public static final double INTAKE_INCHES_PER_REVOLUTION = 6.28;
-    public static final int INTAKE_BEAM_BREAK_RECEIVER_DIO = 0;
-    /** Time in seconds to continue intake after cargo detection. */
-    public static final double INTAKE_AT_SENSOR_TIME_ADJUSTMENT_SEC = 0.0;
+        /** The minimum intake velocity in RPM. */
+        public static final int INTAKE_MIN_RPM = 600;
+        /** The maximum intake velocity in RPM. */
+        public static final int INTAKE_MAX_RPM = 2200;
+        public static final int INTAKE_ENCODER_CYCLES_PER_ROTATION = 2048;
+        /** The ratio of the intake speed to drive speed is this value:1 */
+        public static final double INTAKE_SPEED_TO_DRIVE_SPEED_RATIO = 2.0;
+        /** Distance the intake wheels surface travels in one revolution. */
+        public static final double INTAKE_INCHES_PER_REVOLUTION = 6.28;
+        public static final int INTAKE_BEAM_BREAK_RECEIVER_DIO = 0;
+        /** Time in seconds to continue intake after cargo detection. */
+        public static final double INTAKE_AT_SENSOR_TIME_ADJUSTMENT_SEC = 0.0;
+    }
 
     // Indexer constants
     public static final int INDEXER_LEADER_CAN_ID = 10;
