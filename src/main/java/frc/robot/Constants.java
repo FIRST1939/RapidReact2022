@@ -186,7 +186,7 @@ public final class Constants {
      * The configurations for known climber hook positions.
      * TODO move this to separate file in climber package.
      */
-    public enum CLIMBER_POSITIONS {
+    public enum ClimberPositions {
         /** Hooks fully retracted (for automation). */
         bottom(8500, 2000),
         /** Hooks fully retracted (for driver). TODO why two of these? */
@@ -203,7 +203,7 @@ public final class Constants {
         public final int velocity;
         public final int distance;
 
-        private CLIMBER_POSITIONS(int velocity, int distance) {
+        private ClimberPositions(int velocity, int distance) {
             this.velocity = velocity;
             this.distance = distance;
         }

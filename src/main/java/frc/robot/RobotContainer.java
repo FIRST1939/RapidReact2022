@@ -29,7 +29,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Constants.CLIMBER_POSITIONS;
+import frc.robot.Constants.ClimberPositions;
 import frc.robot.Constants.Shots;
 import frc.robot.commands.auto.Auto4Ball;
 import frc.robot.commands.auto.Auto5Ball;
@@ -255,11 +255,11 @@ public class RobotContainer {
 
     JoystickButton climberMotorPartialPositionExtend = new JoystickButton(rightStick, 6);
     climberMotorPartialPositionExtend.whenPressed(
-        rumbleAfter(new GetToPosition(this.climber, CLIMBER_POSITIONS.partial)));
+        rumbleAfter(new GetToPosition(this.climber, ClimberPositions.partial)));
 
     JoystickButton climberMotorFullPositionButton = new JoystickButton(rightStick, 9);
     climberMotorFullPositionButton.whenPressed(
-        rumbleAfter(new GetToPosition(this.climber, CLIMBER_POSITIONS.full)));
+        rumbleAfter(new GetToPosition(this.climber, ClimberPositions.full)));
 
     JoystickButton climberSetHomeButton = new JoystickButton(driverTwo, XboxController.Button.kBack.value);
     climberSetHomeButton.whenPressed(new SetHome(this.climber));
@@ -269,7 +269,7 @@ public class RobotContainer {
 
     JoystickButton climberMotorBottomPositionButton = new JoystickButton(rightStick, 7);
     climberMotorBottomPositionButton.whenPressed(
-        rumbleAfter(new GetToPosition(this.climber, CLIMBER_POSITIONS.bottomFirst)));
+        rumbleAfter(new GetToPosition(this.climber, ClimberPositions.bottomFirst)));
   }
 
   private void configureLightingTriggers() {
