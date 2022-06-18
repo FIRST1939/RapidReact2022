@@ -1,5 +1,7 @@
 package frc.robot.subsystems.shooter;
 
+import static frc.robot.Constants.Shooter.*;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
@@ -8,7 +10,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.Constants.SHOTS;
 import frc.robot.Constants.LEDMode;
 import frc.robot.devices.Lights;
 
@@ -19,20 +21,20 @@ public class Shooter extends SubsystemBase {
     private final Solenoid shooterSolenoid;
     private final WPI_TalonFX shooterFlywheel;
 
-    private Constants.SHOTS shot = Constants.SHOTS.fenderHigh;
+    private SHOTS shot = SHOTS.fenderHigh;
     private int lastSetVelocity = 0;
     private int velocityInRangeCount = 0;
 
     // Creates a new shooter.
     private Shooter() {
         // Create and configure shooter elements.
-        shooterSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Constants.SHOOTER_PCM_CHANNEL);
-        shooterFlywheel = new WPI_TalonFX(Constants.SHOOTER_FLYWHEEL_CAN_ID);
+        shooterSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, SHOOTER_PCM_CHANNEL);
+        shooterFlywheel = new WPI_TalonFX(SHOOTER_FLYWHEEL_CAN_ID);
 
         shooterFlywheel.configFactoryDefault();
         shooterFlywheel.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
         shooterFlywheel.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 20);
-        shooterFlywheel.configAllowableClosedloopError(0, Constants.SHOOTER_VELOCITY_ERROR);
+        shooterFlywheel.configAllowableClosedloopError(0, SHOOTER_VELOCITY_ERROR);
         shooterFlywheel.configNominalOutputForward(0);
         shooterFlywheel.configNominalOutputReverse(0);
         shooterFlywheel.configPeakOutputForward(1);
@@ -70,12 +72,12 @@ public class Shooter extends SubsystemBase {
     /**
      * @param shot the shot type that we are preparing.
      */
-    public void cargoShot(final Constants.SHOTS shot) {
+    public void cargoShot(final SHOTS shot) {
         this.shot = shot;
         cargoShot();
     }
 
-    public Constants.SHOTS getShot() {
+    public SHOTS getShot() {
         return shot;
     }
 
@@ -83,7 +85,7 @@ public class Shooter extends SubsystemBase {
      * Set the shooter velocity to a slower idle speed.
      */
     public void idle() {
-        this.cargoShot(Constants.SHOTS.idle);
+        this.cargoShot(SHOTS.idle);
     }
 
     private void setHood(final boolean hood) {
@@ -104,9 +106,6 @@ public class Shooter extends SubsystemBase {
     @Override
     public void periodic() {
         double currentVelocity = shooterFlywheel.getSelectedSensorVelocity() / 2;
-        // double currentClosedLoopError = shooterFlywheel.getClosedLoopError();
-        // SmartDashboard.putNumber("Shooter Velocity", currentVelocity);
-        // SmartDashboard.putNumber("Shooter Error", currentClosedLoopError);
         if (Math.abs(Math.abs(currentVelocity)
                 - this.lastSetVelocity) <= this.lastSetVelocity * 0.04) {
             this.velocityInRangeCount++;

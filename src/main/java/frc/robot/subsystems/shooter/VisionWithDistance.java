@@ -4,8 +4,9 @@
 
 package frc.robot.subsystems.shooter;
 
+import static frc.robot.Constants.Shooter.*;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
 import frc.robot.Constants.LEDMode;
 import frc.robot.Constants.SHOTS;
 import frc.robot.devices.Lights;
@@ -35,7 +36,7 @@ public class VisionWithDistance extends CommandBase {
     if (this.shooter.getShot() == SHOTS.visionTracked) {
       if (this.limelight.isTargetFound()) {
         dy = this.limelight.getVerticalAngleError();
-        velocity = dy * Constants.VISION_M + Constants.VISION_B;
+        velocity = dy * VISION_M + VISION_B;
 
         // I have no idea if 2% change is the right amount of change
         // to trigger setting the velocity and restarting the periodic
@@ -52,7 +53,7 @@ public class VisionWithDistance extends CommandBase {
       }
     }
   }
-  
+
   @Override
   public void end(boolean interrupted) {
     Lights.getInstance().setColor(LEDMode.CONFETTI);

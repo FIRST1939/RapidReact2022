@@ -78,14 +78,28 @@ public final class Constants {
         public static final double DRIVE_AUTO_GYRO_STRAIGHT_KP = 0.005;
     }
 
-    /** Shooter hood solenoid channel. */
-    public static final int SHOOTER_PCM_CHANNEL = 0;
-    /** Shooter motor controller CAN id. */
-    public static final int SHOOTER_FLYWHEEL_CAN_ID = 32;
+    /**
+     * Constants related to the physical structure and operation of the shooter.
+     */
+    public final class Shooter {
+        /** Shooter hood solenoid channel. */
+        public static final int SHOOTER_PCM_CHANNEL = 0;
+        /** Shooter motor controller CAN id. */
+        public static final int SHOOTER_FLYWHEEL_CAN_ID = 32;
+
+        /** Shooter velocity tolerance in TalonFX sensor units per 100ms. */
+        public static final int SHOOTER_VELOCITY_ERROR = 350;
+
+        /** Vertical target angle to shooter velocity linear equation slope. */
+        public static final double VISION_M = -1500.0 / 11.0;
+        /** Vertical target angle to shooter velocity linear equation y intercept. */
+        public static final double VISION_B = 81050.0 / 11.0;
+    }
 
     /**
      * The configurations for known position shots and one to indicate the use of
      * vision and a distance to velocity mapping.
+     * TODO move this to separate file in shooter package.
      */
     public enum SHOTS {
         /** Turn the shooter off. */
@@ -117,14 +131,6 @@ public final class Constants {
             this.hood = hood;
         }
     }
-
-    /** Shooter velocity tolerance in TalonFX sensor units per 100ms. */
-    public static final int SHOOTER_VELOCITY_ERROR = 350;
-
-    /** Vertical target angle to shooter velocity linear equation slope. */
-    public static final double VISION_M = -1500.0 / 11.0;
-    /** Vertical target angle to shooter velocity linear equation y intercept. */
-    public static final double VISION_B = 81050.0 / 11.0;
 
     /** Intake deploy solenoid channel. */
     public static final int INTAKE_PCM_CHANNEL = 2;
@@ -158,7 +164,10 @@ public final class Constants {
     public static final int CLIMBER_PISTON_FORWARD = 1;
     public static final int CLIMBER_PISTON_REVERSE = 7;
 
-    /** The configurations for known climber hook positions. */
+    /**
+     * The configurations for known climber hook positions.
+     * TODO move this to separate file in climber package.
+     */
     public enum CLIMBER_POSITIONS {
         /** Hooks fully retracted (for automation). */
         bottom(8500, 2000),
@@ -189,7 +198,10 @@ public final class Constants {
     public static final int SHOOTER_LONG_PIPELINE = 0;
     public static final int SHOOTER_OFF_PIPELINE = 1;
 
-    /** LED driver feedback (and bling) colors. */
+    /**
+     * LED driver feedback (and bling) colors.
+     * TODO move this to separate file in devices package.
+     */
     public enum LEDMode {
         BLUE(0.87),
         RED(0.61),
