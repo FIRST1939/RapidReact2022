@@ -4,11 +4,12 @@
 
 package frc.robot.subsystems.indexer.manual;
 
+import static frc.robot.Constants.Indexer.MANUAL_INDEXER_FEED_OUTPUT;
+
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Constants;
 import frc.robot.devices.RobotCargoCount;
 import frc.robot.subsystems.indexer.Indexer;
 
@@ -40,7 +41,7 @@ public class ManualIndexer extends CommandBase {
   public void execute() {
     this.indexer.setManualSpeed(
         this.shootTrigger.get()
-            ? Constants.MANUAL_INDEXER_FEED_OUTPUT
+            ? MANUAL_INDEXER_FEED_OUTPUT
             : this.speedSupplier.getAsDouble());
   }
 
