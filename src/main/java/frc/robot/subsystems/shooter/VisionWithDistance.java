@@ -16,9 +16,6 @@ public class VisionWithDistance extends CommandBase {
 
   private final Shooter shooter;
   private final Limelight limelight;
-
-  private double dy;
-  private double velocity;
   private double lastVelocitySentToShooter;
 
   public VisionWithDistance(final Shooter shooter, final Limelight limelight) {
@@ -35,8 +32,8 @@ public class VisionWithDistance extends CommandBase {
   public void execute() {
     if (this.shooter.getShot() == Shots.visionTracked) {
       if (this.limelight.isTargetFound()) {
-        dy = this.limelight.getVerticalAngleError();
-        velocity = dy * VISION_M + VISION_B;
+        double dy = this.limelight.getVerticalAngleError();
+        double velocity = dy * VISION_M + VISION_B;
 
         // I have no idea if 2% change is the right amount of change
         // to trigger setting the velocity and restarting the periodic

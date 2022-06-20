@@ -58,12 +58,8 @@ public class Limelight {
     // 1 is target found
     public boolean isTargetFound() {
         NetworkTableEntry tv = table.getEntry("tv");
-        double value = tv.getDouble(0);
-        if (value == 1) {
-            return true;
-        } else {
-            return false;
-        }
+        double value = tv.getDouble(0.0);
+        return value == 1.0;
     }
 
     // -27 to 27 degrees
