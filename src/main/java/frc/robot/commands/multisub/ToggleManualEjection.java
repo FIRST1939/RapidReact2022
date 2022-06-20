@@ -29,7 +29,9 @@ public class ToggleManualEjection extends CommandBase {
       final Indexer indexer) {
     this.intake = intake;
     this.indexer = indexer;
-    this.ejectionCommand = new ParallelCommandGroup(new ManualEjectIntake(this.intake), new ManualEjectIndexer(this.indexer));
+    this.ejectionCommand = new ParallelCommandGroup(
+        new ManualEjectIntake(this.intake),
+        new ManualEjectIndexer(this.indexer));
   }
 
   // Called when the command is initially scheduled.

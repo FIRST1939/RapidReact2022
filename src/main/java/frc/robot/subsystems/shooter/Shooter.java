@@ -1,6 +1,8 @@
 package frc.robot.subsystems.shooter;
 
-import static frc.robot.Constants.Shooter.*;
+import static frc.robot.Constants.Shooter.SHOOTER_FLYWHEEL_CAN_ID;
+import static frc.robot.Constants.Shooter.SHOOTER_PCM_CHANNEL;
+import static frc.robot.Constants.Shooter.SHOOTER_VELOCITY_ERROR;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
@@ -10,8 +12,8 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.Shots;
 import frc.robot.Constants.LEDMode;
+import frc.robot.Constants.Shots;
 import frc.robot.devices.Lights;
 
 public class Shooter extends SubsystemBase {

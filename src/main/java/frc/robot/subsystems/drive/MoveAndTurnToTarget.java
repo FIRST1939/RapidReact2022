@@ -7,18 +7,17 @@ package frc.robot.subsystems.drive;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.devices.Limelight;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
+/**
+ * Combines instances of {@link TurnToTarget} and {@link MoveToTarget} to point
+ * at the target and to move into range for a vision controlled shot.
+ */
 public class MoveAndTurnToTarget extends SequentialCommandGroup {
-  /** Creates a new ManualMoveAndTurnToTarget. */
+  /** Creates a new MoveAndTurnToTarget. */
   public MoveAndTurnToTarget(final DriveTrain driveTrain, final Limelight limelight, final int pipeline) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
         new TurnToTarget(driveTrain, limelight, pipeline).withTimeout(3.0),
-        new MoveToTarget(driveTrain, limelight, pipeline).withTimeout(3.0)
-
-    );
+        new MoveToTarget(driveTrain, limelight, pipeline).withTimeout(3.0));
   }
 }

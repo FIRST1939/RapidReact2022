@@ -1,11 +1,12 @@
 package frc.robot.commands.util;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /**
- * 
+ * An instance of this command will rumble the given controller for 1 second
+ * when scheduled.
  */
 public class RumbleController extends CommandBase {
     private final GenericHID controller;

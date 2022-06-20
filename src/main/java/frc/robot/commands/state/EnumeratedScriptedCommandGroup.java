@@ -7,6 +7,7 @@ package frc.robot.commands.state;
 import java.lang.reflect.Array;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.PerpetualCommand;
 
 /**
  * An extension of {@link EnumeratedRandomAccessCommandGroup} that runs a script

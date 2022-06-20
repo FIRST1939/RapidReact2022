@@ -32,8 +32,8 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ClimberPositions;
-import frc.robot.Constants.Shots;
 import frc.robot.Constants.LEDMode;
+import frc.robot.Constants.Shots;
 import frc.robot.commands.auto.Auto4Ball;
 import frc.robot.commands.auto.Auto5Ball;
 import frc.robot.commands.auto.CargoRingTwoBall;
@@ -54,7 +54,6 @@ import frc.robot.subsystems.climber.Climber;
 import frc.robot.subsystems.climber.ExtendMotor;
 import frc.robot.subsystems.climber.GetToPosition;
 import frc.robot.subsystems.climber.RetractMotor;
-import frc.robot.subsystems.climber.SetHome;
 import frc.robot.subsystems.climber.SetPiston;
 import frc.robot.subsystems.drive.DriveTrain;
 import frc.robot.subsystems.drive.DriveWithInput;
@@ -265,10 +264,10 @@ public class RobotContainer {
         rumbleAfter(new GetToPosition(this.climber, ClimberPositions.full)));
 
     JoystickButton climberSetHomeButton = new JoystickButton(driverTwo, XboxController.Button.kBack.value);
-    climberSetHomeButton.whenPressed(new SetHome(this.climber));
+    climberSetHomeButton.whenPressed(new InstantCommand(this.climber::setHome, this.climber));
 
     JoystickButton climberSetHomeButtonSecondary = new JoystickButton(rightStick, 8);
-    climberSetHomeButtonSecondary.whenPressed(new SetHome(this.climber));
+    climberSetHomeButtonSecondary.whenPressed(new InstantCommand(this.climber::setHome, this.climber));
 
     JoystickButton climberMotorBottomPositionButton = new JoystickButton(rightStick, 7);
     climberMotorBottomPositionButton.whenPressed(

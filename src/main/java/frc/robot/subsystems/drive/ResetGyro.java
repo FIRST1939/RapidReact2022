@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class ResetGyro extends InstantCommand {
   private final DriveTrain driveTrain;
+
   public ResetGyro(final DriveTrain driveTrain) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.driveTrain = driveTrain;

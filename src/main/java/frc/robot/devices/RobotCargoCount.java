@@ -32,8 +32,7 @@ public class RobotCargoCount {
     /**
      * @return the single instance of RobotCargoCount.
      */
-    public static RobotCargoCount getInstance()
-    {
+    public static RobotCargoCount getInstance() {
         return INSTANCE;
     }
 
@@ -88,9 +87,10 @@ public class RobotCargoCount {
 
     /**
      * DO NOT USE THIS! Only for auto and teleop init use for better testing.
+     * 
      * @param count the count to set, will be clamped to min and max.
      */
     public void setCount(final int count) {
-        this.count = MathUtil.clamp(count, MIN_CARGO , MAX_CARGO);
+        this.count = MathUtil.clamp(count, MIN_CARGO, MAX_CARGO);
     }
 }

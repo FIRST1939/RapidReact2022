@@ -4,7 +4,23 @@
 
 package frc.robot.subsystems.drive;
 
-import static frc.robot.Constants.DriveTrain.*;
+import static frc.robot.Constants.DriveTrain.DRIVE_INCHES_PER_PULSE;
+import static frc.robot.Constants.DriveTrain.LEFT_DRIVE_1_CAN_ID;
+import static frc.robot.Constants.DriveTrain.LEFT_DRIVE_2_CAN_ID;
+import static frc.robot.Constants.DriveTrain.LEFT_DRIVE_3_CAN_ID;
+import static frc.robot.Constants.DriveTrain.LEFT_DRIVE_A_CHANNEL;
+import static frc.robot.Constants.DriveTrain.LEFT_DRIVE_B_CHANNEL;
+import static frc.robot.Constants.DriveTrain.RIGHT_DRIVE_1_CAN_ID;
+import static frc.robot.Constants.DriveTrain.RIGHT_DRIVE_2_CAN_ID;
+import static frc.robot.Constants.DriveTrain.RIGHT_DRIVE_3_CAN_ID;
+import static frc.robot.Constants.DriveTrain.RIGHT_DRIVE_A_CHANNEL;
+import static frc.robot.Constants.DriveTrain.RIGHT_DRIVE_B_CHANNEL;
+import static frc.robot.Constants.DriveTrain.SIDEWINDER_DISABLE_THRESHOLD;
+import static frc.robot.Constants.DriveTrain.SIDEWINDER_ENABLE_THRESHOLD;
+import static frc.robot.Constants.DriveTrain.SIDEWINDER_MOTOR_CAN_ID;
+import static frc.robot.Constants.DriveTrain.SIDEWINDER_OUTPUT_OFFSET;
+import static frc.robot.Constants.DriveTrain.SIDEWINDER_PCM_CHANNEL;
+import static frc.robot.Constants.DriveTrain.SIDEWINDER_kP;
 
 import java.util.function.BooleanSupplier;
 
@@ -12,16 +28,16 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
