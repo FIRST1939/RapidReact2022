@@ -30,11 +30,25 @@ public enum Shots {
     /** Tuned shot to high goal from the closer launchpad. */
     launchpad(8050, true);
 
-    public final int velocity;
-    public final boolean hood;
+    private final int velocity;
+    private final boolean hood;
 
     private Shots(int velocity, boolean hood) {
         this.velocity = velocity;
         this.hood = hood;
+    }
+
+    /**
+     * @return the velocity for this shot.
+     */
+    public int getVelocity() {
+        return this.velocity;
+    }
+
+    /**
+     * @return true if the hood should be extended for this shot.
+     */
+    public boolean isHoodExtended() {
+        return this.hood;
     }
 }

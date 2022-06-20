@@ -67,7 +67,7 @@ public class Shooter extends SubsystemBase {
      * Reapplies the last set shooter velocity. Typically used to come out of idle.
      */
     public void cargoShot() {
-        cargoShot(getShot().velocity, getShot().hood);
+        cargoShot(getShot().getVelocity(), getShot().isHoodExtended());
     }
 
     /**
