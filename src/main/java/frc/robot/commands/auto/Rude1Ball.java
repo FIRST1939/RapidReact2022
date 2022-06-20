@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.Constants.Shots;
 import frc.robot.commands.multisub.ToggleManualEjection;
 import frc.robot.devices.Limelight;
 import frc.robot.subsystems.drive.DriveStraightDistance;
@@ -18,6 +17,7 @@ import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.shooter.AutoModeShooter;
 import frc.robot.subsystems.shooter.SetShot;
 import frc.robot.subsystems.shooter.Shooter;
+import frc.robot.subsystems.shooter.Shots;
 
 public class Rude1Ball extends SequentialCommandGroup {
 

@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.Constants.Shots;
 import frc.robot.devices.Limelight;
 import frc.robot.subsystems.drive.DriveStraightDistance;
 import frc.robot.subsystems.drive.DriveStraightDistanceNoStop;
@@ -21,6 +20,7 @@ import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.shooter.AutoModeShooter;
 import frc.robot.subsystems.shooter.SetShot;
 import frc.robot.subsystems.shooter.Shooter;
+import frc.robot.subsystems.shooter.Shots;
 
 /**
  * This auto command is to be set up in the left tarmac at and square to the

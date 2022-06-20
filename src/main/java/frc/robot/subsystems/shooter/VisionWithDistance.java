@@ -9,7 +9,6 @@ import static frc.robot.Constants.Shooter.VISION_M;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.LEDMode;
-import frc.robot.Constants.Shots;
 import frc.robot.devices.Lights;
 import frc.robot.devices.Limelight;
 

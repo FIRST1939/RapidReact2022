@@ -6,7 +6,6 @@ package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.Constants.Shots;
 import frc.robot.devices.Limelight;
 import frc.robot.subsystems.drive.DriveStraightDistance;
 import frc.robot.subsystems.drive.DriveTrain;
@@ -15,6 +14,7 @@ import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.shooter.AutoModeShooter;
 import frc.robot.subsystems.shooter.SetShot;
 import frc.robot.subsystems.shooter.Shooter;
+import frc.robot.subsystems.shooter.Shots;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:

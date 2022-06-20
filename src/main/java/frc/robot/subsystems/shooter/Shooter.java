@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.LEDMode;
-import frc.robot.Constants.Shots;
 import frc.robot.devices.Lights;
 
 public class Shooter extends SubsystemBase {

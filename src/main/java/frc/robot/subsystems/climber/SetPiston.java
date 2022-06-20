@@ -2,6 +2,9 @@ package frc.robot.subsystems.climber;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
+/**
+ * TODO get rid of this class in favor of InstantCommand.
+ */
 public class SetPiston extends CommandBase {
     private final Climber climber;
     private final Boolean piston;
