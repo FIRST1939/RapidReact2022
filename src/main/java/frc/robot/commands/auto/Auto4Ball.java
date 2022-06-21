@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.drive.DriveStraightDistance;
 import frc.robot.subsystems.drive.DriveStraightDistanceNoStop;
 import frc.robot.subsystems.drive.DriveTrain;
-import frc.robot.subsystems.drive.MoveToTarget;
+import frc.robot.subsystems.drive.MoveToCargoRing;
 import frc.robot.subsystems.drive.TurnToAngle;
 import frc.robot.subsystems.drive.TurnToTarget;
 import frc.robot.subsystems.indexer.Indexer;
@@ -69,7 +69,7 @@ public class Auto4Ball extends SequentialCommandGroup {
         new WaitCommand(0.2),
         new TurnToTarget(driveTrain, shooter.getTargeting()).withTimeout(1.0),
         new WaitCommand(0.3),
-        new MoveToTarget(driveTrain, shooter.getTargeting()).withTimeout(1.5),
+        new MoveToCargoRing(driveTrain, shooter.getTargeting()).withTimeout(1.5),
         new WaitCommand(0.3),
         new AutoModeShooter(2, indexer, shooter).withTimeout(2.0)
 

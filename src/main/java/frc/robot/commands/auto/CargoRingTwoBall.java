@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.state.SequentialCommandGroup2;
 import frc.robot.subsystems.drive.DriveStraightDistance;
 import frc.robot.subsystems.drive.DriveTrain;
-import frc.robot.subsystems.drive.MoveAndTurnToTarget;
+import frc.robot.subsystems.drive.TurnToTargetThenMoveToCargoRing;
 import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.shooter.AutoModeShooter;
@@ -41,7 +41,7 @@ public class CargoRingTwoBall extends SequentialCommandGroup2 {
             new SetShot(shooter, Shots.cargoRing)),
         // Drive and turn to square up shot.
         new WaitCommand(1.0),
-        new MoveAndTurnToTarget(driveTrain, shooter.getTargeting()),
+        new TurnToTargetThenMoveToCargoRing(driveTrain, shooter.getTargeting()),
         new WaitCommand(2.0),
         // Shoot 2 cargo.
         new AutoModeShooter(2, indexer, shooter).withTimeout(3.0),

@@ -9,14 +9,14 @@ import frc.robot.Constants.LEDMode;
 import frc.robot.devices.Lights;
 import frc.robot.devices.Targeting;
 
-public class MoveToTarget extends CommandBase {
+public class MoveToCargoRing extends CommandBase {
   private final DriveTrain driveTrain;
   private final Targeting targeting;
 
   private double ty;
   private int direction = 0;
 
-  public MoveToTarget(final DriveTrain driveTrain, final Targeting targeting) {
+  public MoveToCargoRing(final DriveTrain driveTrain, final Targeting targeting) {
     this.driveTrain = driveTrain;
     this.targeting = targeting;
     addRequirements(driveTrain);

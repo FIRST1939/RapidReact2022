@@ -53,7 +53,7 @@ import frc.robot.subsystems.climber.RetractMotor;
 import frc.robot.subsystems.climber.SetPiston;
 import frc.robot.subsystems.drive.DriveTrain;
 import frc.robot.subsystems.drive.DriveWithInput;
-import frc.robot.subsystems.drive.MoveAndTurnToTarget;
+import frc.robot.subsystems.drive.TurnToTargetThenMoveToCargoRing;
 import frc.robot.subsystems.drive.TurnToTarget;
 import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.indexer.manual.ManualIndexer;
@@ -152,7 +152,7 @@ public class RobotContainer {
 
     JoystickButton manualMoveToTargetLong = new JoystickButton(rightStick, 11);
     manualMoveToTargetLong.whenPressed(
-        rumbleAfter(new MoveAndTurnToTarget(driveTrain, shooter.getTargeting())));
+        rumbleAfter(new TurnToTargetThenMoveToCargoRing(driveTrain, shooter.getTargeting())));
 
     // shooter buttons
     JoystickButton fenderLowButton = new JoystickButton(driverTwo, XboxController.Button.kY.value);

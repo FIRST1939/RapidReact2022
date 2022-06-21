@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.drive.DriveStraightDistance;
 import frc.robot.subsystems.drive.DriveTrain;
-import frc.robot.subsystems.drive.MoveAndTurnToTarget;
+import frc.robot.subsystems.drive.TurnToTargetThenMoveToCargoRing;
 import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.shooter.AutoModeShooter;
 import frc.robot.subsystems.shooter.SetShot;
@@ -27,7 +27,7 @@ public class OneBall extends SequentialCommandGroup {
       new SetShot(shooter, Shots.cargoRing),
       new DriveStraightDistance(-47, driveTrain, 0.5),
       new WaitCommand(0.5),
-      new MoveAndTurnToTarget(driveTrain, shooter.getTargeting()),
+      new TurnToTargetThenMoveToCargoRing(driveTrain, shooter.getTargeting()),
       new WaitCommand(1.0),
       new AutoModeShooter(1, indexer, shooter).withTimeout(3.0),
         // Do not drive until second shot has cleared shooter.

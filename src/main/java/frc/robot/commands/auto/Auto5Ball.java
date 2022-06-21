@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.drive.DriveStraightDistance;
 import frc.robot.subsystems.drive.DriveStraightDistanceNoStop;
 import frc.robot.subsystems.drive.DriveTrain;
-import frc.robot.subsystems.drive.MoveToTarget;
+import frc.robot.subsystems.drive.MoveToCargoRing;
 import frc.robot.subsystems.drive.TurnToAngle;
 import frc.robot.subsystems.drive.TurnToTarget;
 import frc.robot.subsystems.indexer.Indexer;
@@ -60,7 +60,7 @@ public class Auto5Ball extends SequentialCommandGroup {
         new WaitCommand(0.3),
         new TurnToAngle(driveTrain, -106.42),
         new TurnToTarget(driveTrain, shooter.getTargeting()).withTimeout(1.0),
-        new MoveToTarget(driveTrain, shooter.getTargeting()).withTimeout(1.5),
+        new MoveToCargoRing(driveTrain, shooter.getTargeting()).withTimeout(1.5),
         new AutoModeShooter(2, indexer, shooter).withTimeout(2.0),
 
         // after shoot 4ball
@@ -69,7 +69,7 @@ public class Auto5Ball extends SequentialCommandGroup {
             intake.getAutoRequestExtensionCommand(),
             new SetShot(shooter, Shots.cargoRing)),
         new TurnToTarget(driveTrain, shooter.getTargeting()),
-        new MoveToTarget(driveTrain, shooter.getTargeting()),
+        new MoveToCargoRing(driveTrain, shooter.getTargeting()),
         new AutoModeShooter(1, indexer, shooter).withTimeout(3.0));
 
   }
