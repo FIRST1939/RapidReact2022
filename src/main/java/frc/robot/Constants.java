@@ -151,33 +151,6 @@ public final class Constants {
     }
 
     /**
-     * The configurations for known climber hook positions.
-     * TODO move this to separate file in climber package.
-     */
-    public enum ClimberPositions {
-        /** Hooks fully retracted (for automation). */
-        bottom(8500, 2000),
-        /** Hooks fully retracted (for driver). TODO why two of these? */
-        bottomFirst(15000, 2000),
-        /** Hooks not quite fully retracted on last bar. */
-        finalBarRetract(8500, 50000),
-        /** Move hooks off current bar in prep for next bar. */
-        offBar(10000, 50000),
-        /** Partial extension for drive onto first bar from floor. */
-        partial(15000, 250000),
-        /** Full extension for grabbing next bar from another bar. */
-        full(15000, 340000);
-
-        public final int velocity;
-        public final int distance;
-
-        private ClimberPositions(int velocity, int distance) {
-            this.velocity = velocity;
-            this.distance = distance;
-        }
-    }
-
-    /**
      * Constants related to the physical structure and operation of the simple
      * devices on the robot.
      */

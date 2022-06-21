@@ -2,7 +2,6 @@ package frc.robot.subsystems.climber;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.Constants.ClimberPositions;
 
 public class ClimbToSecond extends SequentialCommandGroup {
     private final Climber climber;
