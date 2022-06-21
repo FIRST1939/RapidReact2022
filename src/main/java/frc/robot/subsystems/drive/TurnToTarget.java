@@ -7,21 +7,18 @@ package frc.robot.subsystems.drive;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.LEDMode;
 import frc.robot.devices.Lights;
-import frc.robot.devices.Limelight;
+import frc.robot.devices.Targeting;
 
 public class TurnToTarget extends CommandBase {
   private final DriveTrain driveTrain;
-  private final Limelight limelight;
+  private final Targeting targeting;
 
   private double angle;
   private int direction = 0;
 
-  private int pipeline;
-
-  public TurnToTarget(final DriveTrain driveTrain, final Limelight limelight, final int pipeline) {
+  public TurnToTarget(final DriveTrain driveTrain, final Targeting targeting) {
     this.driveTrain = driveTrain;
-    this.limelight = limelight;
-    this.pipeline = pipeline;
+    this.targeting = targeting;
     addRequirements(driveTrain);
   }
 
@@ -29,8 +26,7 @@ public class TurnToTarget extends CommandBase {
   @Override
   public void initialize() {
     Lights.getInstance().setColor(LEDMode.RED);
-    this.angle = limelight.getHorizontalAngleError();
-    this.limelight.setPipeline(pipeline);
+    this.angle = targeting.getHorizontalAngleError();
 
     if (this.angle < -1) {
       this.direction = -1;
@@ -45,7 +41,7 @@ public class TurnToTarget extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    this.angle = limelight.getHorizontalAngleError();
+    this.angle = targeting.getHorizontalAngleError();
 
     if (Math.abs(this.angle) > 60) {
       this.driveTrain.arcadeDrive(0, 0.70 * this.direction, 0);

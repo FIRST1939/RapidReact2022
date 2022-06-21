@@ -12,8 +12,6 @@ import static frc.robot.Constants.Controllers.RIGHT_STICK_PORT;
 import static frc.robot.Constants.Controllers.ROTATE_DEAD_BAND;
 import static frc.robot.Constants.Controllers.SPEED_DEAD_BAND;
 import static frc.robot.Constants.Controllers.TRIGGER_THRESHOLD;
-import static frc.robot.Constants.Devices.SHOOTER_LONG_PIPELINE;
-import static frc.robot.Constants.Devices.SHOOTER_OFF_PIPELINE;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
@@ -44,7 +42,6 @@ import frc.robot.commands.multisub.ToggleManualEjection;
 import frc.robot.commands.util.CancelCommand;
 import frc.robot.commands.util.RumbleController;
 import frc.robot.devices.Lights;
-import frc.robot.devices.Limelight;
 import frc.robot.devices.RobotCargoCount;
 import frc.robot.subsystems.climber.ClimbNextBar;
 import frc.robot.subsystems.climber.ClimbToSecond;
@@ -94,7 +91,6 @@ public class RobotContainer {
   private final Indexer indexer = new Indexer(() -> this.intake.isSendingCargo());
   private final Shooter shooter = Shooter.getInstance();
   private final Climber climber = Climber.getInstance();
-  private final Limelight limelightShooter = new Limelight("limelight-shooter");
   private final RumbleController rumbleController = new RumbleController(this.driverTwo);
   private final SendableChooser<Supplier<Command>> autoChooser = new SendableChooser<>();
 
@@ -115,18 +111,18 @@ public class RobotContainer {
    */
   private void configureAutoChooser() {
     this.autoChooser.setDefaultOption("One Ball",
-        () -> new OneBall(shooter, indexer, driveTrain, limelightShooter));
+        () -> new OneBall(driveTrain, indexer, shooter));
     this.autoChooser.addOption("Do Nothing", () -> new WaitCommand(1.0));
     this.autoChooser.addOption("Cargo Ring Two Ball",
-        () -> new CargoRingTwoBall(driveTrain, intake, indexer, shooter, limelightShooter));
+        () -> new CargoRingTwoBall(driveTrain, intake, indexer, shooter));
     this.autoChooser.addOption("4 Ball",
-        () -> new Auto4Ball(driveTrain, intake, indexer, shooter, limelightShooter));
+        () -> new Auto4Ball(driveTrain, intake, indexer, shooter));
     this.autoChooser.addOption("Rude 2 Ball",
-        () -> new Rude2Ball(driveTrain, intake, indexer, shooter, limelightShooter));
+        () -> new Rude2Ball(driveTrain, intake, indexer, shooter));
     this.autoChooser.addOption("Rude 1 Ball",
-        () -> new Rude1Ball(driveTrain, intake, indexer, shooter, limelightShooter));
+        () -> new Rude1Ball(driveTrain, intake, indexer, shooter));
     this.autoChooser.addOption("5 Ball",
-        () -> new Auto5Ball(driveTrain, intake, indexer, shooter, limelightShooter));
+        () -> new Auto5Ball(driveTrain, intake, indexer, shooter));
 
     SmartDashboard.putData("Autonomous Chooser", this.autoChooser);
   }
@@ -152,11 +148,11 @@ public class RobotContainer {
   private void configureButtonBindings() {
     JoystickButton manualTurnToTargetLong = new JoystickButton(rightStick, 10);
     manualTurnToTargetLong.whenPressed(
-        rumbleAfter(new TurnToTarget(driveTrain, limelightShooter, 0)));
+        rumbleAfter(new TurnToTarget(driveTrain, shooter.getTargeting())));
 
     JoystickButton manualMoveToTargetLong = new JoystickButton(rightStick, 11);
     manualMoveToTargetLong.whenPressed(
-        rumbleAfter(new MoveAndTurnToTarget(driveTrain, limelightShooter, 0)));
+        rumbleAfter(new MoveAndTurnToTarget(driveTrain, shooter.getTargeting())));
 
     // shooter buttons
     JoystickButton fenderLowButton = new JoystickButton(driverTwo, XboxController.Button.kY.value);
@@ -173,7 +169,7 @@ public class RobotContainer {
 
     JoystickButton visionTracked = new JoystickButton(driverTwo, XboxController.Button.kRightStick.value);
     visionTracked.whenPressed(
-        new SetShot(this.shooter, Shots.visionTracked).andThen(new VisionWithDistance(shooter, limelightShooter)));
+        new SetShot(this.shooter, Shots.visionTracked).andThen(new VisionWithDistance(shooter)));
 
     POVButton cargoRing = new POVButton(driverTwo, 0); // 0 is up, 90 is right, 180 is down, and 270 is left
     cargoRing.whenPressed(new SetShot(this.shooter, Shots.cargoRing));
@@ -320,18 +316,6 @@ public class RobotContainer {
    */
   private double enforceDeadband(double rawSpeed, double deadband) {
     return Math.abs(rawSpeed) < deadband ? 0.0 : rawSpeed;
-  }
-
-  /**
-   * @param enabled turns on vision based target tracking if true. Turns it off,
-   *                if false.
-   */
-  public void enableTargetTracking(boolean enabled) {
-    if (enabled) {
-      limelightShooter.setPipeline(SHOOTER_LONG_PIPELINE);
-    } else {
-      limelightShooter.setPipeline(SHOOTER_OFF_PIPELINE);
-    }
   }
 
   /**

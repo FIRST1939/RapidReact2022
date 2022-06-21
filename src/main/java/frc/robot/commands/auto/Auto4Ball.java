@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.devices.Limelight;
 import frc.robot.subsystems.drive.DriveStraightDistance;
 import frc.robot.subsystems.drive.DriveStraightDistanceNoStop;
 import frc.robot.subsystems.drive.DriveTrain;
@@ -34,8 +33,7 @@ public class Auto4Ball extends SequentialCommandGroup {
       final DriveTrain driveTrain,
       final Intake intake,
       final Indexer indexer,
-      final Shooter shooter,
-      final Limelight limelight) {
+      final Shooter shooter) {
     addCommands(
         // Configurable wait for alliance partner.
         new WaitCommand(SmartDashboard.getNumber("Auto Start Wait", 0.0)),
@@ -44,7 +42,7 @@ public class Auto4Ball extends SequentialCommandGroup {
             intake.getAutoRequestExtensionCommand(),
             new DriveStraightDistance(-48, driveTrain, 0.5),
             new SetShot(shooter, Shots.cargoRing)),
-        new TurnToTarget(driveTrain, limelight, 0).withTimeout(1.0),
+        new TurnToTarget(driveTrain, shooter.getTargeting()).withTimeout(1.0),
         new WaitCommand(0.15),
         new AutoModeShooter(2, indexer, shooter).withTimeout(3.0),
         new WaitCommand(0.2),
@@ -69,9 +67,9 @@ public class Auto4Ball extends SequentialCommandGroup {
         new TurnToAngle(driveTrain, -30),
         // new TurnToAngle(driveTrain, -30),
         new WaitCommand(0.2),
-        new TurnToTarget(driveTrain, limelight, 0).withTimeout(1.0),
+        new TurnToTarget(driveTrain, shooter.getTargeting()).withTimeout(1.0),
         new WaitCommand(0.3),
-        new MoveToTarget(driveTrain, limelight, 0).withTimeout(1.5),
+        new MoveToTarget(driveTrain, shooter.getTargeting()).withTimeout(1.5),
         new WaitCommand(0.3),
         new AutoModeShooter(2, indexer, shooter).withTimeout(2.0)
 

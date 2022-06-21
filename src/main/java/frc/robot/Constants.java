@@ -90,6 +90,10 @@ public final class Constants {
         /** Shooter velocity tolerance in TalonFX sensor units per 100ms. */
         public static final int SHOOTER_VELOCITY_ERROR = 350;
 
+        // Shooter targeting pipeline numbers.
+        public static final int SHOOTER_LONG_PIPELINE = 0;
+        public static final int SHOOTER_OFF_PIPELINE = 1;
+
         /** Vertical target angle to shooter velocity linear equation slope. */
         public static final double VISION_M = -1500.0 / 11.0;
         /** Vertical target angle to shooter velocity linear equation y intercept. */
@@ -180,10 +184,6 @@ public final class Constants {
     public final class Devices {
         // Lights constants.
         public static final int LIGHTS_PWM = 2;
-
-        // Vision constants.
-        public static final int SHOOTER_LONG_PIPELINE = 0;
-        public static final int SHOOTER_OFF_PIPELINE = 1;
     }
 
     /**

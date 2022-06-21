@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.state.SequentialCommandGroup2;
-import frc.robot.devices.Limelight;
 import frc.robot.subsystems.drive.DriveStraightDistance;
 import frc.robot.subsystems.drive.DriveTrain;
 import frc.robot.subsystems.drive.MoveAndTurnToTarget;
@@ -31,8 +30,7 @@ public class CargoRingTwoBall extends SequentialCommandGroup2 {
       final DriveTrain driveTrain,
       final Intake intake,
       final Indexer indexer,
-      final Shooter shooter,
-      final Limelight limelight) {
+      final Shooter shooter) {
     addCommands(
         // Configurable wait for alliance partner.
         new WaitCommand(SmartDashboard.getNumber("Auto Start Wait", 0.0)),
@@ -43,7 +41,7 @@ public class CargoRingTwoBall extends SequentialCommandGroup2 {
             new SetShot(shooter, Shots.cargoRing)),
         // Drive and turn to square up shot.
         new WaitCommand(1.0),
-        new MoveAndTurnToTarget(driveTrain, limelight, 0),
+        new MoveAndTurnToTarget(driveTrain, shooter.getTargeting()),
         new WaitCommand(2.0),
         // Shoot 2 cargo.
         new AutoModeShooter(2, indexer, shooter).withTimeout(3.0),

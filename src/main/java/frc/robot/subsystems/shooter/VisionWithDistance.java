@@ -10,17 +10,15 @@ import static frc.robot.Constants.Shooter.VISION_M;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.LEDMode;
 import frc.robot.devices.Lights;
-import frc.robot.devices.Limelight;
+import frc.robot.devices.Targeting;
 
 public class VisionWithDistance extends CommandBase {
 
   private final Shooter shooter;
-  private final Limelight limelight;
   private double lastVelocitySentToShooter;
 
-  public VisionWithDistance(final Shooter shooter, final Limelight limelight) {
+  public VisionWithDistance(final Shooter shooter) {
     this.shooter = shooter;
-    this.limelight = limelight;
   }
 
   @Override
@@ -31,8 +29,9 @@ public class VisionWithDistance extends CommandBase {
   @Override
   public void execute() {
     if (this.shooter.getShot() == Shots.visionTracked) {
-      if (this.limelight.isTargetFound()) {
-        double dy = this.limelight.getVerticalAngleError();
+      final Targeting shooterTargeting = this.shooter.getTargeting();
+      if (shooterTargeting.isTargetFound()) {
+        double dy = shooterTargeting.getVerticalAngleError();
         double velocity = dy * VISION_M + VISION_B;
 
         // I have no idea if 2% change is the right amount of change

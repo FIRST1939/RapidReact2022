@@ -5,7 +5,7 @@
 package frc.robot.subsystems.drive;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.devices.Limelight;
+import frc.robot.devices.Targeting;
 
 /**
  * Combines instances of {@link TurnToTarget} and {@link MoveToTarget} to point
@@ -13,11 +13,11 @@ import frc.robot.devices.Limelight;
  */
 public class MoveAndTurnToTarget extends SequentialCommandGroup {
   /** Creates a new MoveAndTurnToTarget. */
-  public MoveAndTurnToTarget(final DriveTrain driveTrain, final Limelight limelight, final int pipeline) {
+  public MoveAndTurnToTarget(final DriveTrain driveTrain, final Targeting targeting) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-        new TurnToTarget(driveTrain, limelight, pipeline).withTimeout(3.0),
-        new MoveToTarget(driveTrain, limelight, pipeline).withTimeout(3.0));
+        new TurnToTarget(driveTrain, targeting).withTimeout(3.0),
+        new MoveToTarget(driveTrain, targeting).withTimeout(3.0));
   }
 }

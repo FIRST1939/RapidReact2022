@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.LEDMode;
 import frc.robot.devices.Lights;
+import frc.robot.devices.Targeting;
 
 public class Shooter extends SubsystemBase {
     private static Shooter shooterInstance = null;
@@ -21,6 +22,7 @@ public class Shooter extends SubsystemBase {
     // Shooter elements.
     private final Solenoid shooterSolenoid;
     private final WPI_TalonFX shooterFlywheel;
+    private final ShooterTargeting targeting = new ShooterTargeting();
 
     private Shots shot = Shots.fenderHigh;
     private int lastSetVelocity = 0;
@@ -123,7 +125,13 @@ public class Shooter extends SubsystemBase {
      * @return true if hood is up false otherwise
      */
     public boolean isHoodUp() {
-
         return shooterSolenoid.get();
+    }
+
+    /**
+     * @return the {@link Targeting} implementation for this shooter.
+     */
+    public Targeting getTargeting() {
+        return this.targeting;
     }
 }

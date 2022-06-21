@@ -32,10 +32,16 @@ public class Limelight {
         table.getEntry("camMode").setNumber(value);
     }
 
-    // 0 is Preset Mode in Current Pipeline
-    // 1 is Force Off
-    // 2 is Force Blink
-    // 3 is Force On
+    /**
+     * <ul>
+     * <li>0 is Preset Mode in Current Pipeline
+     * <li>1 is Force Off
+     * <li>2 is Force Blink
+     * <li>3 is Force On
+     * </ul>
+     * 
+     * @param value the lights value as described above.
+     */
     public void setLEDMode(double value) {
         table.getEntry("ledMode").setNumber(value);
     }

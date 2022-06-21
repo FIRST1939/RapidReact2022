@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.LEDMode;
 import frc.robot.devices.Lights;
 import frc.robot.devices.RobotCargoCount;
+import frc.robot.devices.Targeting.Type;
+import frc.robot.subsystems.shooter.Shooter;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -64,7 +66,7 @@ public class Robot extends TimedRobot {
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
-    m_robotContainer.enableTargetTracking(false);
+    Shooter.getInstance().getTargeting().enable(Type.OFF);
   }
 
   @Override
@@ -79,7 +81,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     m_robotContainer.autoInitialization();
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-    m_robotContainer.enableTargetTracking(true);
+    Shooter.getInstance().getTargeting().enable(Type.PRIMARY);
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
@@ -108,7 +110,7 @@ public class Robot extends TimedRobot {
     }
     this.m_robotContainer.teleopInitialization();
 
-    m_robotContainer.enableTargetTracking(true);
+    Shooter.getInstance().getTargeting().enable(Type.PRIMARY);
   }
 
   /** This function is called periodically during operator control. */

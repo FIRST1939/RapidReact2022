@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.multisub.ToggleManualEjection;
-import frc.robot.devices.Limelight;
 import frc.robot.subsystems.drive.DriveStraightDistance;
 import frc.robot.subsystems.drive.DriveStraightDistanceNoStop;
 import frc.robot.subsystems.drive.DriveTrain;
@@ -21,8 +20,7 @@ import frc.robot.subsystems.shooter.Shots;
 
 public class Rude1Ball extends SequentialCommandGroup {
 
-    public Rude1Ball(final DriveTrain driveTrain, final Intake intake, final Indexer indexer, final Shooter shooter,
-            final Limelight limelight) {
+    public Rude1Ball(final DriveTrain driveTrain, final Intake intake, final Indexer indexer, final Shooter shooter) {
         addCommands(
                 // Configurable wait for alliance partner.
                 new WaitCommand(SmartDashboard.getNumber("Auto Start Wait", 0.0)),
@@ -32,7 +30,7 @@ public class Rude1Ball extends SequentialCommandGroup {
                         new DriveStraightDistance(-45, driveTrain, 0.5),
                         new SetShot(shooter, Shots.cargoRing)),
 
-                new MoveAndTurnToTarget(driveTrain, limelight, 0).withTimeout(1.0),
+                new MoveAndTurnToTarget(driveTrain, shooter.getTargeting()).withTimeout(1.0),
                 new WaitCommand(0.15),
                 new AutoModeShooter(2, indexer, shooter).withTimeout(3.0),
                 new WaitCommand(0.2),

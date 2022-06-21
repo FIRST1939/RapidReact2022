@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.devices.Limelight;
 import frc.robot.subsystems.drive.DriveStraightDistance;
 import frc.robot.subsystems.drive.DriveStraightDistanceNoStop;
 import frc.robot.subsystems.drive.DriveTrain;
@@ -30,8 +29,7 @@ public class Auto5Ball extends SequentialCommandGroup {
       final DriveTrain driveTrain,
       final Intake intake,
       final Indexer indexer,
-      final Shooter shooter,
-      final Limelight limelight) {
+      final Shooter shooter) {
     addCommands(
         // Configurable wait for alliance partner.
         new WaitCommand(SmartDashboard.getNumber("Auto Start Wait", 0.0)),
@@ -40,7 +38,7 @@ public class Auto5Ball extends SequentialCommandGroup {
             intake.getAutoRequestExtensionCommand(),
             new DriveStraightDistance(-48, driveTrain, 0.5),
             new SetShot(shooter, Shots.cargoRing)),
-        new TurnToTarget(driveTrain, limelight, 0).withTimeout(1.0),
+        new TurnToTarget(driveTrain, shooter.getTargeting()).withTimeout(1.0),
         new WaitCommand(0.15),
         new AutoModeShooter(2, indexer, shooter).withTimeout(3.0),
         new WaitCommand(0.2),
@@ -61,8 +59,8 @@ public class Auto5Ball extends SequentialCommandGroup {
         new DriveStraightDistance(16, driveTrain, 0.5),
         new WaitCommand(0.3),
         new TurnToAngle(driveTrain, -106.42),
-        new TurnToTarget(driveTrain, limelight, 0).withTimeout(1.0),
-        new MoveToTarget(driveTrain, limelight, 0).withTimeout(1.5),
+        new TurnToTarget(driveTrain, shooter.getTargeting()).withTimeout(1.0),
+        new MoveToTarget(driveTrain, shooter.getTargeting()).withTimeout(1.5),
         new AutoModeShooter(2, indexer, shooter).withTimeout(2.0),
 
         // after shoot 4ball
@@ -70,8 +68,8 @@ public class Auto5Ball extends SequentialCommandGroup {
             new DriveStraightDistance(-45, driveTrain, 0.7),
             intake.getAutoRequestExtensionCommand(),
             new SetShot(shooter, Shots.cargoRing)),
-        new TurnToTarget(driveTrain, limelight, 0),
-        new MoveToTarget(driveTrain, limelight, 0),
+        new TurnToTarget(driveTrain, shooter.getTargeting()),
+        new MoveToTarget(driveTrain, shooter.getTargeting()),
         new AutoModeShooter(1, indexer, shooter).withTimeout(3.0));
 
   }

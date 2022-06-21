@@ -6,7 +6,6 @@ package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.devices.Limelight;
 import frc.robot.subsystems.drive.DriveStraightDistance;
 import frc.robot.subsystems.drive.DriveTrain;
 import frc.robot.subsystems.drive.MoveAndTurnToTarget;
@@ -21,16 +20,14 @@ import frc.robot.subsystems.shooter.Shots;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class OneBall extends SequentialCommandGroup {
   /** Creates a new OneBall. */
-  public OneBall(final Shooter shooter, final Indexer indexer, final DriveTrain driveTrain, final Limelight limelight) {
+  public OneBall(final DriveTrain driveTrain, final Indexer indexer, final Shooter shooter) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new SetShot(shooter, Shots.cargoRing),
       new DriveStraightDistance(-47, driveTrain, 0.5),
       new WaitCommand(0.5),
-      //new ManualTurnToTarget(driveTrain, limelight, 0),
-      //new WaitCommand(0.5),
-      new MoveAndTurnToTarget(driveTrain, limelight, 0),
+      new MoveAndTurnToTarget(driveTrain, shooter.getTargeting()),
       new WaitCommand(1.0),
       new AutoModeShooter(1, indexer, shooter).withTimeout(3.0),
         // Do not drive until second shot has cleared shooter.
