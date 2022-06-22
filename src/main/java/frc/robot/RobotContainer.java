@@ -28,8 +28,6 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Constants.LEDMode;
 import frc.robot.commands.auto.Auto4Ball;
 import frc.robot.commands.auto.Auto5Ball;
 import frc.robot.commands.auto.CargoRingTwoBall;
@@ -40,7 +38,6 @@ import frc.robot.commands.multisub.ToggleIntakeIndexerManualMode;
 import frc.robot.commands.multisub.ToggleManualEjection;
 import frc.robot.commands.util.CancelCommand;
 import frc.robot.commands.util.RumbleController;
-import frc.robot.devices.Lights;
 import frc.robot.devices.RobotCargoCount;
 import frc.robot.subsystems.climber.ClimbNextBar;
 import frc.robot.subsystems.climber.ClimbToSecond;
@@ -53,14 +50,15 @@ import frc.robot.subsystems.climber.RetractMotor;
 import frc.robot.subsystems.climber.SetPiston;
 import frc.robot.subsystems.drive.DriveTrain;
 import frc.robot.subsystems.drive.DriveWithInput;
-import frc.robot.subsystems.drive.TurnToTargetThenMoveToCargoRing;
 import frc.robot.subsystems.drive.TurnToTarget;
+import frc.robot.subsystems.drive.TurnToTargetThenMoveToCargoRing;
 import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.indexer.manual.ManualIndexer;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.intake.manual.IntakeExtendCommandSelector;
 import frc.robot.subsystems.intake.manual.IntakeRetractCommandSelector;
 import frc.robot.subsystems.intake.manual.ManualIntakeRollerBelts;
+import frc.robot.subsystems.lights.Lights;
 import frc.robot.subsystems.shooter.SetShot;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.Shots;
@@ -82,9 +80,9 @@ public class RobotContainer {
   private final Joystick rightStick = new Joystick(RIGHT_STICK_PORT);
   private final XboxController driverTwo = new XboxController(DRIVER2_CONTROLLER_PORT);
 
-  // The robot's subsystems and commands are defined here...
-  JoystickButton sidewinderManualDeploy = new JoystickButton(leftStick, 6);
-  JoystickButton manualSlowlyDriveButton = new JoystickButton(leftStick, 7);
+  // The robot's subsystems are defined here...
+  private final JoystickButton sidewinderManualDeploy = new JoystickButton(leftStick, 6);
+  private final JoystickButton manualSlowlyDriveButton = new JoystickButton(leftStick, 7);
   private final DriveTrain driveTrain = new DriveTrain(() -> sidewinderManualDeploy.get(), manualSlowlyDriveButton);
   private final RobotCargoCount robotCargoCount = RobotCargoCount.getInstance();
   private final Intake intake = new Intake(() -> this.driveTrain.getRate());
@@ -98,11 +96,11 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+    Lights.getInstance().injectSubsystems(this.driveTrain, this.intake, this.shooter);
     // Configure default commands.
     configureDefaultCommands();
     // Configure the button bindings
     configureButtonBindings();
-    configureLightingTriggers();
     configureAutoChooser();
   }
 
@@ -146,12 +144,12 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    JoystickButton manualTurnToTargetLong = new JoystickButton(rightStick, 10);
-    manualTurnToTargetLong.whenPressed(
+    JoystickButton turnToTargetButton = new JoystickButton(rightStick, 10);
+    turnToTargetButton.whenPressed(
         rumbleAfter(new TurnToTarget(driveTrain, shooter.getTargeting())));
 
-    JoystickButton manualMoveToTargetLong = new JoystickButton(rightStick, 11);
-    manualMoveToTargetLong.whenPressed(
+    JoystickButton turnToTargetThenMoveToCargoRingButton = new JoystickButton(rightStick, 11);
+    turnToTargetThenMoveToCargoRingButton.whenPressed(
         rumbleAfter(new TurnToTargetThenMoveToCargoRing(driveTrain, shooter.getTargeting())));
 
     // shooter buttons
@@ -270,13 +268,6 @@ public class RobotContainer {
         rumbleAfter(new GetToPosition(this.climber, ClimberPositions.bottomFirst)));
   }
 
-  private void configureLightingTriggers() {
-    new Trigger(() -> this.intake.getIntakeSpeed() > 0)
-        .whenActive(() -> Lights.getInstance().setColor(LEDMode.GREEN));
-    new Trigger(() -> this.intake.getIntakeSpeed() < 0)
-        .whenActive(() -> Lights.getInstance().setColor(LEDMode.RED));
-  }
-
   /**
    * Initializes contained subsystems for autonomous.
    */
@@ -303,6 +294,9 @@ public class RobotContainer {
     this.indexer.exitAuto();
   }
 
+  /**
+   * Completes the transition started in {@link #autoExit()}.
+   */
   public void teleopInitialization() {
     this.intake.enterTeleop();
     this.indexer.enterTeleop();
@@ -312,7 +306,7 @@ public class RobotContainer {
    * @param rawSpeed the raw speed input from the driver.
    * @param deadband the deadband (this amount on either side of 0) being
    *                 enforced.
-   * @return
+   * @return the constrained speed.
    */
   private double enforceDeadband(double rawSpeed, double deadband) {
     return Math.abs(rawSpeed) < deadband ? 0.0 : rawSpeed;

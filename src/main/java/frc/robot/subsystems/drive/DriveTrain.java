@@ -43,8 +43,6 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.Constants.LEDMode;
-import frc.robot.devices.Lights;
 
 /**
  * The drive train consists of three Neos on each side. Encoders are used for
@@ -185,7 +183,6 @@ public class DriveTrain extends SubsystemBase {
       }
 
       this.sidewinderSolenoid.set(true);
-      Lights.getInstance().setColor(LEDMode.TWINKLES);
     } else if (Math.abs(sidewind) < SIDEWINDER_DISABLE_THRESHOLD) {
       this.sidewinderSolenoid.set(false);
     }

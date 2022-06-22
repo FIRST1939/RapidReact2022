@@ -14,9 +14,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PerpetualCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
-import frc.robot.Constants.LEDMode;
 import frc.robot.commands.state.EnumeratedRandomAccessCommandGroup;
-import frc.robot.devices.Lights;
 import frc.robot.devices.RobotCargoCount;
 
 /**
@@ -84,10 +82,7 @@ class IntakeStateMachine {
     }, intake)
         .andThen(new WaitUntilCommand(intake::isExtensionRequested));
     final Command gatheringEmptyStateCommand = new FunctionalCommand(
-        () -> {
-          intake.extendIntake();
-          Lights.getInstance().setColor(LEDMode.PINK);
-        },
+        intake::extendIntake,
         intake::setIntakeSpeed,
         interrupted -> intake.stopIntakeMotor(),
         this::gatheringEmptyIsFinished,
@@ -104,7 +99,6 @@ class IntakeStateMachine {
     final Command stowedHoldStateCommand = new InstantCommand(() -> {
       intake.retractIntake();
       intake.stopIntakeMotor();
-      Lights.getInstance().setColor(LEDMode.STROBE);
     }, intake)
         .andThen(new WaitUntilCommand(() -> !RobotCargoCount.getInstance().isFull()));
     final Command stowedSendStateCommand = new IntakeStowedSendState(intake);
@@ -213,6 +207,12 @@ class IntakeStateMachine {
     this.stateMachineCommand.setInitialState(nextInitialState);
   }
 
+  /**
+   * Implementation of {@link State#GATHERING_EMPTY} command's isFinished just to
+   * keep the declaration in the constructor a bit more tidy.
+   * 
+   * @return true if the command is finished and false otherwise.
+   */
   private boolean gatheringEmptyIsFinished() {
     boolean cargoDetected = this.intake.isCargoAtSensor();
     if (cargoDetected) {

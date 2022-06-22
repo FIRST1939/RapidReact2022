@@ -155,37 +155,10 @@ public final class Constants {
      * devices on the robot.
      */
     public final class Devices {
-        // Lights constants.
+        /** The PWM port for the LED strip controller. */
         public static final int LIGHTS_PWM = 2;
-    }
-
-    /**
-     * LED driver feedback (and bling) colors.
-     * TODO move this to separate file in devices package.
-     */
-    public enum LEDMode {
-        BLUE(0.87),
-        RED(0.61),
-        GREEN(0.73),
-        YELLOW(0.67),
-        PURPLE(0.91),
-        PINK(0.57),
-        WHITE(0.93),
-        CONFETTI(-0.87),
-        FIRE(-0.57),
-        TWINKLES(-0.49),
-        COLORWAVES(-0.39),
-        SCANNER(-0.35),
-        CHASE(-0.31),
-        STROBE(-0.11),
-        RAINBOW(-0.97),
-        OFF(0.99);
-
-        public final double value;
-
-        private LEDMode(double value) {
-            this.value = value;
-        }
+        /** Degrees (+-) for 1ft or less at 15 feet. */
+        public static final double ALIGNED_TO_HUB = 3.8;
     }
 
     /** Prevent misguided creation of a instance of this class. */

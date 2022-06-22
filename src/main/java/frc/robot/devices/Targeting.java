@@ -23,7 +23,7 @@ public interface Targeting {
      * targeting implementation may map both primary and secondary to the same
      * detection algorithm.
      */
-    public enum Type {
+    public enum TargetingType {
         PRIMARY,
         SECONDARY,
         OFF
@@ -33,9 +33,14 @@ public interface Targeting {
      * Targeting interface implementations that are always on may do nothing in
      * their implementation of this method.
      * 
-     * @param enabled true to turn on target tracking and false to turn it off.
+     * @param type the type of targeting to be performed.
      */
-    public void enable(final Type type);
+    public void setType(final TargetingType type);
+
+    /**
+     * @return the current targeting type in use. Never null.
+     */
+    public TargetingType getType();
 
     /**
      * @return true if a valid target has been found and false otherwise.

@@ -5,8 +5,6 @@
 package frc.robot.subsystems.drive;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.LEDMode;
-import frc.robot.devices.Lights;
 import frc.robot.devices.Targeting;
 
 public class TurnToTarget extends CommandBase {
@@ -25,7 +23,6 @@ public class TurnToTarget extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Lights.getInstance().setColor(LEDMode.RED);
     this.angle = targeting.getHorizontalAngleError();
 
     if (this.angle < -1) {
@@ -56,7 +53,6 @@ public class TurnToTarget extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     this.driveTrain.arcadeDrive(0, 0, 0);
-    Lights.getInstance().setColor(LEDMode.GREEN);
   }
 
   // Returns true when the command should end.

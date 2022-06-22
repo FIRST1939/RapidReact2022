@@ -9,10 +9,8 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.Constants.LEDMode;
-import frc.robot.devices.Lights;
 import frc.robot.devices.RobotCargoCount;
-import frc.robot.devices.Targeting.Type;
+import frc.robot.devices.Targeting.TargetingType;
 import frc.robot.subsystems.shooter.Shooter;
 
 /**
@@ -35,7 +33,6 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    Lights.getInstance().setColor(LEDMode.FIRE);
 
     SmartDashboard.putNumber("Auto Start Wait", 0.0);
     SmartDashboard.putNumber("Shooter Velocity", 6750);
@@ -63,42 +60,77 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Cargo Count: ", RobotCargoCount.getInstance().get());
   }
 
-  /** This function is called once each time the robot enters Disabled mode. */
+  /**
+   * {@inheritDoc}
+   * 
+   * <p>
+   * Our implementation turns off shooter vision targeting so as to bling the
+   * lights rather than target and not blind the setup crew while positioning the
+   * robot.
+   */
   @Override
   public void disabledInit() {
-    Shooter.getInstance().getTargeting().enable(Type.OFF);
+    Shooter.getInstance().getTargeting().setType(TargetingType.OFF);
   }
 
+  /**
+   * {@inheritDoc}
+   * 
+   * <p>
+   * Overridden simply to get rid of the "Override me!" spam.
+   */
   @Override
   public void disabledPeriodic() {
   }
 
   /**
-   * This autonomous runs the autonomous command selected by your
-   * {@link RobotContainer} class.
+   * {@inheritDoc}
+   * 
+   * <p>
+   * This implementation starts the automode chosen by the drive team and makes
+   * sure that automode can target the hub.
    */
   @Override
   public void autonomousInit() {
     m_robotContainer.autoInitialization();
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-    Shooter.getInstance().getTargeting().enable(Type.PRIMARY);
+    Shooter.getInstance().getTargeting().setType(TargetingType.PRIMARY);
 
-    // schedule the autonomous command (example)
+    // Schedule the autonomous command.
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
   }
 
-  /** This function is called periodically during autonomous. */
+  /**
+   * {@inheritDoc}
+   * 
+   * <p>
+   * Overridden simply to get rid of the "Override me!" spam.
+   */
   @Override
   public void autonomousPeriodic() {
   }
 
+  /**
+   * {@inheritDoc}
+   * 
+   * <p>
+   * This implementation notifies selected subsystems to prepare for the auto to
+   * teleop transition.
+   */
   @Override
   public void autonomousExit() {
     this.m_robotContainer.autoExit();
   }
 
+  /**
+   * {@inheritDoc}
+   * 
+   * <p>
+   * This implementation makes sure that the automode command is terminated and
+   * notifies selected subsystems to complete the auto to teleop transition.
+   */
   @Override
   public void teleopInit() {
     // This makes sure that the autonomous stops running when
@@ -110,21 +142,36 @@ public class Robot extends TimedRobot {
     }
     this.m_robotContainer.teleopInitialization();
 
-    Shooter.getInstance().getTargeting().enable(Type.PRIMARY);
+    Shooter.getInstance().getTargeting().setType(TargetingType.PRIMARY);
   }
 
-  /** This function is called periodically during operator control. */
+  /**
+   * {@inheritDoc}
+   * 
+   * <p>
+   * Overridden simply to get rid of the "Override me!" spam.
+   */
   @Override
   public void teleopPeriodic() {
   }
 
+  /**
+   * {@inheritDoc}
+   * 
+   * <p>
+   * Cancels all running commands at the start of test mode.
+   */
   @Override
   public void testInit() {
-    // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
   }
 
-  /** This function is called periodically during test mode. */
+  /**
+   * {@inheritDoc}
+   * 
+   * <p>
+   * Overridden simply to get rid of the "Override me!" spam.
+   */
   @Override
   public void testPeriodic() {
   }

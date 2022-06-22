@@ -8,24 +8,59 @@ import static frc.robot.Constants.Shooter.VISION_B;
 import static frc.robot.Constants.Shooter.VISION_M;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.LEDMode;
-import frc.robot.devices.Lights;
 import frc.robot.devices.Targeting;
 
+/**
+ * This command is designed to run when {@link Shots#visionTracked} is selected
+ * for the {@link Shooter}. It tracks the vision target and using a linear
+ * vertical angle to velocity equation, adjusts the shooter velocity for the
+ * distance to the upper hub.
+ * 
+ * <p>
+ * Note that a changed velocity is only sent to the shooter if it falls outside
+ * of a narrow range around the last velocity sent to the shooter. This enables
+ * the shooter to properly debounce the monitored shooter velocity and report
+ * the shooter ready. See {@link Shooter#cargoShot(int, boolean)} and
+ * {@link Shooter#periodic()}.
+ */
 public class VisionWithDistance extends CommandBase {
-
   private final Shooter shooter;
   private double lastVelocitySentToShooter;
 
+  /**
+   * Create a new command for the given shooter.
+   * 
+   * @param shooter the shooter to be managed by this command.
+   */
   public VisionWithDistance(final Shooter shooter) {
     this.shooter = shooter;
   }
 
+  /**
+   * {@inheritDoc}
+   * 
+   * <p>
+   * Each time this command in scheduled, clear the last sent value so that the
+   * first velocity calculated will be sent to the shooter.
+   */
   @Override
   public void initialize() {
     this.lastVelocitySentToShooter = 0;
   }
 
+  /**
+   * {@inheritDoc}
+   * 
+   * <p>
+   * If still vision tracked and we have a valid target, calculate a new shooter
+   * velocity.
+   * 
+   * <p>
+   * Only send it to the shooter is if is sufficiently different from the last
+   * calculated velocity that was sent. This enables the shooter to properly
+   * debounce the monitored shooter velocity and report the shooter ready. See
+   * {@link Shooter#cargoShot(int, boolean)} and {@link Shooter#periodic()}.
+   */
   @Override
   public void execute() {
     if (this.shooter.getShot() == Shots.visionTracked) {
@@ -44,18 +79,16 @@ public class VisionWithDistance extends CommandBase {
           this.shooter.cargoShot((int) velocity, true);
           this.lastVelocitySentToShooter = velocity;
         }
-      } else {
-        Lights.getInstance().setColor(LEDMode.RED);
       }
     }
   }
 
-  @Override
-  public void end(boolean interrupted) {
-    Lights.getInstance().setColor(LEDMode.CONFETTI);
-  }
-
-  // Returns true when the command should end.
+  /**
+   * {@inheritDoc}
+   * 
+   * <p>
+   * This command ends when a different shot is selected.
+   */
   @Override
   public boolean isFinished() {
     return this.shooter.getShot() != Shots.visionTracked;

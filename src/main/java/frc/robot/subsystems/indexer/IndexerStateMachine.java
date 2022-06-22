@@ -8,15 +8,12 @@ import static frc.robot.Constants.Indexer.INDEXER_AT_SENSOR_TIME_ADJUSTMENT_SEC;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PerpetualCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
-import frc.robot.Constants.LEDMode;
 import frc.robot.commands.state.RandomAccessCommandGroup;
-import frc.robot.devices.Lights;
 import frc.robot.devices.RobotCargoCount;
 
 /**
@@ -80,10 +77,8 @@ class IndexerStateMachine {
         .until(() -> indexer.isCargoAtSensor());
     final Command atSensorStateCommand = new RunCommand(() -> indexer.setToShooterFeedVelocity(), indexer)
         .withTimeout(INDEXER_AT_SENSOR_TIME_ADJUSTMENT_SEC);
-    final Command readyToShootStateCommand = new InstantCommand(
-        () -> Lights.getInstance().setColor(LEDMode.RAINBOW), indexer)
-            .andThen(new RunCommand(() -> indexer.stop(), indexer))
-            .until(() -> indexer.fireShot());
+    final Command readyToShootStateCommand = new RunCommand(() -> indexer.stop(), indexer)
+        .until(() -> indexer.fireShot());
     final Command shootingStateCommand = new StartEndCommand(
         () -> indexer.setToShooterFeedVelocity(),
         () -> {

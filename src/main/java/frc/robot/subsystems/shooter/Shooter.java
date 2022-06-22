@@ -12,10 +12,13 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.LEDMode;
-import frc.robot.devices.Lights;
 import frc.robot.devices.Targeting;
 
+/**
+ * The shooter subsystem controls the shooter flywheel and hood. It also
+ * provides a shooter specific implementation of the {@link Targeting}
+ * interface.
+ */
 public class Shooter extends SubsystemBase {
     private static Shooter shooterInstance = null;
 
@@ -28,7 +31,9 @@ public class Shooter extends SubsystemBase {
     private int lastSetVelocity = 0;
     private int velocityInRangeCount = 0;
 
-    // Creates a new shooter.
+    /**
+     * Creates a new shooter. Private to ensure that only one instance is created.
+     */
     private Shooter() {
         // Create and configure shooter elements.
         shooterSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, SHOOTER_PCM_CHANNEL);
@@ -50,7 +55,7 @@ public class Shooter extends SubsystemBase {
     }
 
     /**
-     * @return the current instance of the shooter subsystem
+     * @return the single instance of the shooter subsystem
      */
     public static final synchronized Shooter getInstance() {
         if (shooterInstance == null) {
@@ -59,8 +64,18 @@ public class Shooter extends SubsystemBase {
         return shooterInstance;
     }
 
+    /**
+     * Do not use unless you know exactly what you are doing. Use
+     * {@link #cargoShot()} or {@link #cargoShot(Shots)} instead.
+     * 
+     * <p>
+     * If a changed non-zero velocity is provided, it is set and the monitored
+     * shooter velocity debounce count is reset to zero (see {@link #periodic()}).
+     * 
+     * @param velocity the raw velocity to set (in TalonFX native units per 100ms).
+     * @param hood     true to extend the hood upward for the shot.
+     */
     public void cargoShot(final int velocity, final boolean hood) {
-
         setHood(hood);
         setVelocity(velocity);
     }
@@ -80,6 +95,9 @@ public class Shooter extends SubsystemBase {
         cargoShot();
     }
 
+    /**
+     * @return the shot type that we are preparing.
+     */
     public Shots getShot() {
         return shot;
     }
@@ -91,10 +109,19 @@ public class Shooter extends SubsystemBase {
         this.cargoShot(Shots.idle);
     }
 
+    /**
+     * @param hood true to extend the hood upward for the shot.
+     */
     private void setHood(final boolean hood) {
         shooterSolenoid.set(hood);
     }
 
+    /**
+     * If a changed non-zero velocity is provided, it is set and the monitored
+     * shooter velocity debounce count is reset to zero (see {@link #periodic()}).
+     * 
+     * @param velocity the raw velocity to set (in TalonFX native units per 100ms).
+     */
     private void setVelocity(int velocity) {
         if (velocity >= 0) {
             if (lastSetVelocity != velocity) {
@@ -102,10 +129,22 @@ public class Shooter extends SubsystemBase {
                 this.lastSetVelocity = velocity;
                 this.velocityInRangeCount = 0;
             }
-            Lights.getInstance().setColor(LEDMode.CONFETTI);
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * 
+     * <p>
+     * This implemenation checks to see if the shooter flywheel velocity is in the
+     * acceptable range for the current shot. If so, a count is incremented. If not,
+     * the count is reset to 0. The count can be checked in
+     * {@link #isShooterReady()} to determine if the velocity is in range and
+     * sufficiently stable. This is a classic implementation of signal debounce.
+     * 
+     * <p>
+     * See also {@link #setVelocity(int)}.
+     */
     @Override
     public void periodic() {
         double currentVelocity = shooterFlywheel.getSelectedSensorVelocity() / 2;
@@ -117,6 +156,11 @@ public class Shooter extends SubsystemBase {
         }
     }
 
+    /**
+     * @return true if {@link #periodic()} has recored a sufficient number of
+     *         consecutive flywheel in target range checks to indicate proper
+     *         velocity stability.
+     */
     public boolean isShooterReady() {
         return this.velocityInRangeCount >= 5;
     }
