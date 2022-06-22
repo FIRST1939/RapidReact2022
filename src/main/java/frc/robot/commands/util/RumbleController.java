@@ -12,6 +12,9 @@ public class RumbleController extends CommandBase {
     private final GenericHID controller;
     private final Timer timer = new Timer();
 
+    /**
+     * @param controller the controller (XBox, Gamepad, etc) to rumble.
+     */
     public RumbleController(final GenericHID controller) {
         this.controller = controller;
     }

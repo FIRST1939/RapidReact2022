@@ -8,6 +8,7 @@ import java.util.Set;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.ScheduleCommand;
 
 /**
  * Cancels the given commands when this command is initialized. This command as
@@ -19,6 +20,7 @@ public class CancelCommand extends CommandBase {
 
   /**
    * Creates a new CancelCommand that cancels the given commands when initialized.
+   * This essentially the opposite of {@link ScheduleCommand}.
    *
    * @param toCancel the commands to cancel
    */
