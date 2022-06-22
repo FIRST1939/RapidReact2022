@@ -4,14 +4,14 @@
 
 package frc.robot;
 
-import static frc.robot.Constants.Controllers.DRIVER2_CONTROLLER_PORT;
-import static frc.robot.Constants.Controllers.LEFT_STICK_PORT;
-import static frc.robot.Constants.Controllers.MANUAL_INDEXER_DEADBAND;
-import static frc.robot.Constants.Controllers.MANUAL_INTAKE_DEADBAND;
-import static frc.robot.Constants.Controllers.RIGHT_STICK_PORT;
-import static frc.robot.Constants.Controllers.ROTATE_DEAD_BAND;
-import static frc.robot.Constants.Controllers.SPEED_DEAD_BAND;
-import static frc.robot.Constants.Controllers.TRIGGER_THRESHOLD;
+import static frc.robot.Constants.ControllerConstants.DRIVER2_CONTROLLER_PORT;
+import static frc.robot.Constants.ControllerConstants.LEFT_STICK_PORT;
+import static frc.robot.Constants.ControllerConstants.MANUAL_INDEXER_DEADBAND;
+import static frc.robot.Constants.ControllerConstants.MANUAL_INTAKE_DEADBAND;
+import static frc.robot.Constants.ControllerConstants.RIGHT_STICK_PORT;
+import static frc.robot.Constants.ControllerConstants.ROTATE_DEAD_BAND;
+import static frc.robot.Constants.ControllerConstants.SPEED_DEAD_BAND;
+import static frc.robot.Constants.ControllerConstants.TRIGGER_THRESHOLD;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;

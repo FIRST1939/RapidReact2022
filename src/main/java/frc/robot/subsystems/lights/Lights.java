@@ -4,7 +4,7 @@
 
 package frc.robot.subsystems.lights;
 
-import static frc.robot.Constants.Devices.LIGHTS_PWM;
+import static frc.robot.Constants.LightsConstants.LIGHTS_PWM;
 
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;

@@ -1,13 +1,13 @@
 package frc.robot.subsystems.intake;
 
-import static frc.robot.Constants.Intake.INTAKE_BEAM_BREAK_RECEIVER_DIO;
-import static frc.robot.Constants.Intake.INTAKE_ENCODER_CYCLES_PER_ROTATION;
-import static frc.robot.Constants.Intake.INTAKE_INCHES_PER_REVOLUTION;
-import static frc.robot.Constants.Intake.INTAKE_MAX_RPM;
-import static frc.robot.Constants.Intake.INTAKE_MIN_RPM;
-import static frc.robot.Constants.Intake.INTAKE_MOTOR_CAN_ID;
-import static frc.robot.Constants.Intake.INTAKE_PCM_CHANNEL;
-import static frc.robot.Constants.Intake.INTAKE_SPEED_TO_DRIVE_SPEED_RATIO;
+import static frc.robot.Constants.IntakeConstants.INTAKE_BEAM_BREAK_RECEIVER_DIO;
+import static frc.robot.Constants.IntakeConstants.INTAKE_ENCODER_CYCLES_PER_ROTATION;
+import static frc.robot.Constants.IntakeConstants.INTAKE_INCHES_PER_REVOLUTION;
+import static frc.robot.Constants.IntakeConstants.INTAKE_MAX_RPM;
+import static frc.robot.Constants.IntakeConstants.INTAKE_MIN_RPM;
+import static frc.robot.Constants.IntakeConstants.INTAKE_MOTOR_CAN_ID;
+import static frc.robot.Constants.IntakeConstants.INTAKE_PCM_CHANNEL;
+import static frc.robot.Constants.IntakeConstants.INTAKE_SPEED_TO_DRIVE_SPEED_RATIO;
 
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.DoubleSupplier;

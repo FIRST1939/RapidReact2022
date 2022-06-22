@@ -4,7 +4,7 @@
 
 package frc.robot.subsystems.indexer.manual;
 
-import static frc.robot.Constants.Indexer.MANUAL_INDEXER_FEED_OUTPUT;
+import static frc.robot.Constants.IndexerConstants.MANUAL_INDEXER_FEED_OUTPUT;
 
 import java.util.function.DoubleSupplier;
 

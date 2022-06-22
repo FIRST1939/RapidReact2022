@@ -4,9 +4,9 @@
 
 package frc.robot.subsystems.indexer;
 
-import static frc.robot.Constants.Indexer.INDEXER_BEAM_BREAK_RECEIVER_DIO;
-import static frc.robot.Constants.Indexer.INDEXER_FOLLOWER_CAN_ID;
-import static frc.robot.Constants.Indexer.INDEXER_LEADER_CAN_ID;
+import static frc.robot.Constants.IndexerConstants.INDEXER_BEAM_BREAK_RECEIVER_DIO;
+import static frc.robot.Constants.IndexerConstants.INDEXER_FOLLOWER_CAN_ID;
+import static frc.robot.Constants.IndexerConstants.INDEXER_LEADER_CAN_ID;
 
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BooleanSupplier;

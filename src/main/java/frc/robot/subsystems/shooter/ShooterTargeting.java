@@ -4,8 +4,8 @@
 
 package frc.robot.subsystems.shooter;
 
-import static frc.robot.Constants.Shooter.SHOOTER_LONG_PIPELINE;
-import static frc.robot.Constants.Shooter.SHOOTER_OFF_PIPELINE;
+import static frc.robot.Constants.ShooterConstants.SHOOTER_LONG_PIPELINE;
+import static frc.robot.Constants.ShooterConstants.SHOOTER_OFF_PIPELINE;
 
 import frc.robot.devices.Limelight;
 import frc.robot.devices.Targeting;

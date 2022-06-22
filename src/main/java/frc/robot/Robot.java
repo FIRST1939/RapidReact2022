@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -14,11 +15,18 @@ import frc.robot.devices.Targeting.TargetingType;
 import frc.robot.subsystems.shooter.Shooter;
 
 /**
- * The VM is configured to automatically run this class, and to call the
- * functions corresponding to each mode, as described in the TimedRobot
- * documentation. If you change the name of this class or the package after
- * creating this project, you must also update the build.gradle file in the
- * project.
+ * The {@link Main} is coded so that {@link RobotBase} will create a new
+ * instance of this class. {@link TimedRobot} (a subclass of RobotBase) is coded
+ * to run it as the robot for the match, and to call the functions corresponding
+ * to each mode, as described in the TimedRobot documentation.
+ * 
+ * <p>
+ * If you change the name of this class or the package after creating this
+ * project, you must also update the {@link Main#main(String...)} method to use
+ * the new class name. Note that the build.gradle file is configured to have the
+ * VM start the {@link Main} class. There is no need to change the build.gradle
+ * file for the purpose of renaming this class, nor should the {@link Main}
+ * class ever be renamed.
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
@@ -34,9 +42,11 @@ public class Robot extends TimedRobot {
     // and put our autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
 
+    // Add shooter tuning fields to the dashboard.
     SmartDashboard.putNumber("Auto Start Wait", 0.0);
     SmartDashboard.putNumber("Shooter Velocity", 6750);
 
+    // Start streaming the intake camera to the dashboard.
     CameraServer.startAutomaticCapture();
   }
 

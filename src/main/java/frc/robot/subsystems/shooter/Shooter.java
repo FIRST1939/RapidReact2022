@@ -1,8 +1,8 @@
 package frc.robot.subsystems.shooter;
 
-import static frc.robot.Constants.Shooter.SHOOTER_FLYWHEEL_CAN_ID;
-import static frc.robot.Constants.Shooter.SHOOTER_PCM_CHANNEL;
-import static frc.robot.Constants.Shooter.SHOOTER_VELOCITY_ERROR;
+import static frc.robot.Constants.ShooterConstants.SHOOTER_FLYWHEEL_CAN_ID;
+import static frc.robot.Constants.ShooterConstants.SHOOTER_PCM_CHANNEL;
+import static frc.robot.Constants.ShooterConstants.SHOOTER_VELOCITY_ERROR;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;

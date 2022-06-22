@@ -19,7 +19,7 @@ public final class Constants {
      * Constants defining the driver controller connections and general controller
      * behavior.
      */
-    public final class Controllers {
+    public final class ControllerConstants {
         /** Driver 1 left stick port. */
         public static final int LEFT_STICK_PORT = 0;
         /** Driver 1 right stick port. */
@@ -44,7 +44,7 @@ public final class Constants {
     /**
      * Constants related to the physical structure and operation of the drive train.
      */
-    public final class DriveTrain {
+    public final class DriveTrainConstants {
         // Drive train normal drive CAN id constants.
         public static final int LEFT_DRIVE_1_CAN_ID = 11;
         public static final int LEFT_DRIVE_2_CAN_ID = 12;
@@ -81,7 +81,7 @@ public final class Constants {
     /**
      * Constants related to the physical structure and operation of the shooter.
      */
-    public final class Shooter {
+    public final class ShooterConstants {
         /** Shooter hood solenoid channel. */
         public static final int SHOOTER_PCM_CHANNEL = 0;
         /** Shooter motor controller CAN id. */
@@ -103,7 +103,7 @@ public final class Constants {
     /**
      * Constants related to the physical structure and operation of the intake.
      */
-    public final class Intake {
+    public final class IntakeConstants {
         /** Intake deploy solenoid channel. */
         public static final int INTAKE_PCM_CHANNEL = 2;
         /** Intake motor controller CAN id. */
@@ -126,7 +126,7 @@ public final class Constants {
     /**
      * Constants related to the physical structure and operation of the indexer.
      */
-    public final class Indexer {
+    public final class IndexerConstants {
         /** Indexer lead motor controller CAN id. */
         public static final int INDEXER_LEADER_CAN_ID = 10;
         /** Indexer follower motor controller CAN id. */
@@ -141,7 +141,7 @@ public final class Constants {
     /**
      * Constants related to the physical structure and operation of the climber.
      */
-    public final class Climber {
+    public final class ClimberConstants {
         /** Climber motor controller CAN id. */
         public static final int CLIMBER_MOTOR_CAN_ID = 31;
         /** Channel (forward on double solenoid) to reach for next bar. */
@@ -151,10 +151,9 @@ public final class Constants {
     }
 
     /**
-     * Constants related to the physical structure and operation of the simple
-     * devices on the robot.
+     * Constants related to the physical structure and operation of the lights.
      */
-    public final class Devices {
+    public final class LightsConstants {
         /** The PWM port for the LED strip controller. */
         public static final int LIGHTS_PWM = 2;
         /** Degrees (+-) for 1ft or less at 15 feet. */

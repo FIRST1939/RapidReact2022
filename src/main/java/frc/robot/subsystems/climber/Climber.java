@@ -1,8 +1,8 @@
 package frc.robot.subsystems.climber;
 
-import static frc.robot.Constants.Climber.CLIMBER_MOTOR_CAN_ID;
-import static frc.robot.Constants.Climber.CLIMBER_PISTON_FORWARD;
-import static frc.robot.Constants.Climber.CLIMBER_PISTON_REVERSE;
+import static frc.robot.Constants.ClimberConstants.CLIMBER_MOTOR_CAN_ID;
+import static frc.robot.Constants.ClimberConstants.CLIMBER_PISTON_FORWARD;
+import static frc.robot.Constants.ClimberConstants.CLIMBER_PISTON_REVERSE;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;

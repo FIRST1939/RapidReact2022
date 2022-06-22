@@ -4,8 +4,8 @@
 
 package frc.robot.subsystems.shooter;
 
-import static frc.robot.Constants.Shooter.VISION_B;
-import static frc.robot.Constants.Shooter.VISION_M;
+import static frc.robot.Constants.ShooterConstants.VISION_B;
+import static frc.robot.Constants.ShooterConstants.VISION_M;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.devices.Targeting;

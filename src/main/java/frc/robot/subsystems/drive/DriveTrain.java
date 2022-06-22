@@ -4,23 +4,23 @@
 
 package frc.robot.subsystems.drive;
 
-import static frc.robot.Constants.DriveTrain.DRIVE_INCHES_PER_PULSE;
-import static frc.robot.Constants.DriveTrain.LEFT_DRIVE_1_CAN_ID;
-import static frc.robot.Constants.DriveTrain.LEFT_DRIVE_2_CAN_ID;
-import static frc.robot.Constants.DriveTrain.LEFT_DRIVE_3_CAN_ID;
-import static frc.robot.Constants.DriveTrain.LEFT_DRIVE_A_CHANNEL;
-import static frc.robot.Constants.DriveTrain.LEFT_DRIVE_B_CHANNEL;
-import static frc.robot.Constants.DriveTrain.RIGHT_DRIVE_1_CAN_ID;
-import static frc.robot.Constants.DriveTrain.RIGHT_DRIVE_2_CAN_ID;
-import static frc.robot.Constants.DriveTrain.RIGHT_DRIVE_3_CAN_ID;
-import static frc.robot.Constants.DriveTrain.RIGHT_DRIVE_A_CHANNEL;
-import static frc.robot.Constants.DriveTrain.RIGHT_DRIVE_B_CHANNEL;
-import static frc.robot.Constants.DriveTrain.SIDEWINDER_DISABLE_THRESHOLD;
-import static frc.robot.Constants.DriveTrain.SIDEWINDER_ENABLE_THRESHOLD;
-import static frc.robot.Constants.DriveTrain.SIDEWINDER_MOTOR_CAN_ID;
-import static frc.robot.Constants.DriveTrain.SIDEWINDER_OUTPUT_OFFSET;
-import static frc.robot.Constants.DriveTrain.SIDEWINDER_PCM_CHANNEL;
-import static frc.robot.Constants.DriveTrain.SIDEWINDER_kP;
+import static frc.robot.Constants.DriveTrainConstants.DRIVE_INCHES_PER_PULSE;
+import static frc.robot.Constants.DriveTrainConstants.LEFT_DRIVE_1_CAN_ID;
+import static frc.robot.Constants.DriveTrainConstants.LEFT_DRIVE_2_CAN_ID;
+import static frc.robot.Constants.DriveTrainConstants.LEFT_DRIVE_3_CAN_ID;
+import static frc.robot.Constants.DriveTrainConstants.LEFT_DRIVE_A_CHANNEL;
+import static frc.robot.Constants.DriveTrainConstants.LEFT_DRIVE_B_CHANNEL;
+import static frc.robot.Constants.DriveTrainConstants.RIGHT_DRIVE_1_CAN_ID;
+import static frc.robot.Constants.DriveTrainConstants.RIGHT_DRIVE_2_CAN_ID;
+import static frc.robot.Constants.DriveTrainConstants.RIGHT_DRIVE_3_CAN_ID;
+import static frc.robot.Constants.DriveTrainConstants.RIGHT_DRIVE_A_CHANNEL;
+import static frc.robot.Constants.DriveTrainConstants.RIGHT_DRIVE_B_CHANNEL;
+import static frc.robot.Constants.DriveTrainConstants.SIDEWINDER_DISABLE_THRESHOLD;
+import static frc.robot.Constants.DriveTrainConstants.SIDEWINDER_ENABLE_THRESHOLD;
+import static frc.robot.Constants.DriveTrainConstants.SIDEWINDER_MOTOR_CAN_ID;
+import static frc.robot.Constants.DriveTrainConstants.SIDEWINDER_OUTPUT_OFFSET;
+import static frc.robot.Constants.DriveTrainConstants.SIDEWINDER_PCM_CHANNEL;
+import static frc.robot.Constants.DriveTrainConstants.SIDEWINDER_kP;
 
 import java.util.function.BooleanSupplier;
 

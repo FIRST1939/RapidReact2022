@@ -4,7 +4,7 @@
 
 package frc.robot.subsystems.drive;
 
-import static frc.robot.Constants.DriveTrain.DRIVE_AUTO_GYRO_STRAIGHT_KP;
+import static frc.robot.Constants.DriveTrainConstants.DRIVE_AUTO_GYRO_STRAIGHT_KP;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 

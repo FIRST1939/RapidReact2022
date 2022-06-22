@@ -4,10 +4,11 @@
 
 package frc.robot.subsystems.lights;
 
+import static frc.robot.Constants.LightsConstants.ALIGNED_TO_HUB;
+
 import java.util.function.BooleanSupplier;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.Devices;
 import frc.robot.devices.RobotCargoCount;
 import frc.robot.devices.Targeting.TargetingType;
 import frc.robot.subsystems.drive.DriveTrain;
@@ -151,7 +152,7 @@ public enum Feedback {
                 || driveTrainCommand instanceof MoveToCargoRing
                 || driveTrainCommand instanceof TurnToTargetThenMoveToCargoRing
                 || !shooter.getTargeting().isTargetFound()
-                || Math.abs(shooter.getTargeting().getHorizontalAngleError()) > Devices.ALIGNED_TO_HUB
+                || Math.abs(shooter.getTargeting().getHorizontalAngleError()) > ALIGNED_TO_HUB
                 || !shooter.isShooterReady();
     }
 }

@@ -4,7 +4,7 @@
 
 package frc.robot.subsystems.indexer;
 
-import static frc.robot.Constants.Indexer.INDEXER_AT_SENSOR_TIME_ADJUSTMENT_SEC;
+import static frc.robot.Constants.IndexerConstants.INDEXER_AT_SENSOR_TIME_ADJUSTMENT_SEC;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;

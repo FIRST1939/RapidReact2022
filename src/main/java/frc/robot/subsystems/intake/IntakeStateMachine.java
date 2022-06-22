@@ -4,7 +4,7 @@
 
 package frc.robot.subsystems.intake;
 
-import static frc.robot.Constants.Intake.INTAKE_AT_SENSOR_TIME_ADJUSTMENT_SEC;
+import static frc.robot.Constants.IntakeConstants.INTAKE_AT_SENSOR_TIME_ADJUSTMENT_SEC;
 
 import java.util.function.Function;
 
