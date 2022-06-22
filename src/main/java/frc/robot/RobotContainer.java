@@ -4,14 +4,42 @@
 
 package frc.robot;
 
+import static frc.robot.Constants.ControllerConstants.CANCEL_CLIMB;
 import static frc.robot.Constants.ControllerConstants.DRIVER2_CONTROLLER_PORT;
+import static frc.robot.Constants.ControllerConstants.FENDER_HIGH;
+import static frc.robot.Constants.ControllerConstants.FENDER_LOW;
+import static frc.robot.Constants.ControllerConstants.FENDER_PLUS_ONE_HIGH;
+import static frc.robot.Constants.ControllerConstants.FENDER_PLUS_ONE_LOW;
+import static frc.robot.Constants.ControllerConstants.INTAKE_GATHER;
 import static frc.robot.Constants.ControllerConstants.LEFT_STICK_PORT;
+import static frc.robot.Constants.ControllerConstants.MANUAL_EJECT_CARGO;
+import static frc.robot.Constants.ControllerConstants.MANUAL_EXTEND_ARMS;
+import static frc.robot.Constants.ControllerConstants.MANUAL_EXTEND_HOOKS;
+import static frc.robot.Constants.ControllerConstants.MANUAL_FULL_EXTEND_HOOKS;
+import static frc.robot.Constants.ControllerConstants.MANUAL_FULL_RETRACT_HOOKS;
 import static frc.robot.Constants.ControllerConstants.MANUAL_INDEXER_DEADBAND;
 import static frc.robot.Constants.ControllerConstants.MANUAL_INTAKE_DEADBAND;
+import static frc.robot.Constants.ControllerConstants.MANUAL_PARTIAL_EXTEND_HOOKS;
+import static frc.robot.Constants.ControllerConstants.MANUAL_RETRACT_ARMS;
+import static frc.robot.Constants.ControllerConstants.MANUAL_RETRACT_HOOKS;
+import static frc.robot.Constants.ControllerConstants.MANUAL_SET_HOME_SECONDARY;
+import static frc.robot.Constants.ControllerConstants.NEXT_BAR;
+import static frc.robot.Constants.ControllerConstants.POV_CARGO_RING;
+import static frc.robot.Constants.ControllerConstants.POV_LAUNCHPAD;
+import static frc.robot.Constants.ControllerConstants.POV_OFF;
+import static frc.robot.Constants.ControllerConstants.POV_SHOT_TUNING_FROM_DASHBOARD;
 import static frc.robot.Constants.ControllerConstants.RIGHT_STICK_PORT;
 import static frc.robot.Constants.ControllerConstants.ROTATE_DEAD_BAND;
+import static frc.robot.Constants.ControllerConstants.SECOND_BAR;
+import static frc.robot.Constants.ControllerConstants.SET_HOME;
+import static frc.robot.Constants.ControllerConstants.SHOOT_TRIGGER;
 import static frc.robot.Constants.ControllerConstants.SPEED_DEAD_BAND;
+import static frc.robot.Constants.ControllerConstants.THIRD_BAR;
+import static frc.robot.Constants.ControllerConstants.TOGGLE_MANUAL_MODE;
 import static frc.robot.Constants.ControllerConstants.TRIGGER_THRESHOLD;
+import static frc.robot.Constants.ControllerConstants.TURN_TO_TARGET;
+import static frc.robot.Constants.ControllerConstants.TURN_TO_TARGET_THEN_MOVE_TO_CARGO_RING;
+import static frc.robot.Constants.ControllerConstants.VISION_TRACKED;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
@@ -144,65 +172,64 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    JoystickButton turnToTargetButton = new JoystickButton(rightStick, 10);
-    turnToTargetButton.whenPressed(
-        rumbleAfter(new TurnToTarget(driveTrain, shooter.getTargeting())));
+    new JoystickButton(rightStick, TURN_TO_TARGET)
+        .whenPressed(rumbleAfter(new TurnToTarget(driveTrain, shooter.getTargeting())));
 
-    JoystickButton turnToTargetThenMoveToCargoRingButton = new JoystickButton(rightStick, 11);
-    turnToTargetThenMoveToCargoRingButton.whenPressed(
-        rumbleAfter(new TurnToTargetThenMoveToCargoRing(driveTrain, shooter.getTargeting())));
+    new JoystickButton(rightStick, TURN_TO_TARGET_THEN_MOVE_TO_CARGO_RING)
+        .whenPressed(rumbleAfter(new TurnToTargetThenMoveToCargoRing(driveTrain, shooter.getTargeting())));
 
     // shooter buttons
-    JoystickButton fenderLowButton = new JoystickButton(driverTwo, XboxController.Button.kY.value);
-    fenderLowButton.whenPressed(new SetShot(this.shooter, Shots.fenderLow));
+    new JoystickButton(driverTwo, FENDER_LOW)
+        .whenPressed(new SetShot(this.shooter, Shots.fenderLow));
 
-    JoystickButton fenderHighButton = new JoystickButton(driverTwo, XboxController.Button.kB.value);
-    fenderHighButton.whenPressed(new SetShot(this.shooter, Shots.fenderHigh));
+    new JoystickButton(driverTwo, FENDER_HIGH)
+        .whenPressed(new SetShot(this.shooter, Shots.fenderHigh));
 
-    JoystickButton fenderPlusOneLow = new JoystickButton(driverTwo, XboxController.Button.kA.value);
-    fenderPlusOneLow.whenPressed(new SetShot(this.shooter, Shots.fenderPlusOneLow));
+    new JoystickButton(driverTwo, FENDER_PLUS_ONE_LOW)
+        .whenPressed(new SetShot(this.shooter, Shots.fenderPlusOneLow));
 
-    JoystickButton fenderPlusOneHigh = new JoystickButton(driverTwo, XboxController.Button.kX.value);
-    fenderPlusOneHigh.whenPressed(new SetShot(this.shooter, Shots.fenderPlusOneHigh));
+    new JoystickButton(driverTwo, FENDER_PLUS_ONE_HIGH)
+        .whenPressed(new SetShot(this.shooter, Shots.fenderPlusOneHigh));
 
-    JoystickButton visionTracked = new JoystickButton(driverTwo, XboxController.Button.kRightStick.value);
-    visionTracked.whenPressed(
-        new SetShot(this.shooter, Shots.visionTracked).andThen(new VisionWithDistance(shooter)));
+    new JoystickButton(driverTwo, VISION_TRACKED)
+        .whenPressed(new SetShot(this.shooter, Shots.visionTracked)
+            .andThen(new VisionWithDistance(this.shooter)));
 
-    POVButton cargoRing = new POVButton(driverTwo, 0); // 0 is up, 90 is right, 180 is down, and 270 is left
-    cargoRing.whenPressed(new SetShot(this.shooter, Shots.cargoRing));
+    new POVButton(driverTwo, POV_CARGO_RING)
+        .whenPressed(new SetShot(this.shooter, Shots.cargoRing));
 
-    POVButton launchpad = new POVButton(driverTwo, 90);
-    launchpad.whenPressed(new SetShot(this.shooter, Shots.launchpad));
+    new POVButton(driverTwo, POV_LAUNCHPAD)
+        .whenPressed(new SetShot(this.shooter, Shots.launchpad));
 
     // A button to read a velocity from the dashboard and apply it to the shooter.
-    POVButton setVelocity = new POVButton(driverTwo, 180);
-    setVelocity.whenPressed(new InstantCommand(
-        () -> this.shooter.cargoShot((int) SmartDashboard.getNumber("Shooter Velocity", 6750), true)));
+    new POVButton(driverTwo, POV_SHOT_TUNING_FROM_DASHBOARD)
+        .whenPressed(new InstantCommand(
+            () -> this.shooter.cargoShot((int) SmartDashboard.getNumber("Shooter Velocity", 6750), true)));
 
-    POVButton offButton = new POVButton(driverTwo, 270);
-    offButton.whenPressed(new SetShot(this.shooter, Shots.off));
+    new POVButton(driverTwo, POV_OFF)
+        .whenPressed(new SetShot(this.shooter, Shots.off));
 
-    // A button that will idle the shooter while held.
-    ShooterIdleTrigger shooterIdleTrigger = new ShooterIdleTrigger(this.robotCargoCount);
-    shooterIdleTrigger.whenActive(new WaitCommand(1.0).andThen(new InstantCommand(shooter::idle)));
-    shooterIdleTrigger.whenInactive(new InstantCommand(this.shooter::cargoShot));
+    // The shooter is automatically idled when we have no cargo.
+    new ShooterIdleTrigger(this.robotCargoCount)
+        .whenActive(new WaitCommand(1.0).andThen(new InstantCommand(shooter::idle)))
+        .whenInactive(new InstantCommand(this.shooter::cargoShot));
 
+    // Button like axes supplier for regular (here) and manual shooting (below).
     BooleanSupplier shootTriggerSupplier = () -> (driverTwo
-        .getRawAxis(Math.abs(XboxController.Axis.kRightTrigger.value)) > TRIGGER_THRESHOLD);
-    ShootTrigger shootTrigger = new ShootTrigger(this.indexer, this.shooter, shootTriggerSupplier);
-    shootTrigger.whenActive(new InstantCommand(() -> this.indexer.requestShot()));
+        .getRawAxis(Math.abs(SHOOT_TRIGGER)) > TRIGGER_THRESHOLD);
+    new ShootTrigger(this.indexer, this.shooter, shootTriggerSupplier)
+        .whenActive(new InstantCommand(() -> this.indexer.requestShot()));
 
     // intake and indexer buttons
-    JoystickButton toggleManualIntakeIndexer = new JoystickButton(driverTwo, XboxController.Button.kStart.value);
-    toggleManualIntakeIndexer.whenPressed(
-        new ToggleIntakeIndexerManualMode(
-            this.intake,
-            new ManualIntakeRollerBelts(this.intake,
-                () -> enforceDeadband(-driverTwo.getLeftX(), MANUAL_INTAKE_DEADBAND)),
-            new ManualIndexer(this.indexer,
-                () -> enforceDeadband(driverTwo.getRightY(), MANUAL_INDEXER_DEADBAND),
-                new ManualShootTrigger(indexer, shooter, shootTriggerSupplier))));
+    new JoystickButton(driverTwo, TOGGLE_MANUAL_MODE)
+        .whenPressed(
+            new ToggleIntakeIndexerManualMode(
+                this.intake,
+                new ManualIntakeRollerBelts(this.intake,
+                    () -> enforceDeadband(-driverTwo.getLeftX(), MANUAL_INTAKE_DEADBAND)),
+                new ManualIndexer(this.indexer,
+                    () -> enforceDeadband(driverTwo.getRightY(), MANUAL_INDEXER_DEADBAND),
+                    new ManualShootTrigger(indexer, shooter, shootTriggerSupplier))));
 
     /*
      * This is to be used to eject all cargo from the robot in the case of jams or a
@@ -212,60 +239,57 @@ public class RobotContainer {
      * button and immediately press the button to enter manual mode. Use manual mode
      * to empty the cargo (shooting as appropriate), and then go back to automation.
      */
-    JoystickButton manualEjectionIntakeIndexer = new JoystickButton(driverTwo, XboxController.Button.kLeftBumper.value);
-    manualEjectionIntakeIndexer.whenPressed(new ToggleManualEjection(intake, indexer));
-    manualEjectionIntakeIndexer.whenReleased(new ToggleManualEjection(intake, indexer));
+    new JoystickButton(driverTwo, MANUAL_EJECT_CARGO)
+        .whenPressed(new ToggleManualEjection(intake, indexer))
+        .whenReleased(new ToggleManualEjection(intake, indexer));
 
-    JoystickButton intakeGatherButton = new JoystickButton(driverTwo, XboxController.Button.kRightBumper.value);
-    intakeGatherButton.whenPressed(new IntakeExtendCommandSelector(this.intake));
-    intakeGatherButton.whenReleased(new IntakeRetractCommandSelector(this.intake));
+    new JoystickButton(driverTwo, INTAKE_GATHER)
+        .whenPressed(new IntakeExtendCommandSelector(this.intake))
+        .whenReleased(new IntakeRetractCommandSelector(this.intake));
 
     // climber buttons
-    JoystickButton climberMotorRetract = new JoystickButton(rightStick, 2);
-    climberMotorRetract.whileHeld(new RetractMotor(this.climber));
+    new JoystickButton(rightStick, MANUAL_RETRACT_HOOKS)
+        .whileHeld(new RetractMotor(this.climber));
 
-    JoystickButton climberMotorExtend = new JoystickButton(rightStick, 3);
-    climberMotorExtend.whileHeld(new ExtendMotor(this.climber));
+    new JoystickButton(rightStick, MANUAL_EXTEND_HOOKS)
+        .whileHeld(new ExtendMotor(this.climber));
 
-    JoystickButton climberPistonRetract = new JoystickButton(rightStick, 4);
-    climberPistonRetract.whenPressed(new SetPiston(this.climber, (Boolean) false));
+    new JoystickButton(rightStick, MANUAL_RETRACT_ARMS)
+        .whenPressed(new SetPiston(this.climber, (Boolean) false));
 
-    JoystickButton climberPistonExtend = new JoystickButton(rightStick, 5);
-    climberPistonExtend.whenPressed(new SetPiston(this.climber, (Boolean) true));
+    new JoystickButton(rightStick, MANUAL_EXTEND_ARMS)
+        .whenPressed(new SetPiston(this.climber, (Boolean) true));
 
-    Command climbToSecond = rumbleAfter(new ClimbToSecond(this.climber));
-    Command climbToThird = rumbleAfter(new ClimbToThird(this.climber));
+    final Command climbToNextBar = rumbleAfter(new ClimbNextBar(this.climber));
+    final Command climbToSecond = rumbleAfter(new ClimbToSecond(this.climber));
+    final Command climbToThird = rumbleAfter(new ClimbToThird(this.climber));
 
-    JoystickButton climbToNextBarButton = new JoystickButton(leftStick, 4);
-    climbToNextBarButton.whenPressed(
-        rumbleAfter(new ClimbNextBar(this.climber)));
+    new JoystickButton(leftStick, NEXT_BAR)
+        .whenPressed(rumbleAfter(climbToNextBar));
 
-    JoystickButton climbToSecondButton = new JoystickButton(leftStick, 2);
-    climbToSecondButton.whenPressed(climbToSecond);
+    new JoystickButton(leftStick, SECOND_BAR)
+        .whenPressed(climbToSecond);
 
-    JoystickButton climbToThirdButton = new JoystickButton(leftStick, 3);
-    climbToThirdButton.whenPressed(climbToThird);
+    new JoystickButton(leftStick, THIRD_BAR)
+        .whenPressed(climbToThird);
 
-    JoystickButton cancelClimbButton = new JoystickButton(leftStick, 5);
-    cancelClimbButton.whenPressed(new CancelCommand(climbToSecond, climbToThird));
+    new JoystickButton(leftStick, CANCEL_CLIMB)
+        .whenPressed(new CancelCommand(climbToNextBar, climbToSecond, climbToThird));
 
-    JoystickButton climberMotorPartialPositionExtend = new JoystickButton(rightStick, 6);
-    climberMotorPartialPositionExtend.whenPressed(
-        rumbleAfter(new GetToPosition(this.climber, ClimberPositions.partial)));
+    new JoystickButton(rightStick, MANUAL_PARTIAL_EXTEND_HOOKS)
+        .whenPressed(rumbleAfter(new GetToPosition(this.climber, ClimberPositions.partial)));
 
-    JoystickButton climberMotorFullPositionButton = new JoystickButton(rightStick, 9);
-    climberMotorFullPositionButton.whenPressed(
-        rumbleAfter(new GetToPosition(this.climber, ClimberPositions.full)));
+    new JoystickButton(rightStick, MANUAL_FULL_EXTEND_HOOKS)
+        .whenPressed(rumbleAfter(new GetToPosition(this.climber, ClimberPositions.full)));
 
-    JoystickButton climberSetHomeButton = new JoystickButton(driverTwo, XboxController.Button.kBack.value);
-    climberSetHomeButton.whenPressed(new InstantCommand(this.climber::setHome, this.climber));
+    new JoystickButton(driverTwo, SET_HOME)
+        .whenPressed(new InstantCommand(this.climber::setHome, this.climber));
 
-    JoystickButton climberSetHomeButtonSecondary = new JoystickButton(rightStick, 8);
-    climberSetHomeButtonSecondary.whenPressed(new InstantCommand(this.climber::setHome, this.climber));
+    new JoystickButton(rightStick, MANUAL_SET_HOME_SECONDARY)
+        .whenPressed(new InstantCommand(this.climber::setHome, this.climber));
 
-    JoystickButton climberMotorBottomPositionButton = new JoystickButton(rightStick, 7);
-    climberMotorBottomPositionButton.whenPressed(
-        rumbleAfter(new GetToPosition(this.climber, ClimberPositions.bottomFirst)));
+    new JoystickButton(rightStick, MANUAL_FULL_RETRACT_HOOKS)
+        .whenPressed(rumbleAfter(new GetToPosition(this.climber, ClimberPositions.bottomFirst)));
   }
 
   /**

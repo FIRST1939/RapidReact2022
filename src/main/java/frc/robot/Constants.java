@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.XboxController;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
  * numerical or boolean constants. This class should not be used for any other
@@ -19,7 +21,7 @@ public final class Constants {
      * Constants defining the driver controller connections and general controller
      * behavior.
      */
-    public final class ControllerConstants {
+    public static final class ControllerConstants {
         /** Driver 1 left stick port. */
         public static final int LEFT_STICK_PORT = 0;
         /** Driver 1 right stick port. */
@@ -39,6 +41,48 @@ public final class Constants {
 
         /** Axis dead band used when indexing manually. */
         public static final double MANUAL_INDEXER_DEADBAND = 0.1;
+
+        // Button number constants, named by function/command.
+        // Automated drive train targeting movements.
+        public static final int TURN_TO_TARGET = 10;
+        public static final int TURN_TO_TARGET_THEN_MOVE_TO_CARGO_RING = 11;
+
+        // Shot buttons.
+        public static final int FENDER_LOW = XboxController.Button.kY.value;
+        public static final int FENDER_HIGH = XboxController.Button.kB.value;
+        public static final int FENDER_PLUS_ONE_LOW = XboxController.Button.kA.value;
+        public static final int FENDER_PLUS_ONE_HIGH = XboxController.Button.kX.value;
+        public static final int VISION_TRACKED = XboxController.Button.kRightStick.value;
+        // POV shot buttons -- 0 is up, 90 is right, 180 is down, and 270 is left
+        public static final int POV_CARGO_RING = 0;
+        public static final int POV_LAUNCHPAD = 90;
+        public static final int POV_SHOT_TUNING_FROM_DASHBOARD = 180;
+        public static final int POV_OFF = 270;
+
+        // Axes used as buttons via TRIGGER_THRESHOLD.
+        public static final int SHOOT_TRIGGER = XboxController.Axis.kRightTrigger.value;
+
+        // Intake and indexer buttons.
+        public static final int TOGGLE_MANUAL_MODE = XboxController.Button.kStart.value;
+        public static final int MANUAL_EJECT_CARGO = XboxController.Button.kLeftBumper.value;
+        public static final int INTAKE_GATHER = XboxController.Button.kRightBumper.value;
+
+        // Climber buttons (right stick manual commands).
+        public static final int MANUAL_RETRACT_HOOKS = 2;
+        public static final int MANUAL_EXTEND_HOOKS = 3;
+        public static final int MANUAL_RETRACT_ARMS = 4;
+        public static final int MANUAL_EXTEND_ARMS = 5;
+        public static final int MANUAL_PARTIAL_EXTEND_HOOKS = 6;
+        public static final int MANUAL_FULL_EXTEND_HOOKS = 9;
+        public static final int MANUAL_FULL_RETRACT_HOOKS = 7;
+        public static final int MANUAL_SET_HOME_SECONDARY = 8;
+        // Climber buttons (left stick command groups).
+        public static final int NEXT_BAR = 4;
+        public static final int SECOND_BAR = 2;
+        public static final int THIRD_BAR = 3;
+        public static final int CANCEL_CLIMB = 5;
+        // Climber buttons (driver 2).
+        public static final int SET_HOME = XboxController.Button.kBack.value;
     }
 
     /**
