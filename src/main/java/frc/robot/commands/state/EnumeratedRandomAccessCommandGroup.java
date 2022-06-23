@@ -55,6 +55,15 @@ public class EnumeratedRandomAccessCommandGroup<E extends Enum<E>> extends Rando
      * The most common case for running this group perpetually is as a default
      * command for a subsystem and this group implements a state machine for the
      * subsystem.
+     * 
+     * <p>
+     * The number of enumerators in the enum class and the number of commands added
+     * via the constructor and/or the addCommands method, SHOULD be the same. This
+     * is not enforced. If there are fewer commands than enumerators, selecting one
+     * of the unmapped enumerators will result in no command being selected and the
+     * ending of the command group. If there are more commands than enumerators, the
+     * extra commands (latest ones added) are included in the command group but
+     * effectively ignored.
      *
      * @param enumClazz                the class of the Java <code>enum</code> the
      *                                 defines the set of states for the state
@@ -95,11 +104,6 @@ public class EnumeratedRandomAccessCommandGroup<E extends Enum<E>> extends Rando
         this(enumClazz, null, commands);
     }
 
-    @Override
-    public void addCommands(final Command... commands) {
-        throw new UnsupportedOperationException("Cannot add commands to a group mapped to an enumeration.");
-    }
-
     /**
      * @param nextInitialState the {@link E} to use the next time the state machine
      *                         is initialized.
@@ -123,6 +127,10 @@ public class EnumeratedRandomAccessCommandGroup<E extends Enum<E>> extends Rando
         return null;
     }
 
+    /**
+     * Uses the constructor provide next command state operator to determine the
+     * next enumerator and set its ordinal as the next command index.
+     */
     @Override
     protected int getNextCommandIndex() {
         final int current = getCurrentCommandIndex();

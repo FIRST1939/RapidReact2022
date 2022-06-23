@@ -9,16 +9,11 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.intake.Intake;
 
 /**
- * This command was created to avoid a race condition between scheduling the
- * manual belt driving commands and the state commands being able to see the
- * transition to manual mode in their end methods. The state commands need to
- * know to not start the next state if going manual. The problem was that the
- * end on the cancelled state commmand would be called before the initialize of
- * the new manual command. Therefore, recording the manual mode from initialize
- * of the manual belt movement commands is too late. This command sets manual
- * mode without subsystem requirement (and thus does not cancel any running
- * state) and then starts the belt running commands which then interrupt any
- * running state.
+ * This command was created to ensure the both the intake and indexer move into
+ * and out of manual mode together. Note that since we now have a single command
+ * group that implements a state machine, we no longer need to track manual
+ * mode. We can just check to see if the state machine (wrapped as perpetual and
+ * set as the subsystem's default command) is running.
  * 
  * <p>
  * In a match, we would only enter manual mode if the intake / indexer cargo
@@ -27,14 +22,20 @@ import frc.robot.subsystems.intake.Intake;
  * for the eventuality and testing. This code assumes that we have emptied the
  * robot of cargo while in manual mode and will re-enter the automated state
  * machine with this assumption.
- * </p>
  */
 public class ToggleIntakeIndexerManualMode extends CommandBase {
   private final Intake intake;
   private final Command intakeManualCommand;
   private final Command indexerManualCommand;
 
-  /** Creates a new ToggleIntakeIndexerManualMode. */
+  /**
+   * Creates a new ToggleIntakeIndexerManualMode.
+   * 
+   * @param intake               the intake to check to see if the state machine
+   *                             is running.
+   * @param intakeManualCommand  the command to run the intake manually.
+   * @param indexerManualCommand the command to run the indexer manually.
+   */
   public ToggleIntakeIndexerManualMode(
       final Intake intake,
       final Command intakeManualCommand,
@@ -44,7 +45,15 @@ public class ToggleIntakeIndexerManualMode extends CommandBase {
     this.indexerManualCommand = indexerManualCommand;
   }
 
-  // Called when the command is initially scheduled.
+  /**
+   * {@inheritDoc}
+   * 
+   * <p>
+   * If the state machine is running, enter manual mode by scheduling the manual
+   * mode commands (will cancel the state machine). If the state machine is not
+   * running, cancel the manual mode commands (will schedule the subsystem default
+   * command which is the state machine).
+   */
   @Override
   public void initialize() {
     if (this.intake.isStateMachineRunning()) {
@@ -56,7 +65,12 @@ public class ToggleIntakeIndexerManualMode extends CommandBase {
     }
   }
 
-  // Returns true when the command should end.
+  /**
+   * {@inheritDoc}
+   * 
+   * <p>
+   * This is effectively and instance command and terminates immediately.
+   */
   @Override
   public boolean isFinished() {
     return true;

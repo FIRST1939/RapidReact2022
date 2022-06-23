@@ -62,6 +62,15 @@ public class EnumeratedScriptedCommandGroup<E extends Enum<E>> extends Enumerate
      * However, this command is designed to work properly with
      * {@link PerpetualCommand} (see {@link #perpetually()}). In that case, it will
      * be restarted from the beginning of the script.
+     * 
+     * <p>
+     * The number of enumerators in the enum class and the number of commands added
+     * via the constructor and/or the addCommands method, SHOULD be the same. This
+     * is not enforced. If there are fewer commands than enumerators, selecting one
+     * of the unmapped enumerators will result in no command being selected and the
+     * ending of the command group. If there are more commands than enumerators, the
+     * extra commands (latest ones added) are included in the command group but
+     * effectively ignored.
      *
      * @param enumClazz the class of the Java <code>enum</code> the defines the set
      *                  of states for the state machine being implemented.
@@ -79,6 +88,10 @@ public class EnumeratedScriptedCommandGroup<E extends Enum<E>> extends Enumerate
         m_script = EMPTY_SCRIPT;
     }
 
+    /**
+     * Uses the provided script and current script index to update the script index
+     * and retrieve the next enumerator ordinal (the command index) from the script.
+     */
     @Override
     protected int getNextCommandIndex() {
         m_currentScriptIndex++;
@@ -89,6 +102,13 @@ public class EnumeratedScriptedCommandGroup<E extends Enum<E>> extends Enumerate
         return m_script[m_currentScriptIndex].ordinal();
     }
 
+    /**
+     * Sets the script to use the next time the script is run.
+     * 
+     * @param script the next script (an array of valid enumerators).
+     * 
+     * @throws IllegalStateException if the command group is running.
+     */
     public void setScript(final E[] script) {
         if (isScheduled()) {
             throw new IllegalStateException("Cannot change the script while running.");
@@ -99,12 +119,20 @@ public class EnumeratedScriptedCommandGroup<E extends Enum<E>> extends Enumerate
         }
     }
 
+    /**
+     * This method does nothing since script indexing always starts at 0 and will
+     * use the enumerator found there. If a different start point is desired, set
+     * a different script before scheduling.
+     */
     @Override
     public void setInitialCommandIndex(final int initialCommandIndex) {
     }
 
     @Override
     /**
+     * This method does nothing for the same reason as
+     * {@link #setInitialCommandIndex(int)} and has the same alternative.
+     * 
      * @param nextInitialState the {@link E} to use the next time the state machine
      *                         is initialized.
      */

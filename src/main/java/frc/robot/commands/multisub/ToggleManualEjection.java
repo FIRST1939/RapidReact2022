@@ -13,17 +13,23 @@ import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.intake.manual.ManualEjectIntake;
 
 /**
- * This command was created to avoid a race condition between scheduling the
- * manual ejection command and the state commands being able to see the
- * transition to manual mode in their end methods. The state commands need to
- * know to not start the next state if going manual.
+ * This command was created to ensure the both the intake and indexer move into
+ * and out of manual ejection together. Note that since we now have a single
+ * command group that implements a state machine, we no longer need to track
+ * manual mode. We can just check to see if the state machine (wrapped as
+ * perpetual and set as the subsystem's default command) is running.
  */
 public class ToggleManualEjection extends CommandBase {
   private final Intake intake;
   private final Indexer indexer;
   private final Command ejectionCommand;
 
-  /** Creates a new ToggleManualEjection. */
+  /**
+   * Creates a new ToggleManualEjection.
+   * 
+   * @param intake  the intake to check to see if the state machine is running.
+   * @param indexer the indexer to check to see if the state machine is running.
+   */
   public ToggleManualEjection(
       final Intake intake,
       final Indexer indexer) {
@@ -34,7 +40,15 @@ public class ToggleManualEjection extends CommandBase {
         new ManualEjectIndexer(this.indexer));
   }
 
-  // Called when the command is initially scheduled.
+  /**
+   * {@inheritDoc}
+   * 
+   * <p>
+   * If the state machines are running, enter manual ejection by scheduling the
+   * manual ejection command (will cancel the state machines). If the state
+   * machines are not unning, cancel the manual ejection command (will schedule
+   * the subsystem default commands which are the state machines).
+   */
   @Override
   public void initialize() {
     // Some paranoia to make sure we do not exit regular manual mode.
@@ -48,7 +62,12 @@ public class ToggleManualEjection extends CommandBase {
     }
   }
 
-  // Returns true when the command should end.
+  /**
+   * {@inheritDoc}
+   * 
+   * <p>
+   * This is effectively and instance command and terminates immediately.
+   */
   @Override
   public boolean isFinished() {
     return true;

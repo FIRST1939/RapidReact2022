@@ -44,6 +44,7 @@ public class RandomAccessCommandGroup extends CommandGroupBase {
   private int m_initialCommandIndex = NO_CURRENT_COMMAND;
   /** The currently active command index. */
   private int m_currentCommandIndex = NO_CURRENT_COMMAND;
+  /** Will continue to be true if all added commands can run when disabled. */
   private boolean m_runWhenDisabled = true;
 
   /**
@@ -97,6 +98,12 @@ public class RandomAccessCommandGroup extends CommandGroupBase {
     m_nextCommandIndexOperator = nextCommandIndexOperator != null ? nextCommandIndexOperator : i -> i + 1;
   }
 
+  /**
+   * {@inheritDoc}
+   * 
+   * @throws IllegalStateException if an attempt is made to add a command while
+   *                               this command group is running.
+   */
   @Override
   public void addCommands(Command... commands) {
     requireUngrouped(commands);
@@ -117,6 +124,13 @@ public class RandomAccessCommandGroup extends CommandGroupBase {
     }
   }
 
+  /**
+   * {@inheritDoc}
+   * 
+   * <p>
+   * This implementation selects the initial command and, if found, initializes
+   * it.
+   */
   @Override
   public void initialize() {
     m_currentCommandIndex = m_initialCommandIndex;
@@ -129,6 +143,20 @@ public class RandomAccessCommandGroup extends CommandGroupBase {
     }
   }
 
+  /**
+   * {@inheritDoc}
+   * 
+   * <p>
+   * If the current command index is not in range, an attempt is made to get the
+   * command. If it is found, it is initialized and we return. Its execution will
+   * happen in the next cycle.
+   * 
+   * <p>
+   * On the other hand, if there is a valid command active on entry, its execute
+   * and isFinished calls are made. If isFinished returns true, the command's end
+   * is called and the next command to execute is selected. If a valid command is
+   * selected, it is initialized.
+   */
   @Override
   public void execute() {
     if (!isCurrentCommandIndexInRange()) {
@@ -153,11 +181,26 @@ public class RandomAccessCommandGroup extends CommandGroupBase {
     }
   }
 
+  /**
+   * {@inheritDoc}
+   * 
+   * <p>
+   * A {@link RandomAccessCommandGroup} is finished (return true here), when we
+   * get out of execute without a valid selected command.
+   */
   @Override
   public boolean isFinished() {
     return !isCurrentCommandIndexInRange();
   }
 
+  /**
+   * {@inheritDoc}
+   * 
+   * <p>
+   * If interrupted is true and we have a valid command, call the command's end
+   * with true (only way this will happen). If not interrupted, there is no valid
+   * command to end as detected in isFinished.
+   */
   @Override
   public void end(final boolean interrupted) {
     if (interrupted && isCurrentCommandIndexInRange()) {
@@ -166,6 +209,14 @@ public class RandomAccessCommandGroup extends CommandGroupBase {
     m_currentCommandIndex = NO_CURRENT_COMMAND;
   }
 
+  /**
+   * {@inheritDoc}
+   * 
+   * <p>
+   * This command group runs when disabled if all of its contained commands can
+   * run when disabled. This boolean is calculated in
+   * {@link #addCommands(Command...)}.
+   */
   @Override
   public boolean runsWhenDisabled() {
     return m_runWhenDisabled;

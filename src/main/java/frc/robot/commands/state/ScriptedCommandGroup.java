@@ -69,6 +69,10 @@ public class ScriptedCommandGroup extends RandomAccessCommandGroup {
         super(commands);
     }
 
+    /**
+     * Uses the provided script and current script index to update the script index
+     * and retrieve the next command index from the script.
+     */
     @Override
     protected int getNextCommandIndex() {
         m_currentScriptIndex++;
@@ -79,6 +83,13 @@ public class ScriptedCommandGroup extends RandomAccessCommandGroup {
         return m_script[m_currentScriptIndex];
     }
 
+    /**
+     * Sets the script to use the next time the script is run.
+     * 
+     * @param script the next script (an array of valid command indicies).
+     * 
+     * @throws IllegalStateException if the command group is running.
+     */
     public void setScript(final int[] script) {
         if (isScheduled()) {
             throw new IllegalStateException("Cannot change the script while running.");
@@ -89,6 +100,11 @@ public class ScriptedCommandGroup extends RandomAccessCommandGroup {
         }
     }
 
+    /**
+     * This method does nothing since script indexing always starts at 0 and will
+     * use the command index found there. If a different start point is desired, set
+     * a different script before scheduling.
+     */
     @Override
     public void setInitialCommandIndex(final int initialCommandIndex) {
     }
