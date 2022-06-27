@@ -12,8 +12,8 @@ import frc.robot.subsystems.shooter.Shooter;
  * the driver is ready for shooting.
  * 
  * <p>
- * Subclasses MUST use super to combine this result with the particulars or
- * automated and manual triggering.
+ * Subclasses MUST use super to combine this result with the particulars of
+ * automated or manual triggering.
  * </p>
  */
 public abstract class AbstractShootTrigger extends Trigger {
@@ -35,7 +35,7 @@ public abstract class AbstractShootTrigger extends Trigger {
   /**
    * @return true when appropriate to shoot. The shooter and driver are ready.
    *         Subclasses MUST use super to combine this result with the particulars
-   *         or automated and manual triggering.
+   *         of automated or manual triggering.
    */
   @Override
   public boolean get() {
