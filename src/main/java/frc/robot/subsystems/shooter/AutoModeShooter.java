@@ -39,7 +39,13 @@ public class AutoModeShooter extends CommandBase {
     this.shooter = shooter;
   }
 
-  // Called every time the scheduler runs while the command is scheduled.
+  /**
+   * {@inheritDoc}
+   * 
+   * @return true when there are still shots to fire, one is at the indexer
+   *         sensor, the indexer is ready, the shooter is ready, and a request to
+   *         shoot is allowed.
+   */
   @Override
   public void execute() {
     if ((shotsRemaining > 0)
@@ -51,7 +57,11 @@ public class AutoModeShooter extends CommandBase {
     }
   }
 
-  // Returns true when the command should end.
+  /**
+   * {@inheritDoc}
+   * 
+   * @return true when the last cargo to shoot is gone.
+   */
   @Override
   public boolean isFinished() {
     return !this.indexer.isCargoAtSensor() && (this.shotsRemaining <= 0);

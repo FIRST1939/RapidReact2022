@@ -24,12 +24,22 @@ public class SetShot extends CommandBase {
         this.shot = shot;
     }
 
+    /**
+     * {@inheritDoc}
+     * 
+     * <p>
+     * This implementation simply calls {@link Shooter#cargoShot(Shots)}.
+     */
     @Override
     public void initialize() {
         this.shooter.cargoShot(this.shot);
     }
 
-    // Driving with driver input never ends unless interrupted.
+    /**
+     * {@inheritDoc}
+     * 
+     * @return always returns true. This is an instant command.
+     */
     @Override
     public boolean isFinished() {
         return true;
