@@ -115,7 +115,7 @@ public class Intake extends SubsystemBase {
      * Forces extension of the intake. Use of {@link #requestExtension()} is
      * preferred except in the case of sensor failure and the use of manual mode.
      */
-    public void extendIntake() {
+    void extendIntake() {
         intakeSolenoid.set(true);
     }
 
@@ -123,7 +123,7 @@ public class Intake extends SubsystemBase {
      * Forces retraction of the intake. Use of {@link #requestRetraction()} is
      * preferred except in the case of sensor failure and the use of manual mode.
      */
-    public void retractIntake() {
+    void retractIntake() {
         intakeSolenoid.set(false);
     }
 
@@ -197,9 +197,16 @@ public class Intake extends SubsystemBase {
      *         not full).
      */
     public boolean requestExtension() {
-        return !this.isCargoAtSensor()
-                && !RobotCargoCount.getInstance().isFull()
-                && this.request.compareAndSet(IntakeRequest.NO_REQUEST_PENDING, IntakeRequest.EXTENSION_REQUESTED);
+        boolean granted = true;
+        if (isStateMachineRunning()) {
+            granted = isRetracted()
+                    && !this.isCargoAtSensor()
+                    && !RobotCargoCount.getInstance().isFull()
+                    && this.request.compareAndSet(IntakeRequest.NO_REQUEST_PENDING, IntakeRequest.EXTENSION_REQUESTED);
+        } else {
+            extendIntake();
+        }
+        return granted;
     }
 
     /**
@@ -218,8 +225,14 @@ public class Intake extends SubsystemBase {
      * @return true if the request was granted.
      */
     public boolean requestRetraction() {
-        return !this.isRetracted()
-                && this.request.compareAndSet(IntakeRequest.NO_REQUEST_PENDING, IntakeRequest.RETRACTION_REQUESTED);
+        boolean granted = true;
+        if (isStateMachineRunning()) {
+            granted = !this.isRetracted()
+                    && this.request.compareAndSet(IntakeRequest.NO_REQUEST_PENDING, IntakeRequest.RETRACTION_REQUESTED);
+        } else {
+            retractIntake();
+        }
+        return granted;
     }
 
     /**

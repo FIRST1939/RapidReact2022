@@ -83,8 +83,6 @@ import frc.robot.subsystems.drive.TurnToTargetThenMoveToCargoRing;
 import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.indexer.manual.ManualIndexer;
 import frc.robot.subsystems.intake.Intake;
-import frc.robot.subsystems.intake.manual.IntakeExtendCommandSelector;
-import frc.robot.subsystems.intake.manual.IntakeRetractCommandSelector;
 import frc.robot.subsystems.intake.manual.ManualIntakeRollerBelts;
 import frc.robot.subsystems.lights.Lights;
 import frc.robot.subsystems.shooter.SetShot;
@@ -245,8 +243,8 @@ public class RobotContainer {
                 .whenReleased(new ToggleManualEjection(intake, indexer));
 
         new JoystickButton(driverTwo, INTAKE_GATHER)
-                .whenPressed(new IntakeExtendCommandSelector(this.intake))
-                .whenReleased(new IntakeRetractCommandSelector(this.intake));
+                        .whenPressed(new InstantCommand(intake::requestExtension))
+                        .whenReleased(new InstantCommand(intake::requestRetraction));
 
         // climber buttons
         new JoystickButton(rightStick, MANUAL_RETRACT_HOOKS)
