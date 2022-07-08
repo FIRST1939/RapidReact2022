@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PerpetualCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
-import frc.robot.commands.state.EnumeratedRandomAccessCommandGroup;
+import frc.robot.commands.state.RandomAccessCommandGroup;
 import frc.robot.devices.RobotCargoCount;
 
 /**
@@ -23,6 +23,10 @@ import frc.robot.devices.RobotCargoCount;
  * {@link EnumeratedRandomAccessCommandGroup} used to implement the state
  * machine. The wrapper can be used as the default command for the intake
  * subsystem.
+ * 
+ * <p>
+ * Note that this class and its content is at most package scoped (never
+ * public). It is to be used directly by only the intake subsystem.
  */
 class IntakeStateMachine {
   /** The intake this state machine operates. */
@@ -45,7 +49,13 @@ class IntakeStateMachine {
     STOWED_HOLD,
     STOWED_SEND;
 
-    private static State values[] = values();
+    /**
+     * For enum/ordinal mapping and bounds checking, the values array is useful.
+     * However, each call to the values() method creates a new array and we use it
+     * quite often. Stash a single copy here and use it at all times as it will
+     * never change.
+     */
+    private static final State VALUES[] = values();
 
     /**
      * Return the enumerator with the given ordinal. If the ordinal is out of range,
@@ -54,16 +64,16 @@ class IntakeStateMachine {
      * @param ordinal the ordinal of the enumerator being requested.
      * @return the enumerator or null if the ordinal is out of range.
      */
-    static State getState(final int ordinal) {
-      if (ordinal >= 0 && ordinal < values.length) {
-        return values[ordinal];
+    private static State getState(final int ordinal) {
+      if (ordinal >= 0 && ordinal < VALUES.length) {
+        return VALUES[ordinal];
       }
       return null;
     }
   }
 
-  /** The state machine itself. */
-  private final EnumeratedRandomAccessCommandGroup<State> stateMachineCommand;
+  /** The state machine implementation command group. */
+  private final RandomAccessCommandGroup stateMachineCommand;
 
   /**
    * A wrapper for default command setting that runs the machine perpetually. This
@@ -72,6 +82,9 @@ class IntakeStateMachine {
    */
   private final PerpetualCommand defaultCommand;
 
+  /**
+   * @param intake the {@link Intake} subsystem to be operated.
+   */
   IntakeStateMachine(final Intake intake) {
     this.intake = intake;
 
@@ -107,8 +120,7 @@ class IntakeStateMachine {
      * Create the state machine implementing command group. Make sure the commands
      * are in the same order as the states in the State enumeration.
      */
-    stateMachineCommand = new EnumeratedRandomAccessCommandGroup<>(
-        State.class,
+    stateMachineCommand = new RandomAccessCommandGroup(
         this::getNextStateIndex,
         stowedEmptyStateCommand,
         gatheringEmptyStateCommand,
@@ -121,14 +133,36 @@ class IntakeStateMachine {
   }
 
   /**
+   * This is the next command index operator for the state machine. If the current
+   * state is no state, the result is STOWED_EMPTY (see
+   * {@link #setNextInitialState(State)} for initial state options).
+   * 
+   * <p>
+   * For the intake, the state machine is rather complex and is implemented in
+   * {@link #getNextState(State)}. That method is wrapped by this method.
+   * This method handles enum/ordinal mapping so that the implemenation can be
+   * purely enum based for readability.
+   * 
+   * @param current the current state index as passed from the state machine
+   *                command.
+   * 
+   * @return the next state index in the range [0, State.SIZE).
+   */
+  private int getNextStateIndex(final int current) {
+    return getNextState(State.getState(current)).ordinal();
+  }
+
+  /**
    * This is the next command state operator for the state machine. If the current
    * state is no state, the result is STOWED_EMPTY (see
    * {@link #setNextInitialState(State)} for initial state options).
    * 
-   * @param currentState the current state index as passed from the state machine
-   *                     command.
+   * @param currentState the current {@link State} of the state machine command.
+   *                     Can be null, in which case, STOWED_EMPTY is returned.
+   * 
+   * @return the next {@link State} of the state machine command. Never null.
    */
-  private State getNextStateIndex(final State currentState) {
+  private State getNextState(final State currentState) {
     State next = State.STOWED_EMPTY;
     if (currentState != null) {
       switch (currentState) {
@@ -188,7 +222,10 @@ class IntakeStateMachine {
    *         running state machine is between states.
    */
   State getCurrentState() {
-    return this.stateMachineCommand.getCurrentState();
+    if (this.intake.isStateMachineRunning()) {
+      return State.getState(this.stateMachineCommand.getCurrentCommandIndex());
+    }
+    return null;
   }
 
   /**
@@ -204,7 +241,10 @@ class IntakeStateMachine {
    *                         manual command ends).
    */
   void setNextInitialState(final State nextInitialState) {
-    this.stateMachineCommand.setInitialState(nextInitialState);
+    this.stateMachineCommand.setInitialCommandIndex(
+        nextInitialState == null
+            ? RandomAccessCommandGroup.NO_CURRENT_COMMAND
+            : nextInitialState.ordinal());
   }
 
   /**

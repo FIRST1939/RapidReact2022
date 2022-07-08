@@ -4,9 +4,7 @@
 
 package frc.robot.subsystems.intake.manual;
 
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.intake.Intake;
 
 /**
@@ -20,25 +18,36 @@ import frc.robot.subsystems.intake.Intake;
  */
 public class IntakeRetractCommandSelector extends CommandBase {
   private final Intake intake;
-  private final Command manualRetract;
 
-  /** Creates a new IntakeExtendCommandSelector. */
+  /**
+   * @param intake the {@link Intake} subsystem being controlled.
+   */
   public IntakeRetractCommandSelector(final Intake intake) {
     this.intake = intake;
-    this.manualRetract = new InstantCommand(intake::retractIntake, intake);
   }
 
-  // Called when the command is initially scheduled.
+  /**
+   * If the state machine is running, request retraction. If not, force
+   * retraction.
+   * 
+   * <p>
+   * {@inheritDoc}
+   */
   @Override
   public void initialize() {
-    if (!this.intake.isStateMachineRunning()) {
-      this.manualRetract.schedule();
-    } else {
+    if (this.intake.isStateMachineRunning()) {
       this.intake.requestRetraction();
+    } else {
+      this.intake.retractIntake();
     }
   }
 
-  // Returns true when the command should end.
+  /**
+   * This is an instant command and ends immediatly.
+   * 
+   * <p>
+   * {@inheritDoc}
+   */
   @Override
   public boolean isFinished() {
     return true;

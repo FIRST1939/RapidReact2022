@@ -6,6 +6,10 @@ package frc.robot.subsystems.intake.manual;
 
 import frc.robot.subsystems.intake.Intake;
 
+/**
+ * A specialization of {@link ManualIntakeRollerBelts} for cargo ejection.
+ * It runs outward at a fixed speed.
+ */
 public class ManualEjectIntake extends ManualIntakeRollerBelts {
   /**
    * Creates an instance that runs outward until cancelled.

@@ -4,9 +4,7 @@
 
 package frc.robot.subsystems.intake.manual;
 
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.intake.Intake;
 
 /**
@@ -20,25 +18,35 @@ import frc.robot.subsystems.intake.Intake;
  */
 public class IntakeExtendCommandSelector extends CommandBase {
   private final Intake intake;
-  private final Command manualExtend;
 
-  /** Creates a new IntakeExtendCommandSelector. */
+  /**
+   * @param intake the {@link Intake} subsystem being controlled.
+   */
   public IntakeExtendCommandSelector(final Intake intake) {
     this.intake = intake;
-    this.manualExtend = new InstantCommand(intake::extendIntake, intake);
   }
 
-  // Called when the command is initially scheduled.
+  /**
+   * If the state machine is running, request extension. If not, force extension.
+   * 
+   * <p>
+   * {@inheritDoc}
+   */
   @Override
   public void initialize() {
-    if (!this.intake.isStateMachineRunning()) {
-      this.manualExtend.schedule();
-    } else {
+    if (this.intake.isStateMachineRunning()) {
       this.intake.requestExtension();
+    } else {
+      this.intake.extendIntake();
     }
   }
 
-  // Returns true when the command should end.
+  /**
+   * This is an instant command and ends immediatly.
+   * 
+   * <p>
+   * {@inheritDoc}
+   */
   @Override
   public boolean isFinished() {
     return true;

@@ -6,6 +6,11 @@ package frc.robot.subsystems.intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
+/**
+ * Sends a cargo from the intake to the next stage. A timeout is used to make
+ * sure the intake runs long enough to complete the handoff after the cargo
+ * leaves the intake cargo sensor.
+ */
 class IntakeStowedSendState extends CommandBase {
   /** This command's required indexer subsystem. */
   private final Intake intake;
@@ -19,20 +24,35 @@ class IntakeStowedSendState extends CommandBase {
     addRequirements(this.intake);
   }
 
-  // Called when the command is initially scheduled.
+  /**
+   * {@inheritDoc}
+   * 
+   * <p>
+   * Makes sure the intake is retracted and initializes the timer.
+   */
   @Override
   public void initialize() {
     this.intake.retractIntake();
     timeout = 0;
   }
 
-  // Called every time the scheduler runs while the command is scheduled.
+  /**
+   * {@inheritDoc}
+   * 
+   * <p>
+   * Makes sure the intake running at the proper speed.
+   */
   @Override
   public void execute() {
     this.intake.setIntakeSpeed();
   }
 
-  // Returns true when the command should end.
+  /**
+   * {@inheritDoc}
+   * 
+   * <p>
+   * Returns true once the cargo is gone plus the timeout period.
+   */
   @Override
   public boolean isFinished() {
     if (timeout != 0) {
@@ -43,7 +63,12 @@ class IntakeStowedSendState extends CommandBase {
     return false;
   }
 
-  // Called once the command ends or is interrupted.
+  /**
+   * {@inheritDoc}
+   * 
+   * <p>
+   * Makes sure the intake is stopped.
+   */
   @Override
   public void end(boolean interrupted) {
     this.intake.stopIntakeMotor();

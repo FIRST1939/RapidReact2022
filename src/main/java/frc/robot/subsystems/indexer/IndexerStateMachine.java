@@ -47,14 +47,29 @@ class IndexerStateMachine {
     SHOOTING;
 
     /**
-     * @return the number of enumerators in the State enum.
+     * For enum/ordinal mapping and bounds checking, the values array is useful.
+     * However, each call to the values() method creates a new array and we use it
+     * quite often. Stash a single copy here and use it at all times as it will
+     * never change.
      */
-    static int size() {
-      return values().length;
+    private static final State VALUES[] = values();
+
+    /**
+     * Return the enumerator with the given ordinal. If the ordinal is out of range,
+     * null is returned.
+     * 
+     * @param ordinal the ordinal of the enumerator being requested.
+     * @return the enumerator or null if the ordinal is out of range.
+     */
+    private static State getState(final int ordinal) {
+      if (ordinal >= 0 && ordinal < VALUES.length) {
+        return VALUES[ordinal];
+      }
+      return null;
     }
   }
 
-  /** The state machine itself. */
+  /** The state machine implementation command group. */
   private final RandomAccessCommandGroup stateMachineCommand;
 
   /**
@@ -65,7 +80,7 @@ class IndexerStateMachine {
   private final PerpetualCommand defaultCommand;
 
   /**
-   * @param indexer the indexer subsystem to be operated.
+   * @param indexer the {@link Indexer} subsystem to be operated.
    */
   IndexerStateMachine(final Indexer indexer) {
     this.indexer = indexer;
@@ -96,7 +111,8 @@ class IndexerStateMachine {
      * Create the state machine implementing command group. Make sure the commands
      * are in the same order as the states in the State enumeration.
      */
-    stateMachineCommand = new RandomAccessCommandGroup(this::getNextStateIndex,
+    stateMachineCommand = new RandomAccessCommandGroup(
+        this::getNextStateIndex,
         emptyStateCommand,
         receivingStateCommand,
         atSensorStateCommand,
@@ -117,10 +133,12 @@ class IndexerStateMachine {
    * 
    * @param current the current state index as passed from the state machine
    *                command.
+   * 
+   * @return the next state index in the range [0, State.SIZE).
    */
   private int getNextStateIndex(final int current) {
     int next = current + 1;
-    if (next < 0 || next >= State.size()) {
+    if (next < 0 || next >= State.VALUES.length) {
       next = 0;
     }
     return next;
@@ -132,8 +150,8 @@ class IndexerStateMachine {
    *         running state machine is between states.
    */
   State getCurrentState() {
-    if (this.indexer.isStateMachineRunning() && this.stateMachineCommand.isCurrentCommandIndexInRange()) {
-      return State.values()[this.stateMachineCommand.getCurrentCommandIndex()];
+    if (this.indexer.isStateMachineRunning()) {
+      return State.getState(this.stateMachineCommand.getCurrentCommandIndex());
     }
     return null;
   }

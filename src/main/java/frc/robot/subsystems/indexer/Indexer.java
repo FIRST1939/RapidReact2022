@@ -26,24 +26,37 @@ import frc.robot.devices.RobotCargoCount;
 import frc.robot.subsystems.indexer.IndexerStateMachine.State;
 
 /**
- * The indexer consists of one motor to drive cargo movement belts and a beam
- * break sensor to detect that a cargo has arrived at the ready to shoot
- * position in the indexer tower. There is also an encoder that is plugged
- * directly into the Talon SRX motor controller for velocity control.
+ * The indexer consists of two motors (a leader and a follower) to drive cargo
+ * movement belts and a beam break sensor to detect that a cargo has arrived at
+ * the ready to shoot position in the indexer tower. There is also an encoder
+ * that is plugged directly into the leader Talon SRX motor controller for
+ * velocity control.
  */
 public class Indexer extends SubsystemBase {
+  /** The leader motor controller. */
   private final CANSparkMax leader;
+  /** The PID controller using the motor controller connected encoder. */
   private final SparkMaxPIDController pidController;
+  /** The follwer motor controller. */
   private final CANSparkMax follower;
+  /** The IR beam break for cargo detection. */
   private final DigitalInput beamBreak;
+  /** Indicates if the prior stage is sending cargo to the indexer. */
   private final BooleanSupplier priorStageSendingSupplier;
+  /** Used to control the firing of cargo (see {@link FireRequest}). */
   private final AtomicReference<FireRequest> firing = new AtomicReference<>(FireRequest.SAFE);
+  /** The state machine for the indexer. */
   private final IndexerStateMachine stateMachine;
+  /** Used to start the state machine in the proper state for teleop. */
   private State autoExitState = null;
 
   /**
    * This enum describes the relationship between the shot triggers, the
-   * {@link State#READY_TO_SHOOT} state, and the {@link State#SHOOTING} state.
+   * {@link State#READY_TO_SHOOT} state, and the {@link State#SHOOTING} state. The
+   * robot starts in the safe state. When a shot is requested, it enters the
+   * requested state. The requested state will be detected by the indexer state
+   * machine and the cargo will actually be shot (enters the firing state) when
+   * the shooter is ready. When the cargo is gone, we return the safe state.
    */
   private enum FireRequest {
     /** A shot can be requested. */

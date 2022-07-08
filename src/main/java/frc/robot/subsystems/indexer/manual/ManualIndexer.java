@@ -13,6 +13,19 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.devices.RobotCargoCount;
 import frc.robot.subsystems.indexer.Indexer;
 
+/**
+ * A command for indexing in the case of sensor failure or a temporary jam. Be
+ * sure to empty all cargo using this command before ending it and thus
+ * restarting the default state machine command group.
+ * 
+ * <p>
+ * In a match, we would only enter manual mode if the intake / indexer cargo
+ * pipeline was not working due to sensor failure. Therefore, coming out of
+ * manual mode in match is not an expected action. However, we need to program
+ * for the eventuality and testing. This code assumes that we have emptied the
+ * robot of cargo while in manual mode and will re-enter the automated state
+ * machine with this assumption.
+ */
 public class ManualIndexer extends CommandBase {
   private final Indexer indexer;
   private final DoubleSupplier speedSupplier;
@@ -20,7 +33,10 @@ public class ManualIndexer extends CommandBase {
 
   /**
    * If the manual shoot trigger returns true, the speed supplier is ignored. A
-   * fixed shooter feed speed is used instead.
+   * fixed shooter feed speed is used instead. This enables two scenarios. First,
+   * a fixed shooter feed speed for more consistent shooting. Second, the use of a
+   * supplier with known characteristics for a specific task (e.g. ejection) by
+   * using a trigger that is always inactive.
    * 
    * @param indexer       the {@link Indexer} subsystem being controlled.
    * @param speedSupplier a provider of driver input for indexer speed.
@@ -36,7 +52,13 @@ public class ManualIndexer extends CommandBase {
     addRequirements(this.indexer);
   }
 
-  // Called every time the scheduler runs while the command is scheduled.
+  /**
+   * Sets the speed to shooter feeding (trigger true) or the supplier speed
+   * (trigger false).
+   * 
+   * <p>
+   * {@inheritDoc}
+   */
   @Override
   public void execute() {
     this.indexer.setManualSpeed(
@@ -45,16 +67,15 @@ public class ManualIndexer extends CommandBase {
             : this.speedSupplier.getAsDouble());
   }
 
-  // Called once the command ends or is interrupted.
+  /**
+   * Stops the indexer and marks the robot as empty of cargo.
+   * 
+   * <p>
+   * {@inheritDoc}
+   */
   @Override
   public void end(boolean interrupted) {
     this.indexer.stop();
-    // In a match, we would only enter manual mode if the intake / indexer cargo
-    // pipeline was not working due to sensor failure. Therefore, coming out of
-    // manual mode in match is not an expected action. However, we need to program
-    // for the eventuality and testing. This code assumes that we have emptied the
-    // robot of cargo while in manual mode and will re-enter the automated state
-    // machine with this assumption.
     RobotCargoCount.getInstance().decrement();
     RobotCargoCount.getInstance().decrement();
   }

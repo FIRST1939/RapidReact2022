@@ -7,6 +7,10 @@ package frc.robot.subsystems.indexer.manual;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.indexer.Indexer;
 
+/**
+ * A specialization of {@link ManualIndexer} for cargo ejection. It runs outward
+ * at a fixed speed.
+ */
 public class ManualEjectIndexer extends ManualIndexer {
   /**
    * Creates an instance that runs outward until cancelled.

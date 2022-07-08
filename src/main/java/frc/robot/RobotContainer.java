@@ -111,10 +111,10 @@ public class RobotContainer {
     // The robot's subsystems are defined here...
     private final JoystickButton sidewinderManualDeploy = new JoystickButton(leftStick, 6);
     private final JoystickButton manualSlowlyDriveButton = new JoystickButton(leftStick, 7);
-    private final DriveTrain driveTrain = new DriveTrain(() -> sidewinderManualDeploy.get(), manualSlowlyDriveButton);
+    private final DriveTrain driveTrain = new DriveTrain(sidewinderManualDeploy::get, manualSlowlyDriveButton);
     private final RobotCargoCount robotCargoCount = RobotCargoCount.getInstance();
-    private final Intake intake = new Intake(() -> this.driveTrain.getRate());
-    private final Indexer indexer = new Indexer(() -> this.intake.isSendingCargo());
+    private final Intake intake = new Intake(this.driveTrain::getRate);
+    private final Indexer indexer = new Indexer(this.intake::isSendingCargo);
     private final Shooter shooter = Shooter.getInstance();
     private final Climber climber = Climber.getInstance();
     private final Command rumbleController = new RumbleController(this.driverTwo)
@@ -219,7 +219,7 @@ public class RobotContainer {
         BooleanSupplier shootTriggerSupplier = () -> (driverTwo
                 .getRawAxis(Math.abs(SHOOT_TRIGGER)) > TRIGGER_THRESHOLD);
         new ShootTrigger(this.indexer, this.shooter, shootTriggerSupplier)
-                .whenActive(new InstantCommand(() -> this.indexer.requestShot()));
+                .whenActive(new InstantCommand(this.indexer::requestShot));
 
         // intake and indexer buttons
         new JoystickButton(driverTwo, TOGGLE_MANUAL_MODE)
