@@ -42,17 +42,15 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * The drive train consists of three Neos on each side. Encoders are used for
- * path following in autonomous, as is a NavX gyro. Two line sensors are used to
- * stop at selected positions on the field.
+ * path following in autonomous, as is a NavX gyro.
  * 
  * <p>
  * Some notes on automating actions of the drive train. First, automation that
  * does not use WPILIB trajectory following, use of the {@link #resetDistance()}
- * and {@link #resetYaw()} methods before starting a position or rotational
+ * and {@link #resetHeading()} methods before starting a position or rotational
  * movement respectively is generally a good idea. Given the odd angles at which
  * the robot will start most matches, robot relative movements and rotations
  * (not field relative) will be the easiest to manage. This can be useful for
@@ -97,12 +95,15 @@ public class DriveTrain extends SubsystemBase {
 
   private double lastRotation = 0.0;
 
-  private final JoystickButton speedLimit;
+  private final BooleanSupplier speedLimit;
 
   /**
    * Creates a new drive train.
+   * 
+   * @param sidewinderOverride when true, sidewinder is forced active.
+   * @param speedLimit         when true, the robot speed is halved.
    */
-  public DriveTrain(BooleanSupplier sidewinderOverride, JoystickButton speedLimit) {
+  public DriveTrain(BooleanSupplier sidewinderOverride, BooleanSupplier speedLimit) {
     // Create and configure individual motors.
     left1 = new CANSparkMax(LEFT_DRIVE_1_CAN_ID, MotorType.kBrushless);
     motorConfig(left1);
@@ -151,6 +152,12 @@ public class DriveTrain extends SubsystemBase {
     this.speedLimit = speedLimit;
   }
 
+  /**
+   * Used to put critical subsystem information on the dashboard.
+   * 
+   * <p>
+   * {@inheritDoc}
+   */
   @Override
   public void periodic() {
     SmartDashboard.putNumber("angle: ", this.getHeading());
@@ -166,14 +173,13 @@ public class DriveTrain extends SubsystemBase {
     double arcadeSpeed = speed;
     double arcadeRotation = 0.7 * rotation;
 
-    if (this.speedLimit.get()) {
+    if (this.speedLimit.getAsBoolean()) {
       arcadeSpeed /= 2;
       // arcadeRotation *= 0.7;
     }
 
     // Sidewind above threshold, disengage below, leave as is in gap.
     if ((Math.abs(sidewind) > SIDEWINDER_ENABLE_THRESHOLD) || this.sidewinderOverride.getAsBoolean()) {
-
       if (!this.sidewinderSolenoid.get()) {
         // Sidewider has deployed
         if (Math.abs(getHeading()) > 180) {
@@ -280,7 +286,7 @@ public class DriveTrain extends SubsystemBase {
    * getHeading.
    * </p>
    */
-  public void resetYaw() {
+  void resetYaw() {
     this.navx.reset();
   }
 
@@ -290,7 +296,7 @@ public class DriveTrain extends SubsystemBase {
    * 
    * @return the current yaw value in degrees (-180 to 180).
    */
-  public float getYaw() {
+  private float getYaw() {
     return this.navx.getYaw();
   }
 
