@@ -1,10 +1,5 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.commands.auto;
 
-/** Add your docs here. */
 public interface AutoConstants {
     /** Drive from edge of tarmac to near cargo. */
     public static final double CLOSE_CARGO_PICKUP_DRIVE_DIST = 35.00;

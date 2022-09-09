@@ -12,6 +12,7 @@ import frc.robot.subsystems.Shooter;
  * has spun up to speed and a cargo is available for shooting.
  */
 public class ShootTrigger extends AbstractShootTrigger {
+
   private final Indexer indexer;
 
   /**
@@ -20,7 +21,8 @@ public class ShootTrigger extends AbstractShootTrigger {
    * @param triggerSupplier a boolean supplier that returns true when the driver
    *                        is ready to shoot.
    */
-  public ShootTrigger(Indexer indexer, Shooter shooter, BooleanSupplier triggerSupplier) {
+  public ShootTrigger (Indexer indexer, Shooter shooter, BooleanSupplier triggerSupplier) {
+
     super(shooter, triggerSupplier);
     this.indexer = indexer;
   }
@@ -30,11 +32,9 @@ public class ShootTrigger extends AbstractShootTrigger {
    *         all ready.
    */
   @Override
-  public boolean get() {
+  public boolean get () {
+
     // Added first check to not cancel shooter until cleared.
-    return (IndexerShootingState.getInstance(indexer).isScheduled())
-        || (!indexer.isManualMode()
-            && indexer.getCurrentCommand() instanceof IndexerReadyToShootState
-            && super.get());
+    return (IndexerShootingState.getInstance(this.indexer).isScheduled()) || (!this.indexer.isManualMode() && this.indexer.getCurrentCommand() instanceof IndexerReadyToShootState && super.get());
   }
 }

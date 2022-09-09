@@ -19,6 +19,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class Intake extends SubsystemBase {
+
     private final DoubleSupplier robotSpeedSupplier;
     private final Solenoid intakeSolenoid;
     private final DigitalInput beamBreak;
@@ -31,45 +32,49 @@ public class Intake extends SubsystemBase {
      *                           second) that can be used to optimize the intake
      *                           speed.
      */
-    public Intake(final DoubleSupplier robotSpeedSupplier) {
+    public Intake (final DoubleSupplier robotSpeedSupplier) {
+
         this.robotSpeedSupplier = robotSpeedSupplier;
         this.intakeSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Constants.INTAKE_PCM_CHANNEL);
         this.beamBreak = new DigitalInput(Constants.INTAKE_BEAM_BREAK_RECEIVER_DIO);
         this.intakeMotor = new CANSparkMax(Constants.INTAKE_MOTOR_CAN_ID, MotorType.kBrushed);
         this.intakeMotor.restoreFactoryDefaults();
         this.intakeMotor.setIdleMode(IdleMode.kBrake);
-        this.intakeMotor.getEncoder(
-                SparkMaxRelativeEncoder.Type.kQuadrature,
-                Constants.INTAKE_ENCODER_CYCLES_PER_ROTATION);
+        this.intakeMotor.getEncoder(SparkMaxRelativeEncoder.Type.kQuadrature, Constants.INTAKE_ENCODER_CYCLES_PER_ROTATION);
         this.pidController = this.intakeMotor.getPIDController();
-        // TODO configure kP and kF for velocity control.
+
+        // TODO Configure kP and kF for velocity control.
         this.pidController.setFF(0.1);
         this.pidController.setP(0.1);
     }
 
     @Override
-    public void periodic() {
-        // This method will be called once per scheduler run
+    public void periodic () {
+
         SmartDashboard.putBoolean("Intake: ", !this.beamBreak.get());
+
         Command current = getCurrentCommand();
         SmartDashboard.putString("Intake State: ", current != null ? current.getName() : "<null>");
         SmartDashboard.putBoolean("Intake direction", intakeDirection());
-
     }
 
-    public void extendIntake() {
-        intakeSolenoid.set(true);
+    public void extendIntake () {
+
+        this.intakeSolenoid.set(true);
     }
 
-    public void retractIntake() {
-        intakeSolenoid.set(false);
+    public void retractIntake () {
+
+        this.intakeSolenoid.set(false);
     }
 
-    public boolean isRetracted() {
+    public boolean isRetracted () {
+
         return !this.intakeSolenoid.get();
     }
 
-    public double getIntakeSpeed() {
+    public double getIntakeSpeed () {
+
         return this.intakeMotor.get();
     }
 
@@ -77,25 +82,26 @@ public class Intake extends SubsystemBase {
      * Set the intake speed to a value proportional to the speed at which the robot
      * is moving with enforcement of minimum and maximum speeds.
      */
-    public void setIntakeSpeed() {
+    public void setIntakeSpeed () {
+
         final double targetIntakeSpeed = this.robotSpeedSupplier.getAsDouble() * Constants.INTAKE_SPEED_TO_DRIVE_SPEED_RATIO;
         final double targetRevPerSec = targetIntakeSpeed / Constants.INTAKE_INCHES_PER_REVOLUTION;
-        final double targetRPM = MathUtil.clamp(
-                targetRevPerSec * 60.0,
-                Constants.INTAKE_MIN_RPM,
-                Constants.INTAKE_MAX_RPM);
+        final double targetRPM = MathUtil.clamp(targetRevPerSec * 60.0, Constants.INTAKE_MIN_RPM, Constants.INTAKE_MAX_RPM);
+
         this.pidController.setReference(-targetRPM, ControlType.kVelocity);
     }
 
-    public void stopIntakeMotor() {
+    public void stopIntakeMotor () {
+
         this.pidController.setReference(0.0, ControlType.kDutyCycle);
     }
 
     /**
      * @return true if there is a cargo at the ready to shoot sensor.
      */
-    public boolean isCargoAtSensor() {
-        return !beamBreak.get();
+    public boolean isCargoAtSensor () {
+
+        return !this.beamBreak.get();
     }
 
     /**
@@ -103,14 +109,16 @@ public class Intake extends SubsystemBase {
      * 
      * @param speed the percent output (-1.0 to 1.0) to apply.
      */
-    public void setManualSpeed(final double speed) {
+    public void setManualSpeed (final double speed) {
+
         this.intakeMotor.set(speed);
     }
 
     /**
      * @return true if manual mode commands (vs state machine) are running.
      */
-    public boolean isManualMode() {
+    public boolean isManualMode () {
+
         return this.manualMode;
     }
 
@@ -118,17 +126,16 @@ public class Intake extends SubsystemBase {
      * @param manualMode true to indicate that manual mode commands (vs state
      *                   machine) are running.
      */
-    public void setManualMode(final boolean manualMode) {
+    public void setManualMode (final boolean manualMode) {
+
         this.manualMode = manualMode;
     }
 
-    //returns true if direciton is positive
-    public boolean intakeDirection(){
-        if(this.intakeMotor.getOutputCurrent() >= 0)
-        {
-            return true;
-        } else {
-            return false;
-        }
+    /**
+     * @return true if the direction is positive
+     */
+    public boolean intakeDirection () {
+
+        return this.intakeMotor.getOutputCurrent() >= 0;
     }
 }

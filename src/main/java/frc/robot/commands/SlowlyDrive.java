@@ -10,7 +10,7 @@ public class SlowlyDrive extends CommandBase {
     public SlowlyDrive (final DriveTrain driveTrain) {
         
         this.driveTrain = driveTrain;
-        addRequirements(this.driveTrain);
+        this.addRequirements(this.driveTrain);
     }
 
     @Override

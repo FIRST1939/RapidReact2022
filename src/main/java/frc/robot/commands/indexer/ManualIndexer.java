@@ -1,7 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.commands.indexer;
 
 import java.util.function.DoubleSupplier;
@@ -14,6 +10,7 @@ import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.RobotCargoCount;
 
 public class ManualIndexer extends CommandBase {
+
   private final Indexer indexer;
   private final DoubleSupplier speedSupplier;
   private final Trigger shootTrigger;
@@ -26,36 +23,32 @@ public class ManualIndexer extends CommandBase {
    * @param speedSupplier a provider of driver input for indexer speed.
    * @param shootTrigger  a manual shoot trigger.
    */
-  public ManualIndexer(
-      final Indexer indexer,
-      final DoubleSupplier speedSupplier,
-      final Trigger shootTrigger) {
+  public ManualIndexer(final Indexer indexer, final DoubleSupplier speedSupplier, final Trigger shootTrigger) {
+
     this.indexer = indexer;
     this.speedSupplier = speedSupplier;
     this.shootTrigger = shootTrigger;
-    addRequirements(this.indexer);
+    this.addRequirements(this.indexer);
   }
   
-  // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
+  public void initialize () {
+
     this.indexer.setManualMode(true);
   }
 
-  // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    this.indexer.setManualSpeed(
-        this.shootTrigger.get()
-            ? Constants.MANUAL_INDEXER_FEED_OUTPUT
-            : this.speedSupplier.getAsDouble());
+  public void execute () {
+
+    this.indexer.setManualSpeed(this.shootTrigger.get() ? Constants.MANUAL_INDEXER_FEED_OUTPUT : this.speedSupplier.getAsDouble());
   }
 
-  // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
+  public void end (boolean interrupted) {
+
     this.indexer.stop();
     this.indexer.setManualMode(false);
+
     // In a match, we would only enter manual mode if the intake / indexer cargo
     // pipeline was not working due to sensor failure. Therefore, coming out of
     // manual mode in match is not an expected action. However, we need to program
@@ -64,7 +57,6 @@ public class ManualIndexer extends CommandBase {
     // machine with this assumption.
     RobotCargoCount.getInstance().decrement();
     RobotCargoCount.getInstance().decrement();
-    PostLoopCommandScheduler.addCommandToSchedule(
-        IndexerEmptyState.getInstance(this.indexer));
+    PostLoopCommandScheduler.addCommandToSchedule(IndexerEmptyState.getInstance(this.indexer));
   }
 }
