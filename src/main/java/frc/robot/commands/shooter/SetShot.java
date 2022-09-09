@@ -30,7 +30,6 @@ public class SetShot extends CommandBase {
         this.shooter.cargoShot(this.shot); 
     }
 
-    // Driving with driver input never ends unless interrupted.
     @Override
     public boolean isFinished () { 
 

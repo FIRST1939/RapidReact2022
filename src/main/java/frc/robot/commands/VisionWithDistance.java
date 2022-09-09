@@ -1,7 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -21,23 +17,28 @@ public class VisionWithDistance extends CommandBase {
   private double velocity;
   private double lastVelocitySentToShooter;
 
-  public VisionWithDistance(final Shooter shooter, final Limelight limelight) {
+  public VisionWithDistance (final Shooter shooter, final Limelight limelight) {
+
     this.shooter = shooter;
     this.limelight = limelight;
   }
 
   @Override
-  public void initialize() {
+  public void initialize () {
+
     this.lastVelocitySentToShooter = 0;
   }
 
   @Override
-  public void execute() {
+  public void execute () {
+
     if (this.shooter.getShot() == SHOTS.visionTracked) {
+
       if (this.limelight.isTargetFound()) {
-        dy = this.limelight.getVerticalAngleError();
-        // TODO put the proper velocity function in here.
-        velocity = dy * Constants.VISION_M + Constants.VISION_B;
+
+        // TODO Put the proper velocity function in here.
+        this.dy = this.limelight.getVerticalAngleError();
+        this.velocity = this.dy * Constants.VISION_M + Constants.VISION_B;
 
         // I have no idea if 2% change is the right amount of change
         // to trigger setting the velocity and restarting the periodic
@@ -46,23 +47,27 @@ public class VisionWithDistance extends CommandBase {
         // reasonable first try. If it still does not shoot, relax
         // this a bit more. Perhaps 3% or 4% (same as error tolerance).
         if (Math.abs(this.lastVelocitySentToShooter - velocity) > this.lastVelocitySentToShooter * 0.02) {
+
           this.shooter.cargoShot((int) velocity, true);
           this.lastVelocitySentToShooter = velocity;
         }
       } else {
+
         Lights.getInstance().setColor(LEDMode.RED);
       }
     }
   }
   
   @Override
-  public void end(boolean interrupted) {
+  public void end (boolean interrupted) {
+
     Lights.getInstance().setColor(LEDMode.CONFETTI);
   }
 
   // Returns true when the command should end.
   @Override
-  public boolean isFinished() {
+  public boolean isFinished () {
+    
     return this.shooter.getShot() != SHOTS.visionTracked;
   }
 }

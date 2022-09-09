@@ -20,20 +20,17 @@ import frc.robot.subsystems.RobotCargoCount;
  * project.
  */
 public class Robot extends TimedRobot {
-  private Command m_autonomousCommand;
 
+  private Command m_autonomousCommand;
   private RobotContainer m_robotContainer;
 
-  /**
-   * This function is run when the robot is first started up and should be used for any
-   * initialization code.
-   */
   @Override
-  public void robotInit() {
+  public void robotInit () {
+
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
-    m_robotContainer = new RobotContainer();
-    m_robotContainer.getLights().setColor(LEDMode.FIRE);
+    this.m_robotContainer = new RobotContainer();
+    this.m_robotContainer.getLights().setColor(LEDMode.FIRE);
 
     SmartDashboard.putNumber("Auto Start Wait", 0.0);
     SmartDashboard.putNumber("Shooter Velocity", 6750);
@@ -45,11 +42,12 @@ public class Robot extends TimedRobot {
    * This function is called every robot packet, no matter the mode. Use this for items like
    * diagnostics that you want ran during disabled, autonomous, teleoperated and test.
    *
-   * <p>This runs after the mode specific periodic functions, but before LiveWindow and
+   * This runs after the mode specific periodic functions, but before LiveWindow and
    * SmartDashboard integrated updating.
    */
   @Override
-  public void robotPeriodic() {
+  public void robotPeriodic () {
+
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
@@ -61,61 +59,66 @@ public class Robot extends TimedRobot {
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
-  public void disabledInit() {
-    m_robotContainer.limelightTurret.setPipeline(Constants.SHOOTER_OFF_PIPELINE);
+  public void disabledInit () {
+
+    this.m_robotContainer.limelightTurret.setPipeline(Constants.SHOOTER_OFF_PIPELINE);
   }
 
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic () {}
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
-  public void autonomousInit() {
-    m_robotContainer.scheduleInitialStates();
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-    m_robotContainer.limelightTurret.setPipeline(Constants.SHOOTER_LONG_PIPELINE);
+  public void autonomousInit () {
 
-    // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
+    this.m_robotContainer.scheduleInitialStates();
+    this.m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    this.m_robotContainer.limelightTurret.setPipeline(Constants.SHOOTER_LONG_PIPELINE);
+
+    if (this.m_autonomousCommand != null) {
+
+      this.m_autonomousCommand.schedule();
     }
   }
 
   /** This function is called periodically during autonomous. */
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic () {}
 
   @Override
-  public void autonomousExit() {
+  public void autonomousExit () {
+
     this.m_robotContainer.stashAutoExitStateCommands();
   }
 
   @Override
-  public void teleopInit() {
+  public void teleopInit () {
+
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
-    }
-    this.m_robotContainer.restartAutoExitStateCommands();
+    if (this.m_autonomousCommand != null) {
 
-    m_robotContainer.limelightTurret.setPipeline(Constants.SHOOTER_LONG_PIPELINE);
-    //m_robotContainer.limelightBase.setPipeline(Constants.INTAKE_DEFAULT_PIPELINE);
+      this.m_autonomousCommand.cancel();
+    }
+
+    this.m_robotContainer.restartAutoExitStateCommands();
+    this.m_robotContainer.limelightTurret.setPipeline(Constants.SHOOTER_LONG_PIPELINE);
   }
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic () {}
 
   @Override
-  public void testInit() {
+  public void testInit () {
+
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
   }
 
   /** This function is called periodically during test mode. */
   @Override
-  public void testPeriodic() {}
+  public void testPeriodic () {}
 }

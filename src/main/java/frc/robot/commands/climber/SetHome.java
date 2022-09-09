@@ -10,8 +10,7 @@ public class SetHome extends CommandBase {
     public SetHome (final Climber climber) {
 
         this.climber = climber;
-
-        addRequirements(this.climber);
+        this.addRequirements(this.climber);
     }
 
     @Override

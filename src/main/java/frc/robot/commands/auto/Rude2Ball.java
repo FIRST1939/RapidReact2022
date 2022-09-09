@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.Limelight;
 import frc.robot.commands.ManualMoveAndTurnToTarget;
-import frc.robot.commands.ManualTurnToTarget;
 import frc.robot.commands.ResetGyro;
 import frc.robot.commands.RumbleController;
 import frc.robot.commands.ToggleManualEjection;
@@ -23,7 +22,7 @@ public class Rude2Ball extends SequentialCommandGroup {
     
     public Rude2Ball (final DriveTrain driveTrain, final Intake intake, final Indexer indexer, final Shooter shooter, final Limelight limelight, final RumbleController rumbleController) {
 
-        addCommands(
+        this.addCommands(
             // Configurable wait for alliance partner.
             new WaitCommand(SmartDashboard.getNumber("Auto Start Wait", 0.0)),
 

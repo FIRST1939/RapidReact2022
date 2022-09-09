@@ -24,7 +24,7 @@ public class GetToPosition extends CommandBase {
         this.rumbleController = rumbleController;
         this.extension = extension;
 
-        addRequirements(this.climber);
+        this.addRequirements(this.climber);
     }
 
     @Override
@@ -46,10 +46,12 @@ public class GetToPosition extends CommandBase {
     }
 
     @Override
-    public void end(boolean interrupted) {
+    public void end (boolean interrupted) {
 
         this.climber.setMotor(0);
+
         if (this.rumbleController != null) {
+
             this.rumbleController.schedule();
         }
     }

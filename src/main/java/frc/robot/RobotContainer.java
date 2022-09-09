@@ -7,16 +7,13 @@ package frc.robot;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
-import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
@@ -24,25 +21,17 @@ import frc.robot.Constants.SHOTS;
 import frc.robot.commands.DriveWithInput;
 import frc.robot.commands.LightsUpdater;
 import frc.robot.commands.ManualMoveAndTurnToTarget;
-import frc.robot.commands.ManualMoveToTarget;
 import frc.robot.commands.ManualTurnToTarget;
 import frc.robot.commands.RumbleController;
-import frc.robot.commands.SlowlyDrive;
 import frc.robot.commands.ToggleIntakeIndexerManualMode;
 import frc.robot.commands.ToggleManualEjection;
 import frc.robot.commands.VisionWithDistance;
 import frc.robot.commands.auto.Auto4Ball;
 import frc.robot.commands.auto.Auto5Ball;
 import frc.robot.commands.auto.CargoRingTwoBall;
-import frc.robot.commands.auto.DriveStraightDistance;
-import frc.robot.commands.auto.DriveStraightDistanceNoStop;
-import frc.robot.commands.auto.DriveTurnToRelativeAngle;
 import frc.robot.commands.auto.OneBall;
-import frc.robot.commands.auto.PlusOneTwoBall;
-import frc.robot.commands.auto.RightSide3CargoNoTrajectory;
 import frc.robot.commands.auto.Rude1Ball;
 import frc.robot.commands.auto.Rude2Ball;
-import frc.robot.commands.auto.TurnToAngle;
 import frc.robot.commands.indexer.IndexerEmptyState;
 import frc.robot.commands.indexer.IndexerReadyToShootState;
 import frc.robot.commands.indexer.IndexerShootingState;
@@ -86,14 +75,12 @@ import frc.robot.triggers.ManualShootTrigger;
  * commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  // Create the joystick objects.
+
   private final Joystick leftStick = new Joystick(Constants.LEFT_STICK_PORT);
   private final Joystick rightStick = new Joystick(Constants.RIGHT_STICK_PORT);
   private final XboxController driverTwo = new XboxController(Constants.DRIVER2_CONTROLLER_PORT);
 
-  // The robot's subsystems and commands are defined here...
   JoystickButton sidewinderManualDeploy = new JoystickButton(leftStick, 6);
-  // private final DriveTrain driveTrain = new DriveTrain(() -> sidewinderManualDeploy.get());
   JoystickButton manualSlowlyDriveButton = new JoystickButton(leftStick, 7);
   private final DriveTrain driveTrain = new DriveTrain(() -> sidewinderManualDeploy.get(), manualSlowlyDriveButton);
   private final RobotCargoCount robotCargoCount = RobotCargoCount.getInstance();
@@ -104,8 +91,6 @@ public class RobotContainer {
   public final Limelight limelightTurret = new Limelight("limelight-turret");
   public final RumbleController rumbleController = new RumbleController(this.driverTwo);
 
-  //public final Limelight limelightBase = new Limelight("liemlight-base");
-
   //private final Compressor compressor = new Compressor(Constants.PNEUMATICS_HUB_CAN_ID, PneumaticsModuleType.CTREPCM);
 
   private Command intakeCommandOnAutoExit = null;
@@ -114,25 +99,19 @@ public class RobotContainer {
 
   private final SendableChooser<Supplier<Command>> autoChooser = new SendableChooser<>();
 
-  /**
-   * The container for the robot. Contains subsystems, OI devices, and commands.
-   */
-  public RobotContainer() {
-    // Configure default commands.
+  public RobotContainer () {
+
     configureDefaultCommands();
-    // Configure the button bindings
     configureButtonBindings();
     configureLightingTriggers();
-    //pressureInit();
     configureAutoChooser();
+
+    //pressureInit()
   }
 
-  /**
-   * Populates the dashboard chooser for auto mode selection.
-   */
-  private void configureAutoChooser() {
-    //this.autoChooser.setDefaultOption("PlusOne Two Ball", () -> new PlusOneTwoBall(driveTrain, intake, indexer, shooter, limelightTurret));
-    //this.autoChooser.setDefaultOption("Left 2 Cargo", () -> new LeftSide2CargoNoTrajectory(driveTrain, intake, indexer, shooter));
+  /** Populates the dashboard chooser for auto mode selection. */
+  private void configureAutoChooser () {
+    
     this.autoChooser.addOption("Do Nothing", () -> new WaitCommand(1.0));
     //this.autoChooser.addOption("Right 2 Cargo", () -> new RightSide2CargoNoTrajectory(driveTrain, intake, indexer, shooter));
     //this.autoChooser.addOption("Right 3 Cargo", () -> new RightSide3CargoNoTrajectory(driveTrain, intake, indexer, shooter));
@@ -150,12 +129,13 @@ public class RobotContainer {
    * Establishes the default commands for subsystems that need one. A default
    * command is optional.
    */
-  private void configureDefaultCommands() {
-    this.driveTrain
-        .setDefaultCommand(new DriveWithInput(driveTrain,
-            () -> enforceDeadband(-leftStick.getY(), Constants.SPEED_DEAD_BAND),
-            () -> enforceDeadband(rightStick.getX(), Constants.ROTATE_DEAD_BAND),
-            () -> enforceDeadband(leftStick.getX(), Constants.SPEED_DEAD_BAND)));
+  private void configureDefaultCommands () {
+    this.driveTrain.setDefaultCommand(
+      new DriveWithInput(driveTrain,
+      () -> enforceDeadband(-leftStick.getY(), Constants.SPEED_DEAD_BAND),
+      () -> enforceDeadband(rightStick.getX(), Constants.ROTATE_DEAD_BAND),
+      () -> enforceDeadband(leftStick.getX(), Constants.SPEED_DEAD_BAND))
+    );
   }
 
   /**
@@ -164,29 +144,14 @@ public class RobotContainer {
    * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureButtonBindings() {
+  private void configureButtonBindings () {
+
     /*
     JoystickButton turnToTarget = new JoystickButton(rightStick, 11);
     final ReadAngle readAngle = new ReadAngle(limelightTurret);
     final DoubleSupplier angleSupplier = readAngle.getSupplier();
-    turnToTarget.whenPressed(readAngle.andThen(new DriveTurnToRelativeAngle(angleSupplier, driveTrain)));
+    turnToTarget.whenPressed(readAngle.andThen(new DriveTurnToRelativeAngle(angleSupplier, this.driveTrain)));
     */
-    /*
-    JoystickButton moveForward = new JoystickButton(leftStick, 8);
-    moveForward.whenPressed(new SequentialCommandGroup(
-      //new DriveStraightDistanceNoStop(-140, driveTrain, 0.7)
-      new DriveStraightDistanceNoStop(-2, driveTrain, 0.2),
-      new DriveStraightDistanceNoStop(-2, driveTrain, 0.25),
-      new DriveStraightDistanceNoStop(-2, driveTrain, 0.3),
-      new DriveStraightDistanceNoStop(-14, driveTrain, 0.4),
-      new DriveStraightDistanceNoStop(-100, driveTrain, 0.55),
-      new DriveStraightDistance(-20, driveTrain, 0.4)
-  
-    ));
-    */
-
-    // JoystickButton turnToAngleSecondary = new JoystickButton(leftStick, 9);
-    // turnToAngleSecondary.whenPressed(new TurnToAngle(driveTrain, -180));
 
     JoystickButton manualTurnToTargetLong = new JoystickButton(rightStick, 10);
     manualTurnToTargetLong.whenPressed(new ManualTurnToTarget(driveTrain, limelightTurret, 0, rumbleController));
@@ -194,9 +159,7 @@ public class RobotContainer {
     JoystickButton manualMoveToTargetLong = new JoystickButton(rightStick, 11);
     manualMoveToTargetLong.whenPressed(new ManualMoveAndTurnToTarget(driveTrain, limelightTurret, 0, rumbleController));
 
-    // manualSlowlyDriveButton.whileHeld(new SlowlyDrive(this.driveTrain));
-
-    //shooter buttons
+    // Shooter Buttons
     JoystickButton fenderLowButton = new JoystickButton(driverTwo, XboxController.Button.kY.value);
     fenderLowButton.whenPressed(new SetShot(this.shooter, SHOTS.fenderLow));
 
@@ -229,22 +192,18 @@ public class RobotContainer {
     shooterIdleTrigger.whenActive(new WaitCommand(1.0).andThen(new InstantCommand(()-> shooter.idle())));
     shooterIdleTrigger.whenInactive(new ReturnToPriorShot(this.shooter));
 
-    BooleanSupplier shootTriggerSupplier = () -> (driverTwo
-        .getRawAxis(Math.abs(XboxController.Axis.kRightTrigger.value)) > Constants.TRIGGER_THRESHOLD);
+    BooleanSupplier shootTriggerSupplier = () -> (driverTwo.getRawAxis(Math.abs(XboxController.Axis.kRightTrigger.value)) > Constants.TRIGGER_THRESHOLD);
     ShootTrigger shootTrigger = new ShootTrigger(this.indexer, this.shooter, shootTriggerSupplier);
     shootTrigger.whenActive(IndexerShootingState.getInstance(this.indexer));
 
-    //intake and indexer buttons
+    // Intake & Indexer Buttons
     JoystickButton toggleManualIntakeIndexer = new JoystickButton(driverTwo, XboxController.Button.kStart.value);
-    toggleManualIntakeIndexer.whenPressed(
-        new ToggleIntakeIndexerManualMode(
-            this.intake,
-            this.indexer,
-            new ManualIntakeRollerBelts(this.intake,
-                () -> enforceDeadband(-driverTwo.getLeftX(), Constants.MANUAL_INTAKE_DEADBAND)),
-            new ManualIndexer(this.indexer,
-                () -> enforceDeadband(driverTwo.getRightY(), Constants.MANUAL_INDEXER_DEADBAND),
-                new ManualShootTrigger(indexer, shooter, shootTriggerSupplier))));
+    toggleManualIntakeIndexer.whenPressed(new ToggleIntakeIndexerManualMode(
+      this.intake,
+      this.indexer,
+      new ManualIntakeRollerBelts(this.intake, () -> enforceDeadband(-driverTwo.getLeftX(), Constants.MANUAL_INTAKE_DEADBAND)),
+      new ManualIndexer(this.indexer, () -> enforceDeadband(driverTwo.getRightY(), Constants.MANUAL_INDEXER_DEADBAND), new ManualShootTrigger(indexer, shooter, shootTriggerSupplier))
+    ));
 
     /*
      * This is to be used to eject all cargo from the robot in the case of jams or a
@@ -262,7 +221,7 @@ public class RobotContainer {
     intakeGatherButton.whenPressed(new IntakeExtendCommandSelector(this.intake));
     intakeGatherButton.whenReleased(new IntakeRetractCommandSelector(this.intake));
 
-    //climber buttons
+    // Climber Buttons
     JoystickButton climberMotorRetract = new JoystickButton(rightStick, 2);
     climberMotorRetract.whileHeld(new RetractMotor(this.climber));
 
@@ -306,7 +265,8 @@ public class RobotContainer {
     climberMotorBottomPositionButton.whenPressed(new GetToPosition(this.climber, rumbleController, Constants.CLIMBER_POSITIONS.bottomFirst));
   }
 
-  private void configureLightingTriggers() {
+  private void configureLightingTriggers () {
+
     IntakeForward intakeForward = new IntakeForward(this.intake);
     intakeForward.whenActive(new LightsUpdater(Constants.LEDMode.GREEN));
 
@@ -314,27 +274,29 @@ public class RobotContainer {
     intakeReverse.whenActive(new LightsUpdater(Constants.LEDMode.RED));
   }
 
-  /**
-   * Schedules the initial state commands for the subsystem state machines.
-   */
-  public void scheduleInitialStates() {
+  /** Schedules the initial state commands for the subsystem state machines. */
+  public void scheduleInitialStates () {
+
     IntakeStowedEmptyState.getInstance(this.intake).schedule();
     IndexerReadyToShootState.getInstance(this.indexer).schedule();
     RobotCargoCount.getInstance().setCount(RobotCargoCount.START_CARGO);
   }
 
+  /*
   private void pressureInit () {
 
-    // compressor.enableAnalog(Constants.PNEUMATICS_HUB_MIN_PRESSURE, Constants.PNEUMATICS_HUB_MAX_PRESSURE);
-    //compressor.enableDigital();
+    this.compressor.enableAnalog(Constants.PNEUMATICS_HUB_MIN_PRESSURE, Constants.PNEUMATICS_HUB_MAX_PRESSURE);
+    this.compressor.enableDigital();
   }
+  */
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
+  public Command getAutonomousCommand () { 
+    
     return this.autoChooser.getSelected().get();
   }
 
@@ -342,27 +304,33 @@ public class RobotContainer {
    * To be used in conjunction with restartAutoExitStateCommands to manage the
    * state machine transition from auto to teleop mode.
    */
-  public void stashAutoExitStateCommands() {
+  public void stashAutoExitStateCommands () {
+
     this.intakeCommandOnAutoExit = this.intake.getCurrentCommand();
     this.indexerCommandOnAutoExit = this.indexer.getCurrentCommand();
     this.exitedAuto = true;
   }
 
-  public void restartAutoExitStateCommands() {
-    if(!exitedAuto){
+  public void restartAutoExitStateCommands () {
+
+    if (!exitedAuto) {
+
       IntakeStowedEmptyState.getInstance(intake).schedule();
       IndexerEmptyState.getInstance(indexer).schedule();
       RobotCargoCount.getInstance().setCount(0);
       return;
     }
-    if ((this.intakeCommandOnAutoExit != null)
-        && (this.intake.getCurrentCommand() == null)) {
+
+    if ((this.intakeCommandOnAutoExit != null) && (this.intake.getCurrentCommand() == null)) {
+
       this.intakeCommandOnAutoExit.schedule();
     }
-    if ((this.indexerCommandOnAutoExit != null)
-        && (this.indexer.getCurrentCommand() == null)) {
+
+    if ((this.indexerCommandOnAutoExit != null) && (this.indexer.getCurrentCommand() == null)) {
+
       this.indexerCommandOnAutoExit.schedule();
     }
+
     this.intakeCommandOnAutoExit = null;
     this.indexerCommandOnAutoExit = null;
     this.exitedAuto = false;
@@ -374,14 +342,15 @@ public class RobotContainer {
    *                 enforced.
    * @return
    */
-  private double enforceDeadband(double rawSpeed, double deadband) {
+  private double enforceDeadband (double rawSpeed, double deadband) {
+
     return Math.abs(rawSpeed) < deadband ? 0.0 : rawSpeed;
   }
 
-  private boolean isIntakeSendingCargo() {
+  private boolean isIntakeSendingCargo () {
+
     final Command currentIntakeCommand = this.intake.getCurrentCommand();
-    return (currentIntakeCommand instanceof IntakeGatheringSendState)
-        || (currentIntakeCommand instanceof IntakeStowedSendState);
+    return (currentIntakeCommand instanceof IntakeGatheringSendState) || (currentIntakeCommand instanceof IntakeStowedSendState);
   }
 
   public Lights getLights () {

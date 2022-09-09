@@ -23,18 +23,13 @@ import frc.robot.subsystems.Shooter;
  * the cargo.
  */
 public class Auto5Ball extends SequentialCommandGroup {
-  /** Creates a new LeftSide2CargoNoTrajectory. */
-  public Auto5Ball(
-      final DriveTrain driveTrain,
-      final Intake intake,
-      final Indexer indexer,
-      final Shooter shooter,
-      final Limelight limelight,
-      final RumbleController rumbleController) {
-    addCommands(
 
+  public Auto5Ball(final DriveTrain driveTrain, final Intake intake, final Indexer indexer, final Shooter shooter, final Limelight limelight, final RumbleController rumbleController) {
+
+    this.addCommands(
         // Configurable wait for alliance partner.
         new WaitCommand(SmartDashboard.getNumber("Auto Start Wait", 0.0)),
+
         // Gather, move to cargo and set for fender high.
         new ParallelCommandGroup(
             new ScheduleCommand(IntakeGatheringEmptyState.getInstance(intake)),
@@ -44,6 +39,7 @@ public class Auto5Ball extends SequentialCommandGroup {
         new WaitCommand(0.15),
         new AutoModeShooter(2, indexer, shooter).withTimeout(3.0),
         new WaitCommand(0.2),
+
         // new DriveTurnToRelativeAngle(() -> 26, driveTrain).withTimeout(1.0),
         new TurnToAngle(driveTrain, 24.5),
         new DriveStraightDistanceNoStop(-14, driveTrain, 0.7),
@@ -56,7 +52,7 @@ public class Auto5Ball extends SequentialCommandGroup {
             new SetShot(shooter, Constants.SHOTS.cargoRing)),
             new WaitCommand(2.0),
 
-        //after intake 2ball in humanplayer station 
+        // After intake 2ball in humanplayer station .
         new TurnToAngle(driveTrain, 7.937),
         new DriveStraightDistance(240, driveTrain, 0.7),
         new DriveStraightDistance(16, driveTrain, 0.5),
@@ -66,7 +62,7 @@ public class Auto5Ball extends SequentialCommandGroup {
         new ManualMoveToTarget(driveTrain, limelight, 0, rumbleController).withTimeout(1.5),
         new AutoModeShooter(2, indexer, shooter).withTimeout(2.0),
 
-        //after shoot 4ball        
+        // After shoot 4ball.
         new ParallelCommandGroup(
             new DriveStraightDistance(-45, driveTrain, 0.7),
             new ScheduleCommand(IntakeGatheringEmptyState.getInstance(intake)),
@@ -75,6 +71,5 @@ public class Auto5Ball extends SequentialCommandGroup {
         new ManualMoveToTarget(driveTrain, limelight, 0, rumbleController),
         new AutoModeShooter(1, indexer, shooter).withTimeout(3.0)
     );
-
   }
 }

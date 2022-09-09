@@ -11,6 +11,7 @@ import frc.robot.subsystems.Intake;
 /**
  * This is the command to schedule when the button to retract the intake (stop
  * gathering) is pressed. It will handle three cases.
+ * 
  * <ol>
  * <li>If in manual mode, just retract.
  * <li>If automated and retracted, ignore.
@@ -19,33 +20,39 @@ import frc.robot.subsystems.Intake;
  * </ol>
  */
 public class IntakeRetractCommandSelector extends CommandBase {
+
   private final Intake intake;
   private final ManualIntakeRetract manualRetract;
 
-  /** Creates a new IntakeExtendCommandSelector. */
-  public IntakeRetractCommandSelector(final Intake intake) {
+  public IntakeRetractCommandSelector (final Intake intake) {
+
     this.intake = intake;
     this.manualRetract = new ManualIntakeRetract(this.intake);
   }
 
-  // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
+  public void initialize () {
+
     if (this.intake.isManualMode()) {
+
       this.manualRetract.schedule();
     } else {
+
       if (!this.intake.isRetracted()) {
+
         final Command currentState = this.intake.getCurrentCommand();
+
         if (currentState != null) {
+
           currentState.cancel();
         }
       }
     }
   }
 
-  // Returns true when the command should end.
   @Override
-  public boolean isFinished() {
+  public boolean isFinished () {
+    
     return true;
   }
 }

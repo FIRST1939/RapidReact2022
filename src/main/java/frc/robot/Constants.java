@@ -1,7 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot;
 
 /**
@@ -10,12 +6,12 @@ package frc.robot;
  * purpose. All constants should be declared globally (i.e. public static). Do
  * not put anything functional in this class.
  *
- * <p>
  * It is advised to statically import this class (or one of its inner classes)
  * wherever the constants are needed, to reduce verbosity.
  */
 public final class Constants {
-    // Joystick constants.
+
+    // Joystick Constants
     public static final int LEFT_STICK_PORT = 0;
     public static final int RIGHT_STICK_PORT = 1;
     public static final double SPEED_DEAD_BAND = 0.1;
@@ -27,7 +23,7 @@ public final class Constants {
     public static final double TRIGGER_THRESHOLD = .3;
     public static final double AXIS_THRESHOLD = .1;
 
-    // Drive train constants.
+    // Drivetrain Constants
     public static final int LEFT_DRIVE_1_CAN_ID = 11;
     public static final int LEFT_DRIVE_2_CAN_ID = 12;
     public static final int LEFT_DRIVE_3_CAN_ID = 13;
@@ -49,7 +45,7 @@ public final class Constants {
     /** Sidewinder output adjusted toward 0 by this amount while engaged */
     public static final double SIDEWINDER_OUTPUT_OFFSET = 0.1;
 
-    // Drive train encoder DIO ports
+    // Drivetrain Encoder DIO Ports
     public static final int LEFT_DRIVE_A_CHANNEL = 7;
     public static final int LEFT_DRIVE_B_CHANNEL = 6;
     public static final int RIGHT_DRIVE_A_CHANNEL = 9;
@@ -66,14 +62,13 @@ public final class Constants {
     public static final double DRIVE_AUTO_TURN_TO_ANGLE_TOL_DEG = 5.0;
     public static final double DRIVE_AUTO_TURN_TO_ANGLE_TURN_RATE_TOL_DEG_PER_SEC = 10.0;
 
-    // Shooter constants.
+    // Shooter Constants
     public static final int SHOOTER_PCM_CHANNEL = 0;
     public static final int SHOOTER_FLYWHEEL_CAN_ID = 32;
 
     public static final int SHOOTER_DEFAULT_VELOCITY = 0;
     public static final boolean SHOOTER_DEFAULT_HOOD = false;
 
-    // TODO shooting values
     public enum SHOTS {
         off(0, false),
         visionTracked(-1, true),
@@ -98,15 +93,17 @@ public final class Constants {
 
     public static final int SHOOTER_VELOCITY_ERROR = 700;
 
-    // Intake constants
+    // Intake Constants
     public static final int INTAKE_PCM_CHANNEL = 2;
     public static final int INTAKE_MOTOR_CAN_ID = 7;
-    // TODO validate the min and max velocities.
+
+    // TODO Validate the min and max velocities.
     /** The minimum intake velocity in RPM. */
     public static final int INTAKE_MIN_RPM = 600;
     /** The maximum intake velocity in RPM. */
     public static final int INTAKE_MAX_RPM = 2200;
-    public static final int INTAKE_ENCODER_CYCLES_PER_ROTATION = 2048; // TODO verify encoder info
+    
+    public static final int INTAKE_ENCODER_CYCLES_PER_ROTATION = 2048;
     /** The ratio of the intake speed to drive speed is this value:1 */
     public static final double INTAKE_SPEED_TO_DRIVE_SPEED_RATIO = 2.0;
     public static final double INTAKE_INCHES_PER_REVOLUTION = 6.28;
@@ -114,7 +111,7 @@ public final class Constants {
     public static final long INTAKE_AT_SENSOR_TIME_ADJUSTMENT_MS = 0;
     public static final double MANUAL_INTAKE_DEADBAND = 0.1;
 
-    // Indexer constants
+    // Indexer Constants
     public static final int INDEXER_LEADER_CAN_ID = 10;
     public static final int INDEXER_FOLLOWER_CAN_ID = 17;
 
@@ -126,14 +123,13 @@ public final class Constants {
     public static final double MANUAL_INDEXER_FEED_OUTPUT = -0.8;
     public static final long INDEXER_AT_SENSOR_TIME_ADJUSTMENT_MS = 0;
 
-    // Climber constants.
+    // Climber Constants
     public static final int CLIMBER_MOTOR_CAN_ID = 31;
     public static final int CLIMBER_PISTON_FORWARD = 1;
     public static final int CLIMBER_PISTON_REVERSE = 7;
-    public static final int CLIMBER_EXTENSION_VELOCITY = 5000; // TODO climber extension velocity
-    public static final int CLIMBER_RETRACTION_VELOCITY = 5000; // TODO climber retraction velocity
+    public static final int CLIMBER_EXTENSION_VELOCITY = 5000;
+    public static final int CLIMBER_RETRACTION_VELOCITY = 5000;
 
-    // TODO climber extension values 
     public enum CLIMBER_POSITIONS {
         bottom(8500, 2000),
         bottomFirst(15000, 2000),
@@ -152,15 +148,15 @@ public final class Constants {
         }
     }
 
-    // Compressor constants.
+    // Compressor Constants
     public static final int PNEUMATICS_HUB_CAN_ID = 1;
     public static final int PNEUMATICS_HUB_MIN_PRESSURE = 110;
     public static final int PNEUMATICS_HUB_MAX_PRESSURE = 120;
 
-    //Lights constants.
+    // Light Constants
     public static final int LIGHTS_PWM = 2;
 
-    //Vision constants.
+    // Vision Constants
     public static final int SHOOTER_LONG_PIPELINE = 0;
     public static final int SHOOTER_OFF_PIPELINE = 1;
     public static final int SHOOTER_SHORT_PIPELINE = 2;
@@ -170,13 +166,27 @@ public final class Constants {
     public static final double VISION_M = -1500.0/11.0;
     public static final double VISION_B = 81050.0/11.0;
   
-    //all these are mostly in red color
     public enum LEDMode{
-        BLUE(0.87), RED(0.61), GREEN(0.73), YELLOW(0.67), PURPLE(0.91), PINK(0.57), WHITE(0.93), CONFETTI(-0.87), FIRE(-0.57),
-        TWINKLES(-0.49), COLORWAVES(-0.39), SCANNER(-0.35), CHASE(-0.31), STROBE(-0.11), RAINBOW(-0.97), OFF(0.99);
+        BLUE(0.87), 
+        RED(0.61), 
+        GREEN(0.73), 
+        YELLOW(0.67), 
+        PURPLE(0.91), 
+        PINK(0.57), 
+        WHITE(0.93), 
+        CONFETTI(-0.87), 
+        FIRE(-0.57),
+        TWINKLES(-0.49), 
+        COLORWAVES(-0.39), 
+        SCANNER(-0.35), 
+        CHASE(-0.31), 
+        STROBE(-0.11), 
+        RAINBOW(-0.97), 
+        OFF(0.99);
     
         public final double value;
-        private LEDMode(double value){
+        private LEDMode (double value) {
+
             this.value = value;
         }
     }
