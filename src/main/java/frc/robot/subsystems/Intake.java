@@ -129,6 +129,7 @@ public class Intake extends SubsystemBase {
     public void setManualMode (final boolean manualMode) {
 
         this.manualMode = manualMode;
+        SmartDashboard.putBoolean("Intake Manual Mode: ", this.manualMode);
     }
 
     /**
