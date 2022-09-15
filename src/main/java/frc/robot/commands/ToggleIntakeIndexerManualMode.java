@@ -58,7 +58,7 @@ public class ToggleIntakeIndexerManualMode extends CommandBase {
       this.intakeManualCommand.schedule();
       this.indexerManualCommand.schedule();
 
-      SmartDashboard.putBoolean("Manual Mode: ", false);
+      SmartDashboard.putBoolean("Manual Mode: ", true);
     }
   }
 
