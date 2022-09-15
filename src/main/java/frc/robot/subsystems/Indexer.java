@@ -137,6 +137,5 @@ public class Indexer extends SubsystemBase {
   public void setManualMode (final boolean manualMode) {
     
     this.manualMode = manualMode;
-    SmartDashboard.putBoolean("Indexer Manual Mode: ", this.manualMode);
   }
 }
