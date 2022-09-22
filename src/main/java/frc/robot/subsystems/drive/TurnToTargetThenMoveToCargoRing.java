@@ -12,7 +12,13 @@ import frc.robot.devices.Targeting;
  * point at the target and to move into range for a cargo ring shot.
  */
 public class TurnToTargetThenMoveToCargoRing extends SequentialCommandGroup {
-  /** Creates a new TurnToTargetThenMoveToCargoRing. */
+  /**
+   * Creates a new TurnToTargetThenMoveToCargoRing.
+   * 
+   * @param driveTrain the {@link DriveTrain} to turn and move.
+   * @param targeting  the {@link Targeting} implementation used to find the
+   *                   target as input to turn angle and distance calculation.
+   */
   public TurnToTargetThenMoveToCargoRing(final DriveTrain driveTrain, final Targeting targeting) {
     addCommands(
         new TurnToTarget(driveTrain, targeting).withTimeout(3.0),

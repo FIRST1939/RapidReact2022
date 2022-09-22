@@ -4,59 +4,31 @@
 
 package frc.robot.subsystems.drive;
 
-import static frc.robot.Constants.DriveTrainConstants.DRIVE_AUTO_GYRO_STRAIGHT_KP;
-
-import edu.wpi.first.wpilibj2.command.CommandBase;
-
 /**
- * Use this command during autonomous to drive a straight line for a distance
- * passed to the constructor.
+ * This is the same as {@link DriveStraightDistance} except that the drive
+ * motors are left on after completion.
+ * 
+ * <p>
+ * WARNING: Use this with care and never as the last drive of an auto routine.
  */
-public class DriveStraightDistanceNoStop extends CommandBase {
-  private final boolean forward;
-  private final double absInches;
-  private final DriveTrain driveTrain;
-
-  private final double power;
-
+public class DriveStraightDistanceNoStop extends DriveStraightDistance {
   /**
    * @param inches     the inches to drive. The intake end is forward (positive).
    *                   Pass a negative value for backwards.
    * @param driveTrain the drive train being controlled.
+   * @param power      the forward or backward power for the motion [-1.0, 1.0].
    */
   public DriveStraightDistanceNoStop(final double inches, final DriveTrain driveTrain, final double power) {
-    this.forward = inches >= 0.0;
-    this.absInches = Math.abs(inches);
-    this.power = -power;
-    this.driveTrain = driveTrain;
-    addRequirements(this.driveTrain);
+    super(inches, driveTrain, power);
   }
 
-  // Called when the command is initially scheduled.
+  /**
+   * WARNING: Leaves the drive train motors running.
+   * 
+   * <p>
+   * {@inheritDoc}
+   */
   @Override
-  public void initialize() {
-    this.driveTrain.resetDistance();
-    this.driveTrain.resetHeading();
-  }
-
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    double turningValue = (-this.driveTrain.getHeading()) * DRIVE_AUTO_GYRO_STRAIGHT_KP;
-    // Invert the direction of the turn if we are going backwards
-    if (forward) {
-      turningValue = -turningValue;
-    }
-
-    this.driveTrain.arcadeDrive(
-        forward ? power : -power,
-        turningValue,
-        0.0);
-  }
-
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return Math.abs(driveTrain.getDistance()) >= this.absInches;
+  public void end(boolean interrupted) {
   }
 }

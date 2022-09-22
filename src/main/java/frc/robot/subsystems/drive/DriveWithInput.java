@@ -42,7 +42,13 @@ public class DriveWithInput extends CommandBase {
     addRequirements(this.driveTrain);
   }
 
-  // Called every time the scheduler runs while the command is scheduled.
+  /**
+   * Calls the {@link DriveTrain#arcadeDrive(double, double, double)} method with
+   * speeds from the constructor injected suppliers.
+   * 
+   * <p>
+   * {@inheritDoc}
+   */
   @Override
   public void execute() {
     this.driveTrain.arcadeDrive(
@@ -51,7 +57,13 @@ public class DriveWithInput extends CommandBase {
         this.sidewindSupplier.getAsDouble());
   }
 
-  // Called once the command ends or is interrupted.
+  /**
+   * This will only ever be invoked if another command interupts this one. This
+   * implementation stops the drive motors.
+   * 
+   * <p>
+   * {@inheritDoc}
+   */
   @Override
   public void end(boolean interrupted) {
     this.driveTrain.stop();

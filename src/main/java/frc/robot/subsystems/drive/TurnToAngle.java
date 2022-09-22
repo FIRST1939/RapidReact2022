@@ -6,20 +6,48 @@ package frc.robot.subsystems.drive;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
+/**
+ * Use this command to turn the robot to an angle relative to its current
+ * orientation. This is useful for turns of a known angle during autonomous.
+ * 
+ * <p>
+ * TODO fix to handle overshoot in execute. Change to PID?
+ */
 public class TurnToAngle extends CommandBase {
+  /** Turn to within this tolerance in degrees. */
+  private static final double TOLERANCE_DEGREES = 0.75;
+
+  /** The {@link DriveTrain} being turned. */
   private final DriveTrain driveTrain;
+  /** The latest heading in degrees read during execution. */
   private double angle;
-  private double target;
+  /** The target turn angle in degrees from construction. */
+  private final double target;
+  /** The initialization time determined turn direction. */
   private int direction = 0;
+  /** The amount of turn remaining in degrees. */
   private double distance;
 
+  /**
+   * Creates a command to turn to a specific angle relative to the current
+   * heading.
+   * 
+   * @param driveTrain the {@link DriveTrain} to turn.
+   * @param target     the desired turn angle in degrees.
+   */
   public TurnToAngle(final DriveTrain driveTrain, final double target) {
     this.driveTrain = driveTrain;
     this.target = target;
     addRequirements(driveTrain);
   }
 
-  // Called when the command is initially scheduled.
+  /**
+   * Reset the heading to measure the turn from 0 and then calculate the direction
+   * of the turn.
+   * 
+   * <p>
+   * {@inheritDoc}
+   */
   @Override
   public void initialize() {
     this.driveTrain.resetHeading();
@@ -33,7 +61,12 @@ public class TurnToAngle extends CommandBase {
     }
   }
 
-  // Called every time the scheduler runs while the command is scheduled.
+  /**
+   * Calculate the distance remaining and set a turn speed relative to that angle.
+   * 
+   * <p>
+   * {@inheritDoc}
+   */
   @Override
   public void execute() {
     this.angle = this.driveTrain.getHeading();
@@ -48,16 +81,25 @@ public class TurnToAngle extends CommandBase {
     }
   }
 
-  // Called once the command ends or is interrupted.
+  /**
+   * Turn off the drive train.
+   * 
+   * <p>
+   * {@inheritDoc}
+   */
   @Override
   public void end(boolean interrupted) {
     this.driveTrain.arcadeDrive(0, 0, 0);
   }
 
-  // Returns true when the command should end.
+  /**
+   * {@inheritDoc}
+   * 
+   * @return true when the distance is within the tolerance to end the command.
+   */
   @Override
   public boolean isFinished() {
     this.distance = this.target - this.angle;
-    return (this.distance < .75 && this.distance > -0.75);
+    return (this.distance < TOLERANCE_DEGREES && this.distance > -TOLERANCE_DEGREES);
   }
 }

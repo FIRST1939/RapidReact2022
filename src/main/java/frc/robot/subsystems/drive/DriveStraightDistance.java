@@ -23,6 +23,7 @@ public class DriveStraightDistance extends CommandBase {
    * @param inches     the inches to drive. The intake end is forward (positive).
    *                   Pass a negative value for backwards.
    * @param driveTrain the drive train being controlled.
+   * @param power      the forward or backward power for the motion [-1.0, 1.0].
    */
   public DriveStraightDistance(final double inches, final DriveTrain driveTrain, final double power) {
     this.forward = inches >= 0.0;
@@ -32,14 +33,26 @@ public class DriveStraightDistance extends CommandBase {
     addRequirements(this.driveTrain);
   }
 
-  // Called when the command is initially scheduled.
+  /**
+   * Resets the drive sensors in preparation for driving straight.
+   * 
+   * <p>
+   * {@inheritDoc}
+   */
   @Override
   public void initialize() {
     this.driveTrain.resetDistance();
     this.driveTrain.resetHeading();
   }
 
-  // Called every time the scheduler runs while the command is scheduled.
+  /**
+   * Calculates a turn value based on the amount the heading has moved from 0.0.
+   * This turn value is combined with the power provided to the contructor to
+   * execute an arcade turn.
+   * 
+   * <p>
+   * {@inheritDoc}
+   */
   @Override
   public void execute() {
     double turningValue = (-this.driveTrain.getHeading()) * DRIVE_AUTO_GYRO_STRAIGHT_KP;
@@ -54,13 +67,22 @@ public class DriveStraightDistance extends CommandBase {
         0.0);
   }
 
-  // Returns true when the command should end.
+  /**
+   * {@inheritDoc}
+   * 
+   * @return true once the desired distance is traversed.
+   */
   @Override
   public boolean isFinished() {
     return Math.abs(driveTrain.getDistance()) >= this.absInches;
   }
 
-  // Called once the command ends or is interrupted.
+  /**
+   * Stops the drive train motors.
+   * 
+   * <p>
+   * {@inheritDoc}
+   */
   @Override
   public void end(boolean interrupted) {
     this.driveTrain.stop();

@@ -6,21 +6,43 @@ package frc.robot.subsystems.drive;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.devices.Targeting;
+import frc.robot.subsystems.shooter.Shots;
 
+/**
+ * This command can only be effectively used after running {@link TurnToTarget}
+ * to square up on the target.
+ * 
+ * <p>
+ * This command will use the vertical angle to the target to move approximately
+ * to the {@link Shots#cargoRing} shooting distance.
+ */
 public class MoveToCargoRing extends CommandBase {
+  /** The drive train use to move the robot to the cargo ring. */
   private final DriveTrain driveTrain;
+  /** The targeting device being used for the vertical angle. */
   private final Targeting targeting;
-
+  /** The latest acquired vertical angle to the target. */
   private double ty;
+  /** The direction to move (toward or away from the target). */
   private int direction = 0;
 
+  /**
+   * @param driveTrain the drive train use to move the robot to the cargo ring.
+   * @param targeting  the targeting device being used for the vertical angle.
+   */
   public MoveToCargoRing(final DriveTrain driveTrain, final Targeting targeting) {
     this.driveTrain = driveTrain;
     this.targeting = targeting;
     addRequirements(driveTrain);
   }
 
-  // Called when the command is initially scheduled.
+  /**
+   * Read the {@link Targeting} device to decide if we should move forward or
+   * backward to get to the proper cargo ring shooting distance.
+   * 
+   * <p>
+   * {@inheritDoc}
+   */
   @Override
   public void initialize() {
     this.ty = this.targeting.getVerticalAngleError();
@@ -35,7 +57,12 @@ public class MoveToCargoRing extends CommandBase {
     }
   }
 
-  // Called every time the scheduler runs while the command is scheduled.
+  /**
+   * Read the {@link Targeting} device to manage the speed of the movement.
+   * 
+   * <p>
+   * {@inheritDoc}
+   */
   @Override
   public void execute() {
     this.ty = this.targeting.getVerticalAngleError();
@@ -49,13 +76,24 @@ public class MoveToCargoRing extends CommandBase {
     }
   }
 
-  // Called once the command ends or is interrupted.
+  /**
+   * Turn off the drive train after movement completion.
+   * 
+   * <p>
+   * {@inheritDoc}
+   */
   @Override
   public void end(boolean interrupted) {
     this.driveTrain.arcadeDrive(0, 0, 0);
   }
 
-  // Returns true when the command should end.
+  /**
+   * Read the most recent {@link Targeting} device read in {@link #execute()} is
+   * in range, we are finished.
+   * 
+   * <p>
+   * {@inheritDoc}
+   */
   @Override
   public boolean isFinished() {
     return (this.ty < 8 && this.ty > 6);

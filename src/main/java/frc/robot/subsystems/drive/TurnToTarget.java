@@ -7,20 +7,43 @@ package frc.robot.subsystems.drive;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.devices.Targeting;
 
+/**
+ * Use this command to turn the robot to face the hub target. This is useful for
+ * pre-shot turns during auto and teleop.
+ * 
+ * <p>
+ * TODO fix to handle overshoot in execute. Change to PID?
+ */
 public class TurnToTarget extends CommandBase {
+  /** Turn to within this tolerance in degrees. */
+  private static final double TOLERANCE_DEGREES = 1.00;
+  /** The {@link DriveTrain} being turned. */
   private final DriveTrain driveTrain;
+  /** The {@link Targeting} being used to track the hub. */
   private final Targeting targeting;
-
+  /** The latest angle to hub in degrees read during execution. */
   private double angle;
+  /** The initialization time determined turn direction. */
   private int direction = 0;
 
+  /**
+   * Creates a command to turn to to the hub target.
+   * 
+   * @param driveTrain the {@link DriveTrain} to turn.
+   * @param targeting  the {@link Targeting} implemenation used to track the hub.
+   */
   public TurnToTarget(final DriveTrain driveTrain, final Targeting targeting) {
     this.driveTrain = driveTrain;
     this.targeting = targeting;
     addRequirements(driveTrain);
   }
 
-  // Called when the command is initially scheduled.
+  /**
+   * Read the horizontal angle to the hub to initialize the turn direction.
+   * 
+   * <p>
+   * {@inheritDoc}
+   */
   @Override
   public void initialize() {
     this.angle = targeting.getHorizontalAngleError();
@@ -35,7 +58,12 @@ public class TurnToTarget extends CommandBase {
     }
   }
 
-  // Called every time the scheduler runs while the command is scheduled.
+  /**
+   * Read the horizontal angle remaining to calculate a turn speed.
+   * 
+   * <p>
+   * {@inheritDoc}
+   */
   @Override
   public void execute() {
     this.angle = targeting.getHorizontalAngleError();
@@ -49,15 +77,24 @@ public class TurnToTarget extends CommandBase {
     }
   }
 
-  // Called once the command ends or is interrupted.
+  /**
+   * Turn off the drive train.
+   * 
+   * <p>
+   * {@inheritDoc}
+   */
   @Override
   public void end(boolean interrupted) {
     this.driveTrain.arcadeDrive(0, 0, 0);
   }
 
-  // Returns true when the command should end.
+  /**
+   * {@inheritDoc}
+   * 
+   * @return true when the distance is within the tolerance to end the command.
+   */
   @Override
   public boolean isFinished() {
-    return (this.angle < 1 && this.angle > -1);
+    return (this.angle < TOLERANCE_DEGREES && this.angle > -TOLERANCE_DEGREES);
   }
 }
