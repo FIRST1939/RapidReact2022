@@ -31,45 +31,66 @@ public class Auto5Ball extends SequentialCommandGroup {
         new WaitCommand(SmartDashboard.getNumber("Auto Start Wait", 0.0)),
 
         // Gather, move to cargo and set for fender high.
+        //This 5ballauto set up at bottom side of the field right next to tarmac angle(...?)
         new ParallelCommandGroup(
             new ScheduleCommand(IntakeGatheringEmptyState.getInstance(intake)),
-            new DriveStraightDistance(-48, driveTrain, 0.5),
+            new DriveStraightDistance(-45, driveTrain, 0.5),
             new SetShot(shooter, Constants.SHOTS.cargoRing)),
         new ManualTurnToTarget(driveTrain, limelight, 0, rumbleController).withTimeout(1.0),
         new WaitCommand(0.15),
-        new AutoModeShooter(2, indexer, shooter).withTimeout(3.0),
+        new AutoModeShooter(2, indexer, shooter).withTimeout(1.5),
         new WaitCommand(0.2),
 
-        // new DriveTurnToRelativeAngle(() -> 26, driveTrain).withTimeout(1.0),
-        new TurnToAngle(driveTrain, 24.5),
-        new DriveStraightDistanceNoStop(-14, driveTrain, 0.7),
+        //after shot 2 balls
+        new TurnToAngle(driveTrain, 103.3),
         new ParallelCommandGroup(
           new ScheduleCommand(IntakeGatheringEmptyState.getInstance(intake)),
-          new DriveStraightDistanceNoStop(-113, driveTrain, 0.8)
+          new DriveStraightDistance(-109.5, driveTrain, 0.75),
+          new SetShot(shooter, Constants.SHOTS.cargoRing)
         ),
-        new ParallelCommandGroup(
-            new DriveStraightDistance(-17, driveTrain, 0.6), 
-            new SetShot(shooter, Constants.SHOTS.cargoRing)),
-            new WaitCommand(2.0),
+        new TurnToAngle(driveTrain, -59.5),
+        new DriveStraightDistance(23.5, driveTrain, 0.7),
+        new ManualTurnToTarget(driveTrain, limelight, 0, rumbleController).withTimeout(0.5),
+        new WaitCommand(0.5),
+        new ManualMoveToTarget(driveTrain, limelight, 0, rumbleController).withTimeout(0.5),
+        new WaitCommand(0.5),
+        new AutoModeShooter(1, indexer, shooter).withTimeout(1.0)
 
-        // After intake 2ball in humanplayer station .
-        new TurnToAngle(driveTrain, 7.937),
-        new DriveStraightDistance(240, driveTrain, 0.7),
-        new DriveStraightDistance(16, driveTrain, 0.5),
+        //after shot 3rd ball        
+        new TurnToAngle(driveTrain, 28.5),
+        new ParallelCommandGroup(
+          new ScheduleCommand(IntakeGatheringEmptyState.getInstance(intake)),
+          new DriveStraightDistanceNoStop(-125, driveTrain, 0.8)
+        ),
+
+        new ParallelCommandGroup(
+            new DriveStraightDistance(-15, driveTrain, 0.5), 
+            new SetShot(shooter, Constants.SHOTS.cargoRing)),
+        new WaitCommand(1.5),
+
+        // After intake 5th ball
+        new DriveStraightDistance(140, driveTrain, 0.7),
+        new TurnToAngle(driveTrain, -28.5),
+        new WaitCommand(0.2),
+        new ManualTurnToTarget(driveTrain, limelight, 0, rumbleController).withTimeout(0.5),
         new WaitCommand(0.3),
-        new TurnToAngle(driveTrain, -106.42),
-        new ManualTurnToTarget(driveTrain, limelight, 0, rumbleController).withTimeout(1.0),
-        new ManualMoveToTarget(driveTrain, limelight, 0, rumbleController).withTimeout(1.5),
-        new AutoModeShooter(2, indexer, shooter).withTimeout(2.0),
+        new ManualMoveToTarget(driveTrain, limelight, 0, rumbleController).withTimeout(1.0),
+        new WaitCommand(0.3),
+        new AutoModeShooter(2, indexer, shooter).withTimeout(2.0)
 
-        // After shoot 4ball.
+        /*
+        //Just in case if we have not enough time
+        // disable 71-79 !!swap!!
         new ParallelCommandGroup(
-            new DriveStraightDistance(-45, driveTrain, 0.7),
-            new ScheduleCommand(IntakeGatheringEmptyState.getInstance(intake)),
-            new SetShot(shooter, Constants.SHOTS.cargoRing)),
-        new ManualTurnToTarget(driveTrain, limelight, 0, rumbleController),
-        new ManualMoveToTarget(driveTrain, limelight, 0, rumbleController),
-        new AutoModeShooter(1, indexer, shooter).withTimeout(3.0)
+          new DriveStraightDistance(80, driveTrain, 0.7),
+          new SetShot(shooter, Constants.SHOTS.launchpad)),
+        new TurnToAngle(driveTrain, -20),
+        new WaitCommand(0.2),
+        new ManualTurnToTarget(driveTrain, limelight, 0, rumbleController).withTimeout(0.5),
+        new WaitCommand(0.3),
+        new AutoModeShooter(2, indexer, shooter).withTimeout(2.0) 
+         */
+      )
     );
   }
 }
