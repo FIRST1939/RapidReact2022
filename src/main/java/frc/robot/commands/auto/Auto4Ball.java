@@ -41,30 +41,24 @@ public class Auto4Ball extends SequentialCommandGroup {
         new AutoModeShooter(2, indexer, shooter).withTimeout(3.0),
         new WaitCommand(0.2),
 
-        // new DriveTurnToRelativeAngle(() -> 26, driveTrain).withTimeout(1.0),
-        new TurnToAngle(driveTrain, 30),
+        new TurnToAngle(driveTrain, 28.5),
         new DriveStraightDistanceNoStop(-14, driveTrain, 0.55),
         new ParallelCommandGroup(
           new ScheduleCommand(IntakeGatheringEmptyState.getInstance(intake)),
           new DriveStraightDistanceNoStop(-113, driveTrain, 0.7)
         ),
 
-        //new WaitCommand(0.2),
         new ParallelCommandGroup(
             new DriveStraightDistance(-17, driveTrain, 0.4), 
             new SetShot(shooter, Constants.SHOTS.cargoRing)),
             new WaitCommand(2.0),
 
-        //new DriveStraightDistance(-140, driveTrain),
-        //new WaitCommand(2.0),
         new DriveStraightDistance(10, driveTrain, 0.6),
         new DriveStraightDistance(125, driveTrain, 0.7),
         new DriveStraightDistance(5, driveTrain, 0.5),
         new WaitCommand(0.3),
 
-        // new DriveTurnToRelativeAngle(() -> -30, driveTrain).withTimeout(1.0),
-        new TurnToAngle(driveTrain, -30),
-        // new TurnToAngle(driveTrain, -30),
+        new TurnToAngle(driveTrain, -28.5),
 
         new WaitCommand(0.2),
         new ManualTurnToTarget(driveTrain, limelight, 0, rumbleController).withTimeout(1.0),

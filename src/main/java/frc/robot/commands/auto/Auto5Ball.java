@@ -31,7 +31,8 @@ public class Auto5Ball extends SequentialCommandGroup {
         new WaitCommand(SmartDashboard.getNumber("Auto Start Wait", 0.0)),
 
         // Gather, move to cargo and set for fender high.
-        //This 5ballauto set up at bottom side of the field right next to tarmac angle(...?)
+        // This 5ballauto set up at bottom side of the field right next to tarmac angle
+        // NOT same as 4ball auto 
         new ParallelCommandGroup(
             new ScheduleCommand(IntakeGatheringEmptyState.getInstance(intake)),
             new DriveStraightDistance(-45, driveTrain, 0.5),
@@ -79,8 +80,7 @@ public class Auto5Ball extends SequentialCommandGroup {
         new AutoModeShooter(2, indexer, shooter).withTimeout(2.0)
 
         /*
-        //Just in case if we have not enough time
-        // disable 71-79 !!swap!!
+        // In case if we need to shot in launchpad distance
         new ParallelCommandGroup(
           new DriveStraightDistance(80, driveTrain, 0.7),
           new SetShot(shooter, Constants.SHOTS.launchpad)),
