@@ -52,7 +52,7 @@ public class Climber extends SubsystemBase {
     @Override
     public void periodic () {
 
-        SmartDashboard.putNumber("Climber Encoder Clicks: ", this.getMotorPosition());
+        SmartDashboard.putNumber("Climber Encoder Clicks", this.getMotorPosition());
     }
 
     public void setMotor (int velocity) {

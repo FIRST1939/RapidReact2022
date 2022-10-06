@@ -58,6 +58,6 @@ public class DriveTurnToRelativeAngle extends PIDCommand {
 
     double output = (pidControllerOutput >= 0) ? pidControllerOutput + Constants.DRIVE_AUTO_TURN_TO_ANGLE_KF : pidControllerOutput - Constants.DRIVE_AUTO_TURN_TO_ANGLE_KF;
     dt.arcadeDrive(0.0, output, 0.0);
-    SmartDashboard.putNumber("Output: ", output);
+    SmartDashboard.putNumber("Output", output);
   }
 }

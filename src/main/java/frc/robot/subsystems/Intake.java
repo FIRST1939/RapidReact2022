@@ -52,11 +52,11 @@ public class Intake extends SubsystemBase {
     @Override
     public void periodic () {
 
-        SmartDashboard.putBoolean("Intake: ", !this.beamBreak.get());
+        SmartDashboard.putBoolean("Intake Beam", !this.beamBreak.get());
 
         Command current = getCurrentCommand();
-        SmartDashboard.putString("Intake State: ", current != null ? current.getName() : "<null>");
-        SmartDashboard.putBoolean("Intake direction", intakeDirection());
+        SmartDashboard.putString("Intake State", current != null ? current.getName() : "<null>");
+        SmartDashboard.putBoolean("Intake Direction", intakeDirection());
     }
 
     public void extendIntake () {

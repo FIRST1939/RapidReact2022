@@ -135,7 +135,7 @@ public class DriveTrain extends SubsystemBase {
 
     //SmartDashboard.putNumber("Distance from Encoders: ", this.getDistance());
     //SmartDashboard.putNumber("Left Encoder: ", this.getDistance());
-    SmartDashboard.putNumber("angle: ", this.getHeading());
+    SmartDashboard.putNumber("NavX Angle", this.getHeading());
     //SmartDashboard.putNumber("Right Encoder: ", this.rightEncoder.getDistance());
   }
 

@@ -59,11 +59,11 @@ public class Indexer extends SubsystemBase {
   @Override
   public void periodic () {
 
-    SmartDashboard.putBoolean("Indexer: ", !this.beamBreak.get());
+    SmartDashboard.putBoolean("Indexer Beam", !this.beamBreak.get());
 
     Command current = this.getCurrentCommand();
     final String cmdName = current != null ? current.getName() : "<null>";
-    SmartDashboard.putString("Indexer State: ", cmdName);
+    SmartDashboard.putString("Indexer State", cmdName);
   }
 
   /**
