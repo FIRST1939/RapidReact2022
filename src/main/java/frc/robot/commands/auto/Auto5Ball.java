@@ -55,7 +55,7 @@ public class Auto5Ball extends SequentialCommandGroup {
         new WaitCommand(0.5),
         new ManualMoveToTarget(driveTrain, limelight, 0, rumbleController).withTimeout(0.5),
         new WaitCommand(0.5),
-        new AutoModeShooter(1, indexer, shooter).withTimeout(1.0)
+        new AutoModeShooter(1, indexer, shooter).withTimeout(1.0),
 
         //after shot 3rd ball        
         new TurnToAngle(driveTrain, 28.5),
@@ -89,8 +89,8 @@ public class Auto5Ball extends SequentialCommandGroup {
         new ManualTurnToTarget(driveTrain, limelight, 0, rumbleController).withTimeout(0.5),
         new WaitCommand(0.3),
         new AutoModeShooter(2, indexer, shooter).withTimeout(2.0) 
+        )
          */
-      )
     );
   }
 }
