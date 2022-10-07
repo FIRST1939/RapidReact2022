@@ -93,8 +93,6 @@ public class Shooter extends SubsystemBase {
 
             if (lastSetVelocity != velocity) {
 
-                SmartDashboard.putNumber("Shooter Velocity", velocity);
-
                 this.shooterFlywheel.set(ControlMode.Velocity, velocity);
                 this.lastSetVelocity = velocity;
                 this.velocityInRangeCount = 0;
@@ -106,6 +104,8 @@ public class Shooter extends SubsystemBase {
 
     @Override
     public void periodic () {
+
+        SmartDashboard.putNumber("Shooter Velocity", this.shooterFlywheel.get());
 
         double currentVelocity = shooterFlywheel.getSelectedSensorVelocity()/2;
         //double currentClosedLoopError = shooterFlywheel.getClosedLoopError();

@@ -33,7 +33,7 @@ public class Robot extends TimedRobot {
     this.m_robotContainer.getLights().setColor(LEDMode.FIRE);
 
     SmartDashboard.putNumber("Auto Start Wait", 0.0);
-    SmartDashboard.putNumber("Shooter Velocity", 6750);
+    SmartDashboard.putBoolean("Manual Mode", false);
 
     CameraServer.startAutomaticCapture();
   }
