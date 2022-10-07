@@ -137,6 +137,6 @@ public class Intake extends SubsystemBase {
      */
     public boolean intakeDirection () {
 
-        return this.intakeMotor.getOutputCurrent() >= 0;
+        return this.intakeMotor.get() >= 0;
     }
 }
