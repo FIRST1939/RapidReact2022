@@ -48,7 +48,6 @@ public class IndexerShootingState extends CommandBase {
   @Override
   public void initialize () {
 
-    System.out.println("Shooting State init");
     this.minRunTimer.stop();
     this.minRunTimerEnabled = false;
 

@@ -105,11 +105,9 @@ public class Shooter extends SubsystemBase {
     @Override
     public void periodic () {
 
-        SmartDashboard.putNumber("Shooter Velocity", this.shooterFlywheel.get());
-
         double currentVelocity = shooterFlywheel.getSelectedSensorVelocity()/2;
         //double currentClosedLoopError = shooterFlywheel.getClosedLoopError();
-        //SmartDashboard.putNumber("Shooter Velocity", currentVelocity);
+        SmartDashboard.putNumber("Shooter Velocity", currentVelocity);
         //SmartDashboard.putNumber("Shooter Error", currentClosedLoopError);
 
         if (Math.abs(Math.abs(currentVelocity) - this.lastSetVelocity) <= this.lastSetVelocity * 0.04) {
