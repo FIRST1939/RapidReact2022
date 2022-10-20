@@ -44,7 +44,6 @@ import frc.robot.commands.intake.IntakeStowedSendState;
 import frc.robot.commands.intake.ManualIntakeRollerBelts;
 import frc.robot.commands.shooter.ReturnToPriorShot;
 import frc.robot.commands.shooter.SetShot;
-import frc.robot.commands.shooter.SetVelocity;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
@@ -183,7 +182,7 @@ public class RobotContainer {
     launchpad.whenPressed(new SetShot(this.shooter, SHOTS.launchpad));
 
     POVButton setVelocity = new POVButton(driverTwo, 180);
-    setVelocity.whenPressed(new SetVelocity(this.shooter, () -> (int) SmartDashboard.getNumber("Shooter Velocity", 6750)));
+    setVelocity.whenPressed(new SetShot(this.shooter, SHOTS.fenderLow));
 
     POVButton offButton = new POVButton(driverTwo, 270);
     offButton.whenPressed(new SetShot(this.shooter, SHOTS.off));
