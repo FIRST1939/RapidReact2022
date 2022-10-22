@@ -58,7 +58,7 @@ public class Auto5Ball extends SequentialCommandGroup {
         new AutoModeShooter(1, indexer, shooter).withTimeout(1.0),
 
         //after shot 3rd ball        
-        new TurnToAngle(driveTrain, 28.5),
+        new TurnToAngle(driveTrain, 23),
         new ParallelCommandGroup(
           new ScheduleCommand(IntakeGatheringEmptyState.getInstance(intake)),
           new DriveStraightDistanceNoStop(-125, driveTrain, 0.8)
