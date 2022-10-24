@@ -155,7 +155,7 @@ public class DriveTrain extends SubsystemBase {
     }
 
     // Sidewind above threshold, disengage below, leave as is in gap.
-    if ((Math.abs(sidewind) > Constants.SIDEWINDER_ENABLE_THRESHOLD) || this.sidewinderOverride.getAsBoolean()) {
+    if (this.sidewinderOverride.getAsBoolean()) {
       
       if (!this.sidewinderSolenoid.get()) {
 
@@ -166,7 +166,7 @@ public class DriveTrain extends SubsystemBase {
       
       this.sidewinderSolenoid.set(true);
       Lights.getInstance().setColor(LEDMode.TWINKLES);
-    } else if (Math.abs(sidewind) < Constants.SIDEWINDER_DISABLE_THRESHOLD) {
+    } else {
 
       this.sidewinderSolenoid.set(false);
     }
