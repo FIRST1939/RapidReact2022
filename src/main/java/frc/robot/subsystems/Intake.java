@@ -40,7 +40,7 @@ public class Intake extends SubsystemBase {
         this.intakeMotor = new CANSparkMax(Constants.INTAKE_MOTOR_CAN_ID, MotorType.kBrushed);
         this.intakeMotor.restoreFactoryDefaults();
         this.intakeMotor.setIdleMode(IdleMode.kBrake);
-        this.intakeMotor.setInverted(true);
+        //this.intakeMotor.setInverted(true);
         this.intakeMotor.getEncoder(SparkMaxRelativeEncoder.Type.kQuadrature, Constants.INTAKE_ENCODER_CYCLES_PER_ROTATION);
         this.pidController = this.intakeMotor.getPIDController();
 

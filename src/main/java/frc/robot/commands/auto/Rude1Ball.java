@@ -40,7 +40,7 @@ public class Rude1Ball extends SequentialCommandGroup {
             // After shoot 2ball.
             new TurnToAngle(driveTrain, 84),
             new ScheduleCommand(IntakeGatheringEmptyState.getInstance(intake)),
-            new DriveStraightDistanceNoStop(-55, driveTrain, 0.5),
+            new DriveStraightDistanceNoStop(-40, driveTrain, 0.4),
             new WaitCommand(0.3),
             new ResetGyro(driveTrain),
             new WaitCommand(0.5),

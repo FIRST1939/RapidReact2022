@@ -35,7 +35,7 @@ public class Auto5Ball extends SequentialCommandGroup {
         // NOT same as 4ball auto 
         new ParallelCommandGroup(
             new ScheduleCommand(IntakeGatheringEmptyState.getInstance(intake)),
-            new DriveStraightDistance(-45, driveTrain, 0.5),
+            new DriveStraightDistance(-33.5, driveTrain, 0.6),
             new SetShot(shooter, Constants.SHOTS.cargoRing)),
         new ManualTurnToTarget(driveTrain, limelight, 0, rumbleController).withTimeout(1.0),
         new WaitCommand(0.15),
@@ -43,54 +43,56 @@ public class Auto5Ball extends SequentialCommandGroup {
         new WaitCommand(0.2),
 
         //after shot 2 balls
-        new TurnToAngle(driveTrain, 103.3),
+        new TurnToAngle(driveTrain, 100),
         new ParallelCommandGroup(
           new ScheduleCommand(IntakeGatheringEmptyState.getInstance(intake)),
-          new DriveStraightDistance(-109.5, driveTrain, 0.75),
+          new DriveStraightDistance(-100, driveTrain, 0.8),
           new SetShot(shooter, Constants.SHOTS.cargoRing)
         ),
-        new TurnToAngle(driveTrain, -59.5),
-        new DriveStraightDistance(23.5, driveTrain, 0.7),
+        new TurnToAngle(driveTrain, -57.5),
+        new DriveStraightDistance(23.5, driveTrain, 0.6),
         new ManualTurnToTarget(driveTrain, limelight, 0, rumbleController).withTimeout(0.5),
-        new WaitCommand(0.5),
+        new WaitCommand(0.25),
         new ManualMoveToTarget(driveTrain, limelight, 0, rumbleController).withTimeout(0.5),
-        new WaitCommand(0.5),
-        new AutoModeShooter(1, indexer, shooter).withTimeout(1.0),
+        //new WaitCommand(0.5),
+        new AutoModeShooter(1, indexer, shooter).withTimeout(1.15),
 
         //after shot 3rd ball        
-        new TurnToAngle(driveTrain, 27),
+        //new TurnToAngle(driveTrain, 23.5),
+        //new TurnToAngle(driveTrain, 4),
         new ParallelCommandGroup(
           new ScheduleCommand(IntakeGatheringEmptyState.getInstance(intake)),
-          new DriveStraightDistanceNoStop(-125, driveTrain, 0.8)
+          new DriveStraightDistanceNoStop(-122.5, driveTrain, 0.75)
         ),
 
         new ParallelCommandGroup(
+            new ScheduleCommand(IntakeGatheringEmptyState.getInstance(intake)),
             new DriveStraightDistance(-15, driveTrain, 0.5), 
             new SetShot(shooter, Constants.SHOTS.cargoRing)),
         new WaitCommand(1.5),
 
+        /*
         // After intake 5th ball
         new DriveStraightDistance(140, driveTrain, 0.7),
-        new TurnToAngle(driveTrain, -27),
-        new WaitCommand(0.2),
+        //new TurnToAngle(driveTrain, -23.5),
+        new WaitCommand(0.2), 
         new ManualTurnToTarget(driveTrain, limelight, 0, rumbleController).withTimeout(0.5),
         new WaitCommand(0.3),
         new ManualMoveToTarget(driveTrain, limelight, 0, rumbleController).withTimeout(1.0),
         new WaitCommand(0.3),
         new AutoModeShooter(2, indexer, shooter).withTimeout(2.0)
-
-        /*
+        */
+        
         // In case if we need to shot in launchpad distance
         new ParallelCommandGroup(
-          new DriveStraightDistance(80, driveTrain, 0.7),
+          new DriveStraightDistance(70, driveTrain, 0.8),
           new SetShot(shooter, Constants.SHOTS.launchpad)),
-        new TurnToAngle(driveTrain, -20),
+        //new TurnToAngle(driveTrain, -20),
+        new DriveStraightDistance(16, driveTrain, 0.5),
         new WaitCommand(0.2),
         new ManualTurnToTarget(driveTrain, limelight, 0, rumbleController).withTimeout(0.5),
         new WaitCommand(0.3),
-        new AutoModeShooter(2, indexer, shooter).withTimeout(2.0) 
-        )
-         */
+        new AutoModeShooter(2, indexer, shooter)//.withTimeout(2.0) 
     );
   }
 }
